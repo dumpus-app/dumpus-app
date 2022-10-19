@@ -1,0 +1,6 @@
+# Env
+env
+__pycache__
+
+# Celery config
+celeryconfig.py
