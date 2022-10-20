@@ -1,6 +1,8 @@
 from distutils.command.config import config
 from celery import Celery, chain
 
+from datetime import datetime
+
 # Download File
 import requests
 
@@ -12,6 +14,12 @@ from zipfile import ZipFile
 from io import TextIOWrapper
 
 app = Celery(config_source='celeryconfig')
+
+def get_ts_string_parser(line):
+    year, month, day = int(line[1:5]), int(line[6:8]), int(line[9:11])
+    hour, minute = int(line[12:14]), int(line[15:17])
+
+    return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
 @app.task(bind=True)
 def download_file(self, url, file_path):
@@ -30,16 +38,39 @@ def download_file(self, url, file_path):
 
 @app.task()
 def read_analytics_file(file_path):
+
     analytics_line_count = 0
+    
+    join_voice_channels = []
+    leave_voice_channels = []
+    voice_channel_sessions = []
+
     with ZipFile(file_path) as zip:
         for file_name in zip.namelist():
-            if file_name == 'activity/analytics/events-2022-00000-of-00001.json':
+            if file_name.startswith('activity/analytics'):
                     for line in TextIOWrapper(zip.open(file_name)):
                         json = orjson.loads(line)
                         # count
                         analytics_line_count += 1
+                        if json['event_type'] == 'join_voice_channel':
+                            join_voice_channels.append(get_ts_string_parser(json['timestamp']))
+                        elif json['event_type'] == 'leave_voice_channel':
+                            leave_voice_channels.append(get_ts_string_parser(json['timestamp']))
             else:
                 continue
+
+    # calculate time spent in voice channels
+    # sort join and leave timestamps
+    join_voice_channels.sort()
+    leave_voice_channels.sort()
+    for i in range(len(join_voice_channels)):
+        voice_channel_sessions.append({
+            'timedelta': leave_voice_channels[i] - join_voice_channels[i],
+            'start_at': join_voice_channels[i]
+        })
+    
+    print(f'Sessions spent in voice channels: {len(voice_channel_sessions)}')
+
     return analytics_line_count
 
 @app.task

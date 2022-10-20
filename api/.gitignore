@@ -4,3 +4,6 @@ __pycache__
 
 # Celery config
 celeryconfig.py
+
+# Test
+test.zip
