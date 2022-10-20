@@ -7,3 +7,4 @@ celeryconfig.py
 
 # Test
 test.zip
+*.zip

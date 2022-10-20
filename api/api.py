@@ -1,32 +1,32 @@
+from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 
 from tasks import handle_package
 
-import hashlib
+import cryptocode
 
 from db import PackageProcessStatus, SavedPackageData, session
 
-import pyaes
 import orjson
+
+from util import check_discord_link, extract_key_from_discord_link, extract_package_id_from_discord_link
 
 app = Flask(__name__)
 
-discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
-
-def get_package_status(url, package_id):
+def get_package_status(link, package_id):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
-    if status and status != 'processed':
+    if status and status.step != 'done':
         return {
-            'status': 'in progress'
+            'status': 'in progress',
+            'step': status.step,
         }
-    elif status and status.step == 'processed':
+    elif status and status.step == 'done':
         result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
-        key = url.encode('utf-8')
-        aes = pyaes.AESModeOfOperationCTR(key)
-        data = aes.decrypt(result.data)
+        key = extract_key_from_discord_link(link)
+        data = cryptocode.decode(result.data, key)
         if result:
             return {
-                'status': 'processed',
+                'status': 'done',
                 'data': orjson.loads(data)
             }
     else:
@@ -42,14 +42,12 @@ def process_link():
     # Get link from body
     link = request.json['link']
     if not link:
-        return jsonify({'error': 'No link provided'}), 400
+        return jsonify({'error': 'No link provided.'}), 400
     # Check if link is a discord link
-    if not discord_link_regex.match(link):
-        return jsonify({'error': 'Not a discord link'}), 400
-    # Get the link from the regex
-    link = discord_link_regex.match(link).group(1)
+    if not check_discord_link(link):
+        return jsonify({'error': 'Not a discord link.'}), 400
     # Link to md5
-    package_id = hashlib.md5(link.encode('utf-8')).hexdigest()
+    package_id = extract_package_id_from_discord_link(link)
     # Get package status
     package_status = get_package_status(link, package_id)
     if package_status['status'] != 'not started':
@@ -57,14 +55,25 @@ def process_link():
             'status': 'in progress',
             'message': 'This link is already being analyzed.'
         })
+    package_process_status = PackageProcessStatus(package_id=package_id, step='locked', created_at=datetime.now(), updated_at=datetime.now())
+    session.add(package_process_status)
+    session.commit()
     # Process the link
     handle_package.apply_async(args=[package_id, link], queue='default')
     # Send a successful response
-    return jsonify({'success': 'Processing your link'}), 200
+    return jsonify({'success': 'Started processing your link.'}), 200
 
-@app.route('/api/link/<string:link>', methods=['GET'])
-def get_link(link):
-    return True
+@app.route('/api/link', methods=['GET'])
+def get_link():
+    link = request.args.get('link')
+    if not link:
+        return jsonify({'error': 'No link provided.'}), 400
+    # Check if link is a discord link
+    if not check_discord_link(link):
+        return jsonify({'error': 'Not a discord link.'}), 400
+    package_id = extract_package_id_from_discord_link(link)
+    status = get_package_status(link, package_id)
+    return jsonify(status)
 
 if __name__ == "__main__":
     app.run(port=5500, debug=True)
