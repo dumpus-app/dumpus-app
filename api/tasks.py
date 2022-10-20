@@ -84,7 +84,7 @@ def read_analytics_file(package_id, link):
     })
 
     key = extract_key_from_discord_link(link)
-    data = cryptocode.decrypt(plaintext.decode(), key)
+    data = cryptocode.encrypt(plaintext.decode(), key)
 
     session.add(SavedPackageData(package_id=package_id, data=data, created_at=datetime.now(), updated_at=datetime.now()))
     session.commit()
