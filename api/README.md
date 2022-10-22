@@ -10,13 +10,13 @@ API to handle Discord GDPR links sent from the DDPE app.
 ### Start Celery workers
 
 * Start flower worker to monitor the celery ones.
---> `celery -app tasks flower --port=5566`
+--> `celery --app tasks flower --port=5566`
 
 * Start celery worker for downloads.
---> `celery -app tasks worker --loglevel INFO --queues default --hostname worker-default@%h`
+--> `celery --app tasks worker --loglevel INFO --queues default --hostname worker-default@%h`
 
 * Start celery worker for package analyses.
---> `celery -app tasks worker --loglevel INFO --queues packages --hostname worker-analysis@%h --concurrency 3`
+--> `celery --app tasks worker --loglevel INFO --queues packages --hostname worker-analysis@%h --concurrency 3`
 
 ### Encoding/Decoding of saved packages
 

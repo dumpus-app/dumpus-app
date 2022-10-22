@@ -22,3 +22,9 @@ def extract_key_from_discord_link (link):
     upn = extract_upn_from_discord_link(link)
     encrypt_key = upn
     return encrypt_key
+
+def generate_avatar_url_from_user_id_avatar_hash (user_id, hash):
+    if hash:
+        extension = hash.startswith('a_') and 'gif' or 'jpg'
+        return f'https://cdn.discordapp.com/avatars/{user_id}/{hash}.{extension}'
+    return None

@@ -23,7 +23,7 @@ def get_package_status(link, package_id):
     elif status and status.step == 'done':
         result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
         key = extract_key_from_discord_link(link)
-        data = cryptocode.decode(result.data, key)
+        data = cryptocode.decrypt(result.data, key)
         if result:
             return {
                 'status': 'done',
