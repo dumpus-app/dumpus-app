@@ -56,10 +56,6 @@ def read_analytics_file(package_id, link):
     update_progress(package_id, 0)
 
     analytics_line_count = 0
-    
-    join_voice_channels = []
-    leave_voice_channels = []
-    voice_channel_sessions = []
 
     session_starts = []
 
@@ -71,7 +67,8 @@ def read_analytics_file(package_id, link):
     users = []
     channels = []
 
-    dms_channels_data = []
+    dms_channels_messages = []
+    guild_channels_messages = []
 
     events_per_channel_id = {}
     time_spent_in_channels = []
@@ -107,7 +104,7 @@ def read_analytics_file(package_id, link):
             })
 
         # READ ANALYTICS
-        analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics')), None)
+        analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics') and name.endswith('.json')), None)
         for line in TextIOWrapper(zip.open(analytics_file_name)):
             analytics_line_json = orjson.loads(line)
             # count
@@ -116,7 +113,8 @@ def read_analytics_file(package_id, link):
             if analytics_line_json['event_type'] == 'session_start':
                 session_starts.append({
                     'timestamp': get_ts_string_parser(analytics_line_json['timestamp']),
-                    'device': analytics_line_json['device'] if 'device' in analytics_line_json else 'Unknown',
+                    #'device': analytics_line_json['device'] if 'device' in analytics_line_json else 'Unknown',
+                    # we can not trust device, it's often null, unknown or equal to the os
                     'os': analytics_line_json['os']
                 })
 
@@ -129,13 +127,15 @@ def read_analytics_file(package_id, link):
                     ),
                     'type': 'join'
                 })
-            
+
+            # todo, regarder voice disconnect? (peut-être que l'évènement leave_voice_channel n'est pas écrit quand on a un voice_disconnect)
+
             if analytics_line_json['event_type'] == 'leave_voice_channel':
                 if not analytics_line_json['channel_id'] in events_per_channel_id:
                     events_per_channel_id[analytics_line_json['channel_id']] = []
                 events_per_channel_id[analytics_line_json['channel_id']].append({
                     'timestamp': get_ts_string_parser(
-                        analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else json['timestamp']
+                        analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
                     ),
                     'type': 'leave'
                 })
@@ -178,17 +178,31 @@ def read_analytics_file(package_id, link):
                 # 3 is attachments
                 messages.append(get_ts_regular_string_parser(message_row[1]))
 
+            messages.sort()
+
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
-                dms_channels_data.append({
-                    'id': channel_id,
+                dms_channels_messages.append({
+                    'channel_id': channel_id,
                     'dm_user_id': dm_user_id,
                     # here, we can either get the username from the relation ships or from the channel index json
-                    'message_count': len(messages)
+                    'message_timestamps': messages,
+                    'total_message_count': len(messages),
+                    'first_message_timestamp': messages[0] if len(messages) > 0 else None
+                })
+
+            elif 'guild' in channel_json:
+                guild_channels_messages.append({
+                    'guild_id': channel_json['guild'],
+                    'channel_id': channel_id,
+                    'message_timestamps': messages,
+                    'total_message_count': len(messages),
+                    'first_message_timestamp': messages[0] if len(messages) > 0 else None
                 })
 
     start = time.process_time()
     session_starts.sort(key=lambda x: x['timestamp'])
+
     print(time.process_time() - start)
     print(len(session_starts))
     print(len(used_commands))
@@ -239,11 +253,14 @@ def read_analytics_file(package_id, link):
         'user_data': user_data,
         'users': users,
         'payments': payments,
-        'dms_channels_data': dms_channels_data
+        'dms_channels_data': dms_channels_messages,
+        'guild_channels_data': guild_channels_messages
     })
 
+    time_before_encrypt = time.process_time()
     key = extract_key_from_discord_link(link)
     data = cryptocode.encrypt(plaintext.decode(), key)
+    print(time.process_time() - time_before_encrypt)
 
     session.add(SavedPackageData(package_id=package_id, data=data, created_at=datetime.now(), updated_at=datetime.now()))
     session.commit()
