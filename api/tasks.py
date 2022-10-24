@@ -52,7 +52,7 @@ def download_file(package_id, link):
 
 @app.task()
 def read_analytics_file(package_id, link):
-    update_step(package_id, 'processing')
+    update_step(package_id, 'analysing')
     update_progress(package_id, 0)
 
     analytics_line_count = 0
@@ -67,8 +67,8 @@ def read_analytics_file(package_id, link):
     users = []
     channels = []
 
-    dms_channels_messages = []
-    guild_channels_messages = []
+    dms_channels_data = []
+    guild_channels_data = []
 
     events_per_channel_id = {}
     time_spent_in_channels = []
@@ -99,7 +99,7 @@ def read_analytics_file(package_id, link):
             payments.append({
                 'amount': payment['amount'],
                 'currency': payment['currency'],
-                'timestamp': get_ts_regular_string_parser(payment['created_at']),
+                'timestamp': get_ts_regular_string_parser(payment['created_at']).timestamp(),
                 'description': payment['description']
             })
 
@@ -112,7 +112,7 @@ def read_analytics_file(package_id, link):
 
             if analytics_line_json['event_type'] == 'session_start':
                 session_starts.append({
-                    'timestamp': get_ts_string_parser(analytics_line_json['timestamp']),
+                    'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                     #'device': analytics_line_json['device'] if 'device' in analytics_line_json else 'Unknown',
                     # we can not trust device, it's often null, unknown or equal to the os
                     'os': analytics_line_json['os']
@@ -124,7 +124,7 @@ def read_analytics_file(package_id, link):
                 events_per_channel_id[analytics_line_json['channel_id']].append({
                     'timestamp': get_ts_string_parser(
                         analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
-                    ),
+                    ).timestamp(),
                     'type': 'join'
                 })
 
@@ -136,7 +136,7 @@ def read_analytics_file(package_id, link):
                 events_per_channel_id[analytics_line_json['channel_id']].append({
                     'timestamp': get_ts_string_parser(
                         analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
-                    ),
+                    ).timestamp(),
                     'type': 'leave'
                 })
 
@@ -176,13 +176,13 @@ def read_analytics_file(package_id, link):
                 # 1 is timestamp
                 # 2 is contents
                 # 3 is attachments
-                messages.append(get_ts_regular_string_parser(message_row[1]))
+                messages.append(get_ts_regular_string_parser(message_row[1]).timestamp())
 
             messages.sort()
 
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
-                dms_channels_messages.append({
+                dms_channels_data.append({
                     'channel_id': channel_id,
                     'dm_user_id': dm_user_id,
                     # here, we can either get the username from the relation ships or from the channel index json
@@ -192,8 +192,9 @@ def read_analytics_file(package_id, link):
                 })
 
             elif 'guild' in channel_json:
-                guild_channels_messages.append({
-                    'guild_id': channel_json['guild'],
+                guild_channels_data.append({
+                    'guild_id': channel_json['guild']['id'],
+                    'guild_name': channel_json['guild']['name'],
                     'channel_id': channel_id,
                     'message_timestamps': messages,
                     'total_message_count': len(messages),
@@ -224,7 +225,7 @@ def read_analytics_file(package_id, link):
                 index += 1
                 continue
             if next_event['type'] == 'leave':
-                time_delta = next_event['timestamp'].timestamp() - current_event['timestamp'].timestamp()
+                time_delta = next_event['timestamp'] - current_event['timestamp']
                 if time_delta < 60 * 60 * 10:
                     time_spent_in_channels.append({
                         'channel_id': channel_id,
@@ -244,7 +245,6 @@ def read_analytics_file(package_id, link):
     plaintext = orjson.dumps({
         'total_time': total_time,
         'analytics_line_count': analytics_line_count,
-        #'voice_channel_sessions': voice_channel_sessions,
         'session_starts': session_starts,
         'guilds': guilds,
         'used_commands': used_commands,
@@ -253,8 +253,8 @@ def read_analytics_file(package_id, link):
         'user_data': user_data,
         'users': users,
         'payments': payments,
-        'dms_channels_data': dms_channels_messages,
-        'guild_channels_data': guild_channels_messages
+        'dms_channels_data': dms_channels_data,
+        'guild_channels_data': guild_channels_data
     })
 
     time_before_encrypt = time.process_time()
@@ -265,7 +265,7 @@ def read_analytics_file(package_id, link):
     session.add(SavedPackageData(package_id=package_id, data=data, created_at=datetime.now(), updated_at=datetime.now()))
     session.commit()
 
-    update_step(package_id, 'done')
+    update_step(package_id, 'processed')
 
     return analytics_line_count
 

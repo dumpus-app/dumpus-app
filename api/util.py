@@ -28,3 +28,9 @@ def generate_avatar_url_from_user_id_avatar_hash (user_id, hash):
         extension = hash.startswith('a_') and 'gif' or 'jpg'
         return f'https://cdn.discordapp.com/avatars/{user_id}/{hash}.{extension}'
     return None
+
+def ts_included_in_range (ts, start_date, end_date):
+    if not start_date:
+        return ts <= end_date
+    else:
+        return start_date <= ts <= end_date
