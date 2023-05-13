@@ -6,9 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "serve dist",
-    "lint": "next lint"
+    "lint": "next lint",
+    "cap": "cap",
+    "cap:dev:android": "cap sync && cap run android"
   },
   "dependencies": {
+    "@capacitor/android": "^5.0.3",
+    "@capacitor/core": "^5.0.3",
+    "@capacitor/ios": "^5.0.3",
     "@types/node": "20.1.3",
     "@types/react": "18.2.6",
     "@types/react-dom": "18.2.4",
@@ -28,6 +33,8 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@capacitor/cli": "^5.0.3",
+    "@ionic/cli": "^7.1.1",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "serve": "^14.2.0"

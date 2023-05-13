@@ -3,7 +3,9 @@ const config = {
   reactStrictMode: true,
   output: "export",
   trailingSlash: true,
-  distDir: "dist",
+  eslint: {
+    dirs: ["src"],
+  },
 };
 
 export default config;

@@ -26,8 +26,12 @@ export default function RootLayout({
   }
 >) {
   return (
-    <html lang={locale} dir={dir(locale)} className={rubik.className}>
-      <body>
+    <html
+      lang={locale}
+      dir={dir(locale)}
+      className={`${rubik.className} bg-slate-950 text-slate-400`}
+    >
+      <body className="p-4">
         <main>{children}</main>
         <LocaleSwitcher locale={locale} />
       </body>
