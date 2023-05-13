@@ -4,6 +4,7 @@ import { Rubik } from "next/font/google";
 import { dir } from "i18next";
 import { locales } from "~/i18n/settings";
 import LocaleSwitcher from "~/i18n/LocaleSwitcher";
+import Providers from "./providers";
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -26,15 +27,17 @@ export default function RootLayout({
   }
 >) {
   return (
-    <html
-      lang={locale}
-      dir={dir(locale)}
-      className={`${rubik.className} bg-slate-950 text-slate-400`}
-    >
-      <body className="p-4">
-        <main>{children}</main>
-        <LocaleSwitcher locale={locale} />
-      </body>
-    </html>
+    <Providers>
+      <html
+        lang={locale}
+        dir={dir(locale)}
+        className={`${rubik.className} bg-gray-950 text-gray-400`}
+      >
+        <body className="p-4">
+          <main>{children}</main>
+          <LocaleSwitcher locale={locale} />
+        </body>
+      </html>
+    </Providers>
   );
 }
