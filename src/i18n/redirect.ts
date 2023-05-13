@@ -14,13 +14,11 @@ export function useRedirect(_to?: string) {
     const detectedLocale = languageDetector.detect() || fallbackLocale;
     const basePath = `/${detectedLocale}`;
     if (to.startsWith(basePath) && pathname === "/404") {
-      // @ts-expect-error
       router.replace(basePath + pathname);
       return;
     }
 
     languageDetector.cache?.(detectedLocale);
-    // @ts-expect-error
     router.replace(basePath + to);
   }, [pathname, router, to]);
 }

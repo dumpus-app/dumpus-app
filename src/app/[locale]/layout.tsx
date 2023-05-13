@@ -29,7 +29,6 @@ export default function RootLayout({
     <html lang={locale} dir={dir(locale)} className={rubik.className}>
       <body>
         <main>{children}</main>
-        {/* @ts-expect-error */}
         <LocaleSwitcher locale={locale} />
       </body>
     </html>

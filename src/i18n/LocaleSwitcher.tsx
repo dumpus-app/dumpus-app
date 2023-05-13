@@ -1,9 +1,15 @@
+"use client";
+
 import Link from "next/link";
 import { locales } from "~/i18n/settings";
-import { useTranslation } from "~/i18n";
+import { useTranslation } from "~/i18n/client";
+import { usePathname } from "next/navigation";
+import i18next from "i18next";
 
-export default async function LocaleSwitcher({ locale }: { locale: string }) {
-  const { t } = await useTranslation(locale);
+export default function LocaleSwitcher({ locale }: { locale: string }) {
+  const { t } = useTranslation(locale);
+  const pathname = usePathname();
+
   return (
     <div>
       <span>{t("localeSwitcher", { locale })}</span>
@@ -13,7 +19,9 @@ export default async function LocaleSwitcher({ locale }: { locale: string }) {
           return (
             <span key={l}>
               {index > 0 && " or "}
-              <Link href={`/${l}`}>{l}</Link>
+              <Link href={(pathname || "/").replace(i18next.language, l)}>
+                {l}
+              </Link>
             </span>
           );
         })}

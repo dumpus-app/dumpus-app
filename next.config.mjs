@@ -4,9 +4,6 @@ const config = {
   output: "export",
   trailingSlash: true,
   distDir: "dist",
-  experimental: {
-    typedRoutes: true,
-  },
 };
 
 export default config;
