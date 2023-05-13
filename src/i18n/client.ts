@@ -16,7 +16,7 @@ i18next
   .use(
     resourcesToBackend(
       // @ts-ignore
-      (language, namespace) => import(`./locales/${language}/${namespace}.json`)
+      (language, namespace) => import(`../../locales/${language}.json`)
     )
   )
   .init({
@@ -27,7 +27,7 @@ i18next
     },
   });
 
-export function useTranslation(locale: string, ns?: string) {
+export function useTranslation(locale: string) {
   if (i18next.resolvedLanguage !== locale) i18next.changeLanguage(locale);
-  return useTranslationOrg(ns);
+  return useTranslationOrg();
 }
