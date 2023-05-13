@@ -5,6 +5,8 @@ import { dir } from "i18next";
 import { locales } from "~/i18n/settings";
 import LocaleSwitcher from "~/i18n/LocaleSwitcher";
 import Providers from "./providers";
+import LoadingScreen from "./LoadingScreen";
+import "~/i18n/client";
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -31,11 +33,11 @@ export default function RootLayout({
       <html
         lang={locale}
         dir={dir(locale)}
-        className={`${rubik.className} bg-gray-950 text-gray-400`}
+        className={`${rubik.className} h-full bg-gray-950 text-gray-400`}
       >
-        <body className="p-4">
-          <main>{children}</main>
-          <LocaleSwitcher locale={locale} />
+        <body className="flex min-h-full flex-col">
+          <LoadingScreen>{children}</LoadingScreen>
+          {/* <LocaleSwitcher locale={locale} /> */}
         </body>
       </html>
     </Providers>

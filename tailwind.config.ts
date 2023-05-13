@@ -5,7 +5,7 @@ export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     colors: {
-      primary: colors.sky,
+      brand: colors.sky,
       gray: colors.slate,
       danger: colors.rose,
       white: "#fff",
