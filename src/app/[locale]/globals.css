@@ -5,3 +5,8 @@
 #__next {
   @apply contents;
 }
+
+html {
+  color-scheme: dark;
+  @apply scroll-smooth;
+}

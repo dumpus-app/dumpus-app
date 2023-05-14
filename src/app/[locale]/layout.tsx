@@ -35,7 +35,7 @@ export default function RootLayout({
         dir={dir(locale)}
         className={`${rubik.className} h-full bg-gray-950 text-gray-400`}
       >
-        <body className="flex min-h-full flex-col">
+        <body className="flex min-h-full flex-col justify-end">
           <LoadingScreen>{children}</LoadingScreen>
           {/* <LocaleSwitcher locale={locale} /> */}
         </body>

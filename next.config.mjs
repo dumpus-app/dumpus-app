@@ -6,6 +6,9 @@ const config = {
   eslint: {
     dirs: ["src"],
   },
+  images: {
+    unoptimized: true,
+  },
 };
 
 export default config;

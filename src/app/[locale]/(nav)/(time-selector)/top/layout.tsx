@@ -1,4 +1,4 @@
-import BottomNav from "~/components/layout/BottomNav";
+import TopSelector from "~/components/layout/TopSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 
@@ -10,8 +10,8 @@ export default async function Layout({
 
   return (
     <>
+      <TopSelector />
       {children}
-      <BottomNav />
     </>
   );
 }
