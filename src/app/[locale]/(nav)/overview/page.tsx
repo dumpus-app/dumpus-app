@@ -2,7 +2,9 @@ import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "~/components/Link";
 import Header from "~/components/layout/Header";
+import TopChannels from "~/components/pages/overview/TopChannels";
 import TopDMs from "~/components/pages/overview/TopDMs";
+import TopGuilds from "~/components/pages/overview/TopGuilds";
 import UsageStats from "~/components/pages/overview/UsageStats";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
@@ -40,6 +42,8 @@ export default async function Page({ params: { locale } }: PageProps) {
       </div>
       <UsageStats />
       <TopDMs />
+      <TopGuilds />
+      <TopChannels />
     </>
   );
 }

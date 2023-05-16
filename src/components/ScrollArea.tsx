@@ -11,7 +11,10 @@ export type Props = {
 
 export default function ScrollArea({ children, orientation }: Props) {
   return (
-    <ScrollAreaPrimitve.Root className="relative overflow-hidden">
+    <ScrollAreaPrimitve.Root
+      className="relative overflow-hidden"
+      scrollHideDelay={150}
+    >
       <ScrollAreaPrimitve.Viewport className="h-full w-full rounded-[inherit]">
         {children}
       </ScrollAreaPrimitve.Viewport>
