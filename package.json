@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "serve dist",
+    "start": "serve out",
     "lint": "next lint",
     "cap": "cap",
     "cap:dev:android": "cap sync && cap run android"
