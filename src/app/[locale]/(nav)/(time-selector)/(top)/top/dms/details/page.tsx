@@ -8,7 +8,6 @@ export default async function Page({ params: { locale } }: PageProps) {
   return (
     <>
       <PageHeader />
-      <div>Top DM details</div>
     </>
   );
 }

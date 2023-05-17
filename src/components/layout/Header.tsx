@@ -34,9 +34,12 @@ export default function Header({
   );
 }
 
-export type HeaderIconProps = {
+export type HeaderIconProps = Omit<
+  React.ComponentProps<typeof Link>,
+  "children"
+> & {
   icon: Icon;
-} & Omit<React.ComponentProps<typeof Link>, "children">;
+};
 
 function HeaderIcon({ icon: Icon, className, ...rest }: HeaderIconProps) {
   return (

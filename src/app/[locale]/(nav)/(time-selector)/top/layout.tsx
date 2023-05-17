@@ -10,10 +10,10 @@ export default async function Layout({
   const { t } = await useTranslation(locale);
 
   return (
-    <>
+    <div className="mb-auto">
       <PageHeader />
       <TopSelector />
       {children}
-    </>
+    </div>
   );
 }
