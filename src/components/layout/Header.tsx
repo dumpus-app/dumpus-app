@@ -1,4 +1,8 @@
+"use client";
+
 import clsx from "clsx";
+import { Icon } from "~/types";
+import Link from "../Link";
 
 export type Props = {
   title?: string;
@@ -29,3 +33,23 @@ export default function Header({
     </header>
   );
 }
+
+export type HeaderIconProps = {
+  icon: Icon;
+} & Omit<React.ComponentProps<typeof Link>, "children">;
+
+function HeaderIcon({ icon: Icon, className, ...rest }: HeaderIconProps) {
+  return (
+    <Link
+      className={clsx(
+        "text-gray-400 transition-colors hover:text-gray-300",
+        className
+      )}
+      {...rest}
+    >
+      <Icon className="h-6 w-6" />
+    </Link>
+  );
+}
+
+Header.Icon = HeaderIcon;

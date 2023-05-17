@@ -7,8 +7,21 @@ import { ComponentProps } from "react";
 export default function Link(
   props: ComponentProps<typeof NextLink> & { noI18n?: boolean }
 ) {
-  const { href, noI18n = false, ...rest } = props;
-  return (
-    <NextLink href={noI18n ? href : `/${i18next.language}${href}`} {...rest} />
-  );
+  const { href: _href, noI18n = false, ...rest } = props;
+
+  // Handle href
+  let href = _href;
+  const prefix = `/${i18next.language}`;
+  if (!noI18n && typeof href === "string") {
+    href = prefix + href;
+  }
+  if (
+    !noI18n &&
+    typeof href === "object" &&
+    !href.pathname?.startsWith(prefix)
+  ) {
+    href.pathname = prefix + href.pathname;
+  }
+
+  return <NextLink href={href} {...rest} />;
 }

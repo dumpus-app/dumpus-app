@@ -27,7 +27,7 @@ export default function TopSelector() {
   const pathname = useI18nPathname();
 
   return (
-    <div className="sticky top-0 mb-auto border-b border-gray-800 bg-gray-900">
+    <div className="sticky top-0 mb-auto border-b border-gray-800">
       <div className="flex items-center space-x-1 px-1 py-1">
         {links.map((link) => (
           <Link

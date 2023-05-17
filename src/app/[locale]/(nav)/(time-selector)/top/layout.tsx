@@ -1,6 +1,7 @@
 import TopSelector from "~/components/layout/TopSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
+import PageHeader from "./PageHeader";
 
 export default async function Layout({
   children,
@@ -10,6 +11,7 @@ export default async function Layout({
 
   return (
     <>
+      <PageHeader />
       <TopSelector />
       {children}
     </>

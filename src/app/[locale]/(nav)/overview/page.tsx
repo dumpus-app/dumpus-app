@@ -1,7 +1,4 @@
-import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import Link from "~/components/Link";
-import Header from "~/components/layout/Header";
 import DailySentMessages from "~/components/pages/overview/DailySentMessages";
 import SendingTimes from "~/components/pages/overview/SendingTimes";
 import TopChannels from "~/components/pages/overview/TopChannels";
@@ -10,6 +7,7 @@ import TopGuilds from "~/components/pages/overview/TopGuilds";
 import UsageStats from "~/components/pages/overview/UsageStats";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
+import PageHeader from "./PageHeader";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
@@ -17,16 +15,7 @@ export default async function Page({ params: { locale } }: PageProps) {
   return (
     <>
       <div className="mb-auto">
-        <Header
-          rightSlot={
-            <Link
-              href="/settings"
-              className="text-gray-400 transition-colors hover:text-gray-300"
-            >
-              <Cog6ToothIcon className="h-6 w-6" />
-            </Link>
-          }
-        />
+        <PageHeader />
         <div className="flex items-center justify-between bg-gray-900 px-2 py-8">
           <div>
             <div className="text-gray-400">@florian-lefebvre</div>
