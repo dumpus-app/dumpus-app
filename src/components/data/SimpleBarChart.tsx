@@ -19,9 +19,10 @@ export type Props = {
     value: number;
   }[];
   className?: string;
+  legend: string;
 };
 
-export default function SimpleBarChart({ data, className }: Props) {
+export default function SimpleBarChart({ data, className, legend }: Props) {
   return (
     <div className={clsx("h-48 overflow-hidden", className)}>
       <ResponsiveContainer width="100%" height="100%">
@@ -57,7 +58,7 @@ export default function SimpleBarChart({ data, className }: Props) {
           <Legend />
           <Bar
             dataKey="value"
-            name="Messages sent"
+            name={legend}
             // fill-brand-300
             fill="#7dd3fc"
           />

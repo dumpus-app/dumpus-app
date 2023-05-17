@@ -1,5 +1,3 @@
-"use client";
-
 import Section from "~/components/Section";
 import StatCard from "~/components/data/StatCard";
 import SimpleBarChart from "~/components/data/SimpleBarChart";
@@ -40,7 +38,9 @@ const CHART_DATA = [
 ];
 
 function Chart() {
-  return <SimpleBarChart data={CHART_DATA} className="px-2" />;
+  return (
+    <SimpleBarChart data={CHART_DATA} className="px-2" legend="Messages sent" />
+  );
 }
 
 const STATS_DATA = [

@@ -2,6 +2,7 @@ import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "~/components/Link";
 import Header from "~/components/layout/Header";
+import DailySentMessages from "~/components/pages/overview/DailySentMessages";
 import SendingTimes from "~/components/pages/overview/SendingTimes";
 import TopChannels from "~/components/pages/overview/TopChannels";
 import TopDMs from "~/components/pages/overview/TopDMs";
@@ -46,6 +47,7 @@ export default async function Page({ params: { locale } }: PageProps) {
       <TopGuilds />
       <TopChannels />
       <SendingTimes />
+      <DailySentMessages />
     </>
   );
 }
