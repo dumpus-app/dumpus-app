@@ -22,7 +22,7 @@ export default function Header({
   return (
     <header
       className={clsx(
-        "relative flex h-12 items-center justify-center px-2 py-2",
+        "sticky top-0 z-20 flex h-12 items-center justify-center px-2 py-2",
         transparent ? "" : "bg-gray-900",
         className
       )}

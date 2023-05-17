@@ -16,7 +16,6 @@ export default function PageHeader() {
           icon={SimpleIconsDiscord}
         />
       }
-      className="mb-auto"
     />
   );
 }

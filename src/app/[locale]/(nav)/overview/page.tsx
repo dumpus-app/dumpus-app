@@ -8,20 +8,20 @@ import UsageStats from "~/components/pages/overview/UsageStats";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./PageHeader";
+import ProfileHeader from "~/components/ProfileHeader";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
 
   return (
     <>
-      <div className="mb-auto">
-        <PageHeader />
-        <div className="flex items-center justify-between bg-gray-900 px-2 py-8">
-          <div>
-            <div className="text-gray-400">@florian-lefebvre</div>
-            <div className="text-xl font-bold text-white">Florian Lefebvre</div>
-          </div>
-          <div className="relative h-16 w-16 shrink-0">
+      <PageHeader />
+      <ProfileHeader
+        description="@florian-lefebvre"
+        title="Florian Lefebvre"
+        className="mb-auto"
+        imageSlot={
+          <div className="relative h-16 w-16">
             <Image
               src="https://cdn.discordapp.com/embed/avatars/0.png"
               alt="Avatar"
@@ -29,8 +29,8 @@ export default async function Page({ params: { locale } }: PageProps) {
               className="rounded-full object-cover object-center"
             />
           </div>
-        </div>
-      </div>
+        }
+      />
       <UsageStats />
       <TopDMs />
       <TopGuilds />

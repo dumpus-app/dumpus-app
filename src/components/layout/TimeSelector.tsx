@@ -8,7 +8,8 @@ export default function TimeSelector() {
   const [active, setActive] = useState(times[0]);
 
   return (
-    <div className="sticky bottom-0 border-t border-gray-800 bg-gray-900">
+    // BottomNav height + top border width
+    <div className="sticky bottom-[calc(68px+1px)] border-t border-gray-800 bg-gray-900">
       <div className="flex items-center space-x-1 px-1 py-1">
         {times.map((time) => (
           <button
