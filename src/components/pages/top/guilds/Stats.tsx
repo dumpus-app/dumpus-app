@@ -6,12 +6,16 @@ const DATA = [
     label: "total messages sent",
   },
   {
-    value: "5 PM",
-    label: "top chat hour",
+    value: "15",
+    label: "invites created",
   },
   {
-    value: "1M",
-    label: "reactions added",
+    value: "1457",
+    label: "guild joins",
+  },
+  {
+    value: "7 PM",
+    label: "top chat hour",
   },
 ];
 
