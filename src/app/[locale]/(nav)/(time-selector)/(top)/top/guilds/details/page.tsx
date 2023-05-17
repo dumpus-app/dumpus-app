@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./PageHeader";

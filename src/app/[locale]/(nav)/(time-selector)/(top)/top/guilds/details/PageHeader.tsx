@@ -10,7 +10,7 @@ export default function PageHeader({ title }: { title: string }) {
       title={title}
       revealTitleOnScroll
       revealBorderOnScroll
-      leftSlot={<Header.Icon href="/top/dms" icon={ChevronLeftIcon} />}
+      leftSlot={<Header.Icon href="/top/guilds" icon={ChevronLeftIcon} />}
       rightSlot={
         <Header.Icon
           href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
