@@ -2,6 +2,7 @@
 
 import Section from "~/components/Section";
 import ScrollArea from "~/components/ScrollArea";
+import StatCard from "~/components/data/StatCard";
 
 const DATA = [
   { value: "75", label: "server joined" },
@@ -16,15 +17,8 @@ export default function UsageStats() {
     <Section title="Usage stats" href="/stats">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {DATA.map((stat) => (
-            // TODO: extract to stat card
-            <div
-              key={stat.label}
-              className="ml-2 shrink-0 rounded-lg bg-gray-900 p-2"
-            >
-              <div className="font-semibold text-brand-300">{stat.value}</div>
-              <div className="text-sm text-gray-50">{stat.label}</div>
-            </div>
+          {DATA.map((stat, i) => (
+            <StatCard key={i} {...stat} className="ml-2 shrink-0" />
           ))}
           <ScrollArea.Spacer />
         </div>
