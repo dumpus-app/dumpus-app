@@ -6,9 +6,9 @@ export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
 
   return (
-    <>
+    <div className="mb-auto">
       <PageHeader />
-      <div>Settings</div>
-    </>
+      <div>settings</div>
+    </div>
   );
 }

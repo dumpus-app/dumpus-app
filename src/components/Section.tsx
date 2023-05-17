@@ -4,11 +4,12 @@ export type Props = {
   title: string;
   href?: string;
   children: React.ReactNode;
+  id?: string;
 };
 
-export default function Section({ title, href, children }: Props) {
+export default function Section({ title, href, children, id }: Props) {
   return (
-    <section className="py-4">
+    <section id={id} className="py-4">
       <div className="mb-2 flex items-center justify-between px-2">
         <div className="text-lg font-bold text-white">{title}</div>
         {href ? (

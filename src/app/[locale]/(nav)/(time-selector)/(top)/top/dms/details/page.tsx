@@ -25,6 +25,7 @@ export default async function Page({ params: { locale } }: PageProps) {
                 src="https://cdn.discordapp.com/embed/avatars/5.png"
                 alt="Avatar"
                 fill
+                priority
                 className="rounded-full object-cover object-center"
               />
             </div>
