@@ -9,4 +9,5 @@
 html {
   color-scheme: dark;
   @apply scroll-smooth;
+  @apply select-none selection:bg-brand-950 selection:text-brand-400 sm:select-auto;
 }
