@@ -31,6 +31,31 @@ const DATA = [
     name: "GARY",
     messages: 897,
   },
+  {
+    image: "https://cdn.discordapp.com/embed/avatars/0.png",
+    name: "Androz",
+    messages: 45_000,
+  },
+  {
+    image: "https://cdn.discordapp.com/embed/avatars/1.png",
+    name: "welkenburg",
+    messages: 12_000,
+  },
+  {
+    image: "https://cdn.discordapp.com/embed/avatars/2.png",
+    name: "Skanix",
+    messages: 11_000,
+  },
+  {
+    image: "https://cdn.discordapp.com/embed/avatars/3.png",
+    name: "JsonLines",
+    messages: 8_000,
+  },
+  {
+    image: "https://cdn.discordapp.com/embed/avatars/4.png",
+    name: "GARY",
+    messages: 897,
+  },
 ].map((dm, i) => ({
   ...dm,
   rank: i + 1,

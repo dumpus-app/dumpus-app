@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { Link as LinkType } from "~/types";
 import Link from "../Link";
 import { useI18nPathname } from "~/hooks/use-i18n";
+import { useScrolled } from "~/hooks/use-layout";
 
 const links = [
   {
@@ -25,9 +26,17 @@ const links = [
 
 export default function TopSelector() {
   const pathname = useI18nPathname();
+  const scrolled = useScrolled();
 
   return (
-    <div className="sticky top-0 mb-auto border-b border-gray-800">
+    <div
+      className={clsx(
+        "sticky top-[48px] z-20 mb-auto border-b transition-all",
+        scrolled
+          ? "border-b-gray-800 bg-gray-900 shadow-xl"
+          : "border-b-transparent bg-gray-950"
+      )}
+    >
       <div className="flex items-center space-x-1 px-1 py-1">
         {links.map((link) => (
           <Link

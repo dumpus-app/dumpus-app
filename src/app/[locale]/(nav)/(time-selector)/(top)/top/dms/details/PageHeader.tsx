@@ -4,9 +4,12 @@ import Header from "~/components/layout/Header";
 import { SimpleIconsDiscord } from "~/components/icons";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
-export default function PageHeader() {
+export default function PageHeader({ title }: { title: string }) {
   return (
     <Header
+      title={title}
+      revealTitleOnScroll
+      revealBorderOnScroll
       leftSlot={<Header.Icon href="/top/dms" icon={ChevronLeftIcon} />}
       rightSlot={
         <Header.Icon

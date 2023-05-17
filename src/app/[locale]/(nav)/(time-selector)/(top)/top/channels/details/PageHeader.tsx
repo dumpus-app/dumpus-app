@@ -7,6 +7,8 @@ import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 export default function PageHeader() {
   return (
     <Header
+      revealTitleOnScroll
+      revealBorderOnScroll
       leftSlot={<Header.Icon href="/top/channels" icon={ChevronLeftIcon} />}
       rightSlot={
         <Header.Icon

@@ -12,13 +12,15 @@ import DailySentMessages from "~/components/pages/top/dms/DailySentMessages";
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
 
+  const name = "Androz";
+
   return (
     <>
       <div className="mb-auto">
-        <PageHeader />
+        <PageHeader title={name} />
         <ProfileHeader
           description="@androz2091"
-          title="Androz"
+          title={name}
           className="mb-auto"
           imageSlot={
             <div className="relative h-16 w-16">

@@ -8,6 +8,8 @@ export default function PageHeader() {
     <Header
       title="Stats"
       transparent
+      revealBorderOnScroll
+      revealBackgroundOnScroll
       rightSlot={
         <Header.Icon
           href={{
@@ -17,7 +19,7 @@ export default function PageHeader() {
           icon={Cog6ToothIcon}
         />
       }
-      className="mb-auto border border-b border-gray-800"
+      className="mb-auto"
     />
   );
 }

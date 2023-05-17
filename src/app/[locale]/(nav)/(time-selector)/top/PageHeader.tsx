@@ -11,6 +11,7 @@ export default function PageHeader() {
     <Header
       title="Top"
       transparent
+      revealBackgroundOnScroll
       leftSlot={
         <Header.Icon
           href="#"

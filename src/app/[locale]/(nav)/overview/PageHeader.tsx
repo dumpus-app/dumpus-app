@@ -6,6 +6,9 @@ import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 export default function PageHeader() {
   return (
     <Header
+      title="Overview"
+      revealTitleOnScroll
+      revealBorderOnScroll
       rightSlot={
         <Header.Icon
           href={{
