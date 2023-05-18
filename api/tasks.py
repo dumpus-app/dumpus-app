@@ -34,25 +34,32 @@ def get_ts_regular_string_parser(line):
 
     return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
-@app.task()
 def download_file(package_id, link):
-    #update_step(package_id, 'downloading')
-    #with requests.get(link, stream=True, timeout=(5.0, 30.0)) as r:
-    #    r.raise_for_status()
-    #    with open(f'tmp/{package_id}.zip', 'wb') as f:
-    #        total_length = int(r.headers.get('Content-Length'))
-    #        print(f'Total length: {total_length}')
-    #        dl = 0
-    #        for chunk in r.iter_content(chunk_size=8192):
-    #            dl += len(chunk)
-    #            percent = round(dl / total_length) * 100
-    #            f.write(chunk)
-    #        done = True
-    return f'tmp/{package_id}.zip'
+    # check if file exists in tmp
+    path = f'tmp/{package_id}.zip'
+    try:
+        with open(path, 'rb') as f:
+            return path
+    except FileNotFoundError:
+        pass
 
-@app.task()
+    print('downloading')
+    update_step(package_id, 'downloading')
+    with requests.get(link, stream=True, timeout=(5.0, 30.0)) as r:
+        r.raise_for_status()
+        with open(path, 'wb') as f:
+            total_length = int(r.headers.get('Content-Length'))
+            print(f'Total length: {total_length}')
+            dl = 0
+            for chunk in r.iter_content(chunk_size=8192):
+                dl += len(chunk)
+                percent = round(dl / total_length) * 100
+                f.write(chunk)
+            done = True
+    return path
+
 def read_analytics_file(package_id, link):
-    update_step(package_id, 'analysing')
+    update_step(package_id, 'analyzing')
     update_progress(package_id, 0)
 
     analytics_line_count = 0
@@ -269,13 +276,11 @@ def read_analytics_file(package_id, link):
 
     return analytics_line_count
 
-@app.task
+@app.task()
 def handle_package(package_id, link):
-    ch = chain(
-        download_file.si(package_id, link).set(queue='default'),
-        read_analytics_file.si(package_id, link).set(queue='packages')
-    )
-    ch()
+    print(f'handling package {package_id} with link {link}')
+    download_file(package_id, link),
+    read_analytics_file(package_id, link)
 
 # todo
 # verify that file exists before reading
