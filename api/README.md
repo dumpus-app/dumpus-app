@@ -1,6 +1,6 @@
-# DDPE API V2
+# Dumpus API
 
-API to handle Discord GDPR links sent from the DDPE app.
+API to handle Discord GDPR links sent from the Dumpus app.
 
 ## Requirements
 

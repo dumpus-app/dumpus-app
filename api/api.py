@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS, cross_origin

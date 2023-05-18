@@ -1,8 +1,10 @@
+import os
+
 from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-engine = create_engine('postgresql://androz2091:postgres2020mini@localhost:5432/ddpe', echo=True)
+engine = create_engine(os.getenv('POSTGRES_URL'), echo=True)
 
 Base = declarative_base()
 

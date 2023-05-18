@@ -2,11 +2,10 @@
 env
 __pycache__
 
-# Celery config
-celeryconfig.py
-
 # Test
 test.zip
 *.zip
-
 test/*
+
+# Env
+.env
