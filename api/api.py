@@ -1,17 +1,14 @@
-from dotenv import load_dotenv
-load_dotenv()
+import orjson
+import cryptocode
 
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
 from flask_cors import CORS, cross_origin
 
+# make sure tasks is imported before db
+# as env is loaded from tasks (so the celery worker can use it)
 from tasks import handle_package
-
-import cryptocode
-
 from db import PackageProcessStatus, SavedPackageData, session
-
-import orjson
 
 from util import check_discord_link, extract_key_from_discord_link, extract_package_id_from_discord_link, ts_included_in_range
 
