@@ -64,4 +64,4 @@ def process_link():
     return jsonify({'success': 'Started processing your link.'}), 200
 
 if __name__ == "__main__":
-    app.run(port=5500, debug=True)
+    app.run(port=5500)
