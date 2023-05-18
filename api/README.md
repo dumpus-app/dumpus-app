@@ -12,11 +12,10 @@ API to handle Discord GDPR links sent from the DDPE app.
 * Start flower worker to monitor the celery ones.
 --> `celery --app tasks flower --port=5566`
 
-* Start celery worker for downloads.
+* Start celery worker for packages.
 --> `celery --app tasks worker --loglevel INFO --queues default --hostname worker-default@%h`
 
-* Start celery worker for package analyses.
---> `celery --app tasks worker --loglevel INFO --queues packages --hostname worker-analysis@%h --concurrency 3`
+We will only use a single task that will handle the downloading and the parsing, as they have to be executed on the same server.
 
 ### Encoding/Decoding of saved packages
 
@@ -24,3 +23,7 @@ API to handle Discord GDPR links sent from the DDPE app.
 **Package encrypted data** is encryption using the Discord link as the key (UPN).
 
 You therefore need to have the full Discord link to decode the package (to match the package ID **and** to decrypt the package data).
+
+### Data processing
+
+The goal is to have the most data processed in advanced, so we avoid CPU consuming API calls.
