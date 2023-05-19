@@ -1,7 +1,6 @@
 import hashlib
 import re
 
-
 discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
 
 def check_discord_link (link):

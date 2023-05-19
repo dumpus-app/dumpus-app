@@ -2,6 +2,14 @@
 
 API to handle Discord GDPR links sent from the Dumpus app.
 
+Table:
+* [Requirements](#requirements)
+* [Data encryption](#data-encryption)
+* [API Endpoints](#api-endpoints)
+    * [Package](#package)
+    * [General stats](#general-stats)
+    * [Top](#top)
+
 ## Requirements
 
 * RabbitMQ (docker `rabbitmq:3.10-management`)
@@ -17,25 +25,33 @@ API to handle Discord GDPR links sent from the Dumpus app.
 
 We will only use a single task that will handle the downloading and the parsing, as they have to be executed on the same server.
 
-## Encoding/Decoding of saved packages
+## Data encryption
 
-**Package ID** is MD5 hash of the full Discord link (UPN).
-**Package encrypted data** is encryption using the Discord link as the key (UPN).
+Security is the key here. Dumpus splits the package data in two parts, sensitive (encrypted) and non-sensitive data.
 
-You therefore need to have the full Discord link to decode the package (to match the package ID **and** to decrypt the package data).
+**Package ID** is the MD5 hash of the full Discord link (UPN), used to identify the package in the database.  
+**Package sensitive data** is encrypted on the server side using the Discord link as the key (UPN).
 
-## Data processing
+**Sensitive Data**:
+* First 10 messages of each text channel (including content)
 
-The goal is to have the most data processed in advanced, so we avoid CPU consuming API calls.
+**Non-sensitive Data**:
+* User information (username, discriminator, avatar, etc.)
+* General statistics (guild count, top hours, etc.)
+* Top guilds, channels and DMs (name, message count, etc.)
 
+The Discord link is **NEVER** stored in the database. Therefore, you always need to specify the full Discord link when making a request to the API, as it is the only way to decrypt the sensitive data.
 
 ## API Endpoints
 
 **NOTE: THESE ROUTES ARE NOT FINAL AT ALL AND WILL CHANGE WITHIN THE NEXT 5-6 DAYS**
 
+Header required for each request: `Authorization`: `Bearer <upn>`
+
 ### Package
 
-* `POST /api/process/<package_link>`: Starts the processing of the package and returns the package ID.
+* `POST /api/process`: Starts the processing of the package and returns the package ID with the decryption key. (WITHOUT AUTHORIZATION HEADER)
+    * body: JSON object containg a `package_link` property with the discord.click link. 
 * `GET /api/process/<package_id>/status`: Returns the status of the processing package.
 
 ### General stats

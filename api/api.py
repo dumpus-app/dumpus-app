@@ -37,10 +37,10 @@ def fetch_package_status(link, package_id):
             'message': 'This link has not been analyzed yet.',
         }
 
-@app.route('/api/link', methods=['POST'])
+@app.route('/api/process/', methods=['POST'])
 def process_link():
     # Get link from body
-    link = request.json['link']
+    link = request.json['package_link']
     if not link:
         return jsonify({'error': 'No link provided.'}), 400
     # Check if link is a discord link
@@ -62,6 +62,17 @@ def process_link():
     handle_package.apply_async(args=[package_id, link], queue='default')
     # Send a successful response
     return jsonify({'success': 'Started processing your link.'}), 200
+
+@app.route('/api/process/<package_id>/status', methods=['GET'])
+def get_package_status(package_id):
+    package_stats = fetch_package_status(link, package_id)
+    if package_stats['status'] == 'unknown':
+        return jsonify({
+            'status': package_stats['status'],
+            'message': 'This link has not been analyzed yet.'
+        })
+    else:
+        return jsonify(package_stats)
 
 if __name__ == "__main__":
     app.run(port=5500)
