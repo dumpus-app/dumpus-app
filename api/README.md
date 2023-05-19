@@ -42,6 +42,8 @@ Security is the key here. Dumpus splits the package data in two parts, sensitive
 
 The Discord link is **NEVER** stored in the database. Therefore, you always need to specify the full Discord link when making a request to the API, as it is the only way to decrypt the sensitive data.
 
+Why not encrypt the whole package? We need to perform many computations on the data (depending on the asked period of time, etc.) thanks to optimized SQL queries, and we can't do that if the data is encrypted. Therefore, we only encrypt the sensitive data, and we keep the non-sensitive data in plain text.
+
 ## API Endpoints
 
 **NOTE: THESE ROUTES ARE NOT FINAL AT ALL AND WILL CHANGE WITHIN THE NEXT 5-6 DAYS**
