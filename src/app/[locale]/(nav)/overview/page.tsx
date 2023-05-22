@@ -9,6 +9,7 @@ import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
+import Share from "~/components/pages/overview/Share";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
@@ -38,6 +39,7 @@ export default async function Page({ params: { locale } }: PageProps) {
       <TopChannels />
       <SendingTimes />
       <DailySentMessages />
+      <Share />
     </>
   );
 }
