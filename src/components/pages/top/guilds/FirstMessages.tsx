@@ -45,6 +45,7 @@ export default function FirstMessages() {
               }
             ).format(new Date(msg.date))}`}
             rightIcon={ChevronRightIcon}
+            reverseTexts
           />
         ))}
       </div>

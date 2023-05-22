@@ -9,6 +9,7 @@ export type Props = Omit<React.ComponentProps<typeof Link>, "children"> & {
   rightIcon?: Icon;
   title: string;
   description: string;
+  reverseTexts?: boolean;
 };
 
 export default function DetailCard({
@@ -17,6 +18,7 @@ export default function DetailCard({
   title,
   description,
   className,
+  reverseTexts = false,
   ...rest
 }: Props) {
   return (
@@ -28,7 +30,12 @@ export default function DetailCard({
       )}
     >
       {leftSlot && <div className="shrink-0">{leftSlot}</div>}
-      <div className="flex-1">
+      <div
+        className={clsx(
+          "flex flex-1",
+          reverseTexts ? "flex-col-reverse" : "flex-col"
+        )}
+      >
         <div className="line-clamp-1 overflow-hidden text-ellipsis font-semibold text-white">
           {title}
         </div>
