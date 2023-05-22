@@ -1,6 +1,6 @@
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
-import PageHeader from "./PageHeader";
+import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
 import RelatedGuild from "~/components/pages/top/channels/RelatedGuild";
 import Stats from "~/components/pages/top/channels/Stats";

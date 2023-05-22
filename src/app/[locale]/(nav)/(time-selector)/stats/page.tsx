@@ -1,6 +1,6 @@
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
-import PageHeader from "./PageHeader";
+import PageHeader from "./_components/PageHeader";
 import Stats from "~/components/pages/stats/Stats";
 import SendingTimes from "~/components/pages/stats/SendingTimes";
 import DailySentMessages from "~/components/pages/stats/DailySentMessages";

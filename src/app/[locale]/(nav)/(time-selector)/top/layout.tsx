@@ -1,7 +1,7 @@
 import TopSelector from "~/components/layout/TopSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
-import PageHeader from "./PageHeader";
+import PageHeader from "./_components/PageHeader";
 
 export default async function Layout({
   children,

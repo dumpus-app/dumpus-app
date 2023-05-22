@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
-import PageHeader from "./PageHeader";
+import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
 import Stats from "~/components/pages/top/dms/Stats";
 import DailySentMessages from "~/components/pages/top/dms/DailySentMessages";

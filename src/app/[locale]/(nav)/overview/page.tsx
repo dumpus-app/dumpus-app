@@ -7,7 +7,7 @@ import TopGuilds from "~/components/pages/overview/TopGuilds";
 import UsageStats from "~/components/pages/overview/UsageStats";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
-import PageHeader from "./PageHeader";
+import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
 import Share from "~/components/pages/overview/Share";
 
