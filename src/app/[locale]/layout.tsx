@@ -3,7 +3,6 @@ import "./globals.css";
 import { Rubik } from "next/font/google";
 import { dir } from "i18next";
 import { locales } from "~/i18n/settings";
-import LocaleSwitcher from "~/i18n/LocaleSwitcher";
 import Providers from "./providers";
 import LoadingScreen from "./LoadingScreen";
 import "~/i18n/client";
