@@ -2,8 +2,7 @@ import Image from "next/image";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import Steps from "./_components/Steps";
-import Button from "~/components/Button";
-import Link from "~/components/Link";
+import Footer from "./_components/Footer";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
@@ -30,18 +29,7 @@ export default async function Page({ params: { locale } }: PageProps) {
           <Steps />
         </div>
       </div>
-      <div className="w-full p-4 text-center sm:mx-auto sm:max-w-sm">
-        <button
-          // TODO: show popup
-          type="button"
-          className="py-2 text-gray-400 underline transition-colors hover:text-gray-300"
-        >
-          Why should I trust the app?
-        </button>
-        <Button asChild>
-          <Link href="/onboarding/intro/1">{"Let's go"}</Link>
-        </Button>
-      </div>
+      <Footer href="/onboarding/intro/1" label="Let's go" />
     </>
   );
 }
