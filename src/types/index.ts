@@ -21,3 +21,8 @@ export type Icon =
 export type Prettify<T> = {
   [K in keyof T]: T[K];
 } & {};
+
+export type Rename<T, K extends keyof T, N extends string> = Pick<
+  T,
+  Exclude<keyof T, K>
+> & { [P in N]: T[K] };

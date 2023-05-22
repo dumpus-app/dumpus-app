@@ -2,11 +2,15 @@ import { CSSProperties } from "react";
 import Link from "~/components/Link";
 
 export type Props = {
-  progress: 0 | 0.33 | 0.66 | 1 | 2 | 2.5 | 3;
+  progress: 0 | 0.33 | 0.66 | 1 | 2 | 2.5 | 3 | null;
   href: null | string;
 };
 
 export default function Header({ progress, href }: Props) {
+  if (progress === null)
+    return (
+      <div className="mb-auto flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm" />
+    );
   return (
     <div className="mb-auto flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm">
       {href ? (
@@ -57,8 +61,8 @@ export default function Header({ progress, href }: Props) {
                 progress <= 1
                   ? "#94a3b8 0%, #94a3b8 100%" // all gray-400
                   : progress < 2
-                  ? `#38bdf8 0%, #38bdf8 ${progress * 100}%, #94a3b8 ${
-                      progress * 100 + 0.01
+                  ? `#38bdf8 0%, #38bdf8 ${(progress - 1) * 100}%, #94a3b8 ${
+                      (progress - 1) * 100 + 0.01
                     }%, #94a3b8 100%`
                   : "#38bdf8 0%, #38bdf8 100%", // all brand-400,
             } as CSSProperties
@@ -89,8 +93,8 @@ export default function Header({ progress, href }: Props) {
                 progress <= 2
                   ? "#94a3b8 0%, #94a3b8 100%" // all gray-400
                   : progress < 3
-                  ? `#38bdf8 0%, #38bdf8 ${progress * 100}%, #94a3b8 ${
-                      progress * 100 + 0.01
+                  ? `#38bdf8 0%, #38bdf8 ${(progress - 2) * 100}%, #94a3b8 ${
+                      (progress - 2) * 100 + 0.01
                     }%, #94a3b8 100%`
                   : "#38bdf8 0%, #38bdf8 100%", // all brand-400,
             } as CSSProperties
