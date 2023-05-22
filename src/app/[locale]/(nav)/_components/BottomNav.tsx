@@ -1,7 +1,7 @@
 "use client";
 
 import { links } from "~/constants";
-import Link from "../Link";
+import Link from "~/components/Link";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
 

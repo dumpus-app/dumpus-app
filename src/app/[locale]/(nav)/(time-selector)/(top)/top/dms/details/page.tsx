@@ -3,8 +3,8 @@ import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
-import Stats from "~/components/pages/top/dms/Stats";
-import DailySentMessages from "~/components/pages/top/dms/DailySentMessages";
+import Stats from "./_components/Stats";
+import DailySentMessages from "./_components/DailySentMessages";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);

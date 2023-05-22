@@ -2,9 +2,9 @@ import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
-import RelatedGuild from "~/components/pages/top/channels/RelatedGuild";
-import Stats from "~/components/pages/top/channels/Stats";
-import DailySentMessages from "~/components/pages/top/channels/DailySentMessages";
+import RelatedGuild from "./_components/RelatedGuild";
+import Stats from "./_components/Stats";
+import DailySentMessages from "./_components/DailySentMessages";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);

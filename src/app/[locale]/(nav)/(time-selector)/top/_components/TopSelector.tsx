@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { Link as LinkType } from "~/types";
-import Link from "../Link";
+import Link from "~/components/Link";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useScrolled } from "~/hooks/use-layout";
 

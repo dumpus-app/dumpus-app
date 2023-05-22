@@ -1,4 +1,4 @@
-import BottomNav from "~/components/layout/BottomNav";
+import BottomNav from "./_components/BottomNav";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 

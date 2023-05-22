@@ -1,4 +1,4 @@
-import TopSelector from "~/components/layout/TopSelector";
+import TopSelector from "./_components/TopSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./_components/PageHeader";

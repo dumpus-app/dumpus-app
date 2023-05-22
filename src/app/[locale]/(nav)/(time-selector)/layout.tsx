@@ -1,4 +1,4 @@
-import TimeSelector from "~/components/layout/TimeSelector";
+import TimeSelector from "./_components/TimeSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 

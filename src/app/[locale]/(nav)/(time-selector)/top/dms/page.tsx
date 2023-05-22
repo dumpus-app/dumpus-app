@@ -1,4 +1,4 @@
-import TopDMsList from "~/components/pages/top/dms/TopDmsList";
+import TopDMsList from "./_components/TopDmsList";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 

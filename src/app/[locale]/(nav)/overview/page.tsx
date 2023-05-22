@@ -1,15 +1,15 @@
 import Image from "next/image";
-import DailySentMessages from "~/components/pages/overview/DailySentMessages";
-import SendingTimes from "~/components/pages/overview/SendingTimes";
-import TopChannels from "~/components/pages/overview/TopChannels";
-import TopDMs from "~/components/pages/overview/TopDMs";
-import TopGuilds from "~/components/pages/overview/TopGuilds";
-import UsageStats from "~/components/pages/overview/UsageStats";
+import DailySentMessages from "./_components/DailySentMessages";
+import SendingTimes from "./_components/SendingTimes";
+import TopChannels from "./_components/TopChannels";
+import TopDMs from "./_components/TopDMs";
+import TopGuilds from "./_components/TopGuilds";
+import UsageStats from "./_components/UsageStats";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
-import Share from "~/components/pages/overview/Share";
+import Share from "./_components/Share";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);

@@ -1,4 +1,4 @@
-import TopChannelsList from "~/components/pages/top/channels/TopChannelsList";
+import TopChannelsList from "./_components/TopChannelsList";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 

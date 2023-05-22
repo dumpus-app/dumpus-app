@@ -1,4 +1,4 @@
-import TopGuildsList from "~/components/pages/top/guilds/TopGuildsList";
+import TopGuildsList from "./_components/TopGuildsList";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 
