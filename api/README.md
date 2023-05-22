@@ -50,24 +50,27 @@ Why not encrypt the whole package? We need to perform many computations on the d
 
 Header required for each request: `Authorization`: `Bearer <upn>`
 
-### Package
-
 * `POST /api/process`: Starts the processing of the package and returns the package ID with the decryption key. (WITHOUT AUTHORIZATION HEADER)
     * body: JSON object containg a `package_link` property with the discord.click link. 
 * `GET /api/process/<package_id>/status`: Returns the status of the processing package.
+* `GET /api/process/<package_id>/database`: Returns the package data in SQLite format.
 
-### General stats
+### Database
 
-* `GET /api/data/<package_id>/about`: Returns information about the package (owner, date, version, etc.).
-* `GET /api/data/<package_id>/user/<user_id>` : Returns the data for the given user. (only works if the user is the owner of the package)
-* `GET /api/data/<package_id>/overview` : Returns the overview of the data for the given package.
-* `GET /api/data/<package_id>/stats/<period>`: Returns the stats of the data for the given package.
-    * `period`: `l4w`, `l1m`, `ly`, `lifetime` (last 4 weeks, last month, last year, lifetime)
+#### Statistics
 
-### Top
+Most "number" statistics are stored in a single table, `activity`.
 
-* `GET /api/data/<package_id>/top/<type>/<period>`: Returns the top data for the given package.
-    * `type`: `dms`, `guilds`, `channels`
-* `GET /api/data/<package_id>/guild/<guild_id>/stats/<period>`: Returns the stats of the data for the given guild.
-* `GET /api/data/<package_id>/dm/<dm_id>/stats/<period>`: Returns the stats of the data for the given dm.
-* `GET /api/data/<package_id>/channel/<channel_id>/stats/<period>`: Returns the stats of the data for the given channel.
+For instance, this query will retrieve the number of messages sent in 2022:
+
+```sql
+SELECT SUM(count_this_day) FROM activity WHERE day > '2022' AND event_name = 'message_sent';
+```
+
+This is used in the overview and the statistics section (but also for some graphs).
+
+#### Guilds, Channels, DMs
+
+```sql
+SELECT name, avatar_url FROM guilds
+```
