@@ -2,7 +2,8 @@
 
 import i18next from "i18next";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useSQL from "~/hooks/use-sql";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 
@@ -12,19 +13,34 @@ import { PageProps } from "~/types";
 //   return <div>Onboarding loading</div>;
 // }
 
-const TIMEOUT = 2000;
+function DataDisplay() {
+  const { db, resultAsList } = useSQL();
+  return (
+    <pre>
+      {JSON.stringify(
+        resultAsList(db?.exec("SELECT * FROM activity")[0]),
+        null,
+        2
+      )}
+    </pre>
+  );
+}
 
 export default function Page() {
   const router = useRouter();
+  const { init } = useSQL();
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      router.push(`/${i18next.language}/overview`);
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  });
+    init();
+    setReady(true);
+    // router.push(`/${i18next.language}/overview`);
+  }, [init]);
 
-  return <div>Onboarding loading. Redirection in {TIMEOUT / 1000} seconds</div>;
+  return (
+    <div>
+      <div>Onboarding loading...</div>
+      {ready && <DataDisplay />}
+    </div>
+  );
 }
