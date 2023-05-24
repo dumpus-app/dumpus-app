@@ -72,7 +72,9 @@ const COMPLETE_ROUTE_DATA = Object.fromEntries(
 );
 
 function getRouteData(pathname: string) {
-  return COMPLETE_ROUTE_DATA[pathname];
+  return COMPLETE_ROUTE_DATA[
+    pathname.endsWith("/") ? pathname : pathname + "/"
+  ];
 }
 
 export default function Layout({

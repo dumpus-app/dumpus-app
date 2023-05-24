@@ -32,7 +32,7 @@ export default function LinkForm() {
 
   function onSubmit(values: Schema) {
     console.log(values);
-    router.push(`${i18next.language}/onboarding/loading`);
+    router.push(`${i18next.language}/onboarding/loading/`);
   }
 
   return (
