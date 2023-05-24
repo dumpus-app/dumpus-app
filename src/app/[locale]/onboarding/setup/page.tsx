@@ -127,7 +127,7 @@ export default function Page() {
             </Tab>
           ))}
         </Tab.List>
-        <Tab.Panels className="mt-8">
+        <Tab.Panels className="mt-8 w-full">
           {tabs.map(({ name, content }) => (
             <Tab.Panel key={name} className="space-y-4">
               {content.map((step, i) => (
