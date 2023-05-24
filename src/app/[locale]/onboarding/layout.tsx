@@ -41,8 +41,8 @@ const ROUTES_DATA: Record<string, RouteData> = {
     previous: "/setup",
   },
   "/access/link": {
-    next: "/loading",
-    label: "Explore!",
+    next: null,
+    label: null,
     progress: 2.5,
     previous: "/access",
   },
