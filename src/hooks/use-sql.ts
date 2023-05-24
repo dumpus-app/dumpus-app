@@ -27,7 +27,6 @@ export default function useSQL() {
   function init() {
     if (db) return;
     const data = retrieve(TEMP_ID);
-    console.log({ data });
     initSqlJs({
       locateFile: (file) => `https://sql.js.org/dist/${file}`,
     }).then((SQL) => {

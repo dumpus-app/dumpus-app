@@ -34,13 +34,25 @@ export default function Page() {
   useEffect(() => {
     init();
     setReady(true);
-    // router.push(`/${i18next.language}/overview`);
-  }, [init]);
+    router.push(`/${i18next.language}/overview`);
+  }, [init, router]);
+
+  // return (
+  //   <div>
+  //     <div>Onboarding loading...</div>
+  //     {ready && <DataDisplay />}
+  //   </div>
+  // );
 
   return (
-    <div>
-      <div>Onboarding loading...</div>
-      {ready && <DataDisplay />}
+    <div className="flex flex-col items-center space-y-4">
+      <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
+      <div className="max-w-xs text-center">
+        <h1 className="text-xl font-bold text-white">
+          We’re loading your data
+        </h1>
+        <p className="mt-2 text-gray-400">Please wait...</p>
+      </div>
     </div>
   );
 }
