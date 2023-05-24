@@ -9,10 +9,10 @@ export type Props = {
 export default function Header({ progress, href }: Props) {
   if (progress === null)
     return (
-      <div className="mb-auto flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm" />
+      <div className="flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm" />
     );
   return (
-    <div className="mb-auto flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm">
+    <div className="flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm">
       {href ? (
         <Link href={href} className="text-brand-300 hover:underline">
           Previous
