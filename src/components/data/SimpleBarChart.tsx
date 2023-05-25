@@ -24,7 +24,7 @@ export type Props = {
 
 export default function SimpleBarChart({ data, className, legend }: Props) {
   return (
-    <div className={clsx("h-48 overflow-hidden", className)}>
+    <div className={clsx("h-48 overflow-hidden sm:h-72", className)}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid

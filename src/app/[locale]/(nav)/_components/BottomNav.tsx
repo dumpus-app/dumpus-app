@@ -5,7 +5,6 @@ import Link from "~/components/Link";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useMeasure } from "react-use";
-
 export type Props = {
   children?: React.ReactNode;
 };
@@ -15,7 +14,7 @@ export default function BottomNav({ children }: Props) {
   const [ref, { height }] = useMeasure<HTMLDivElement>();
 
   return (
-    <>
+    <div className="contents sm:hidden">
       <div className="mt-auto" style={{ height: `${height}px` }} />
       <div ref={ref} className="fixed bottom-0 left-0 right-0 z-20">
         {children}
@@ -39,6 +38,6 @@ export default function BottomNav({ children }: Props) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

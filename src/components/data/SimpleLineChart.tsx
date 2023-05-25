@@ -24,7 +24,7 @@ export type Props = {
 
 export default function SimpleLineChart({ data, className, legend }: Props) {
   return (
-    <div className={clsx("h-48 overflow-hidden", className)}>
+    <div className={clsx("h-48 overflow-hidden sm:h-72", className)}>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={data}>
           <CartesianGrid

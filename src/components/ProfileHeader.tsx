@@ -5,6 +5,7 @@ export type Props = {
   description: string;
   imageSlot: React.ReactNode;
   className?: string;
+  children?: React.ReactNode;
 };
 
 export default function ProfileHeader({
@@ -12,19 +13,25 @@ export default function ProfileHeader({
   description,
   imageSlot,
   className,
+  children,
 }: Props) {
   return (
-    <div
-      className={clsx(
-        "flex items-center justify-between bg-gray-900 px-2 py-8",
-        className
-      )}
-    >
-      <div>
-        <div className="text-gray-400">{description}</div>
-        <div className="text-xl font-bold text-white">{title}</div>
+    <div className="bg-gray-900">
+      <div
+        className={clsx(
+          "relative flex items-center justify-between px-2 py-8 desktop-container sm:flex-row-reverse sm:justify-end sm:py-16",
+          className
+        )}
+      >
+        <div className="sm:ml-4">
+          <div className="text-gray-400 sm:text-xl">{description}</div>
+          <div className="text-xl font-bold text-white sm:text-3xl">
+            {title}
+          </div>
+        </div>
+        <div className="shrink-0">{imageSlot}</div>
+        {children}
       </div>
-      <div className="shrink-0">{imageSlot}</div>
     </div>
   );
 }

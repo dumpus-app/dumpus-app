@@ -9,14 +9,19 @@ export type Props = {
 
 export default function StatCard({ value, label, className }: Props) {
   return (
-    <div className={clsx("rounded-lg bg-gray-900 p-2", className)}>
+    <div
+      className={clsx(
+        "rounded-lg bg-gray-900 p-2 sm:min-w-[theme('spacing.32')] sm:p-4",
+        className
+      )}
+    >
       {typeof value === "string" ? (
-        <div className="font-semibold text-brand-300">{value}</div>
+        <div className="font-semibold text-brand-300 sm:text-3xl">{value}</div>
       ) : (
         value
       )}
       {typeof label === "string" ? (
-        <div className="text-sm text-gray-50">{label}</div>
+        <div className="text-sm text-gray-50 sm:text-lg">{label}</div>
       ) : (
         label
       )}

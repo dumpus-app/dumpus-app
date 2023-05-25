@@ -36,7 +36,9 @@ export default function Header({
   const showBackground = revealBackgroundOnScroll ? scrolled : false;
 
   return (
-    <div className={clsx("sticky top-0 z-20", wrapperClassName)}>
+    <div
+      className={clsx("sticky top-0 z-20 block sm:hidden", wrapperClassName)}
+    >
       <header
         className={clsx(
           "flex h-12 items-center justify-center border-b px-2 py-2 transition-colors",

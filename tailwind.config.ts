@@ -21,8 +21,15 @@ export default {
     },
   },
   plugins: [
-    plugin(function ({ addVariant }) {
+    plugin(function ({ addVariant, addUtilities, theme }) {
       addVariant("no-hover", "@media (hover: none)");
+      addUtilities({
+        ".desktop-container": {
+          margin: "auto",
+          width: "100%",
+          maxWidth: theme("screens.lg"),
+        },
+      });
     }),
   ],
 } satisfies Config;
