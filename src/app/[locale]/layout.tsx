@@ -32,10 +32,9 @@ export default function RootLayout({
       <html
         lang={locale}
         dir={dir(locale)}
-        className={`${font.className} bg-gray-950 text-gray-400`}
+        className={`${font.className} h-full bg-gray-950 text-gray-400`}
       >
-        {/* Height applied in css for unit fallback */}
-        <body className="flex flex-col">
+        <body className="flex min-h-full flex-col">
           <LoadingScreen>{children}</LoadingScreen>
         </body>
       </html>
