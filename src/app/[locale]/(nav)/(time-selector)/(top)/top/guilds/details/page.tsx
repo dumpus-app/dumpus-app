@@ -1,5 +1,5 @@
-import { useTranslation } from "~/i18n";
-import { PageProps } from "~/types";
+"use client";
+
 import PageHeader from "./_components/PageHeader";
 import ProfileHeader from "~/components/ProfileHeader";
 import Stats from "./_components/Stats";
@@ -7,10 +7,10 @@ import TopUsedBots from "./_components/TopUsedBots";
 import TopChannels from "./_components/TopChannels";
 import FirstMessages from "./_components/FirstMessages";
 import DailySentMessages from "./_components/DailySentMessages";
+import Header from "~/components/layout/Header";
+import { SimpleIconsDiscord } from "~/components/icons";
 
-export default async function Page({ params: { locale } }: PageProps) {
-  const { t } = await useTranslation(locale);
-
+export default function Page() {
   const name = "Astro Lounge";
 
   return (
@@ -24,7 +24,15 @@ export default async function Page({ params: { locale } }: PageProps) {
             <div>{name[0]}</div>
           </div>
         }
-      />
+      >
+        <Header.Icon
+          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          target="_blank"
+          noI18n
+          icon={SimpleIconsDiscord}
+          className="absolute right-2 top-4 hidden sm:block"
+        />
+      </ProfileHeader>
       <Stats />
       <TopUsedBots />
       <TopChannels />
