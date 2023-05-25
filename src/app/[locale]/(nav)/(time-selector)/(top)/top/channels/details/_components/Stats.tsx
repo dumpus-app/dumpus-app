@@ -25,7 +25,7 @@ const DATA = [
 
 export default function Stats() {
   return (
-    <div className="grid grid-cols-2 gap-2 px-2 py-4">
+    <div className="grid grid-cols-2 gap-2 px-2 py-4 desktop-container sm:py-8">
       {DATA.map((stat, i) => (
         <StatCard key={i} {...stat} />
       ))}

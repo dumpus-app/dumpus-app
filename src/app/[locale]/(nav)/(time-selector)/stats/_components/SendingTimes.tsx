@@ -39,7 +39,11 @@ const CHART_DATA = [
 
 function Chart() {
   return (
-    <SimpleBarChart data={CHART_DATA} className="px-2" legend="Messages sent" />
+    <SimpleBarChart
+      data={CHART_DATA}
+      className="flex-1 px-2"
+      legend="Messages sent"
+    />
   );
 }
 
@@ -56,19 +60,23 @@ const STATS_DATA = [
 
 function Stats() {
   return (
-    <div className="mt-4 grid grid-cols-2 gap-2 px-2">
-      {STATS_DATA.map((stat, i) => (
-        <StatCard key={i} {...stat} />
-      ))}
+    <div className="">
+      <div className="grid grid-cols-2 gap-2 px-2 sm:grid-cols-1">
+        {STATS_DATA.map((stat, i) => (
+          <StatCard key={i} {...stat} />
+        ))}
+      </div>
     </div>
   );
 }
 
 export default function SendingTimes() {
   return (
-    <Section title="Sending times" id="sending-times">
-      <Chart />
-      <Stats />
+    <Section title="Sending times" href="/stats#sending-times">
+      <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0">
+        <Chart />
+        <Stats />
+      </div>
     </Section>
   );
 }

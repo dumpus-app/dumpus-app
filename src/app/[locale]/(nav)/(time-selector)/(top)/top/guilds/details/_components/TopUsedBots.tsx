@@ -34,7 +34,7 @@ export default function TopUsedBots() {
             key={i}
             value={
               <div className="flex items-center">
-                <div className="relative mr-1 aspect-square w-6">
+                <div className="relative mr-1 aspect-square w-6 sm:w-8">
                   <Image
                     src={stat.image}
                     alt={`${stat.name}'s avatar`}
@@ -42,12 +42,16 @@ export default function TopUsedBots() {
                     className="rounded-full object-cover object-center"
                   />
                 </div>
-                <div className="line-clamp-1 overflow-hidden text-ellipsis font-semibold text-white">
+                <div className="line-clamp-1 overflow-hidden text-ellipsis font-semibold text-white sm:text-2xl">
                   {stat.name}
                 </div>
               </div>
             }
-            label={<div className="text-sm text-gray-400">{stat.label}</div>}
+            label={
+              <div className="text-sm text-gray-400 sm:text-lg">
+                {stat.label}
+              </div>
+            }
           />
         ))}
       </div>
