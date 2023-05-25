@@ -31,7 +31,7 @@ export default function TopSelector() {
   return (
     <div
       className={clsx(
-        "sticky top-[48px] z-20 mb-auto border-b transition-all",
+        "mb-auto border-b transition-all",
         scrolled
           ? "border-b-gray-800 bg-gray-900 shadow-xl"
           : "border-b-transparent bg-gray-950"

@@ -14,6 +14,8 @@ export type Props = {
   revealTitleOnScroll?: boolean;
   revealBorderOnScroll?: boolean;
   revealBackgroundOnScroll?: boolean;
+  children?: React.ReactNode;
+  wrapperClassName?: string;
 };
 
 export default function Header({
@@ -25,6 +27,8 @@ export default function Header({
   revealTitleOnScroll = false,
   revealBorderOnScroll = false,
   revealBackgroundOnScroll = false,
+  children,
+  wrapperClassName,
 }: Props) {
   const scrolled = useScrolled();
   const showTitle = revealTitleOnScroll ? scrolled : true;
@@ -32,31 +36,34 @@ export default function Header({
   const showBackground = revealBackgroundOnScroll ? scrolled : false;
 
   return (
-    <header
-      className={clsx(
-        "sticky top-0 z-20 flex h-12 items-center justify-center border-b px-2 py-2 transition-colors",
-        transparent
-          ? showBackground
-            ? "bg-gray-900"
-            : "bg-gray-950"
-          : "bg-gray-900",
-        showBorder ? "border-b-gray-800" : "border-b-transparent",
-        className
-      )}
-    >
-      {leftSlot && <div className="absolute left-2">{leftSlot}</div>}
-      {title && (
-        <div
-          className={clsx(
-            "text-xl font-bold text-white transition-opacity",
-            showTitle ? "opacity-100" : "opacity-0"
-          )}
-        >
-          {title}
-        </div>
-      )}
-      {rightSlot && <div className="absolute right-2">{rightSlot}</div>}
-    </header>
+    <div className={clsx("sticky top-0 z-20", wrapperClassName)}>
+      <header
+        className={clsx(
+          "flex h-12 items-center justify-center border-b px-2 py-2 transition-colors",
+          transparent
+            ? showBackground
+              ? "bg-gray-900"
+              : "bg-gray-950"
+            : "bg-gray-900",
+          showBorder ? "border-b-gray-800" : "border-b-transparent",
+          className
+        )}
+      >
+        {leftSlot && <div className="absolute left-2">{leftSlot}</div>}
+        {title && (
+          <div
+            className={clsx(
+              "text-xl font-bold text-white transition-opacity",
+              showTitle ? "opacity-100" : "opacity-0"
+            )}
+          >
+            {title}
+          </div>
+        )}
+        {rightSlot && <div className="absolute right-2">{rightSlot}</div>}
+      </header>
+      {children}
+    </div>
   );
 }
 

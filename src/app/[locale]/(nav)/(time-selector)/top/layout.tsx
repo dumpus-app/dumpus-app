@@ -1,4 +1,3 @@
-import TopSelector from "./_components/TopSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
 import PageHeader from "./_components/PageHeader";
@@ -12,7 +11,6 @@ export default async function Layout({
   return (
     <div className="mb-auto">
       <PageHeader />
-      <TopSelector />
       {children}
     </div>
   );

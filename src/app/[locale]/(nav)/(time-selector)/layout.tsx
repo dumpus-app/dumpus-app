@@ -1,6 +1,7 @@
 import TimeSelector from "./_components/TimeSelector";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
+import BottomNav from "../_components/BottomNav";
 
 export default async function Layout({
   children,
@@ -11,7 +12,9 @@ export default async function Layout({
   return (
     <>
       {children}
-      <TimeSelector />
+      <BottomNav>
+        <TimeSelector />
+      </BottomNav>
     </>
   );
 }
