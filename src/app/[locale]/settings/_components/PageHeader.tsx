@@ -15,7 +15,7 @@ export default function PageHeader() {
       revealBorderOnScroll
       revealBackgroundOnScroll
       leftSlot={<Header.Icon href={href} icon={ChevronLeftIcon} />}
-      className="mb-auto border-b border-gray-800"
+      className="border-b border-gray-800"
     />
   );
 }

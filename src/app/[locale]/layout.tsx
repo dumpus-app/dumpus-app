@@ -34,7 +34,7 @@ export default function RootLayout({
         dir={dir(locale)}
         className={`${font.className} h-full bg-gray-950 text-gray-400`}
       >
-        <body className="flex min-h-full flex-col justify-end">
+        <body className="flex min-h-full flex-col">
           <LoadingScreen>{children}</LoadingScreen>
         </body>
       </html>

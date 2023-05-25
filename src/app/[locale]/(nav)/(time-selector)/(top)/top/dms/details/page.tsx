@@ -13,27 +13,24 @@ export default async function Page({ params: { locale } }: PageProps) {
 
   return (
     <>
-      <div className="mb-auto">
-        <PageHeader title={name} />
-        <ProfileHeader
-          description="@androz2091"
-          title={name}
-          className="mb-auto"
-          imageSlot={
-            <div className="relative h-16 w-16">
-              <Image
-                src="https://cdn.discordapp.com/embed/avatars/5.png"
-                alt="Avatar"
-                fill
-                priority
-                className="rounded-full object-cover object-center"
-              />
-            </div>
-          }
-        />
-        <Stats />
-        <DailySentMessages />
-      </div>
+      <PageHeader title={name} />
+      <ProfileHeader
+        description="@androz2091"
+        title={name}
+        imageSlot={
+          <div className="relative h-16 w-16">
+            <Image
+              src="https://cdn.discordapp.com/embed/avatars/5.png"
+              alt="Avatar"
+              fill
+              priority
+              className="rounded-full object-cover object-center"
+            />
+          </div>
+        }
+      />
+      <Stats />
+      <DailySentMessages />
     </>
   );
 }

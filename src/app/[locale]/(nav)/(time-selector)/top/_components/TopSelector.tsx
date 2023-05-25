@@ -31,7 +31,7 @@ export default function TopSelector() {
   return (
     <div
       className={clsx(
-        "mb-auto border-b transition-all",
+        "border-b transition-all",
         scrolled
           ? "border-b-gray-800 bg-gray-900 shadow-xl"
           : "border-b-transparent bg-gray-950"

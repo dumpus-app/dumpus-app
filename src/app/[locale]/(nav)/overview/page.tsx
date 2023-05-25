@@ -19,7 +19,6 @@ export default async function Page({ params: { locale } }: PageProps) {
       <ProfileHeader
         description="@florian-lefebvre"
         title="Florian Lefebvre"
-        className="mb-auto"
         imageSlot={
           <div className="relative h-16 w-16">
             <Image

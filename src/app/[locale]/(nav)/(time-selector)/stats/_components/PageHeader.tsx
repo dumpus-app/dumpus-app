@@ -19,7 +19,6 @@ export default function PageHeader() {
           icon={Cog6ToothIcon}
         />
       }
-      className="mb-auto"
     />
   );
 }
