@@ -13,6 +13,11 @@ html {
   @apply select-none selection:bg-brand-950 selection:text-brand-400 sm:select-auto;
 }
 
+body {
+  min-height: 100%;
+  min-height: 100svh;
+}
+
 /* TODO: make this actually work */
 [id] {
   @apply scroll-mt-20;
