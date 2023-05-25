@@ -2,13 +2,21 @@
 
 import Image from "next/image";
 import Link from "~/components/Link";
+import type { Link as LinkType } from "~/types";
 import { links } from "~/constants";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import TimeSelector from "../(time-selector)/_components/TimeSelector";
 import TopSelector from "../(time-selector)/top/_components/TopSelector";
 import Header from "~/components/layout/Header";
-import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+
+const settingsLink: LinkType = {
+  name: "Settings",
+  href: "/settings",
+  active: (str) => str.startsWith("/settings"),
+  icon: Cog6ToothIcon,
+};
 
 export default function TopNav() {
   const pathname = useI18nPathname();
@@ -40,7 +48,7 @@ export default function TopNav() {
               </span>
             </Link>
             <div className="flex items-center space-x-2">
-              {links.map((link) => (
+              {[...links, settingsLink].map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

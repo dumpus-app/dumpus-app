@@ -30,7 +30,7 @@ const SELECTED_RANK = 3;
 export default function Packages() {
   return (
     <Section title="Your packages">
-      <div className="grid grid-cols-1 gap-2 px-2">
+      <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         {PACKAGES.map(({ rank, username, date }) => {
           const selected = SELECTED_RANK === rank;
           return (

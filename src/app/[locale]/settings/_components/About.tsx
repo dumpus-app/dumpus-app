@@ -20,7 +20,7 @@ function LeftIcon({ icon: Icon }: { icon: Icon }) {
 export default function About() {
   return (
     <Section title="About">
-      <div className="grid grid-cols-1 gap-2 px-2">
+      <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <DetailCard
           href="#"
           onClick={(e) => e.preventDefault()}
