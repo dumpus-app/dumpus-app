@@ -5,18 +5,22 @@ import Link from "~/components/Link";
 import { links } from "~/constants";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
+import TimeSelector from "../(time-selector)/_components/TimeSelector";
+import TopSelector from "../(time-selector)/top/_components/TopSelector";
+import Header from "~/components/layout/Header";
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
-export type Props = {
-  children?: React.ReactNode;
-};
-
-export default function BottomNav({ children }: Props) {
+export default function TopNav() {
   const pathname = useI18nPathname();
+
+  const showBack = pathname.includes("/details/");
+  const showTopLinks = pathname.startsWith("/top") && !showBack;
+  const showSubNav = showBack || showTopLinks || pathname.startsWith("/stats");
 
   return (
     <div className="hidden sm:contents">
       <div className="sticky top-0 z-20">
-        <div className="flex h-16 items-center bg-gray-900">
+        <div className="flex h-16 items-center border-b border-gray-800 bg-gray-900">
           <div className="flex items-center justify-between px-2 desktop-container">
             <Link
               href="/overview"
@@ -54,7 +58,33 @@ export default function BottomNav({ children }: Props) {
             </div>
           </div>
         </div>
-        {children}
+        {showSubNav && (
+          <div className="flex h-12 items-center border-b border-gray-800 bg-gray-900">
+            <div
+              className={clsx(
+                "flex items-center px-2 desktop-container",
+                !showBack && !showTopLinks
+                  ? "justify-center"
+                  : "justify-between"
+              )}
+            >
+              {showBack && (
+                <Header.Icon
+                  href={`/top/${
+                    pathname.includes("/dms/")
+                      ? "dms"
+                      : pathname.includes("/channels/")
+                      ? "channels"
+                      : "guilds"
+                  }`}
+                  icon={ChevronLeftIcon}
+                />
+              )}
+              {showTopLinks && <TopSelector />}
+              <TimeSelector />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -32,24 +32,22 @@ export default function TopSelector() {
     <div
       className={clsx(
         "border-b transition-all",
-        scrolled
-          ? "border-b-gray-800 bg-gray-900 shadow-xl"
-          : "border-b-transparent bg-gray-950"
+        scrolled ? "border-b-gray-800" : "border-b-transparent"
       )}
     >
-      <div className="flex items-center space-x-1 px-1 py-1">
+      <div className="flex items-center space-x-1 px-1 py-1 sm:p-0">
         {links.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={clsx(
-              "flex w-full flex-col items-center rounded-lg py-1 transition-colors",
+              "w-full rounded-lg py-1 text-center transition-colors sm:px-4",
               link.active(pathname)
                 ? "bg-gray-800 text-brand-300"
                 : "text-gray-400 hover:bg-gray-800"
             )}
           >
-            <span className="">{link.name}</span>
+            {link.name}
           </Link>
         ))}
       </div>

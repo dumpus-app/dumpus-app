@@ -5,7 +5,7 @@ import Share from "./_components/Share";
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <TopNav></TopNav>
+      <TopNav />
       {children}
       <BottomNav>
         <Share />

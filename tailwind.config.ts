@@ -25,7 +25,7 @@ export default {
       addVariant("no-hover", "@media (hover: none)");
       addUtilities({
         ".desktop-container": {
-          margin: "auto",
+          marginInline: "auto",
           width: "100%",
           maxWidth: theme("screens.lg"),
         },

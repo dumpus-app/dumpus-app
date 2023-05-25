@@ -12,7 +12,7 @@ export default async function Layout({
 
   return (
     <>
-      <TopNav></TopNav>
+      <TopNav />
       {children}
       <BottomNav>
         <TimeSelector />

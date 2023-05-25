@@ -32,7 +32,7 @@ const DATA = [
 
 export default function TopGuildsList() {
   return (
-    <div className="grid gap-2 px-2 py-4">
+    <div className="grid gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8">
       {DATA.map((dm) => (
         <DetailCard.WithRank
           key={dm.rank}

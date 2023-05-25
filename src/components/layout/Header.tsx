@@ -37,16 +37,20 @@ export default function Header({
 
   return (
     <div
-      className={clsx("sticky top-0 z-20 block sm:hidden", wrapperClassName)}
+      className={clsx(
+        "sticky top-0 z-20 block transition-colors sm:hidden",
+        transparent
+          ? showBackground
+            ? "bg-gray-900"
+            : "bg-gray-950"
+          : "bg-gray-900",
+        wrapperClassName
+      )}
     >
       <header
         className={clsx(
           "flex h-12 items-center justify-center border-b px-2 py-2 transition-colors",
-          transparent
-            ? showBackground
-              ? "bg-gray-900"
-              : "bg-gray-950"
-            : "bg-gray-900",
+
           showBorder ? "border-b-gray-800" : "border-b-transparent",
           className
         )}
