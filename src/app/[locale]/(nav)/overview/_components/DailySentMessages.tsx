@@ -1,5 +1,5 @@
 import Section from "~/components/Section";
-import SimpleBarChart from "~/components/data/SimpleBarChart";
+import SimpleLineChart from "~/components/data/SimpleLineChart";
 
 const DATA = [
   {
@@ -39,7 +39,7 @@ const DATA = [
 export default function DailySentMessages() {
   return (
     <Section title="Daily sent messages" href="/stats#daily-sent-messages">
-      <SimpleBarChart data={DATA} className="px-2" legend="Messages sent" />
+      <SimpleLineChart data={DATA} className="px-2" legend="Messages sent" />
     </Section>
   );
 }
