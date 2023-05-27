@@ -5,9 +5,9 @@ import pandas as pd
 from distutils.command.config import config
 import re
 import time
-from celery import Celery, chain
+from celery import Celery
 
-from datetime import datetime, timezone
+from datetime import datetime
 from collections import Counter
 from itertools import groupby
 
@@ -22,28 +22,22 @@ import cryptocode
 from zipfile import ZipFile
 from io import TextIOWrapper
 
-from db import SavedPackageData, session, update_progress, update_step
-from util import extract_key_from_discord_link, generate_avatar_url_from_user_id_avatar_hash
+# Re-zip database
+import gzip
+import sqlite3
+
+from db import update_progress, update_step, SavedPackageData, session
+from util import (
+    # discord utilities
+    extract_key_from_discord_link,
+    generate_avatar_url_from_user_id_avatar_hash,
+    # time utilities
+    count_dates_hours,
+    get_ts_regular_string_parser,
+    get_ts_string_parser
+)
 
 app = Celery(config_source='celeryconfig')
-
-def get_ts_string_parser(line):
-    year, month, day = int(line[1:5]), int(line[6:8]), int(line[9:11])
-    hour, minute = int(line[12:14]), int(line[15:17])
-
-    return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
-
-def get_ts_regular_string_parser(line):
-    year, month, day = int(line[0:4]), int(line[5:7]), int(line[8:10])
-    hour, minute = int(line[11:13]), int(line[14:16])
-
-    return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
-
-def count_dates(timestamps):
-    dates = [datetime.fromtimestamp(ts).date() for ts in timestamps]
-    date_counts = Counter(dates)
-    date_counts = {datetime.combine(date, datetime.min.time(), timezone.utc).timestamp(): count for date, count in date_counts.items()}
-    return date_counts
 
 def download_file(package_id, link):
     # check if file exists in tmp
@@ -77,7 +71,7 @@ def read_analytics_file(package_id, link):
 
     session_starts = []
 
-    used_commands = []
+    guilds_joins = []
 
     user_data = {}
 
@@ -93,8 +87,16 @@ def read_analytics_file(package_id, link):
 
     payments = []
 
-    package_id = 'f3559e67245fbaa1c84f766b96c2a0e9'
-    path = f'../tmp/{package_id}.zip'
+    guild_joined = []
+
+    # dev
+    bot_token_compromised = []
+    dev_portal_page_viewed = [] # filter with docs/ only
+    application_created = []
+
+    application_command_used = []
+
+    path = f'tmp/{package_id}.zip'
 
     with ZipFile(path) as zip:
         
@@ -121,6 +123,7 @@ def read_analytics_file(package_id, link):
             })
         for payment in user_json['payments']:
             payments.append({
+                'id': payment['id'],
                 'amount': payment['amount'],
                 'currency': payment['currency'],
                 'timestamp': get_ts_regular_string_parser(payment['created_at']).timestamp(),
@@ -140,25 +143,62 @@ def read_analytics_file(package_id, link):
             # count
             analytics_line_count += 1
 
-            event_type = analytics_line_json['event_type']
+            if not 'event_type' in analytics_line_json:
+                continue
 
-            # voice channel logs
-            if event_type == 'join_voice_channel' or event_type == 'leave_voice_channel':
-                voice_channel_logs.append({
-                    'timestamp': get_ts_string_parser(
-                        analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
-                    ).timestamp(),
-                    'event_type': event_type,
-                    'channel_id': analytics_line_json['channel_id']
-                })
+            try:
 
-            if analytics_line_json['event_type'] == 'session_start':
-                session_starts.append({
-                    'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                    #'device': analytics_line_json['device'] if 'device' in analytics_line_json else 'Unknown',
-                    # we can not trust device, it's often null, unknown or equal to the os
-                    'os': analytics_line_json['os']
-                })
+                event_type = analytics_line_json['event_type']
+
+                # voice channel logs
+                if event_type == 'join_voice_channel' or event_type == 'leave_voice_channel':
+                    voice_channel_logs.append({
+                        'timestamp': get_ts_string_parser(
+                            analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
+                        ).timestamp(),
+                        'event_type': event_type,
+                        'channel_id': analytics_line_json['channel_id'],
+                        'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
+                    })
+
+                if analytics_line_json['event_type'] == 'session_start':
+                    session_starts.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        #'device': analytics_line_json['device'] if 'device' in analytics_line_json else 'Unknown',
+                        # we can not trust device, it's often null, unknown or equal to the os
+                        'os': analytics_line_json['os']
+                    })
+
+                
+                if analytics_line_json['event_type'] == 'guild_joined':
+                    guild_joined.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        'guild_id': analytics_line_json['guild_id']
+                    })
+
+                if analytics_line_json['event_type'] == 'bot_token_compromised':
+                    bot_token_compromised.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                if analytics_line_json['event_type'] == 'dev_portal_page_viewed':
+                    if analytics_line_json['page_name'].startswith('/docs/'):
+                        dev_portal_page_viewed.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                if analytics_line_json['event_type'] == 'application_created':
+                    application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                if analytics_line_json['event_type'] == 'application_command_used':
+                    if analytics_line_json['application_id'] == '-1' or 'channel_id' not in analytics_line_json:
+                        continue
+                    application_command_used.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        'application_id': analytics_line_json['application_id'],
+                        'channel_id': analytics_line_json['channel_id']
+                    })
+
+            except:
+                print('Error while parsing analytics line: ')
+                print(analytics_line_json)
+                raise
 
         '''
         Read Guild Data.
@@ -214,11 +254,13 @@ def read_analytics_file(package_id, link):
                 # 3 is attachments
                 messages.append({
                     'content': message_row[2],
-                    'timestamp': get_ts_string_parser(message_row[1]).timestamp(),
+                    'timestamp': get_ts_regular_string_parser(message_row[1]).timestamp(),
                 })
 
             # sort messages by timestamp (oldest to newest)
             messages.sort(key=lambda message: message['timestamp'])
+
+           #print(f'Channel {channel_id} has {len(messages)} messages')
 
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
@@ -226,10 +268,10 @@ def read_analytics_file(package_id, link):
                     'channel_id': channel_id,
                     'dm_user_id': dm_user_id,
                     # TODO : get username from user_id
-                    'message_timestamps': count_dates(messages),
+                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages), channel_id == '558695545531662337'),
                     'total_message_count': len(messages),
                     # make sure content exists
-                    'first_10_messages': filter(messages, lambda message: 'content' in message)[:10]
+                    'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
                 })
 
             elif 'guild' in channel_json:
@@ -237,9 +279,9 @@ def read_analytics_file(package_id, link):
                     'guild_id': channel_json['guild']['id'],
                     'guild_name': channel_json['guild']['name'],
                     'channel_id': channel_id,
-                    'message_timestamps': count_dates(messages),
+                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages), False),
                     'total_message_count': len(messages),
-                    'first_10_messages': filter(messages, lambda message: 'content' in message)[:10]
+                    'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
                 })
 
     '''
@@ -254,38 +296,41 @@ def read_analytics_file(package_id, link):
         leaves = [x for x in logs if x['event_type'] == 'leave_voice_channel']
 
         # Sort events by timestamp
-        sorted_joins = sorted(joins, key=lambda x: get_ts_string_parser(x['timestamp']).timestamp())
-        sorted_leaves = sorted(leaves, key=lambda x: get_ts_string_parser(x['timestamp']).timestamp())
+        sorted_joins = sorted(joins, key=lambda x: x['timestamp'])
+        sorted_leaves = sorted(leaves, key=lambda x: x['timestamp'])
         
         for join in sorted_joins:
             # Find the next leave event that happened after this join
-            next_leave = next((leave for leave in sorted_leaves if get_ts_string_parser(leave['timestamp']).timestamp() > get_ts_string_parser(join['timestamp']).timestamp()), None)
+            next_leave = next((leave for leave in sorted_leaves if leave['timestamp'] > join['timestamp']), None)
             
             # Calculate duration
-            duration = get_ts_string_parser(next_leave['timestamp']).timestamp() - get_ts_string_parser(join['timestamp']).timestamp() if next_leave else 0
+            duration = next_leave['timestamp'] - join['timestamp'] if next_leave else 0
             
             if duration > 24 * 60 * 60 * 1000:
                 pass
             elif not next_leave:
                 pass
             else:
-                join_is_included_in_duration = any(get_ts_string_parser(join['timestamp']).timestamp() >= get_ts_string_parser(e['started_date']).timestamp() and get_ts_string_parser(join['timestamp']).timestamp() <= get_ts_string_parser(e['ended_date']).timestamp() for e in voice_channel_logs_duration)
+                join_is_included_in_duration = any(
+                    join['timestamp'] >= e['started_date'] # this join happened after the start of another event
+                    and join['timestamp'] <= e['ended_date'] # this same event ended after this join
+                    for e in voice_channel_logs_duration)
                 
                 if join_is_included_in_duration:
-                    print(f'Join is included in duration: {join}')
+                    #print(f'Join is included in duration: {join}')
+                    pass
                 else:
                     voice_channel_logs_duration.append({
                         'channel_id': channel_id,
-                        'duration': duration,
+                        'guild_id': join['guild_id'] if 'guild_id' in join else None,
+                        'duration_mins': duration // 1000 // 60,
                         'started_date': join['timestamp'],
-                        'ended_date': next_leave['timestamp'] if next_leave else None,
-                        'mins': duration // 1000 // 60
+                        'ended_date': next_leave['timestamp'] if next_leave else None
                     })
-
-    start = time.process_time()
 
     print(time.process_time() - start)
 
+    '''
     plaintext = orjson.dumps({
         'analytics_line_count': analytics_line_count,
         'guilds': guilds,
@@ -297,13 +342,171 @@ def read_analytics_file(package_id, link):
         'guild_channels_data': guild_channels_data,
         'voice_channel_logs_duration': voice_channel_logs_duration
     })
+    '''
+
+    conn = sqlite3.connect(':memory:')
+    cur = conn.cursor()
+
+    cur.execute('''
+        CREATE TABLE activity (
+            event_name TEXT NOT NULL,
+            day TEXT NOT NULL,
+            hour INTEGER,
+            occurence_count INTEGER NOT NULL,
+            associated_dm_user_id TEXT,
+            associated_channel_id TEXT,
+            associated_guild_id TEXT,
+            PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id)
+        )
+    ''')
+
+    cur.execute('''
+        CREATE TABLE dm_channels_data (
+            channel_id TEXT NOT NULL,
+            dm_user_id TEXT NOT NULL,
+            user_name TEXT NOT NULL,
+            user_avatar_url TEXT,
+            total_message_count INTEGER NOT NULL,
+            total_voice_channel_duration INTEGER NOT NULL,
+            PRIMARY KEY (channel_id)
+        )
+    ''')
+
+    cur.execute('''
+        CREATE TABLE guild_channels_data (
+            channel_id TEXT NOT NULL,
+            channel_name TEXT NOT NULL,
+            guild_id TEXT NOT NULL,
+            total_message_count INTEGER NOT NULL,
+            total_voice_channel_duration INTEGER NOT NULL,
+            PRIMARY KEY (channel_id)
+        )
+    ''')
+
+    cur.execute('''
+        CREATE TABLE guilds (
+            guild_id TEXT NOT NULL,
+            guild_name TEXT NOT NULL,
+            total_message_count INTEGER NOT NULL,
+            PRIMARY KEY (guild_id)
+        )
+    ''')
+
+    cur.execute('''
+        CREATE TABLE payments (
+            payment_id TEXT NOT NULL,
+            payment_date TEXT NOT NULL,
+            payment_amount INTEGER NOT NULL,
+            payment_currency TEXT NOT NULL,
+            payment_description TEXT NOT NULL,
+            PRIMARY KEY (payment_id)
+        )
+    ''')
+
+    cur.execute('''
+        CREATE TABLE voice_sessions (
+            channel_id TEXT NOT NULL,
+            guild_id TEXT,
+            duration_mins INTEGER NOT NULL,
+            started_date TEXT NOT NULL,
+            ended_date TEXT NOT NULL,
+            PRIMARY KEY (channel_id, started_date)
+        )
+    ''')
+
+    message_sent_data = []
+    guild_channel_data = []
+    guild_data = []
+    dm_user_data = []
+    payments_data = []
+    voice_session_data = []
+
+    suma = 0
+
+    for channel in [*dms_channels_data, *guild_channels_data]:
+
+        ch_data = next(filter(lambda x: x['id'] == channel['channel_id'], channels), None)
+        if not ch_data:
+            print('CHANNEL NOT FOUND')
+            continue
+
+        if 'dm_user_id' in channel:
+            user = next(filter(lambda x: x['id'] == channel['dm_user_id'], users), None)
+            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['avatar_url'] if user else None, channel['total_message_count'], 0))
+        elif 'guild_id' in channel:
+            guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
+    
+        for timestamp, count in channel['message_timestamps'].items():
+            day = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d')
+            hour = int(datetime.fromtimestamp(timestamp).strftime('%H'))
+            message_sent_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None))
+            suma += count
+
+    for guild in guilds:
+        total_message_count = sum(channel['total_message_count'] for channel in guild_channels_data if channel['guild_id'] == guild['id'])
+        guild_data.append((guild['id'], guild['name'], total_message_count))
+
+    for payment in payments:
+        payments_data.append((payment['id'], datetime.fromtimestamp(payment['timestamp']).strftime('%Y-%m-%d'), payment['amount'], payment['currency'], payment['description']))
+
+    for voice_session in voice_channel_logs_duration:
+        voice_session_data.append((voice_session['channel_id'], voice_session['guild_id'], voice_session['duration_mins'], voice_session['started_date'], voice_session['ended_date']))
+
+    message_sent_query = '''
+        INSERT INTO activity
+        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id)
+        VALUES (?, ?, ?, ?, ?, ?);
+    '''
+
+    dm_user_query = '''
+        INSERT INTO dm_channels_data
+        (channel_id, dm_user_id, user_name, user_avatar_url, total_message_count, total_voice_channel_duration)
+        VALUES (?, ?, ?, ?, ?, ?);
+    '''
+
+    guild_channel_query = '''
+        INSERT INTO guild_channels_data
+        (channel_id, guild_id, channel_name, total_message_count, total_voice_channel_duration)
+        VALUES (?, ?, ?, ?, ?);
+    '''
+
+    guild_query = '''
+        INSERT INTO guilds
+        (guild_id, guild_name, total_message_count)
+        VALUES (?, ?, ?);
+    '''
+
+    payment_query = '''
+        INSERT INTO payments
+        (payment_id, payment_date, payment_amount, payment_currency, payment_description)
+        VALUES (?, ?, ?, ?, ?);
+    '''
+
+    voice_session_query = '''
+        INSERT INTO voice_sessions
+        (channel_id, guild_id, duration_mins, started_date, ended_date)
+        VALUES (?, ?, ?, ?, ?);
+    '''
+
+    cur.executemany(dm_user_query, dm_user_data)
+    cur.executemany(guild_channel_query, guild_channel_data)
+    cur.executemany(message_sent_query, message_sent_data)
+    cur.executemany(guild_query, guild_data)
+    cur.executemany(payment_query, payments_data)
+    cur.executemany(voice_session_query, voice_session_data)
+    conn.commit()
+
+    sql_string = '\n'.join(conn.iterdump())
+    sql_string_compressed = gzip.compress(bytes(sql_string, 'utf-8'))
+
+    key = extract_key_from_discord_link(link)
+    data = cryptocode.encrypt(sql_string_compressed, key)
 
     time_before_encrypt = time.process_time()
-    key = extract_key_from_discord_link(link)
-    data = cryptocode.encrypt(plaintext.decode(), key)
     print(time.process_time() - time_before_encrypt)
-
-    session.add(SavedPackageData(package_id=package_id, data=data, created_at=datetime.now(), updated_at=datetime.now()))
+    
+    # insert into db
+    session.add(SavedPackageData(package_id=package_id, data=data))
     session.commit()
 
     update_step(package_id, 'processed')

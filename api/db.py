@@ -14,8 +14,8 @@ class SavedPackageData(Base):
     id = Column(Integer, primary_key=True)
     package_id = Column(String(255), nullable=False)
     data = Column(String(), nullable=False)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.now)
+    updated_at = Column(DateTime, nullable=False, onupdate=datetime.now)
 
 class PackageProcessStatus(Base):
     __tablename__ = 'package_process_status'
@@ -24,8 +24,8 @@ class PackageProcessStatus(Base):
     package_id = Column(String(255), nullable=False)
     step = Column(String(255), nullable=False)
     progress = Column(Integer, nullable=True)
-    created_at = Column(DateTime, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.now)
+    updated_at = Column(DateTime, nullable=False, onupdate=datetime.now)
 
 Base.metadata.create_all(engine)
 
