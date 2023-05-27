@@ -74,3 +74,12 @@ This is used in the overview and the statistics section (but also for some graph
 ```sql
 SELECT name, avatar_url FROM guilds
 ```
+
+## Troubleshooting
+
+* Server does not respond after `POST /api/process`. Try to remove this property from the celeryconfig.py file.
+```
+broker_use_ssl={
+    'ssl_cert_reqs': None
+}
+```

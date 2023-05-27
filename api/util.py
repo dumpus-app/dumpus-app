@@ -48,7 +48,7 @@ def get_ts_regular_string_parser(line):
 
     return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
-def count_dates_hours(timestamps, d):
+def count_dates_hours(timestamps):
     date_hour_counts = Counter()
     for ts in timestamps:
         dt = datetime.fromtimestamp(ts)
