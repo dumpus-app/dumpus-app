@@ -15,17 +15,24 @@ from util import check_discord_link, extract_key_from_discord_link, extract_pack
 app = Flask(__name__)
 CORS(app)
 
-def fetch_package_status(link, package_id):
+def fetch_package_status(package_id):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
-    if status and status.step != 'processed':
+    if status:
         return {
             'status': 'processing',
             'step': status.step,
         }
-    elif status and status.step == 'processed':
+    else:
+        return {
+            'status': 'unknown',
+            'message': 'This link has not been analyzed yet.',
+        }
+    
+def fetch_package_data(package_id, auth_upn):
+    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
+    if status and status.step == 'processed':
         result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
-        key = extract_key_from_discord_link(link)
-        data = cryptocode.decrypt(result.data, key)
+        data = cryptocode.decrypt(result.data, auth_upn)
         if result:
             return {
                 'status': 'processed',
@@ -37,7 +44,7 @@ def fetch_package_status(link, package_id):
             'message': 'This link has not been analyzed yet.',
         }
 
-@app.route('/api/process/', methods=['POST'])
+@app.route('/api/process', methods=['POST'])
 def process_link():
     # Get link from body
     link = request.json['package_link']
@@ -49,30 +56,37 @@ def process_link():
     # Link to md5
     package_id = extract_package_id_from_discord_link(link)
     # Get package status
-    package_stats = fetch_package_status(link, package_id)
+    package_stats = fetch_package_status(package_id)
     if package_stats['status'] != 'unknown':
         return jsonify({
             'status': package_stats['status'],
             'message': 'This link has already been submitted.'
         })
-    package_process_status = PackageProcessStatus(package_id=package_id, step='locked', created_at=datetime.now(), updated_at=datetime.now())
+    package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
     session.add(package_process_status)
     session.commit()
+    print('okk')
     # Process the link
-    handle_package.apply_async(args=[package_id, link], queue='default')
+    handle_package.apply_async(args=[package_id, link])
+    print('ok')
     # Send a successful response
     return jsonify({'success': 'Started processing your link.'}), 200
 
 @app.route('/api/process/<package_id>/status', methods=['GET'])
 def get_package_status(package_id):
-    package_stats = fetch_package_status(link, package_id)
-    if package_stats['status'] == 'unknown':
-        return jsonify({
-            'status': package_stats['status'],
-            'message': 'This link has not been analyzed yet.'
-        })
-    else:
-        return jsonify(package_stats)
+
+    # Get authorization bearer token
+    auth_header = request.headers.get('Authorization')
+
+    # Check if token is present
+    if not auth_header:
+        return jsonify({'error': 'No authorization token provided.'}), 400
+    
+    # remove bearer
+    auth_upn = auth_header.split(' ')[1]
+    
+    package_status = fetch_package_status(auth_upn, package_id)
+    return jsonify(package_status), 200
 
 if __name__ == "__main__":
     app.run(port=5500)

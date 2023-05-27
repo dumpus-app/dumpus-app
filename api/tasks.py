@@ -67,6 +67,8 @@ def read_analytics_file(package_id, link):
     update_step(package_id, 'analyzing')
     update_progress(package_id, 0)
 
+    start = time.time()
+
     analytics_line_count = 0
 
     session_starts = []
@@ -268,7 +270,7 @@ def read_analytics_file(package_id, link):
                     'channel_id': channel_id,
                     'dm_user_id': dm_user_id,
                     # TODO : get username from user_id
-                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages), channel_id == '558695545531662337'),
+                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
                     'total_message_count': len(messages),
                     # make sure content exists
                     'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]

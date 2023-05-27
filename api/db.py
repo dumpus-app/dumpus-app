@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from sqlalchemy import create_engine, Column, Integer, String, DateTime
 from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.sql import func
 
 engine = create_engine(os.getenv('POSTGRES_URL'))
 
@@ -14,8 +15,8 @@ class SavedPackageData(Base):
     id = Column(Integer, primary_key=True)
     package_id = Column(String(255), nullable=False)
     data = Column(String(), nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, onupdate=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 
 class PackageProcessStatus(Base):
     __tablename__ = 'package_process_status'
@@ -24,8 +25,8 @@ class PackageProcessStatus(Base):
     package_id = Column(String(255), nullable=False)
     step = Column(String(255), nullable=False)
     progress = Column(Integer, nullable=True)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    updated_at = Column(DateTime, nullable=False, onupdate=datetime.now)
+    created_at = Column(DateTime, nullable=False, default=func.now())
+    updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 
 Base.metadata.create_all(engine)
 
