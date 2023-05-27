@@ -23,7 +23,7 @@ import gzip
 import base64
 
 def parse():
-    start = time.process_time()
+    start = time.time()
 
     analytics_line_count = 0
 
@@ -394,7 +394,6 @@ def parse():
 
         ch_data = next(filter(lambda x: x['id'] == channel['channel_id'], channels), None)
         if not ch_data:
-            print('CHANNEL NOT FOUND')
             continue
 
         if 'dm_user_id' in channel:
@@ -478,8 +477,8 @@ def parse():
     with open('analytics.sql', 'w') as f:
         f.write(sql_string)
 
-    with open('analytics.sql.gz', 'wb') as f:
-        f.write(sql_string_compressed)
+    with open('analytics.sql.gz', 'w') as f:
+        f.write(data)
 
     return analytics_line_count
 
