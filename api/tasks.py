@@ -146,7 +146,12 @@ def read_analytics_file(package_id, link):
 
         analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics') and name.endswith('.json')), None)
 
+
+        compute_time_per_line = []
         for line in TextIOWrapper(zip.open(analytics_file_name)):
+
+            compute_time_per_line_start = time.time()
+
             analytics_line_json = orjson.loads(line)
             # count
             analytics_line_count += 1
@@ -208,7 +213,10 @@ def read_analytics_file(package_id, link):
                 print(analytics_line_json)
                 raise
 
+            compute_time_per_line.append(time.time() - compute_time_per_line_start)
+
         print(f'Analytics data: {time.time() - start}')
+        print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
 
         '''
         Read Guild Data.
@@ -248,32 +256,44 @@ def read_analytics_file(package_id, link):
         Read messages.
         '''
 
+        read_channel_times = []
+        read_csv_times = []
+        read_json_times = []
+        compute_times = []
+        compute_1_times = []
+        compute_2_times = []
         channel_json_files = [file_name for file_name in zip.namelist() if file_name.startswith('messages/') and file_name.endswith('channel.json')]
         for channel_json_file in channel_json_files:
+            read_time_start = time.time()
             channel_content = zip.open(channel_json_file)
+            read_time_diff = time.time() - read_time_start
+            read_channel_times.append(read_time_diff)
+            read_time_start = time.time()
             channel_json = orjson.loads(channel_content.read())
+            read_time_diff = time.time() - read_time_start
+            read_json_times.append(read_time_diff)
             channel_id = re.match(r'messages\/c?([0-9]{16,32})\/', channel_json_file).group(1)
             # new package includes 'c' before the channel id
             is_new_package = channel_json_file.startswith('messages/c')
+            read_time_start = time.time()
             message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv')
-            message_csv = pd.read_csv(message_content)
-            messages = []
-            for message_row in message_csv.values.tolist():
-                # in the CSV file:
-                # 0 is message_id
-                # 1 is timestamp
-                # 2 is contents
-                # 3 is attachments
-                messages.append({
-                    'content': message_row[2],
-                    'timestamp': get_ts_regular_string_parser(message_row[1]).timestamp(),
-                })
-
-            # sort messages by timestamp (oldest to newest)
+            read_time_diff = time.time() - read_time_start
+            read_channel_times.append(read_time_diff)
+            read_time_start = time.time()
+            cols_to_use = ['Contents', 'Timestamp']
+            message_csv = pd.read_csv(message_content, usecols=cols_to_use)
+            read_time_diff = time.time() - read_time_start
+            read_csv_times.append(read_time_diff)
+            compute_time_start = time.time()
+            compute_1_time_start = time.time()
+            message_csv['Timestamp'] = pd.to_datetime(message_csv['Timestamp']).apply(lambda x: x.timestamp())
+            message_csv.rename(columns={'Contents': 'content', 'Timestamp': 'timestamp'}, inplace=True)
+            messages = message_csv.to_dict('records')
             messages.sort(key=lambda message: message['timestamp'])
-
+            compute_1_time_diff = time.time() - compute_1_time_start
+            compute_1_times.append(compute_1_time_diff)
            #print(f'Channel {channel_id} has {len(messages)} messages')
-
+            compute_2_time_start = time.time()
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
                 dms_channels_data.append({
@@ -295,8 +315,18 @@ def read_analytics_file(package_id, link):
                     'total_message_count': len(messages),
                     'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
                 })
+            compute_2_time_diff = time.time() - compute_2_time_start
+            compute_2_times.append(compute_2_time_diff)
+            compute_time_diff = time.time() - compute_time_start
+            compute_times.append(compute_time_diff)
 
-    print(f'Channel messages data: {time.time() - start}')
+        print(f'Channel messages data: {time.time() - start}')
+        print(f'Average channel read time: {sum(read_channel_times) / len(read_channel_times)}')
+        print(f'Average CSV read time: {sum(read_csv_times) / len(read_csv_times)}')
+        print(f'Average JSON read time: {sum(read_json_times) / len(read_json_times)}')
+        print(f'Average compute time: {sum(compute_times) / len(compute_times)}')
+        print(f'Average compute 1 time: {sum(compute_1_times) / len(compute_1_times)}')
+        print(f'Average compute 2 time: {sum(compute_2_times) / len(compute_2_times)}')
 
     '''
     Process voice channel logs to get a list of "events"
@@ -450,8 +480,8 @@ def read_analytics_file(package_id, link):
             guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
     
         for timestamp, count in channel['message_timestamps'].items():
-            day = datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d')
-            hour = int(datetime.fromtimestamp(timestamp).strftime('%H'))
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
             message_sent_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None))
             suma += count
 

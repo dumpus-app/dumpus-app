@@ -2,6 +2,7 @@ import hashlib
 import re
 from datetime import datetime
 from collections import Counter
+import pandas as pd
 
 discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
 
@@ -49,12 +50,10 @@ def get_ts_regular_string_parser(line):
     return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
 def count_dates_hours(timestamps):
-    date_hour_counts = Counter()
-    for ts in timestamps:
-        dt = datetime.fromtimestamp(ts)
-        # clear minutes, seconds and microseconds
-        dt = dt.replace(minute=0, second=0, microsecond=0)
-        # convert it back to timestamp
-        timestamp_hour = dt.timestamp()
-        date_hour_counts[timestamp_hour] += 1
-    return dict(date_hour_counts)
+    # Convert list of timestamps to a pandas Series
+    timestamps_series = pd.Series(timestamps)
+    # Convert timestamps to datetime and floor to nearest hour
+    timestamps_hour = pd.to_datetime(timestamps_series, unit='s').dt.floor('H')
+    # Count occurrences of each unique hour
+    date_hour_counts = timestamps_hour.value_counts().to_dict()
+    return date_hour_counts
