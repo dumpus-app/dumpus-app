@@ -26,6 +26,8 @@ from io import TextIOWrapper
 import gzip
 import sqlite3
 
+import base64
+
 from db import update_progress, update_step, SavedPackageData, session
 from util import (
     # discord utilities
@@ -59,6 +61,8 @@ def download_file(package_id, link):
             for chunk in r.iter_content(chunk_size=8192):
                 dl += len(chunk)
                 percent = round(dl / total_length) * 100
+                if percent % 10 == 0:
+                    update_progress(package_id, percent)
                 f.write(chunk)
             done = True
     return path
@@ -132,6 +136,8 @@ def read_analytics_file(package_id, link):
                 'description': payment['description']
             })
 
+        print(f'User data: {time.time() - start}')
+
         '''
         Read analytics file.
         This file is the most important one, it contains all the events that happened on Discord.
@@ -202,6 +208,8 @@ def read_analytics_file(package_id, link):
                 print(analytics_line_json)
                 raise
 
+        print(f'Analytics data: {time.time() - start}')
+
         '''
         Read Guild Data.
         This will be used later to get the guild name from the guild_id.
@@ -233,6 +241,8 @@ def read_analytics_file(package_id, link):
                 'name': name,
                 'is_dm': is_dm
             })
+
+        print(f'Guilds and Channels data: {time.time() - start}')
 
         '''
         Read messages.
@@ -281,10 +291,12 @@ def read_analytics_file(package_id, link):
                     'guild_id': channel_json['guild']['id'],
                     'guild_name': channel_json['guild']['name'],
                     'channel_id': channel_id,
-                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages), False),
+                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
                     'total_message_count': len(messages),
                     'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
                 })
+
+    print(f'Channel messages data: {time.time() - start}')
 
     '''
     Process voice channel logs to get a list of "events"
@@ -330,7 +342,7 @@ def read_analytics_file(package_id, link):
                         'ended_date': next_leave['timestamp'] if next_leave else None
                     })
 
-    print(time.process_time() - start)
+    print(f'Finish processing: {time.time() - start}')
 
     '''
     plaintext = orjson.dumps({
@@ -429,7 +441,6 @@ def read_analytics_file(package_id, link):
 
         ch_data = next(filter(lambda x: x['id'] == channel['channel_id'], channels), None)
         if not ch_data:
-            print('CHANNEL NOT FOUND')
             continue
 
         if 'dm_user_id' in channel:
@@ -499,14 +510,16 @@ def read_analytics_file(package_id, link):
     conn.commit()
 
     sql_string = '\n'.join(conn.iterdump())
-    sql_string_compressed = gzip.compress(bytes(sql_string, 'utf-8'))
+    sql_string_compressed_bytes = gzip.compress(bytes(sql_string, 'utf-8'))
+    
+    # convert the compressed bytes to a base64-encoded string
+    sql_string_compressed = base64.b64encode(sql_string_compressed_bytes).decode('utf-8')
 
     key = extract_key_from_discord_link(link)
     data = cryptocode.encrypt(sql_string_compressed, key)
 
-    time_before_encrypt = time.process_time()
-    print(time.process_time() - time_before_encrypt)
-    
+    print(f'SQLite serialization: {time.time() - start}')
+
     # insert into db
     session.add(SavedPackageData(package_id=package_id, data=data))
     session.commit()

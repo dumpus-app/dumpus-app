@@ -34,15 +34,15 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 def update_progress (package_id, current_progress):
-    print('updating progress')
+    print(f'updating progress {current_progress*100}% (package_id: {package_id})')
     package = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if package:
         package.progress = current_progress
         package.updated_at = datetime.now()
-        print('updating progress SUCCESS')
         session.commit()
 
 def update_step (package_id, step):
+    print(f'updating step {step} (package_id: {package_id})')
     package = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if package:
         package.step = step

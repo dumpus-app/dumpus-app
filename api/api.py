@@ -36,7 +36,7 @@ def fetch_package_data(package_id, auth_upn):
         if result:
             return {
                 'status': 'processed',
-                'data': orjson.loads(data)
+                'data': data
             }
     else:
         return {
@@ -65,15 +65,18 @@ def process_link():
     package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
     session.add(package_process_status)
     session.commit()
-    print('okk')
     # Process the link
     handle_package.apply_async(args=[package_id, link])
-    print('ok')
     # Send a successful response
     return jsonify({'success': 'Started processing your link.'}), 200
 
 @app.route('/api/process/<package_id>/status', methods=['GET'])
 def get_package_status(package_id):
+    package_status = fetch_package_status(package_id)
+    return jsonify(package_status), 200
+
+@app.route('/api/process/<package_id>/data', methods=['GET'])
+def get_package_data(package_id):
 
     # Get authorization bearer token
     auth_header = request.headers.get('Authorization')
@@ -85,7 +88,7 @@ def get_package_status(package_id):
     # remove bearer
     auth_upn = auth_header.split(' ')[1]
     
-    package_status = fetch_package_status(auth_upn, package_id)
+    package_status = fetch_package_data(package_id, auth_upn)
     return jsonify(package_status), 200
 
 if __name__ == "__main__":
