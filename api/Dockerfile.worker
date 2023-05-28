@@ -13,8 +13,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application files
 COPY . .
 
-# Expose port 5000
-EXPOSE 5000
-
 # Start the Celery worker
 CMD ["celery", "-A", "tasks", "worker", "--loglevel=info"]
