@@ -13,8 +13,5 @@ RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
 # Copy the rest of the application files
 COPY . .
 
-# Expose port 8080
-EXPOSE 8080
-
 # Start the API server
-CMD ["waitress-serve", "--port=8080", "app:app"]
+CMD ["waitress-serve", "--port=$PORT", "app:app"]

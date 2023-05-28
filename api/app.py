@@ -1,4 +1,5 @@
 import orjson
+import os
 import cryptocode
 
 from datetime import datetime
@@ -105,4 +106,5 @@ def internal_server_error(e):
 
 if __name__ == "__main__":
     from waitress import serve
-    serve(app, listen='*:8080')
+    port = os.getenv('PORT')
+    serve(app, listen='*:' + port)
