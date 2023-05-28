@@ -1,6 +1,8 @@
 # Last stable Python version
 FROM python:3-alpine
 
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev
+
 # Create application directory and move there
 WORKDIR /app
 
