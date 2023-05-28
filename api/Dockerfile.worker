@@ -5,11 +5,10 @@ FROM python:3-alpine
 WORKDIR /app
 
 # Copy requirements file from the host to the container
-COPY requirements ./
+COPY requirements.txt ./
 
 # Install these requirements
 RUN pip install --no-cache-dir -r requirements
-RUN pip install waitress
 
 # Copy the rest of the application files
 COPY . .
@@ -17,5 +16,5 @@ COPY . .
 # Expose port 5000
 EXPOSE 5000
 
-# Start the API server
-CMD ["waitress-serve", "--port=8080", "app:app"]
+# Start the Celery worker
+CMD ["celery", "-A", "tasks", "worker", "--loglevel=info"]
