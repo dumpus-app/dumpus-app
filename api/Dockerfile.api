@@ -8,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt ./
 
 # Install these requirements
-RUN pip install --no-cache-dir -r requirements
+RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install waitress
 
 # Copy the rest of the application files
