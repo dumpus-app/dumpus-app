@@ -92,4 +92,5 @@ def get_package_data(package_id):
     return jsonify(package_status), 200
 
 if __name__ == "__main__":
-    app.run(port=5500)
+    from waitress import serve
+    serve(app, listen='*:8080')
