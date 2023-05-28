@@ -93,7 +93,7 @@ def get_package_data(package_id):
 
 @app.route('/health', methods=['GET'])
 def health_check():
-    return jsonify({'status': 'healthy'}), 200
+    return '', 200
 
 @app.errorhandler(404)
 def page_not_found(e):
