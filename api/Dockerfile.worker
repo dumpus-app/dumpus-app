@@ -1,6 +1,9 @@
 # Last stable Python version
 FROM python:3.10-slim-buster
 
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
 # Create application directory and move there
 WORKDIR /app
 

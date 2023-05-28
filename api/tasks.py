@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+import subprocess
+
 import pandas as pd
 from distutils.command.config import config
 import re
@@ -52,19 +54,10 @@ def download_file(package_id, link):
 
     print('downloading')
     update_step(package_id, 'downloading')
-    with requests.get(link, stream=True, timeout=(5.0, 30.0)) as r:
-        r.raise_for_status()
-        with open(path, 'wb') as f:
-            total_length = int(r.headers.get('Content-Length'))
-            print(f'Total length: {total_length}')
-            dl = 0
-            for chunk in r.iter_content(chunk_size=8192):
-                dl += len(chunk)
-                percent = round(dl / total_length) * 100
-                if percent % 10 == 0:
-                    update_progress(package_id, percent)
-                f.write(chunk)
-            done = True
+    command = f"curl -L -o {path} {link}"
+
+    process = subprocess.Popen(command, shell=True)
+    process.wait()
     return path
 
 def read_analytics_file(package_id, link):
