@@ -44,7 +44,7 @@ def fetch_package_data(package_id, auth_upn):
             'message': 'This link has not been analyzed yet.',
         }
 
-@app.route('/api/process', methods=['POST'])
+@app.route('/process', methods=['POST'])
 def process_link():
     # Get link from body
     link = request.json['package_link']
@@ -70,12 +70,12 @@ def process_link():
     # Send a successful response
     return jsonify({'success': 'Started processing your link.'}), 200
 
-@app.route('/api/process/<package_id>/status', methods=['GET'])
+@app.route('/process/<package_id>/status', methods=['GET'])
 def get_package_status(package_id):
     package_status = fetch_package_status(package_id)
     return jsonify(package_status), 200
 
-@app.route('/api/process/<package_id>/data', methods=['GET'])
+@app.route('/process/<package_id>/data', methods=['GET'])
 def get_package_data(package_id):
 
     # Get authorization bearer token
@@ -90,6 +90,18 @@ def get_package_data(package_id):
     
     package_status = fetch_package_data(package_id, auth_upn)
     return jsonify(package_status), 200
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({'error': 'Route not found.'}), 404
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify({'error': 'Internal server error.'}), 500
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'healthy'}), 200
 
 if __name__ == "__main__":
     from waitress import serve

@@ -50,10 +50,10 @@ Why not encrypt the whole package? We need to perform many computations on the d
 
 Header required for each request: `Authorization`: `Bearer <upn>`
 
-* `POST /api/process`: Starts the processing of the package and returns the package ID with the decryption key. (WITHOUT AUTHORIZATION HEADER)
+* `POST /process`: Starts the processing of the package and returns the package ID with the decryption key. (WITHOUT AUTHORIZATION HEADER)
     * body: JSON object containg a `package_link` property with the discord.click link. 
-* `GET /api/process/<package_id>/status`: Returns the status of the processing package.
-* `GET /api/process/<package_id>/database`: Returns the package data in SQLite format.
+* `GET /process/<package_id>/status`: Returns the status of the processing package.
+* `GET /process/<package_id>/database`: Returns the package data in SQLite format.
 
 ### Database
 
@@ -77,7 +77,7 @@ SELECT name, avatar_url FROM guilds
 
 ## Troubleshooting
 
-* Server does not respond after `POST /api/process`. Try to remove this property from the celeryconfig.py file.
+* Server does not respond after `POST /process`. Try to remove this property from the celeryconfig.py file.
 ```
 broker_use_ssl={
     'ssl_cert_reqs': None
