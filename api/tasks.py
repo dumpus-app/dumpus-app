@@ -286,7 +286,7 @@ def read_analytics_file(package_id, link):
             read_csv_times.append(read_time_diff)
             compute_time_start = time.time()
             compute_1_time_start = time.time()
-            message_csv['Timestamp'] = pd.to_datetime(message_csv['Timestamp']).apply(lambda x: x.timestamp())
+            message_csv['Timestamp'] = pd.to_datetime(message_csv['Timestamp'], format="mixed").apply(lambda x: x.timestamp())
             message_csv.rename(columns={'Contents': 'content', 'Timestamp': 'timestamp'}, inplace=True)
             messages = message_csv.to_dict('records')
             messages.sort(key=lambda message: message['timestamp'])
