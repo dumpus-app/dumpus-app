@@ -1,7 +1,5 @@
 # Last stable Python version
-FROM python:3-alpine
-
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev g++
+FROM python:3.10-slim-buster
 
 # Create application directory and move there
 WORKDIR /app

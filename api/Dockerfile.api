@@ -1,7 +1,5 @@
 # Last stable Python version
-FROM python:3-alpine
-
-RUN apk add --no-cache --virtual .build-deps gcc musl-dev g++
+FROM python:3.10-slim-buster
 
 # Create application directory and move there
 WORKDIR /app
@@ -10,7 +8,7 @@ WORKDIR /app
 COPY requirements.txt ./
 
 # Install these requirements
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
 RUN pip install waitress
 
 # Copy the rest of the application files
