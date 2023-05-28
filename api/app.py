@@ -91,6 +91,10 @@ def get_package_data(package_id):
     package_status = fetch_package_data(package_id, auth_upn)
     return jsonify(package_status), 200
 
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'healthy'}), 200
+
 @app.errorhandler(404)
 def page_not_found(e):
     return jsonify({'error': 'Route not found.'}), 404
@@ -98,10 +102,6 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return jsonify({'error': 'Internal server error.'}), 500
-
-@app.route('/health', methods=['GET'])
-def health_check():
-    return jsonify({'status': 'healthy'}), 200
 
 if __name__ == "__main__":
     from waitress import serve
