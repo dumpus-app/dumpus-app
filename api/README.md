@@ -53,7 +53,7 @@ One header is required for all the requests except the `POST /process` one:
 Authorization: Bearer <UPN_KEY>
 ```
 
-* `POST /process`: Starts the processing of the package and returns the package ID with the decryption key. (WITHOUT AUTHORIZATION HEADER)
+* `POST /process`: Starts the processing of the package and returns the package ID with the decryption key.
     * body: JSON object containg a `package_link` property with the discord.click link. 
 * `GET /process/<package_id>/status`: Returns the status of the processing package.
 * `GET /process/<package_id>/data`: Returns the package data in SQLite format.
