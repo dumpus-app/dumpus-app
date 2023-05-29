@@ -30,7 +30,7 @@ import sqlite3
 
 import base64
 
-from db import update_progress, update_step, SavedPackageData, session
+from db import update_progress, update_step, SavedPackageData, Session
 from util import (
     # discord utilities
     extract_key_from_discord_link,
@@ -43,7 +43,7 @@ from util import (
 
 app = Celery(config_source='celeryconfig')
 
-def download_file(package_id, link):
+def download_file(package_id, link, session):
     # check if file exists in tmp
     path = f'tmp/{package_id}.zip'
     try:
@@ -53,16 +53,16 @@ def download_file(package_id, link):
         pass
 
     print('downloading')
-    update_step(package_id, 'downloading')
+    update_step(package_id, 'downloading', session)
     command = f"curl -L -o {path} {link}"
 
     process = subprocess.Popen(command, shell=True)
     process.wait()
     return path
 
-def read_analytics_file(package_id, link):
-    update_step(package_id, 'analyzing')
-    update_progress(package_id, 0)
+def read_analytics_file(package_id, link, session):
+    update_step(package_id, 'analyzing', session)
+    update_progress(package_id, 0, session)
 
     start = time.time()
 
@@ -547,15 +547,16 @@ def read_analytics_file(package_id, link):
     session.add(SavedPackageData(package_id=package_id, data=data))
     session.commit()
 
-    update_step(package_id, 'processed')
+    update_step(package_id, 'processed', session)
 
     return analytics_line_count
 
 @app.task()
 def handle_package(package_id, link):
     print(f'handling package {package_id} with link {link}')
-    download_file(package_id, link),
-    read_analytics_file(package_id, link)
+    session = Session()
+    download_file(package_id, link, session),
+    read_analytics_file(package_id, link, session)
 
 # todo
 # verify that file exists before reading

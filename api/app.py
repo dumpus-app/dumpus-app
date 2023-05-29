@@ -9,14 +9,14 @@ from flask_cors import CORS, cross_origin
 # make sure tasks is imported before db
 # as env is loaded from tasks (so the celery worker can use it)
 from tasks import handle_package
-from db import PackageProcessStatus, SavedPackageData, session
+from db import PackageProcessStatus, SavedPackageData, Session
 
 from util import check_discord_link, extract_key_from_discord_link, extract_package_id_from_discord_link, ts_included_in_range
 
 app = Flask(__name__)
 CORS(app)
 
-def fetch_package_status(package_id):
+def fetch_package_status(package_id, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if status:
         return {
@@ -29,7 +29,7 @@ def fetch_package_status(package_id):
             'message': 'This link has not been analyzed yet.',
         }
     
-def fetch_package_data(package_id, auth_upn):
+def fetch_package_data(package_id, auth_upn, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if status and status.step == 'processed':
         result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
@@ -63,6 +63,7 @@ def process_link():
             'status': package_stats['status'],
             'message': 'This link has already been submitted.'
         })
+    session = Session()
     package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
     session.add(package_process_status)
     session.commit()
@@ -73,7 +74,8 @@ def process_link():
 
 @app.route('/process/<package_id>/status', methods=['GET'])
 def get_package_status(package_id):
-    package_status = fetch_package_status(package_id)
+    session = Session()
+    package_status = fetch_package_status(package_id, session)
     return jsonify(package_status), 200
 
 @app.route('/process/<package_id>/data', methods=['GET'])
@@ -89,7 +91,8 @@ def get_package_data(package_id):
     # remove bearer
     auth_upn = auth_header.split(' ')[1]
     
-    package_status = fetch_package_data(package_id, auth_upn)
+    session = Session()
+    package_status = fetch_package_data(package_id, auth_upn, session)
     return jsonify(package_status), 200
 
 @app.route('/health', methods=['GET'])

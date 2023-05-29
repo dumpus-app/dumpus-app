@@ -31,9 +31,8 @@ class PackageProcessStatus(Base):
 Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
-session = Session()
 
-def update_progress (package_id, current_progress):
+def update_progress (package_id, current_progress, session):
     print(f'updating progress {current_progress*100}% (package_id: {package_id})')
     package = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if package:
@@ -41,7 +40,7 @@ def update_progress (package_id, current_progress):
         package.updated_at = datetime.now()
         session.commit()
 
-def update_step (package_id, step):
+def update_step (package_id, step, session):
     print(f'updating step {step} (package_id: {package_id})')
     package = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if package:
