@@ -555,8 +555,11 @@ def read_analytics_file(package_id, link, session):
 def handle_package(package_id, link):
     print(f'handling package {package_id} with link {link}')
     session = Session()
-    download_file(package_id, link, session),
-    read_analytics_file(package_id, link, session)
+    try:
+        download_file(package_id, link, session)
+        read_analytics_file(package_id, link, session)
+    finally:
+        session.close()
 
 # todo
 # verify that file exists before reading

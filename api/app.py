@@ -67,6 +67,7 @@ def process_link():
     package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
     session.add(package_process_status)
     session.commit()
+    session.close()
     # Process the link
     handle_package.apply_async(args=[package_id, link])
     # Send a successful response
@@ -76,6 +77,7 @@ def process_link():
 def get_package_status(package_id):
     session = Session()
     package_status = fetch_package_status(package_id, session)
+    session.close()
     return jsonify(package_status), 200
 
 @app.route('/process/<package_id>/data', methods=['GET'])
@@ -93,6 +95,7 @@ def get_package_data(package_id):
     
     session = Session()
     package_status = fetch_package_data(package_id, auth_upn, session)
+    session.close()
     return jsonify(package_status), 200
 
 @app.route('/health', methods=['GET'])
