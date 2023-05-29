@@ -17,4 +17,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Start the Celery worker
+# celery -A tasks worker --loglevel=info
 CMD ["celery", "-A", "tasks", "worker", "--loglevel=info"]
