@@ -1,6 +1,6 @@
 # Dumpus API
 
-API to extract statistics from the Discord GDPR links. Completely open-source, self-hostable and documented.
+API to extract statistics from the Discord Data Packages (GDPR packages), that can be obtained from Privacy & Safety settings. This API is completely open-source, self-hostable and documented.
 
 ## Architecture Documentation
 
