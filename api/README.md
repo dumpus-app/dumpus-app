@@ -7,14 +7,14 @@ Terminologie :
 
 ## Architecture Documentation
 
-Because a picture is worth a thousand words, you'll find a diagram of the Dumpus architecture below.  
+Because a picture is worth a thousand words, you will find a diagram of the Dumpus architecture below.  
 
 It has been adapted to meet the following constraints:
-* users' Discord Data Package must be **entirely** encrypted on the server side
-* the encryption key must **always** remain on the client side, and must **never** be stored on the server side
-* Discord Data Package processing must be **fast** and **parallelizable**.
+* users' Discord Data Package must be **entirely** encrypted on the server side.
+* the encryption key must **always** remain on the client side, and must **never** be stored on the server side.
+* Discord Data Package processing must be **fast** and **scalable**.
 
-In short, Dumpus administrators, or users providing their own Dumpus instance, must **never** have access to users' Discord Data Packages, even if the server is compromised.
+In short, Dumpus admins, or users providing their own Dumpus instance, must **never** have access to users' Discord Data Packages, even if the server is compromised.
 
 A Discord Data Package download link consists of a **UPN KEY**. It is therefore possible to download the Discord Data Package from the UPN KEY.
 ```
@@ -36,7 +36,7 @@ To do this, two Dockerfiles are required:
 
 * `Dockerfile.api`: contains the API shown in blue on the diagram above. Only one instance is required. It must be accessible from a URL that must be entered in the official Dumpus client.
 
-* Dockerfile.worker`: contains the code used to process Discord data packets. Multiple instances can be launched, but a single instance is sufficient for personal use.
+* `Dockerfile.worker`: contains the code used to process Discord data packets. Multiple instances can be launched, but a single instance is sufficient for personal use.
 
 You'll also need a PostgreSQL database and a Redis database. The two Docker containers above will need two environment variables to run:
 ```
