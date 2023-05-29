@@ -2,60 +2,64 @@
 
 API to handle Discord GDPR links sent from the Dumpus app.
 
-Table:
-* [Requirements](#requirements)
-* [Data encryption](#data-encryption)
-* [API Endpoints](#api-endpoints)
-    * [Package](#package)
-    * [General stats](#general-stats)
-    * [Top](#top)
+Terminologie :
+* Discord Data Package : le paquet de données que Discord vous envoie lorsque vous faites une demande de données personnelles
 
-## Requirements
+## Architecture Documentation
 
-* RabbitMQ (docker `rabbitmq:3.10-management`)
-* Redis (docker `redis:6.2.7`)
+Because a picture is worth a thousand words, you'll find a diagram of the Dumpus architecture below.  
 
-### Start Celery workers
+It has been adapted to meet the following constraints:
+* users' Discord Data Package must be **entirely** encrypted on the server side
+* the encryption key must **always** remain on the client side, and must **never** be stored on the server side
+* Discord Data Package processing must be **fast** and **parallelizable**.
 
-* Start flower worker to monitor the celery ones.
---> `celery --app tasks flower --port=5566`
+In short, Dumpus administrators, or users providing their own Dumpus instance, must **never** have access to users' Discord Data Packages, even if the server is compromised.
 
-* Start celery worker for packages.
---> `celery --app tasks worker --loglevel INFO --queues default --hostname worker-default@%h`
+A Discord Data Package download link consists of a **UPN KEY**. It is therefore possible to download the Discord Data Package from the UPN KEY.
+```
+https://click.discord.com/ls/click?upn={UPN_KEY}
+```
 
-We will only use a single task that will handle the downloading and the parsing, as they have to be executed on the same server.
+Thus:
+* a Discord Data Package identifier is created from a function that hashes the package's UPN KEY (called `package_id`).
+* when a Discord Data Package is to be stored in a database, it is encrypted with its UPN KEY.
+* when the client queries the server, it must always provide its UPN KEY to prove that it is the owner of the Discord Data Package, and to enable the server to return the decrypted data (if the client makes a data request).
 
-## Data encryption
+![architecture](./architecture.png)
 
-Security is the key here. Dumpus splits the package data in two parts, sensitive (encrypted) and non-sensitive data.
+### Start a custom instance
 
-**Package ID** is the MD5 hash of the full Discord link (UPN), used to identify the package in the database.  
-**Package sensitive data** is encrypted on the server side using the Discord link as the key (UPN).
+Anyone can host their own Dumpus instance. The official Dumpus client can then be configured to use it.
 
-**Sensitive Data**:
-* First 10 messages of each text channel (including content)
+To do this, two Dockerfiles are required:
 
-**Non-sensitive Data**:
-* User information (username, discriminator, avatar, etc.)
-* General statistics (guild count, top hours, etc.)
-* Top guilds, channels and DMs (name, message count, etc.)
+* `Dockerfile.api`: contains the API shown in blue on the diagram above. Only one instance is required. It must be accessible from a URL that must be entered in the official Dumpus client.
 
-The Discord link is **NEVER** stored in the database. Therefore, you always need to specify the full Discord link when making a request to the API, as it is the only way to decrypt the sensitive data.
+* Dockerfile.worker`: contains the code used to process Discord data packets. Multiple instances can be launched, but a single instance is sufficient for personal use.
 
-Why not encrypt the whole package? We need to perform many computations on the data (depending on the asked period of time, etc.) thanks to optimized SQL queries, and we can't do that if the data is encrypted. Therefore, we only encrypt the sensitive data, and we keep the non-sensitive data in plain text.
+You'll also need a PostgreSQL database and a Redis database. The two Docker containers above will need two environment variables to run:
+```
+POSTGRES_URL=postgresql://<user>:<password>@<host>:<port>/<database>
+REDIS_URL=redis://<host>:<port>
+```
 
-## API Endpoints
+The `Dockerfile.flower` is used to launch an instance of Flower, a web interface for monitoring workers. It is not necessary to launch this instance for personal use.
 
-**NOTE: THESE ROUTES ARE NOT FINAL AT ALL AND WILL CHANGE WITHIN THE NEXT 5-6 DAYS**
+## API Documentation
 
-Header required for each request: `Authorization`: `Bearer <upn>`
+One header is required for all the requests except the `POST /process` one:
+```
+Authorization: Bearer <UPN_KEY>
+```
 
 * `POST /process`: Starts the processing of the package and returns the package ID with the decryption key. (WITHOUT AUTHORIZATION HEADER)
     * body: JSON object containg a `package_link` property with the discord.click link. 
 * `GET /process/<package_id>/status`: Returns the status of the processing package.
-* `GET /process/<package_id>/database`: Returns the package data in SQLite format.
+* `GET /process/<package_id>/data`: Returns the package data in SQLite format.
+* `POST /delete/<package_id>`: Deletes the package from the database.
 
-### Database
+### SQLite Database Documentation
 
 #### Statistics
 
@@ -83,3 +87,6 @@ broker_use_ssl={
     'ssl_cert_reqs': None
 }
 ```
+
+* API server is crashing and say that Postgres is not supported.  
+Make sure that your PostgreSQL server URL starts with **postgresql://** and not **postgres://**, which is no longer supported by SQLAlchemy.

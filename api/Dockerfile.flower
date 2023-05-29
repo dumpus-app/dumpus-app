@@ -1,0 +1,21 @@
+# Last stable Python version
+FROM python:3.10-slim-buster
+
+# Install curl
+RUN apt-get update && apt-get install -y curl
+
+# Create application directory and move there
+WORKDIR /app
+
+# Copy requirements file from the host to the container
+COPY requirements.txt ./
+
+# Install these requirements
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application files
+COPY . .
+
+# Start the Celery worker
+# celery -A tasks flower --port=5566
+CMD ["celery", "-A", "tasks", "flower", "--port=5566"]
