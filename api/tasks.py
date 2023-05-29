@@ -464,6 +464,7 @@ def read_analytics_file(package_id, link, session):
 
         ch_data = next(filter(lambda x: x['id'] == channel['channel_id'], channels), None)
         if not ch_data:
+            print(f'Channel not found: {channel["total_message_count"]}')
             continue
 
         if 'dm_user_id' in channel:

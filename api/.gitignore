@@ -9,3 +9,6 @@ test/*
 
 # Env
 .env
+
+# Data
+scripts/res.txt

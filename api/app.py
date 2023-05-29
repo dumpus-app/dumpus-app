@@ -47,6 +47,7 @@ def fetch_package_data(package_id, auth_upn, session):
 
 @app.route('/process', methods=['POST'])
 def process_link():
+    print(f'processing link')
     # Get link from body
     link = request.json['package_link']
     if not link:
@@ -56,14 +57,16 @@ def process_link():
         return jsonify({'error': 'Not a discord link.'}), 400
     # Link to md5
     package_id = extract_package_id_from_discord_link(link)
+    print(f'making sure link is not already processed (package_id: {package_id})')
     # Get package status
-    package_stats = fetch_package_status(package_id)
+    session = Session()
+    package_stats = fetch_package_status(package_id, session)
     if package_stats['status'] != 'unknown':
         return jsonify({
             'status': package_stats['status'],
             'message': 'This link has already been submitted.'
         })
-    session = Session()
+    print(f'order taken, started processing (package_id: {package_id})')
     package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
     session.add(package_process_status)
     session.commit()
@@ -109,7 +112,3 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return jsonify({'error': 'Internal server error.'}), 500
-
-if __name__ == "__main__":
-    from waitress import serve
-    serve(app, listen='*:5000')
