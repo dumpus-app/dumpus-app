@@ -1,9 +1,6 @@
 # Dumpus API
 
-API to handle Discord GDPR links sent from the Dumpus app.
-
-Terminologie :
-* Discord Data Package : le paquet de données que Discord vous envoie lorsque vous faites une demande de données personnelles
+API to extract statistics from the Discord GDPR links. Completely open-source, self-hostable and documented.
 
 ## Architecture Documentation
 
