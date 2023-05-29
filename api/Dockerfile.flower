@@ -16,6 +16,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application files
 COPY . .
 
-# Start the Celery worker
+# Expose UI port
+EXPOSE 5566
+
+# Start the Celery flower
 # celery -A tasks flower --port=5566
 CMD ["celery", "-A", "tasks", "flower", "--port=5566"]
