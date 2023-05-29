@@ -1,23 +1,26 @@
 # Base image: Node LTS
 FROM node:lts-alpine
 
+# Install PNPM
+RUN npm install -g pnpm
+
 # Create application directory and move there
 WORKDIR /app
 
-# Copy package.json and package-lock.json from the host to the container
-COPY package.json package-lock.json ./
+# Copy package.json and pnpm-lock.yaml from the host to the container
+COPY package.json pnpm-lock.yaml ./
 
 # Install dependencies
-RUN npm ci
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . .
 
 # Build the app
-RUN npm run build
+RUN pnpm run build
 
 # Expose the port
 EXPOSE 3000
 
 # Start the server
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
