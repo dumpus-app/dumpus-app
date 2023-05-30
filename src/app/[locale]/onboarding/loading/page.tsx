@@ -34,15 +34,15 @@ export default function Page() {
   useEffect(() => {
     init();
     setReady(true);
-    router.push(`/${i18next.language}/overview`);
+    // router.push(`/${i18next.language}/overview`);
   }, [init, router]);
 
-  // return (
-  //   <div>
-  //     <div>Onboarding loading...</div>
-  //     {ready && <DataDisplay />}
-  //   </div>
-  // );
+  return (
+    <div>
+      <div>Onboarding loading...</div>
+      {ready && <DataDisplay />}
+    </div>
+  );
 
   return (
     <div className="flex flex-col items-center space-y-4">
