@@ -21,7 +21,7 @@ export default async function Page({ params: { locale } }: PageProps) {
         description="@florian-lefebvre"
         title="Florian Lefebvre"
         imageSlot={
-          <div className="relative h-16 w-16 sm:h-32 sm:w-32">
+          <div className="relative h-24 w-24 sm:h-32 sm:w-32">
             <Image
               src="https://cdn.discordapp.com/embed/avatars/0.png"
               alt="Avatar"
