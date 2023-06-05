@@ -16,7 +16,7 @@ export default async function Page({ params: { locale } }: PageProps) {
       <PageHeader />
       <About />
       <Packages />
-      <div className="flex flex-col space-x-2 px-2 desktop-container sm:flex-row">
+      <div className="flex flex-col desktop-container sm:flex-row sm:space-x-2 sm:px-2">
         <Languages />
         <DangerZone />
       </div>
