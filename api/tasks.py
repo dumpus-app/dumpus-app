@@ -1,23 +1,19 @@
 from dotenv import load_dotenv
 load_dotenv()
 
+from celery import Celery
+
 import subprocess
 
 import pandas as pd
-from distutils.command.config import config
 import re
 import time
-from celery import Celery
 
 from datetime import datetime
-from collections import Counter
 from itertools import groupby
-
-import tempfile
 
 # Read JSON
 import orjson
-import cryptocode
 
 from crypto import encrypt_sqlite_data
 
@@ -25,11 +21,10 @@ from crypto import encrypt_sqlite_data
 from zipfile import ZipFile
 from io import TextIOWrapper
 
-# Re-zip database
+# Export database
 import gzip
 import sqlite3
-
-import base64
+import tempfile
 
 from db import update_progress, update_step, SavedPackageData, Session
 from util import (
@@ -81,6 +76,8 @@ def read_analytics_file(package_id, link, session):
 
     dms_channels_data = []
     guild_channels_data = []
+    
+    channels_messages = []
 
     # Voice Channels Logs, used to compute duration later
     voice_channel_logs = []
@@ -532,17 +529,22 @@ def read_analytics_file(package_id, link, session):
     cur.executemany(guild_query, guild_data)
     cur.executemany(payment_query, payments_data)
     cur.executemany(voice_session_query, voice_session_data)
+
+    cur.execute('VACUUM;')
+
     conn.commit()
 
-    with tempfile.TemporaryFile() as tempf:
+    with tempfile.NamedTemporaryFile() as tempf:
         with sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True) as disk_db:
             conn.backup(disk_db)
 
         tempf.seek(0)
         sqlite_buffer = tempf.read()
 
+        zipped_buffer = gzip.compress(sqlite_buffer)
+
         key = extract_key_from_discord_link(link)
-        (data, iv) = encrypt_sqlite_data(sqlite_buffer, key)
+        (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
 
         session.add(SavedPackageData(package_id=package_id, data=data, iv=iv))
         session.commit()

@@ -107,7 +107,7 @@ Current error message codes:
 
 * `GET /process/<package_id>/data`
 
-Response: the Discord Data Package SQLite database (binary), decrypted.
+Response: the Discord Data Package SQLite database (GZIP of the binary SQLite file), decrypted.
 
 Status codes:
 * `200`: the data is available and has been returned.

@@ -11,13 +11,14 @@ from itertools import groupby
 
 # Read JSON
 import orjson
-import cryptocode
+from crypto import encrypt_sqlite_data, decrypt_sqlite_data
 
 # Unzip
 from zipfile import ZipFile
 from io import TextIOWrapper
 
 import sqlite3
+import tempfile
 import gzip
 
 import base64
@@ -497,24 +498,42 @@ def parse():
     cur.executemany(voice_session_query, voice_session_data)
     conn.commit()
 
-    sql_string = '\n'.join(conn.iterdump())
-    sql_string_compressed_bytes = gzip.compress(bytes(sql_string, 'utf-8'))
-    
-    # convert the compressed bytes to a base64-encoded string
-    sql_string_compressed = base64.b64encode(sql_string_compressed_bytes).decode('utf-8')
+    cur.execute('VACUUM;')
+    conn.commit()
 
-    key = 'random key'
-    data = cryptocode.encrypt(sql_string_compressed, key)
+    key = 'test'
+    iv = None
+
+    with tempfile.NamedTemporaryFile(delete=True) as tempf:
+        print(tempf.name)
+        with sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True) as disk_db:
+            conn.backup(disk_db)
+
+        tempf.seek(0)
+        sqlite_buffer = tempf.read()
+
+        zipped_buffer = gzip.compress(sqlite_buffer)
+        (data, _iv) = encrypt_sqlite_data(zipped_buffer, key)
+
+        iv = _iv
+
+        # write to file
+        with open('test.db', 'wb') as f:
+            f.write(data)
+
+    with open('test.db', 'rb') as f:
+        data = f.read()
+        d = decrypt_sqlite_data(data, iv, key)
+        unzipped_buffer = gzip.decompress(d)
+        with open('test_decrypt.db', 'wb') as f2:
+            f2.write(unzipped_buffer)
 
     print(f'SQLite serialization: {time.time() - start}')
 
-    # write to file
-    with open('analytics.sql', 'w') as f:
-        f.write(sql_string)
-
-    with open('analytics.sql.gz', 'w') as f:
-        f.write(data)
+    # insert into db
+    
 
     return analytics_line_count
+
 
 parse()
