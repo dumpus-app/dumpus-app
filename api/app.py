@@ -113,7 +113,7 @@ def get_package_status(package_id):
         res['processingQueuePosition']['total'] = package_rank[1]
         res['processingQueuePosition']['totalWhenStarted'] = package_status.total_queue_when_started
 
-    return jsonify(package_status), 200
+    return jsonify(res), 200
 
 @app.route('/process/<package_id>/data', methods=['GET'])
 def get_package_data(package_id):
