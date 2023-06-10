@@ -6,9 +6,11 @@ __pycache__
 test.zip
 *.zip
 test/*
+node_test
 
 # Env
 .env
 
 # Data
 scripts/res.txt
+*.db

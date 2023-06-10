@@ -513,6 +513,7 @@ def parse():
         sqlite_buffer = tempf.read()
 
         zipped_buffer = gzip.compress(sqlite_buffer)
+
         (data, _iv) = encrypt_sqlite_data(zipped_buffer, key)
 
         iv = _iv
@@ -524,9 +525,9 @@ def parse():
     with open('test.db', 'rb') as f:
         data = f.read()
         d = decrypt_sqlite_data(data, iv, key)
-        unzipped_buffer = gzip.decompress(d)
+        #unzipped_buffer = gzip.decompress(d)
         with open('test_decrypt.db', 'wb') as f2:
-            f2.write(unzipped_buffer)
+            f2.write(d)
 
     print(f'SQLite serialization: {time.time() - start}')
 
