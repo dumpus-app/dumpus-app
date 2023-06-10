@@ -16,6 +16,8 @@ def get_base_status_response():
         "isDataAvailable": False,
 
         "isUpgraded": False,
+
+        "isErrored": False,
         "errorMessageCode": None,
 
         "isProcessing": False,
@@ -110,6 +112,10 @@ def get_package_status(package_id):
         return jsonify(res), 200
 
     res['isUpgraded'] = package_status.is_upgraded
+    res['isErrored'] = package_status.is_errored
+
+    if package_status.is_errored:
+        res['errorMessageCode'] = package_status.error_message_code
 
     if package_status.step == 'processed':
         res['isDataAvailable'] = True
