@@ -76,7 +76,7 @@ def process_link():
     if existing_package_process_status:
         return jsonify(res), 200
 
-    package_process_status = PackageProcessStatus(package_id=package_id, step='locked')
+    package_process_status = PackageProcessStatus(package_id=package_id, step='LOCKED')
     session.add(package_process_status)
     session.commit()
 

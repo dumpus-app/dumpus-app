@@ -107,6 +107,12 @@ Current error message codes:
 * `UNAUTHORIZED`: the UPN KEY provided in the Authorization header is not valid.
 * `EXPIRED_LINK`: the link provided is a valid Discord Data Package link, but it has expired.
 
+Available steps:
+* `LOCKED`: the package is locked, meaning it is waiting for a worker to process it. It can still be aborted by calling the DELETE endpoint.
+* `DOWNLOADING`: the package is being downloaded from Discord's servers.
+* `ANALYZING`: the package is being analyzed to determine the number of messages, channels, etc.
+* `PROCESSED`: the package has been processed and the data is available.
+
 ### Fetch a package data
 
 * `GET /process/<package_id>/data`

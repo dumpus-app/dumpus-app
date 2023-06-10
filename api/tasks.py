@@ -58,7 +58,7 @@ def download_file(package_id, link, session):
         raise Exception('EXPIRED_LINK')
 
     print('downloading')
-    update_step(package_id, 'downloading', session)
+    update_step(package_id, 'DOWNLOADING', session)
     command = f"curl -L -o {path} {link}"
 
     process = subprocess.Popen(command, shell=True)
@@ -67,7 +67,7 @@ def download_file(package_id, link, session):
     return path
 
 def read_analytics_file(package_id, link, session):
-    update_step(package_id, 'analyzing', session)
+    update_step(package_id, 'ANALYZING', session)
     update_progress(package_id, 0, session)
 
     start = time.time()
@@ -563,7 +563,7 @@ def read_analytics_file(package_id, link, session):
 
     # insert into db
     
-    update_step(package_id, 'processed', session)
+    update_step(package_id, 'PROCESSED', session)
 
     return analytics_line_count
 
