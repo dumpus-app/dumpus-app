@@ -2,6 +2,14 @@
 
 API to extract statistics from the Discord Data Packages (GDPR packages). This API is completely open-source, self-hostable and documented.
 
+## Table of Contents
+
+* [Architecture Documentation](#architecture-documentation)
+* [Start a custom instance](#start-a-custom-instance)
+* [API Documentation](#api-documentation)
+* [SQLite Database Documentation](#sqlite-database-documentation)
+* [Troubleshooting](#troubleshooting)
+
 ## Architecture Documentation
 
 Because a picture is worth a thousand words, you will find a diagram of the Dumpus architecture below.  
