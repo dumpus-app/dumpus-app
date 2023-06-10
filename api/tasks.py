@@ -583,7 +583,7 @@ def handle_package(package_id, link):
             e_traceback = ''.join(traceback.format_exception(etype=type(e), value=e, tb=e.__traceback__))
         session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).update({
             'is_errored': True,
-            'error_message': current,
+            'error_message_code': current,
             'error_message_traceback': e_traceback
         })
     finally:
