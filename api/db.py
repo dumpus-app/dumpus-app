@@ -28,8 +28,8 @@ class PackageProcessStatus(Base):
     step = Column(String(255), nullable=False)
     progress = Column(Integer, nullable=True)
     queue_total_when_started = Column(Integer, nullable=True)
-    queue_position_when_started = Column(Boolean, nullable=True)
-    is_upgraded = Column(Integer, nullable=False, default=False)
+    queue_position_when_started = Column(Integer, nullable=True)
+    is_upgraded = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 
