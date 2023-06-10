@@ -87,7 +87,7 @@ def get_package_status(package_id):
 
     res = get_base_status_response()
 
-    (is_auth,) = check_authorization_bearer(request, package_id)
+    (is_auth, _) = check_authorization_bearer(request, package_id)
     if not is_auth:
         res['errorMessageCode'] = 'UNAUTHORIZED'
         return jsonify(res), 401
