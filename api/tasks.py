@@ -4,6 +4,7 @@ load_dotenv()
 from celery import Celery
 
 import subprocess
+import traceback
 
 import pandas as pd
 import re
@@ -26,7 +27,7 @@ import gzip
 import sqlite3
 import tempfile
 
-from db import update_progress, update_step, SavedPackageData, Session
+from db import update_progress, update_step, SavedPackageData, Session, PackageProcessStatus
 from util import (
     # discord utilities
     extract_key_from_discord_link,
@@ -48,12 +49,21 @@ def download_file(package_id, link, session):
     except FileNotFoundError:
         pass
 
+    print('checking content type')
+    command = f"curl -L -I {link}"
+    process = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+    if "application/zip" not in process.stdout or "HTTP/2 400" in process.stdout:
+        print('The link does not point to a zip file.')
+        raise Exception('EXPIRED_LINK')
+
     print('downloading')
     update_step(package_id, 'downloading', session)
     command = f"curl -L -o {path} {link}"
 
     process = subprocess.Popen(command, shell=True)
     process.wait()
+
     return path
 
 def read_analytics_file(package_id, link, session):
@@ -564,6 +574,18 @@ def handle_package(package_id, link):
     try:
         download_file(package_id, link, session)
         read_analytics_file(package_id, link, session)
+    except Exception as e:
+        expected = ('EXPIRED_LINK')
+        current = str(e)
+        e_traceback = None
+        if expected not in current:
+            current = 'UNKNOWN_ERROR'
+            e_traceback = ''.join(traceback.format_exception(etype=type(e), value=e, tb=e.__traceback__))
+        session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).update({
+            'is_errored': True,
+            'error_message': current,
+            'error_message_traceback': e_traceback
+        })
     finally:
         session.close()
 

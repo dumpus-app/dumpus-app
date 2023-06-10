@@ -30,6 +30,9 @@ class PackageProcessStatus(Base):
     queue_total_when_started = Column(Integer, nullable=True)
     queue_position_when_started = Column(Integer, nullable=True)
     is_upgraded = Column(Boolean, nullable=False, default=False)
+    is_errored = Column(Boolean, nullable=False, default=False)
+    error_message_code = Column(String(255), nullable=True)
+    error_message_traceback = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 

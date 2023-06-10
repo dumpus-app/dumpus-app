@@ -103,6 +103,7 @@ Current error message codes:
 * `UNKNOWN_PACKAGE_ID`: for some reason, you are asking for the status of a package that does not exist in the database.
 * `SERVER_ERROR`: an unknown error occurred on the server side. Please contact us on GitHub or Discord.
 * `UNAUTHORIZED`: the UPN KEY provided in the Authorization header is not valid.
+* `EXPIRED_LINK`: the link provided is a valid Discord Data Package link, but it has expired.
 
 ### Fetch a package data
 
