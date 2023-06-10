@@ -60,7 +60,7 @@ def fetch_package_rank (package_id, package_status, session):
             where id < (select id from package_process_status where package_id = :package_id)
             and step <> 'processed'
             and is_upgraded is true;
-        """), package_id=package_id).fetchone()[0]
+        """).bindparams(package_id=package_id)).fetchone()[0]
         total_upgraded_row_count = session.execute(text("""
             select count(*) from package_process_status where step <> 'processed' and is_upgraded is true;
         """)).fetchone()[0]
