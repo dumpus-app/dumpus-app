@@ -27,8 +27,9 @@ class PackageProcessStatus(Base):
     package_id = Column(String(255), nullable=False)
     step = Column(String(255), nullable=False)
     progress = Column(Integer, nullable=True)
-    total_queue_when_started = Column(Integer, nullable=True)
-    is_upgraded = Column(Integer, nullable=True)
+    queue_total_when_started = Column(Integer, nullable=True)
+    queue_position_when_started = Column(Integer, nullable=True)
+    is_upgraded = Column(Integer, nullable=False, default=False)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 

@@ -91,9 +91,10 @@ Response:
     "isProcessing": true, // whether or not the package is still being processed
     "processingStep": "messages", // the current processing step
     "processingQueuePosition": {
-        "current": 12, // will decrease until 0
-        "totalWhenStarted": 100, // will not change
-        "total": 230 // will change
+        "user": 12, // will decrease until 0
+        "total": 230, // will change
+        "userWhenStarted": 20, // will not change
+        "totalWhenStarted": 200 // will not change
     }
 }
 ```

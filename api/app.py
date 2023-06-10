@@ -21,11 +21,12 @@ def get_base_status_response():
         "isProcessing": False,
         "processingStep": None,
         "processingQueuePosition": {
-            "current": 0,
-            "totalWhenStarted": 0,
-            "total": 0
+            "user": 0,
+            "total": 0,
+            "userWhenStarted": 0,
+            "totalWhenStarted": 0
+        }
     }
-}
 
 def get_base_process_response():
     return {
@@ -73,9 +74,16 @@ def process_link():
     if existing_package_process_status:
         return jsonify(res), 200
 
-    package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
+    package_process_status = PackageProcessStatus(package_id=package_id, step='locked')
     session.add(package_process_status)
     session.commit()
+
+    (queue_position, queue_total) = fetch_package_rank(package_id, package_process_status, session)
+
+    package_process_status.queue_position_when_started = queue_position
+    package_process_status.queue_total_when_started = queue_total
+    session.commit()
+
     session.close()
 
     handle_package.apply_async(args=[package_id, link], queue='regular_process')
@@ -109,8 +117,9 @@ def get_package_status(package_id):
     else:
         res['isProcessing'] = True
         res['processingStep'] = package_status.step
-        res['processingQueuePosition']['current'] = package_rank[0]
+        res['processingQueuePosition']['user'] = package_rank[0]
         res['processingQueuePosition']['total'] = package_rank[1]
+        res['processingQueuePosition']['userWhenStarted'] = package_status.queue_position_when_started
         res['processingQueuePosition']['totalWhenStarted'] = package_status.total_queue_when_started
 
     return jsonify(res), 200
