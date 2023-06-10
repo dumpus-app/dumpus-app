@@ -76,7 +76,7 @@ Current error message codes:
 
 Note: if the package was already processed previously, the API will not return a specific response. You will see that the isDataAvailable will be true in the first status response.
 
-### Fetching the package status
+### Fetch a package status
 
 * `GET /process/<package_id>/status`
 
@@ -103,13 +103,13 @@ Current error message codes:
 * `SERVER_ERROR`: an unknown error occurred on the server side. Please contact us on GitHub or Discord.
 
 
-### Fetch the package data
+### Fetch a package data
 
 * `GET /process/<package_id>/data`
 
 Response: the Discord Data Package SQLite database (binary), decrypted.
 
-### Delete and abort processing of a package
+### Delete a package (and abort the processing)
 
 * `DELETE /process/<package_id>`
 
