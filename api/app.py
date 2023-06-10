@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_file
 from flask_cors import CORS
 
 # make sure tasks is imported before db
@@ -128,8 +128,8 @@ def get_package_data(package_id):
     
     if not data:
         return 404
-
-    return data, 200
+    
+    return send_file(data, mimetype='application/octet-stream')
 
 @app.route('/health', methods=['GET'])
 def health_check():

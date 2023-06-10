@@ -1,8 +1,8 @@
-import cryptocode
+from crypto import decrypt_sqlite_data
 import os
 
 from datetime import datetime
-from sqlalchemy import create_engine, Column, Integer, String, DateTime
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func, text
 
@@ -15,7 +15,8 @@ class SavedPackageData(Base):
 
     id = Column(Integer, primary_key=True)
     package_id = Column(String(255), nullable=False)
-    data = Column(String(), nullable=False)
+    encrypted_data = Column(LargeBinary(), nullable=False)
+    iv = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 
@@ -83,5 +84,7 @@ def fetch_package_data(package_id, auth_upn, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
     if status and status.step == 'processed':
         result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
-        data = cryptocode.decrypt(result.data, auth_upn)
-        return data
+        encrypted_data = result.encrypted_data
+        iv = result.iv
+        sqlite_buffer = decrypt_sqlite_data(encrypted_data, iv, auth_upn)
+        return sqlite_buffer

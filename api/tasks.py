@@ -13,12 +13,13 @@ from datetime import datetime
 from collections import Counter
 from itertools import groupby
 
-# Download File
-import requests
+import tempfile
 
 # Read JSON
 import orjson
 import cryptocode
+
+from crypto import encrypt_sqlite_data
 
 # Unzip
 from zipfile import ZipFile
@@ -533,21 +534,23 @@ def read_analytics_file(package_id, link, session):
     cur.executemany(voice_session_query, voice_session_data)
     conn.commit()
 
-    sql_string = '\n'.join(conn.iterdump())
-    sql_string_compressed_bytes = gzip.compress(bytes(sql_string, 'utf-8'))
-    
-    # convert the compressed bytes to a base64-encoded string
-    sql_string_compressed = base64.b64encode(sql_string_compressed_bytes).decode('utf-8')
+    with tempfile.TemporaryFile() as tempf:
+        with sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True) as disk_db:
+            conn.backup(disk_db)
 
-    key = extract_key_from_discord_link(link)
-    data = cryptocode.encrypt(sql_string_compressed, key)
+        tempf.seek(0)
+        sqlite_buffer = tempf.read()
+
+        key = extract_key_from_discord_link(link)
+        (data, iv) = encrypt_sqlite_data(sqlite_buffer, key)
+
+        session.add(SavedPackageData(package_id=package_id, data=data, iv=iv))
+        session.commit()
 
     print(f'SQLite serialization: {time.time() - start}')
 
     # insert into db
-    session.add(SavedPackageData(package_id=package_id, data=data))
-    session.commit()
-
+    
     update_step(package_id, 'processed', session)
 
     return analytics_line_count
