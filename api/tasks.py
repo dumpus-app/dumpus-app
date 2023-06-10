@@ -586,6 +586,7 @@ def handle_package(package_id, link):
             'error_message_code': current,
             'error_message_traceback': e_traceback
         })
+        session.commit()
     finally:
         session.close()
 
