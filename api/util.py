@@ -17,6 +17,9 @@ def extract_upn_from_discord_link (link):
 
 def extract_package_id_from_discord_link (link):
     upn = extract_upn_from_discord_link(link)
+    return extract_package_id_from_upn(upn)
+
+def extract_package_id_from_upn(upn):
     package_id = hashlib.md5(upn.encode('utf-8')).hexdigest()
     return package_id
 

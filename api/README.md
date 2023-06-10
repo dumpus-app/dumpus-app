@@ -99,15 +99,20 @@ Response:
 ```
 
 Current error message codes:
-* `UNKNOWN_LINK`: for some reason, you are asking for the status of a package that does not exist in the database.
+* `UNKNOWN_PACKAGE_ID`: for some reason, you are asking for the status of a package that does not exist in the database.
 * `SERVER_ERROR`: an unknown error occurred on the server side. Please contact us on GitHub or Discord.
-
+* `UNAUTHORIZED`: the UPN KEY provided in the Authorization header is not valid.
 
 ### Fetch a package data
 
 * `GET /process/<package_id>/data`
 
 Response: the Discord Data Package SQLite database (binary), decrypted.
+
+Status codes:
+* `200`: the data is available and has been returned.
+* `401`: the UPN KEY provided in the Authorization header is not valid.
+* `404`: unknown package ID.
 
 ### Delete a package (and abort the processing)
 
@@ -122,7 +127,8 @@ Response:
 ```
 
 Current error message codes:
-* `UNKNOWN_LINK`: for some reason, you are asking for the status of a package that does not exist in the database.
+* `UNKNOWN_PACKAGE_ID`: for some reason, you are asking for the status of a package that does not exist in the database.
+* `UNAUTHORIZED`: the UPN KEY provided in the Authorization header is not valid.
 
 ### SQLite Database Documentation
 

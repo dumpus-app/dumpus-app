@@ -1,105 +1,135 @@
-import orjson
-import os
-import cryptocode
-
-from datetime import datetime
-from flask import Flask, render_template, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 # make sure tasks is imported before db
 # as env is loaded from tasks (so the celery worker can use it)
 from tasks import handle_package
-from db import PackageProcessStatus, SavedPackageData, Session
+from db import PackageProcessStatus, Session, fetch_package_status, fetch_package_data, fetch_package_rank
 
-from util import check_discord_link, extract_key_from_discord_link, extract_package_id_from_discord_link, ts_included_in_range
+from util import check_discord_link, extract_package_id_from_discord_link, extract_package_id_from_upn
 
 app = Flask(__name__)
 CORS(app)
 
-def fetch_package_status(package_id, session):
-    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
-    if status:
-        return {
-            'status': 'processing',
-            'step': status.step,
-        }
-    else:
-        return {
-            'status': 'unknown',
-            'message': 'This link has not been analyzed yet.',
-        }
+def get_base_status_response():
+    return {
+        "isDataAvailable": False,
+
+        "isUpgraded": False,
+        "errorMessageCode": None,
+
+        "isProcessing": False,
+        "processingStep": None,
+        "processingQueuePosition": {
+            "current": 0,
+            "totalWhenStarted": 0,
+            "total": 0
+    }
+}
+
+def get_base_process_response():
+    return {
+    "isAccepted": False,
+    "packageId": None,
+
+    "errorMessageCode": None
+}
+
+def check_authorization_bearer(req, package_id):
+    auth_header = req.headers.get('Authorization')
     
-def fetch_package_data(package_id, auth_upn, session):
-    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
-    if status and status.step == 'processed':
-        result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
-        data = cryptocode.decrypt(result.data, auth_upn)
-        if result:
-            return {
-                'status': 'processed',
-                'data': data
-            }
-    else:
-        return {
-            'status': 'unknown',
-            'message': 'This link has not been analyzed yet.',
-        }
+    if not auth_header:
+        return (False, None)
+    
+    auth_token = auth_header.split(' ')[1]
+    expected_package_id = extract_package_id_from_upn(auth_token)
+
+    if not expected_package_id or package_id != expected_package_id:
+        return (False, None)
+    
+    return (True, auth_token)
 
 @app.route('/process', methods=['POST'])
 def process_link():
-    print(f'processing link')
-    # Get link from body
+
     link = request.json['package_link']
-    if not link:
-        return jsonify({'error': 'No link provided.'}), 400
-    # Check if link is a discord link
-    if not check_discord_link(link):
-        return jsonify({'error': 'Not a discord link.'}), 400
-    # Link to md5
+
+    if not link or not check_discord_link(link):
+        res = get_base_process_response()
+        res['errorMessageCode'] = 'INVALID_LINK'
+        return jsonify(res), 200
+
     package_id = extract_package_id_from_discord_link(link)
-    print(f'making sure link is not already processed (package_id: {package_id})')
-    # Get package status
+
+    res = get_base_process_response()
+    res['isAccepted'] = True
+    res['packageId'] = package_id
+
+    print(f'Order taken, package added to the queue. (package_id: {package_id})')
+
     session = Session()
-    package_stats = fetch_package_status(package_id, session)
-    if package_stats['status'] != 'unknown':
-        return jsonify({
-            'status': package_stats['status'],
-            'message': 'This link has already been submitted.'
-        })
-    print(f'order taken, started processing (package_id: {package_id})')
+
+    existing_package_process_status = fetch_package_status(package_id, session)
+    if existing_package_process_status:
+        return jsonify(res), 200
+
     package_process_status = PackageProcessStatus(package_id=package_id, step='locked', progress=0)
     session.add(package_process_status)
     session.commit()
     session.close()
-    # Process the link
-    handle_package.apply_async(args=[package_id, link])
-    # Send a successful response
-    return jsonify({'success': 'Started processing your link.'}), 200
+
+    handle_package.apply_async(args=[package_id, link], queue='regular_process')
+
+    return jsonify(res), 200
 
 @app.route('/process/<package_id>/status', methods=['GET'])
 def get_package_status(package_id):
+
+    res = get_base_status_response()
+
+    (is_auth,) = check_authorization_bearer(request, package_id)
+    if not is_auth:
+        res['errorMessageCode'] = 'UNAUTHORIZED'
+        return jsonify(res), 401
+
     session = Session()
     package_status = fetch_package_status(package_id, session)
+    package_rank = fetch_package_rank(package_id, package_status, session)
     session.close()
+
+    if not package_status:
+        res['errorMessageCode'] = 'UNKNOWN_PACKAGE_ID'
+        return jsonify(res), 200
+
+    res['isUpgraded'] = package_status['is_upgraded']
+
+    if package_status['step'] == 'processed':
+        res['isDataAvailable'] = True
+
+    else:
+        res['isProcessing'] = True
+        res['processingStep'] = package_status['step']
+        res['processingQueuePosition']['current'] = package_rank[0]
+        res['processingQueuePosition']['total'] = package_status[1]
+        res['processingQueuePosition']['totalWhenStarted'] = package_status['total_when_started']
+
     return jsonify(package_status), 200
 
 @app.route('/process/<package_id>/data', methods=['GET'])
 def get_package_data(package_id):
 
-    # Get authorization bearer token
-    auth_header = request.headers.get('Authorization')
-
-    # Check if token is present
-    if not auth_header:
-        return jsonify({'error': 'No authorization token provided.'}), 400
-    
-    # remove bearer
-    auth_upn = auth_header.split(' ')[1]
+    (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
+    if not is_auth:
+        return 401
     
     session = Session()
-    package_status = fetch_package_data(package_id, auth_upn, session)
+    data = fetch_package_data(package_id, auth_upn, session)
     session.close()
-    return jsonify(package_status), 200
+    
+    if not data:
+        return 404
+
+    return data, 200
 
 @app.route('/health', methods=['GET'])
 def health_check():
