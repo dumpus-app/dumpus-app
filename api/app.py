@@ -111,7 +111,7 @@ def get_package_status(package_id):
         res['processingStep'] = package_status.step
         res['processingQueuePosition']['current'] = package_rank[0]
         res['processingQueuePosition']['total'] = package_rank[1]
-        res['processingQueuePosition']['totalWhenStarted'] = package_status.total_when_started
+        res['processingQueuePosition']['totalWhenStarted'] = package_status.total_queue_when_started
 
     return jsonify(package_status), 200
 
