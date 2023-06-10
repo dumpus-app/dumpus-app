@@ -101,17 +101,17 @@ def get_package_status(package_id):
         res['errorMessageCode'] = 'UNKNOWN_PACKAGE_ID'
         return jsonify(res), 200
 
-    res['isUpgraded'] = package_status['is_upgraded']
+    res['isUpgraded'] = package_status.is_upgraded
 
-    if package_status['step'] == 'processed':
+    if package_status.step == 'processed':
         res['isDataAvailable'] = True
 
     else:
         res['isProcessing'] = True
-        res['processingStep'] = package_status['step']
+        res['processingStep'] = package_status.step
         res['processingQueuePosition']['current'] = package_rank[0]
-        res['processingQueuePosition']['total'] = package_status[1]
-        res['processingQueuePosition']['totalWhenStarted'] = package_status['total_when_started']
+        res['processingQueuePosition']['total'] = package_rank[1]
+        res['processingQueuePosition']['totalWhenStarted'] = package_status.total_when_started
 
     return jsonify(package_status), 200
 

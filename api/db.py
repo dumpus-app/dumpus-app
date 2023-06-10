@@ -54,7 +54,7 @@ def fetch_package_rank (package_id, package_status, session):
     if not package_status:
         return None
 
-    if package_status['is_upgraded']:
+    if package_status.is_upgraded:
         row_count = session.execute(text("""
             select count(*) from package_process_status 
             where id < (select id from package_process_status where package_id = :package_id)
