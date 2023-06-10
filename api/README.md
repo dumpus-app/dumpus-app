@@ -50,11 +50,79 @@ One header is required for all the requests except the `POST /process` one:
 Authorization: Bearer <UPN_KEY>
 ```
 
-* `POST /process`: Starts the processing of the package and returns the package ID with the decryption key.
-    * body: JSON object containg a `package_link` property with the discord.click link. 
-* `GET /process/<package_id>/status`: Returns the status of the processing package.
-* `GET /process/<package_id>/data`: Returns the package data in SQLite format.
-* `POST /delete/<package_id>`: Deletes the package from the database.
+### Process a package
+
+* `POST /process`
+
+Request:
+```js
+{
+    "package_link": "https://click.discord.com/ls/click?upn=<UPN_KEY>"
+}
+```
+
+Response:
+```js
+{
+    "isAccepted": true, // whether or not the package has been accepted for processing (if false, the error message will be in errorMessageCode)
+    "packageId": "a1b2c3d4e5f6g7h8i9j0", // the package ID
+
+    "errorMessageCode": null // if an error occurs, the error message code will show up here
+}
+```
+
+Current error message codes:
+* `INVALID_LINK`: the link provided is not a valid Discord Data Package link.
+
+Note: if the package was already processed previously, the API will not return a specific response. You will see that the isDataAvailable will be true in the first status response.
+
+### Fetching the package status
+
+* `GET /process/<package_id>/status`
+
+Response:
+```js
+{
+    "isDataAvailable": false, // whether or not the data is available (meaning the processing is ended)
+
+    "isUpgraded": false, // whether or not the user has paid for the "queue skip" feature
+    "errorMessageCode": null, // if an error occurs, the error message code will show up here
+
+    "isProcessing": true, // whether or not the package is still being processed
+    "processingStep": "messages", // the current processing step
+    "processingQueuePosition": {
+        "current": 12, // will decrease until 0
+        "totalWhenStarted": 100, // will not change
+        "total": 230 // will change
+    }
+}
+```
+
+Current error message codes:
+* `UNKNOWN_LINK`: for some reason, you are asking for the status of a package that does not exist in the database.
+* `SERVER_ERROR`: an unknown error occurred on the server side. Please contact us on GitHub or Discord.
+
+
+### Fetch the package data
+
+* `GET /process/<package_id>/data`
+
+Response: the Discord Data Package SQLite database (binary), decrypted.
+
+### Delete and abort processing of a package
+
+* `DELETE /process/<package_id>`
+
+Response:
+```js
+{
+    "isDeleted": true, // whether or not the package has been deleted
+    "errorMessageCode": null // if an error occurs, the error message code will show up here
+}
+```
+
+Current error message codes:
+* `UNKNOWN_LINK`: for some reason, you are asking for the status of a package that does not exist in the database.
 
 ### SQLite Database Documentation
 
