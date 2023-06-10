@@ -86,6 +86,8 @@ Response:
     "isDataAvailable": false, // whether or not the data is available (meaning the processing is ended)
 
     "isUpgraded": false, // whether or not the user has paid for the "queue skip" feature
+
+    "isErrored": false, // whether or not an error occurred during the processing
     "errorMessageCode": null, // if an error occurs, the error message code will show up here
 
     "isProcessing": true, // whether or not the package is still being processed
