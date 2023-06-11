@@ -30,7 +30,7 @@ jobs:
           import openai
           import os
           # Read content
-          with open('tasks.py', 'r') as file:
+          with open('src/tasks.py', 'r') as file:
               lines = file.readlines()
           start_line = next(i for i, line in enumerate(lines, start=1) if '# auto-generated SQLite documentation starts here' in line)
           content = ''.join(lines[start_line-1:])
