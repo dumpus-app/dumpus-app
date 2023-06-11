@@ -596,6 +596,7 @@ def handle_package(package_id, link):
         print('package is cancelled, skipping')
         return
 
+    # regular_process or premium_process
     worker_name = current_task.request.hostname
 
     if package_status.is_upgraded and worker_name.startswith('regular_process'):
