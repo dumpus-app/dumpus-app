@@ -7,7 +7,6 @@ API to extract statistics from the Discord Data Packages (GDPR packages). This A
 * [Architecture Documentation](#architecture-documentation)
 * [Start a custom instance](#start-a-custom-instance)
 * [API Documentation](#api-documentation)
-* [SQLite Database Documentation](#sqlite-database-documentation)
 * [Troubleshooting](#troubleshooting)
 
 ## Architecture Documentation
@@ -148,25 +147,7 @@ Current error message codes:
 * `UNKNOWN_PACKAGE_ID`: for some reason, you are asking for the status of a package that does not exist in the database.
 * `UNAUTHORIZED`: the UPN KEY provided in the Authorization header is not valid.
 
-### SQLite Database Documentation
-
-#### Statistics
-
-Most "number" statistics are stored in a single table, `activity`.
-
-For instance, this query will retrieve the number of messages sent in 2022:
-
-```sql
-SELECT SUM(count_this_day) FROM activity WHERE day > '2022' AND event_name = 'message_sent';
-```
-
-This is used in the overview and the statistics section (but also for some graphs).
-
-#### Guilds, Channels, DMs
-
-```sql
-SELECT name, avatar_url FROM guilds
-```
+### [SQLite Database Documentation can be found here](./docs/sqlite_database_structure.md)
 
 ## Troubleshooting
 
