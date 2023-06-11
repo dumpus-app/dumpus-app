@@ -19,6 +19,8 @@ COPY . .
 # Expose UI port
 EXPOSE 5566
 
+WORKDIR /app/src
+
 # Start the Celery flower
 # celery -A tasks flower --port=5566
 CMD ["celery", "-A", "tasks", "flower", "--port=5566"]

@@ -42,7 +42,7 @@ jobs:
           readme_content = response.choices[0].message.content.strip()
 
           # Write to db_doc.md
-          with open('db_doc.md', 'w') as file:
+          with open('docs/sqlite_database_structure.md', 'w') as file:
               file.write(readme_content)
           "
         env:
@@ -51,5 +51,5 @@ jobs:
       - name: Commit and Push
         uses: EndBug/add-and-commit@v7
         with:
-          message: 'Update db_doc.md'
-          add: 'db_doc.md'
+          message: 'Update sqlite_database_structure.md'
+          add: 'docs/sqlite_database_structure.md'

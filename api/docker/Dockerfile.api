@@ -16,6 +16,8 @@ COPY . .
 # Expose port
 EXPOSE 5000
 
+WORKDIR /app/src
+
 # Start the API server
 # waitress-serve --port=5000 app:app
 CMD ["waitress-serve", "--port=5000", "app:app"]
