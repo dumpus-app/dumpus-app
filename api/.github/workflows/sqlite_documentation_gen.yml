@@ -3,7 +3,7 @@ name: ChatGPT Workflow
 on:
   push:
     paths:
-      - 'tasks.py'
+      - 'src/tasks.py'
   workflow_dispatch:
 
 jobs:
