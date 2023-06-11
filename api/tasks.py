@@ -403,6 +403,8 @@ def read_analytics_file(package_id, link, session):
     })
     '''
 
+    # auto-generated SQLite documentation starts here
+
     conn = sqlite3.connect(':memory:')
     cur = conn.cursor()
 

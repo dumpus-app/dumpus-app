@@ -1,0 +1,62 @@
+name: ChatGPT Workflow
+
+on:
+  push:
+    paths:
+      - 'tasks.py'
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openai
+
+      - name: Read tasks.py and Generate README
+        run: |
+          import os
+          # Read content
+          start=$(grep -n "# auto-generated SQLite documentation starts here" tasks.py | cut -d ":" -f1)
+          content=$(tail -n +$start tasks.py)
+          
+          # Call to ChatGPT
+          python_code="import openai
+          openai.api_key = os.getenv('OPENAI_API_KEY')
+          prompt = '''${content}'''
+          response = openai.ChatCompletion.create(engine='gpt-4', messages=[{"role": "user", "content": '''
+            ${content}
+            Generate a markdown table for each table of the SQLite database. For example:
+
+            **Table 1**
+            |event_name|day|hour|occurences
+            |description of the column|etc.
+
+            **Table 2**
+            |col1|col2|...
+
+            etc.
+          '''}])
+          print(response.choices[0].message.content.strip())"
+          readme_content=$(python -c "${python_code}")
+
+          # Write to db_doc.md
+          echo "${readme_content}" > db_doc.md
+
+      - name: Commit and Push
+        uses: EndBug/add-and-commit@v7
+        with:
+          message: 'Update db_doc.md'
+          add: 'db_doc.md'
