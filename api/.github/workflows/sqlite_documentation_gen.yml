@@ -27,33 +27,25 @@ jobs:
 
       - name: Read tasks.py and Generate README
         run: |
+          python -c "
+          import openai
           import os
           # Read content
-          start=$(grep -n "# auto-generated SQLite documentation starts here" tasks.py | cut -d ":" -f1)
-          content=$(tail -n +$start tasks.py)
-          
+          with open('tasks.py', 'r') as file:
+              lines = file.readlines()
+          start_line = next(i for i, line in enumerate(lines, start=1) if '# auto-generated SQLite documentation starts here' in line)
+          content = ''.join(lines[start_line-1:])
+
           # Call to ChatGPT
-          python_code="import openai
           openai.api_key = os.getenv('OPENAI_API_KEY')
-          prompt = '''${content}'''
-          response = openai.ChatCompletion.create(engine='gpt-4', messages=[{"role": "user", "content": '''
-            ${content}
-            Generate a markdown table for each table of the SQLite database. For example:
-
-            **Table 1**
-            |event_name|day|hour|occurences
-            |description of the column|etc.
-
-            **Table 2**
-            |col1|col2|...
-
-            etc.
-          '''}])
-          print(response.choices[0].message.content.strip())"
-          readme_content=$(python -c "${python_code}")
+          prompt = content
+          response = openai.ChatCompletion.create(engine='gpt-4', messages=[{'role': 'user', 'content': f'{prompt}\nGenerate a markdown table for each table of the SQLite database. For example:\n\n**Table 1**\n|event_name|day|hour|occurences\n|description of the column|etc.\n\n**Table 2**\n|col1|col2|...\n\netc.'}])
+          readme_content = response.choices[0].message.content.strip()
 
           # Write to db_doc.md
-          echo "${readme_content}" > db_doc.md
+          with open('db_doc.md', 'w') as file:
+              file.write(readme_content)
+          "
 
       - name: Commit and Push
         uses: EndBug/add-and-commit@v7
