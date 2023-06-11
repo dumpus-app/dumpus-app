@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from celery import Celery
+from celery import Celery, current_task
 
 import subprocess
 import traceback
@@ -571,6 +571,22 @@ def read_analytics_file(package_id, link, session):
 def handle_package(package_id, link):
     print(f'handling package {package_id} with link {link}')
     session = Session()
+    package_status = session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).first()
+    if not package_status:
+        print('package not found')
+        return
+    
+    if package_status.is_cancelled:
+        print('package is cancelled, skipping')
+        return
+
+    worker_name = current_task.request.hostname
+
+    if package_status.is_upgraded and worker_name.startswith('regular_process'):
+        print('package is upgraded and worker is regular, skipping')
+        # the package has already been added to the premium worker queue
+        return
+
     try:
         download_file(package_id, link, session)
         read_analytics_file(package_id, link, session)
@@ -589,7 +605,3 @@ def handle_package(package_id, link):
         session.commit()
     finally:
         session.close()
-
-# todo
-# verify that file exists before reading
-# split tasks into smaller tasks

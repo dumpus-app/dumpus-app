@@ -33,6 +33,7 @@ class PackageProcessStatus(Base):
     is_errored = Column(Boolean, nullable=False, default=False)
     error_message_code = Column(String(255), nullable=True)
     error_message_traceback = Column(String, nullable=True)
+    is_cancelled = Column(Boolean, nullable=False, default=False)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 
