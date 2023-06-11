@@ -562,6 +562,7 @@ def read_analytics_file(package_id, link, session):
 
     conn.commit()
 
+    # creating a temporary file is the only way to get a file-like object from sqlite3
     with tempfile.NamedTemporaryFile() as tempf:
         with sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True) as disk_db:
             conn.backup(disk_db)
