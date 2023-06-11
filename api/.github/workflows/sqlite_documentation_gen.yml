@@ -43,7 +43,7 @@ jobs:
 
           # Write to db_doc.md
           with open('docs/sqlite_database_structure.md', 'w') as file:
-              readme_content += 'Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.\n\n\n'
+              readme_content = 'Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.\n\n\n' + readme_content
               file.write(readme_content)
           "
         env:
