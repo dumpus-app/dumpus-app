@@ -31,7 +31,7 @@ Thus:
 * when a Discord Data Package is to be stored in a database, it is encrypted with its UPN KEY.
 * when the client queries the server, it must always provide its UPN KEY to prove that it is the owner of the Discord Data Package, and to enable the server to return the decrypted data (if the client makes a data request).
 
-![architecture](./architecture.png)
+![architecture](./assets/architecture.png)
 
 ### Start a custom instance
 
