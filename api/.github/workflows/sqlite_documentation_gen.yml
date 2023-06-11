@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'tasks.py'
+  workflow_dispatch:
 
 jobs:
   update-readme:
