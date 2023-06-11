@@ -557,6 +557,7 @@ def read_analytics_file(package_id, link, session):
     cur.executemany(payment_query, payments_data)
     cur.executemany(voice_session_query, voice_session_data)
 
+    # make database smaller
     cur.execute('VACUUM;')
 
     conn.commit()
