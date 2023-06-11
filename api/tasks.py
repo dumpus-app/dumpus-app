@@ -578,8 +578,6 @@ def read_analytics_file(package_id, link, session):
 
     print(f'SQLite serialization: {time.time() - start}')
 
-    # insert into db
-    
     update_step(package_id, 'PROCESSED', session)
 
     return analytics_line_count
