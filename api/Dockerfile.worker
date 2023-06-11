@@ -7,6 +7,12 @@ RUN apt-get update && apt-get install -y curl
 # Create application directory and move there
 WORKDIR /app
 
+# Copy the script that downloads the vader lexicon module
+COPY scripts/download-ntk.py ./
+
+# Execute that script
+RUN python download-ntk.py
+
 # Copy requirements file from the host to the container
 COPY requirements.txt ./
 

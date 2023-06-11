@@ -23,6 +23,20 @@ import gzip
 
 import base64
 
+from nltk.sentiment import SentimentIntensityAnalyzer
+import operator
+
+def count_sentiments(contents):
+    sia = SentimentIntensityAnalyzer()
+    sentiments = []
+    for content in contents:
+        if not content:
+            return
+        score = sia.polarity_scores(str(content))["compound"]
+        if score != 0:
+            sentiments.append(score)
+    return sum(sentiments) / len(sentiments) if len(sentiments) > 0 else 0
+
 def parse():
     start = time.time()
 
@@ -260,6 +274,7 @@ def parse():
                     'dm_user_id': dm_user_id,
                     # TODO : get username from user_id
                     'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
+                    'sentiment_score': count_sentiments(map(lambda message: message['content'], messages)),
                     'total_message_count': len(messages),
                     # make sure content exists
                     'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
@@ -371,6 +386,7 @@ def parse():
             user_avatar_url TEXT,
             total_message_count INTEGER NOT NULL,
             total_voice_channel_duration INTEGER NOT NULL,
+            sentiment_score REAL NOT NULL,
             PRIMARY KEY (channel_id)
         )
     ''')
@@ -434,7 +450,8 @@ def parse():
 
         if 'dm_user_id' in channel:
             user = next(filter(lambda x: x['id'] == channel['dm_user_id'], users), None)
-            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['avatar_url'] if user else None, channel['total_message_count'], 0))
+            print(channel['sentiment_score'])
+            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
         elif 'guild_id' in channel:
             guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
     
@@ -462,8 +479,8 @@ def parse():
 
     dm_user_query = '''
         INSERT INTO dm_channels_data
-        (channel_id, dm_user_id, user_name, user_avatar_url, total_message_count, total_voice_channel_duration)
-        VALUES (?, ?, ?, ?, ?, ?);
+        (channel_id, dm_user_id, user_name, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     '''
 
     guild_channel_query = '''
