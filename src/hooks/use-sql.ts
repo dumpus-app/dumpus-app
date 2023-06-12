@@ -61,15 +61,16 @@ export default function useSQL() {
     });
   }
 
-  function resultAsList(data?: QueryExecResult) {
+  type DefaultT = Record<string, any>;
+  function resultAsList<T extends DefaultT>(data?: QueryExecResult) {
     if (!data) return null;
     const { columns, values } = data;
     return values.map((value) => {
-      const obj: Record<string, any> = {};
+      const obj: DefaultT = {};
       columns.forEach((column, i) => {
         obj[column] = value[i];
       });
-      return obj;
+      return obj as T;
     });
   }
 

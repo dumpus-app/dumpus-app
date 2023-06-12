@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import useSQL from "~/hooks/use-sql";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
+import { Activity } from "~/types/sql";
 
 // export default async function Page({ params: { locale } }: PageProps) {
 //   const { t } = await useTranslation(locale);
@@ -16,13 +17,36 @@ import { PageProps } from "~/types";
 function DataDisplay() {
   const { db, resultAsList } = useSQL();
   return (
-    <pre>
-      {JSON.stringify(
-        resultAsList(db?.exec("SELECT * FROM activity")[0]),
-        null,
-        2
-      )}
-    </pre>
+    <>
+      <pre>
+        {JSON.stringify(
+          resultAsList<Activity>(db?.exec("SELECT * FROM activity")[0]),
+          null,
+          2
+        )}
+      </pre>
+      <pre>
+        {JSON.stringify(
+          resultAsList<Activity>(
+            db?.exec("SELECT * FROM activity WHERE count >= $count", {
+              $count: 4,
+            })[0]
+          ),
+          null,
+          2
+        )}
+      </pre>
+      <pre>
+        {JSON.stringify(
+          // @ts-expect-error
+          resultAsList<Pick<Activity, "hour" | "count">>(
+            db?.exec("SELECT hour, count FROM activity")[0]
+          ),
+          null,
+          2
+        )}
+      </pre>
+    </>
   );
 }
 
