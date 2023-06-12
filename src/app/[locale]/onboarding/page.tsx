@@ -18,10 +18,10 @@ export default async function Page({ params: { locale } }: PageProps) {
         />
       </div>
       <div className="max-w-xs text-center">
-        <h1 className="text-xl font-bold text-white">Welcome to Dumpus</h1>
-        <p className="mt-2 text-gray-400">
-          Get detailed insights and stats for your Discord account
-        </p>
+        <h1 className="text-xl font-bold text-white">
+          {t("onboarding./.welcome")}
+        </h1>
+        <p className="mt-2 text-gray-400">{t("onboarding./.description")}</p>
       </div>
       <Steps />
     </div>

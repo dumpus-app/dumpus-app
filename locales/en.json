@@ -1,4 +1,24 @@
 {
-  "home": "Home",
-  "localeSwitcher": "Switch from {{locale}} to: "
+  "seo": {
+    "title": "Dumpus | Stats for Discord",
+    "description": "Get detailed insights and stats for your Discord account"
+  },
+  "global": {
+    "loading": {
+      "title": "Loading...",
+      "description": "Please wait."
+    }
+  },
+  "onboarding": {
+    "shared": {
+      "previous": "Previous",
+      "trust": "Why should I trust the app?"
+    },
+    "/": {
+      "welcome": "Welcome to Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Step {{n}}",
+      "steps": ["Explanation", "Obtain your data", "Start the analyze"]
+    }
+  }
 }

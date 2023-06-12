@@ -1,5 +1,6 @@
 import { CSSProperties } from "react";
 import Link from "~/components/Link";
+import { useTranslation } from "~/i18n/client";
 
 export type Props = {
   progress: 0 | 0.33 | 0.66 | 1 | 2 | 2.5 | 3 | null;
@@ -7,15 +8,18 @@ export type Props = {
 };
 
 export default function Header({ progress, href }: Props) {
+  const { t } = useTranslation();
+
   if (progress === null)
     return (
       <div className="flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm" />
     );
+
   return (
     <div className="flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm">
       {href ? (
         <Link href={href} className="text-brand-300 hover:underline">
-          Previous
+          {t("onboarding.shared.previous")}
         </Link>
       ) : (
         <div />

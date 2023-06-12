@@ -4,8 +4,10 @@ import useLoading from "~/hooks/use-loading";
 
 export default function LoadingScreen({
   children,
+  data: { title, description },
 }: {
   children: React.ReactNode;
+  data: { title: string; description: string };
 }) {
   const loading = useLoading();
 
@@ -14,8 +16,8 @@ export default function LoadingScreen({
       <div className="my-auto flex flex-col items-center space-y-4">
         <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
         <div className="max-w-xs text-center">
-          <h1 className="text-xl font-bold text-white">Loading...</h1>
-          <p className="mt-2 text-gray-400">Please wait.</p>
+          <h1 className="text-xl font-bold text-white">{title}</h1>
+          <p className="mt-2 text-gray-400">{description}</p>
         </div>
       </div>
     );

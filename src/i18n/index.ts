@@ -3,7 +3,7 @@ import { initReactI18next } from "react-i18next/initReactI18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 import { getOptions } from "./settings";
 
-async function initI18next(locale: string) {
+export async function initI18next(locale: string) {
   const i18nInstance = createInstance();
   await i18nInstance
     .use(initReactI18next)

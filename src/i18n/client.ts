@@ -27,7 +27,7 @@ i18next
     },
   });
 
-export function useTranslation(locale: string) {
+export function useTranslation(locale = i18next.language) {
   if (i18next.resolvedLanguage !== locale) i18next.changeLanguage(locale);
   return useTranslationOrg();
 }

@@ -1,4 +1,24 @@
 {
-  "home": "Accueil",
-  "localeSwitcher": "Passer de {{locale}} à : "
+  "seo": {
+    "title": "Dumpus | Stats pour Discord",
+    "description": "Obtenez des informations et des statistiques détaillées sur votre compte Discord"
+  },
+  "global": {
+    "loading": {
+      "title": "Chargement...",
+      "description": "Veuillez patienter."
+    }
+  },
+  "onboarding": {
+    "shared": {
+      "previous": "Précédent",
+      "trust": "Pourquoi devrais-je faire confiance à l'application ?"
+    },
+    "/": {
+      "welcome": "Bienvenue sur Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Etape {{n}}",
+      "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
+    }
+  }
 }
