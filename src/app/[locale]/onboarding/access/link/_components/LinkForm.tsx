@@ -11,12 +11,31 @@ import i18next from "i18next";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 
-const schema = z.object({
-  discordLink: z
-    .string({ required_error: "Required" })
-    .url("Invalid Discord Link"),
-  backendURL: z.string().url("Invalid URL").or(z.literal("")),
-});
+const schema = z
+  .object({
+    discordLink: z
+      .string({ required_error: "Required" })
+      .url("Invalid Discord Link"),
+    backendURL: z.string().url("Invalid URL").or(z.literal("")),
+  })
+  .refine(
+    (data) =>
+      data.discordLink.startsWith("https://click.discord.com/ls/click?upn="),
+    {
+      message: "Link must start with https://click.discord.com/ls/click?upn=",
+      path: ["discordLink"],
+    }
+  )
+  .refine(
+    (data) => {
+      const UPNKey = new URL(data.discordLink).searchParams.get("upn");
+      return UPNKey && UPNKey !== "";
+    },
+    {
+      message: "UPN key can't be empty",
+      path: ["discordLink"],
+    }
+  );
 
 type Schema = z.infer<typeof schema>;
 
@@ -49,7 +68,11 @@ export default function LinkForm() {
               <Form.InputContainer>
                 <Form.Label>Discord link</Form.Label>
                 <Form.Control>
-                  <Form.Input {...field} placeholder="https://..." type="url" />
+                  <Form.Input
+                    {...field}
+                    placeholder="https://click.discord.com/ls/click?upn=123456"
+                    type="url"
+                  />
                 </Form.Control>
               </Form.InputContainer>
               <Form.Message />
