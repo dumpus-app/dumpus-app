@@ -10,6 +10,35 @@
     }
   },
   "onboarding": {
+    "routes": {
+      "/": {
+        "label": "C'est parti"
+      },
+      "/intro/1": {
+        "label": "Génial!"
+      },
+      "/intro/2": {
+        "label": "Rassurant!"
+      },
+      "/intro/3": {
+        "label": "Il me tarde!"
+      },
+      "/setup": {
+        "label": "C'est fait!"
+      },
+      "/access": {
+        "label": null
+      },
+      "/access/link": {
+        "label": null
+      },
+      "/access/email": {
+        "label": null
+      },
+      "/loading": {
+        "label": null
+      }
+    },
     "shared": {
       "previous": "Précédent",
       "trust": "Pourquoi devrais-je faire confiance à l'application ?"
@@ -19,6 +48,20 @@
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
       "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
-    }
+    },
+    "slides": [
+      {
+        "title": "Que fait vraiment Dumpus ?",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      },
+      {
+        "title": "Dumpus est sécurisé",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. GitHub Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      },
+      {
+        "title": "Partagez-le avec vos amis !",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      }
+    ]
   }
 }

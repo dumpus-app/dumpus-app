@@ -7,21 +7,12 @@ import Slide3 from "./_components/Slide3";
 const SLIDES = [
   {
     image: Slide1,
-    title: "What does Dumpus really do?",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit.",
   },
   {
     image: Slide2,
-    title: "Dumpus is safe",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. GitHub Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit.",
   },
   {
     image: Slide3,
-    title: "Share it with your friends!",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit.",
   },
 ];
 
@@ -36,7 +27,15 @@ export default async function Page({
 }: PageProps<{ slide: string }>) {
   const { t } = await useTranslation(locale);
 
-  const { image: Img, title, description } = SLIDES[Number(slide) - 1];
+  const index = Number(slide) - 1;
+  const slideData = {
+    ...(t(`onboarding.slides.${index}`, {
+      returnObjects: true,
+      defaultValue: "",
+    }) as unknown as { title: string; description: string }),
+    ...SLIDES[index],
+  };
+  const { image: Img, title, description } = slideData;
 
   return (
     <div className="flex flex-col space-y-4 text-center">

@@ -10,6 +10,62 @@
     }
   },
   "onboarding": {
+    "routes": {
+      "/": {
+        "next": "/intro/1",
+        "label": "Let's go",
+        "progress": null,
+        "previous": null
+      },
+      "/intro/1": {
+        "next": "/intro/2",
+        "label": "Awesome!",
+        "progress": 0,
+        "previous": "/"
+      },
+      "/intro/2": {
+        "next": "/intro/3",
+        "label": "I feel better now!",
+        "progress": 0.33,
+        "previous": "/intro/1"
+      },
+      "/intro/3": {
+        "next": "/setup",
+        "label": "Can't wait!",
+        "progress": 0.66,
+        "previous": "/intro/2"
+      },
+      "/setup": {
+        "next": "/access",
+        "label": "Done!",
+        "progress": 1,
+        "previous": "/intro/3"
+      },
+      "/access": {
+        "next": null,
+        "label": null,
+        "progress": 2,
+        "previous": "/setup"
+      },
+      "/access/link": {
+        "next": null,
+        "label": null,
+        "progress": 2.5,
+        "previous": "/access"
+      },
+      "/access/email": {
+        "next": null,
+        "label": null,
+        "progress": 2.5,
+        "previous": "/access"
+      },
+      "/loading": {
+        "next": null,
+        "label": null,
+        "progress": 3,
+        "previous": null
+      }
+    },
     "shared": {
       "previous": "Previous",
       "trust": "Why should I trust the app?"
@@ -19,6 +75,20 @@
       "description": "$t(seo.description)",
       "step": "Step {{n}}",
       "steps": ["Explanation", "Obtain your data", "Start the analyze"]
-    }
+    },
+    "slides": [
+      {
+        "title": "What does Dumpus really do?",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      },
+      {
+        "title": "Dumpus is safe",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. GitHub Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      },
+      {
+        "title": "Share it with your friends!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      }
+    ]
   }
 }
