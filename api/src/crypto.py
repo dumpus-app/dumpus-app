@@ -31,7 +31,7 @@ def decrypt_sqlite_data(encrypted_data, iv, auth_upn):
 
     fixed_size_upn = hashlib.sha256(auth_upn.encode()).digest()
 
-    iv = iv.encode()
+    iv = bytes.fromhex(iv[1:])
 
     # Prepare the decryptor
     cipher = Cipher(algorithms.AES(fixed_size_upn), modes.CBC(iv), backend=default_backend())
