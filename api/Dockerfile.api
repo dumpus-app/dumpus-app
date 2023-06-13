@@ -4,6 +4,9 @@ FROM python:3.10-slim-buster
 # Create application directory and move there
 WORKDIR /app
 
+# Install nltk
+RUN pip install --no-cache-dir --prefer-binary nltk
+
 # Copy the script that downloads the vader lexicon module
 COPY scripts/download-ntk.py ./
 

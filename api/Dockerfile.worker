@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y curl
 # Create application directory and move there
 WORKDIR /app
 
+# Install nltk
+RUN pip install --no-cache-dir --prefer-binary nltk
+
 # Copy the script that downloads the vader lexicon module
 COPY scripts/download-ntk.py ./
 
