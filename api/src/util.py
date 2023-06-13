@@ -20,7 +20,7 @@ def extract_upn_from_discord_link (link):
     t = link.split('/')[1]
     t_bytes = t.encode('ascii')
     base64_bytes = base64.b64decode(t_bytes)
-    upn = base64_bytes
+    upn = base64_bytes.decode('ascii')
     if re.match(discord_link_regex, link):
         upn = re.match(discord_link_regex, link).group(1)
     return upn
