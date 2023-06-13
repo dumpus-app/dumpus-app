@@ -135,6 +135,21 @@
           ]
         }
       }
+    },
+    "access": {
+      "title": "I want the stats!",
+      "description": "Choose your preferred method.",
+      "method": "Method {{n}}",
+      "methods": {
+        "link": {
+          "title": "Enter your Discord link",
+          "href": "/onboarding/access/link"
+        },
+        "email": {
+          "title": "Transfer the email",
+          "href": "/onboarding/access/email"
+        }
+      }
     }
   }
 }

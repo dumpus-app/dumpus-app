@@ -108,6 +108,21 @@
           ]
         }
       }
+    },
+    "access": {
+      "title": "Je veux les stats !",
+      "description": "Choisissez la méthode que vous préférez.",
+      "method": "Méthode {{n}}",
+      "methods": {
+        "link": {
+          "title": "Entrez votre lien Discord",
+          "href": "/onboarding/access/link"
+        },
+        "email": {
+          "title": "Transférez l'email",
+          "href": "/onboarding/access/email"
+        }
+      }
     }
   }
 }
