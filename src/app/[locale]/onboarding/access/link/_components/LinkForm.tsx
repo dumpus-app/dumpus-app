@@ -28,8 +28,12 @@ const schema = z
   )
   .refine(
     (data) => {
-      const UPNKey = new URL(data.discordLink).searchParams.get("upn");
-      return UPNKey && UPNKey !== "";
+      try {
+        const UPNKey = new URL(data.discordLink).searchParams.get("upn");
+        return UPNKey && UPNKey !== "";
+      } catch (err) {
+        return true;
+      }
     },
     {
       message: "UPN key can't be empty",
