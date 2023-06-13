@@ -62,7 +62,7 @@ def fetch_package_rank (package_id, package_status, session):
     if package_status.is_upgraded:
         row_count = session.execute(text("""
             select count(*) from package_process_status 
-            where id < (select id from package_process_status where package_id = :package_id)
+            where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
             and step <> 'processed'
             and is_upgraded is true;
         """).bindparams(package_id=package_id)).fetchone()[0]
@@ -73,7 +73,7 @@ def fetch_package_rank (package_id, package_status, session):
     
     row_count = session.execute(text("""
         select count(*) from package_process_status
-        where id < (select id from package_process_status where package_id = :package_id)
+        where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
         and step <> 'processed';
     """).bindparams(package_id=package_id)).fetchone()[0]
     total_row_count = session.execute(text("""
