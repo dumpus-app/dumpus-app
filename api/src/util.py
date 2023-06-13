@@ -6,11 +6,11 @@ import pandas as pd
 import os
 
 discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
-other_whitelisted_domains_raw = os.getenv('OTHER_WHITELISTED_DOMAINS')
-other_whitelisted_domains = other_whitelisted_domains_raw and other_whitelisted_domains_raw.split(',') or []
+dl_whitelisted_domains_raw = os.getenv('DL_ZIP_WHITELISTED_DOMAINS')
+dl_whitelisted_domains = dl_whitelisted_domains_raw and dl_whitelisted_domains_raw.split(',') or []
 
 def check_discord_link (link):
-    if not re.match(discord_link_regex, link) and not any([link.startswith(domain) for domain in other_whitelisted_domains]):
+    if not re.match(discord_link_regex, link) and not any([link.startswith(domain) for domain in dl_whitelisted_domains]):
         return False
     return True
 

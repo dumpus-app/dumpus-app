@@ -50,6 +50,8 @@ REDIS_URL=redis://<host>:<port>
 
 The `Dockerfile.flower` is used to launch an instance of Flower, a web interface for monitoring workers. It is not necessary to launch this instance for personal use.
 
+By default, Dumpus API will only treat zip files sent from `https://discord.click`. You can specify a `DL_ZIP_WHITELISTED_DOMAINS` environment variable to add other allowed domains.
+
 ## API Documentation
 
 One header is required for all the requests except the `POST /process` one:
