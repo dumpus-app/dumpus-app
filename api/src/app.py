@@ -209,6 +209,7 @@ def cancel_package(package_id):
     package_data = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(SavedPackageData.created_at.desc()).first()
     if package_data:
         session.delete(package_data)
+        session.delete(package_status)
         session.commit()
 
     res['isCancelled'] = True
