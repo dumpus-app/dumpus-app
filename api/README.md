@@ -151,6 +151,7 @@ Status codes:
 * `401`: the UPN KEY provided in the Authorization header is not valid, or the package does not exist.
 * `404`: unknown user ID.
 * `500`: an error occurred while fetching the data (can often happen).
+* `429`: you are being rate limited. Wait 500ms and send the request again.
 
 ### Delete a package (and abort the processing)
 
