@@ -68,7 +68,8 @@
     },
     "shared": {
       "previous": "Previous",
-      "trust": "Why should I trust the app?"
+      "trust": "Why should I trust the app?",
+      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!"
     },
     "/": {
       "welcome": "Welcome to Dumpus",
@@ -89,6 +90,51 @@
         "title": "Share it with your friends!",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
       }
-    ]
+    ],
+    "setup": {
+      "title": "How do I get my data package?",
+      "description": "Select an operating system to get started.",
+      "data": {
+        "android": {
+          "display": "Android",
+          "steps": [
+            {
+              "name": "Open your settings android",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Open your settings android",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        },
+        "ios": {
+          "display": "iOS",
+          "steps": [
+            {
+              "name": "Open your settings ios",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        },
+        "desktop": {
+          "display": "Desktop",
+          "steps": [
+            {
+              "name": "Open your settings desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Open your settings desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Open your settings desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        }
+      }
+    }
   }
 }

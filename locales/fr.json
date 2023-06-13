@@ -41,7 +41,8 @@
     },
     "shared": {
       "previous": "Précédent",
-      "trust": "Pourquoi devrais-je faire confiance à l'application ?"
+      "trust": "Pourquoi devrais-je faire confiance à l'application ?",
+      "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !"
     },
     "/": {
       "welcome": "Bienvenue sur Dumpus",
@@ -62,6 +63,51 @@
         "title": "Partagez-le avec vos amis !",
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
       }
-    ]
+    ],
+    "setup": {
+      "title": "Comment obtenir mon paquet de données ?",
+      "description": "Sélectionnez une plateforme pour commencer.",
+      "data": {
+        "android": {
+          "display": "Android",
+          "steps": [
+            {
+              "name": "Ouvre vos paramètres android",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Ouvre vos paramètres android",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        },
+        "ios": {
+          "display": "iOS",
+          "steps": [
+            {
+              "name": "Ouvre vos paramètres ios",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        },
+        "desktop": {
+          "display": "PC/Mac",
+          "steps": [
+            {
+              "name": "Ouvre vos paramètres desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Ouvre vos paramètres desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Ouvre vos paramètres desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        }
+      }
+    }
   }
 }

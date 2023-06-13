@@ -4,17 +4,7 @@ import Slide1 from "./_components/Slide1";
 import Slide2 from "./_components/Slide2";
 import Slide3 from "./_components/Slide3";
 
-const SLIDES = [
-  {
-    image: Slide1,
-  },
-  {
-    image: Slide2,
-  },
-  {
-    image: Slide3,
-  },
-];
+const SLIDES = [Slide1, Slide2, Slide3].map((e) => ({ image: e }));
 
 export function generateStaticParams() {
   return SLIDES.map((_, i) => ({
