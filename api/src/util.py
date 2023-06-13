@@ -16,7 +16,7 @@ def check_discord_link (link):
     return True
 
 def check_whitelisted_link (link):
-    return any([link.startswith(f'https://{domain}') for domain in dl_whitelisted_domains])
+    return any([link.startswith(domain) for domain in dl_whitelisted_domains])
 
 def extract_upn_from_discord_link (link):
     # get everything after first / and encode base64
