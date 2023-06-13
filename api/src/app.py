@@ -193,7 +193,7 @@ def cancel_package(package_id):
     if not is_auth:
         return make_response('', 401)
 
-    res = get_base_cancel_response()
+    res = get_base_delete_response()
 
     session = Session()
     package_status = fetch_package_status(package_id, session)
