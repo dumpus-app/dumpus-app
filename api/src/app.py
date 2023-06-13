@@ -224,7 +224,7 @@ def get_avatar(package_id, user_id):
             return make_response('', 401)
     
         session = Session()
-        data = fetch_package_status(package_id, user_id, auth_upn, session)
+        data = fetch_package_status(package_id, session)
         session.close()
 
         if not data:
