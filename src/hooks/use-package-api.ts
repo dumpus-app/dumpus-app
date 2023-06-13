@@ -8,7 +8,7 @@ import type {
 } from "~/types/package-api";
 
 export default function usePackageAPI({
-  baseURL = "https://dumpus-api.sys.dumpus.app",
+  baseURL = "https://api.dumpus.app",
 }: {
   baseURL?: string;
 }) {
