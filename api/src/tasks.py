@@ -583,7 +583,7 @@ def read_analytics_file(package_id, link, session):
         key = extract_key_from_discord_link(link)
         (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
 
-        session.add(SavedPackageData(package_id=package_id, data=data, iv=iv))
+        session.add(SavedPackageData(package_id=package_id, encrypted_data=data, iv=iv))
         session.commit()
 
     print(f'SQLite serialization: {time.time() - start}')

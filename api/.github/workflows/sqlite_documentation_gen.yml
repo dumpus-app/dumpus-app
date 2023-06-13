@@ -14,6 +14,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: Get Commit Message
+        id: commit
+        run: |
+          MESSAGE=$(git log --format=%B -n 1 ${{ github.event.after }})
+          MESSAGE_NO_NEWLINES=${MESSAGE//$'\n'/ }   # Replace newlines with spaces
+          echo "::set-output name=message::$MESSAGE_NO_NEWLINES"
+        shell: bash
+
+      - name: Check for rebuild-docs
+        run: |
+          echo "Commit message: '${{ steps.commit.outputs.message }}'"
+          if [[ "${{ steps.commit.outputs.message }}" == *"--rebuild-docs"* ]]; then
+            echo "Commit message contains --rebuild-docs. Continue to next step."
+          else
+            echo "Commit message does not contain --rebuild-docs. Skipping subsequent steps."
+            exit 1
+          fi
+        shell: bash
+
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
@@ -43,7 +62,7 @@ jobs:
 
           # Write to db_doc.md
           with open('docs/sqlite_database_structure.md', 'w') as file:
-              readme_content = 'Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.\n\n\n' + readme_content
+              readme_content = 'Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.\n\n\n' + readme_content 
               file.write(readme_content)
           "
         env:
