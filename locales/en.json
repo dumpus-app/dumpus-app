@@ -143,7 +143,21 @@
       "methods": {
         "link": {
           "title": "Enter your Discord link",
-          "href": "/onboarding/access/link"
+          "href": "/onboarding/access/link",
+          "description": "You can obtain it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
+          "discordLink": "Discord link",
+          "advanced": "Advanced",
+          "backendURL": "Backend URL",
+          "optional": "optional",
+          "backendURLHint": "Your own hosted open source server URL",
+          "notice": "By proceeding, you agree to our privacy policy and our terms.",
+          "explore": "Explore!",
+          "errors": {
+            "required": "Required",
+            "url": "Invalid URL",
+            "startWith": "Link must start with {{url}}",
+            "emptyKey": "UPN key can't be empty"
+          }
         },
         "email": {
           "title": "Transfer the email",

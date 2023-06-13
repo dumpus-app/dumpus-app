@@ -10,41 +10,58 @@ import { useRouter } from "next/navigation";
 import i18next from "i18next";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
+import { useTranslation } from "~/i18n/client";
 
-const schema = z
-  .object({
-    discordLink: z
-      .string({ required_error: "Required" })
-      .url("Invalid Discord Link"),
-    backendURL: z.string().url("Invalid URL").or(z.literal("")),
-  })
-  .refine(
-    (data) =>
-      data.discordLink.startsWith("https://click.discord.com/ls/click?upn="),
-    {
-      message: "Link must start with https://click.discord.com/ls/click?upn=",
-      path: ["discordLink"],
-    }
-  )
-  .refine(
-    (data) => {
-      try {
-        const UPNKey = new URL(data.discordLink).searchParams.get("upn");
-        return UPNKey && UPNKey !== "";
-      } catch (err) {
-        return true;
+function useSchema() {
+  const { t } = useTranslation();
+
+  const schema = z
+    .object({
+      discordLink: z
+        .string({
+          required_error: t("onboarding.access.methods.link.errors.required"),
+        })
+        .url(t("onboarding.access.methods.link.errors.url")),
+      backendURL: z
+        .string()
+        .url(t("onboarding.access.methods.link.errors.url"))
+        .or(z.literal("")),
+    })
+    .refine(
+      (data) =>
+        data.discordLink.startsWith("https://click.discord.com/ls/click?upn="),
+      {
+        message: t("onboarding.access.methods.link.errors.startWith", {
+          url: "https://click.discord.com/ls/click?upn=",
+          interpolation: { escapeValue: false },
+        }),
+        path: ["discordLink"],
       }
-    },
-    {
-      message: "UPN key can't be empty",
-      path: ["discordLink"],
-    }
-  );
+    )
+    .refine(
+      (data) => {
+        try {
+          const UPNKey = new URL(data.discordLink).searchParams.get("upn");
+          return UPNKey && UPNKey !== "";
+        } catch (err) {
+          return true;
+        }
+      },
+      {
+        message: t("onboarding.access.methods.link.errors.emptyKey"),
+        path: ["discordLink"],
+      }
+    );
 
-type Schema = z.infer<typeof schema>;
+  return schema;
+}
 
 export default function LinkForm() {
+  const { t } = useTranslation();
   const router = useRouter();
+
+  const schema = useSchema();
+  type Schema = z.infer<typeof schema>;
   const form = useForm<Schema>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -62,7 +79,7 @@ export default function LinkForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-4"
+        className="grid w-full grid-cols-1 gap-4"
       >
         <Form.Field
           control={form.control}
@@ -70,7 +87,9 @@ export default function LinkForm() {
           render={({ field }) => (
             <Form.Item>
               <Form.InputContainer>
-                <Form.Label>Discord link</Form.Label>
+                <Form.Label>
+                  {t("onboarding.access.methods.link.discordLink")}
+                </Form.Label>
                 <Form.Control>
                   <Form.Input
                     {...field}
@@ -88,7 +107,7 @@ export default function LinkForm() {
             <>
               <Disclosure.Button className="mx-auto text-gray-400 transition-colors hover:text-white">
                 <div className="flex items-center">
-                  <span>Advanced</span>
+                  <span>{t("onboarding.access.methods.link.advanced")}</span>
                   <ChevronDownIcon
                     className={clsx(
                       "ml-1 h-5 w-5 transition-transform duration-300 ease-in-out",
@@ -112,7 +131,10 @@ export default function LinkForm() {
                     render={({ field }) => (
                       <Form.Item>
                         <Form.InputContainer>
-                          <Form.Label>Backend URL (optional)</Form.Label>
+                          <Form.Label>
+                            {t("onboarding.access.methods.link.backendURL")} (
+                            {t("onboarding.access.methods.link.optional")})
+                          </Form.Label>
                           <Form.Control>
                             <Form.Input
                               {...field}
@@ -122,7 +144,7 @@ export default function LinkForm() {
                           </Form.Control>
                         </Form.InputContainer>
                         <Form.Description>
-                          Your own hosted open source server URL
+                          {t("onboarding.access.methods.link.backendURLHint")}
                         </Form.Description>
                         <Form.Message />
                       </Form.Item>
@@ -135,11 +157,11 @@ export default function LinkForm() {
         </Disclosure>
         <div className="max-w-xs text-center">
           <p className="text-gray-400">
-            By proceeding, you agree to our privacy policy and our terms.
+            {t("onboarding.access.methods.link.notice")}
           </p>
         </div>
         <Button type="submit" className="w-full">
-          Explore!
+          {t("onboarding.access.methods.link.explore")}
         </Button>
       </form>
     </Form>

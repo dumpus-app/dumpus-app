@@ -116,7 +116,21 @@
       "methods": {
         "link": {
           "title": "Entrez votre lien Discord",
-          "href": "/onboarding/access/link"
+          "href": "/onboarding/access/link",
+          "description": "Vous pouvez l'obtenir dans l'e-mail reçu de Discord. Copiez le lien à partir du bouton intitulé **Vous pouvez le télécharger ici**.",
+          "discordLink": "Lien Discord",
+          "advanced": "Avancé",
+          "backendURL": "URL du backend",
+          "optional": "facultatif",
+          "backendURLHint": "Votre propre URL de serveur open source hébergé",
+          "notice": "En poursuivant, vous acceptez notre politique de confidentialité et nos conditions.",
+          "explore": "Explorez !",
+          "errors": {
+            "required": "Obligatoire",
+            "url": "URL invalide",
+            "startWith": "Le lien doit commencer par {{url}}",
+            "emptyKey": "La clé UPN ne peut pas être vide"
+          }
         },
         "email": {
           "title": "Transférez l'email",
