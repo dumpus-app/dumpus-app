@@ -4,6 +4,7 @@ from datetime import datetime
 from collections import Counter
 import pandas as pd
 import os
+from urllib.parse import urlparse
 import base64
 
 discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
@@ -20,10 +21,9 @@ def check_whitelisted_link (link):
 
 def extract_upn_from_discord_link (link):
     # get everything after first / and encode base64
-    t = link.split('/')[1]
-    t_bytes = t.encode('ascii')
-    base64_bytes = base64.b64decode(t_bytes)
-    upn = base64_bytes.decode('ascii')
+    parsed = urlparse(link)
+    part = parsed.path.strip('/')
+    upn = base64.b64encode(part.encode('utf-8')).decode('utf-8')
     if re.match(discord_link_regex, link):
         upn = re.match(discord_link_regex, link).group(1)
     return upn
