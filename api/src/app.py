@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, jsonify, request, send_file, make_response
 from flask_cors import CORS
 
 # make sure tasks is imported before db
@@ -152,14 +152,14 @@ def get_package_data(package_id):
 
     (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
     if not is_auth:
-        return 401
+        return make_response('', 401)
 
     session = Session()
     data = fetch_package_data(package_id, auth_upn, session)
     session.close()
 
     if not data:
-        return 404
+        return make_response('', 404)
 
     return send_file(data, mimetype='application/octet-stream')
 
@@ -169,7 +169,7 @@ def cancel_package(package_id):
 
     (is_auth, _) = check_authorization_bearer(request, package_id)
     if not is_auth:
-        return 401
+        return make_response('', 401)
 
     res = get_base_cancel_response()
 
