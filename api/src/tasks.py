@@ -27,12 +27,16 @@ import gzip
 import sqlite3
 import tempfile
 
+import os
+
 from db import update_progress, update_step, SavedPackageData, Session, PackageProcessStatus
 from util import (
     # discord utilities
     extract_key_from_discord_link,
     generate_avatar_url_from_user_id_avatar_hash,
     check_whitelisted_link,
+    # file path
+    get_package_zip_path,
     # time utilities
     count_dates_hours,
     get_ts_regular_string_parser,
@@ -56,7 +60,7 @@ app = Celery(config_source='celeryconfig')
 
 def download_file(package_id, link, session):
     # check if file exists in tmp
-    path = f'tmp/{package_id}.zip'
+    path = get_package_zip_path(package_id)
     try:
         with open(path, 'rb') as f:
             return path
@@ -118,7 +122,7 @@ def read_analytics_file(package_id, link, session):
 
     application_command_used = []
 
-    path = f'tmp/{package_id}.zip'
+    path = get_package_zip_path(package_id)
 
     with ZipFile(path) as zip:
         
@@ -616,7 +620,7 @@ def handle_package(package_id, link):
         e_traceback = None
         if expected not in current:
             current = 'UNKNOWN_ERROR'
-            e_traceback = ''.join(traceback.format_exception(etype=type(e), value=e, tb=e.__traceback__))
+            e_traceback = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
         session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).update({
             'is_errored': True,
             'error_message_code': current,
