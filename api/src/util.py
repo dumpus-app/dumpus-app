@@ -96,7 +96,7 @@ def fetch_diswho_user(user_id):
         'authorization': f'Bearer {diswho_jwt}'
     }
 
-    r = requests.get(f'{diswho_base_url}/users/{user_id}', headers=headers)
+    r = requests.get(f'{diswho_base_url}/user/{user_id}', headers=headers)
     if r.status_code == 200:
         return r.json()
     else:
