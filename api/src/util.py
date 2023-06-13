@@ -11,12 +11,15 @@ dl_whitelisted_domains_raw = os.getenv('DL_ZIP_WHITELISTED_DOMAINS')
 dl_whitelisted_domains = dl_whitelisted_domains_raw and dl_whitelisted_domains_raw.split(',') or []
 
 def check_discord_link (link):
-    if not re.match(discord_link_regex, link) and not any([link.startswith(domain) for domain in dl_whitelisted_domains]):
+    if not re.match(discord_link_regex, link):
         return False
     return True
 
+def check_whitelisted_link (link):
+    return any([link.startswith(f'https://{domain}') for domain in dl_whitelisted_domains])
+
 def extract_upn_from_discord_link (link):
-    # get everything after first / and encore base64
+    # get everything after first / and encode base64
     t = link.split('/')[1]
     t_bytes = t.encode('ascii')
     base64_bytes = base64.b64decode(t_bytes)

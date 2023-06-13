@@ -32,6 +32,7 @@ from util import (
     # discord utilities
     extract_key_from_discord_link,
     generate_avatar_url_from_user_id_avatar_hash,
+    check_whitelisted_link,
     # time utilities
     count_dates_hours,
     get_ts_regular_string_parser,
@@ -62,13 +63,14 @@ def download_file(package_id, link, session):
     except FileNotFoundError:
         pass
 
-    print('checking content type')
-    command = f"curl -L -I {link}"
-    process = subprocess.run(command, shell=True, capture_output=True, text=True)
+    if not check_whitelisted_link(link):
+        print('checking content type')
+        command = f"curl -L -I {link}"
+        process = subprocess.run(command, shell=True, capture_output=True, text=True)
 
-    if "application/zip" not in process.stdout or "HTTP/2 400" in process.stdout:
-        print('The link does not point to a zip file.')
-        raise Exception('EXPIRED_LINK')
+        if "application/zip" not in process.stdout or "HTTP/2 400" in process.stdout:
+            print('The link does not point to a zip file.')
+            raise Exception('EXPIRED_LINK')
 
     print('downloading')
     update_step(package_id, 'DOWNLOADING', session)

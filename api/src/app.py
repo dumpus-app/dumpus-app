@@ -6,7 +6,7 @@ from flask_cors import CORS
 from tasks import handle_package
 from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_data, fetch_package_rank
 
-from util import check_discord_link, extract_package_id_from_discord_link, extract_package_id_from_upn
+from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn
 
 app = Flask(__name__)
 CORS(app)
@@ -68,7 +68,7 @@ def process_link():
 
     link = request.json['package_link']
 
-    if not link or not check_discord_link(link):
+    if not link or (not check_discord_link(link) and not check_whitelisted_link(link)):
         res = get_base_process_response()
         res['errorMessageCode'] = 'INVALID_LINK'
         return jsonify(res), 200
