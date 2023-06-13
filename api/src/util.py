@@ -97,6 +97,7 @@ def fetch_diswho_user(user_id):
     }
 
     r = requests.get(f'{diswho_base_url}/user/{user_id}', headers=headers)
+    print(r.status_code)
     if r.status_code == 200:
         return r.json()
     else:
