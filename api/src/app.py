@@ -133,7 +133,7 @@ def get_package_status(package_id):
     if package_status.is_errored:
         res['errorMessageCode'] = package_status.error_message_code
 
-    if package_status.step == 'processed':
+    if package_status.step == 'PROCESSED':
         res['isDataAvailable'] = True
 
     else:

@@ -63,21 +63,21 @@ def fetch_package_rank (package_id, package_status, session):
         row_count = session.execute(text("""
             select count(*) from package_process_status 
             where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
-            and step <> 'processed'
+            and step <> 'PROCESSED'
             and is_upgraded is true;
         """).bindparams(package_id=package_id)).fetchone()[0]
         total_upgraded_row_count = session.execute(text("""
-            select count(*) from package_process_status where step <> 'processed' and is_upgraded is true;
+            select count(*) from package_process_status where step <> 'PROCESSED' and is_upgraded is true;
         """)).fetchone()[0]
         return (row_count, total_upgraded_row_count)
     
     row_count = session.execute(text("""
         select count(*) from package_process_status
         where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
-        and step <> 'processed';
+        and step <> 'PROCESSED';
     """).bindparams(package_id=package_id)).fetchone()[0]
     total_row_count = session.execute(text("""
-        select count(*) from package_process_status where step <> 'processed';
+        select count(*) from package_process_status where step <> 'PROCESSED';
     """)).fetchone()[0]
     return (row_count, total_row_count)
 
@@ -87,7 +87,7 @@ def fetch_package_status(package_id, session):
 
 def fetch_package_data(package_id, auth_upn, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
-    if status and status.step == 'processed':
+    if status and status.step == 'PROCESSED':
         result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
         encrypted_data = result.encrypted_data
         iv = result.iv
