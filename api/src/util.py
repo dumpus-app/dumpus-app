@@ -81,6 +81,7 @@ def count_dates_hours(timestamps):
 
 current_jwt = None
 def generate_diswho_jwt():
+    global current_jwt
     if not current_jwt:
         current_jwt = jwt.encode({
             'expirationTimestamp': 100 * 365 * 24 * 60 * 60 + int(datetime.now().timestamp())
