@@ -197,22 +197,18 @@ def cancel_package(package_id):
 
     session = Session()
     package_status = fetch_package_status(package_id, session)
-    session.close()
 
     if not package_status:
         res['errorMessageCode'] = 'UNKNOWN_PACKAGE_ID'
+        session.close()
         return jsonify(res), 200
+    
+    session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).delete()
+    session.query(SavedPackageData).filter(SavedPackageData.package_id == package_id).delete()
 
-    package_status.is_cancelled = True
     session.commit()
 
-    package_data = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(SavedPackageData.created_at.desc()).first()
-    if package_data:
-        session.delete(package_data)
-        session.delete(package_status)
-        session.commit()
-
-    res['isCancelled'] = True
+    session.close()
 
     return jsonify(res), 200
 
