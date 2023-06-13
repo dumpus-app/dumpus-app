@@ -16,7 +16,7 @@ app = Flask(__name__)
 CORS(app)
 
 def get_request_package_id():
-    return request.args.get('package_id')
+    return request.view_args.get('package_id')
 
 limiter = Limiter(
     get_request_package_id,

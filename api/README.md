@@ -133,6 +133,25 @@ Status codes:
 * `401`: the UPN KEY provided in the Authorization header is not valid.
 * `404`: unknown package ID.
 
+### Fetch a package user
+
+* `GET /process/<package_id>/user/<user_id>`
+
+Response:
+```json
+{
+    "avatar_url": "https://cdn.discordapp.com/avatars/422820341791064085/af0c1960a90d98e69bce68d206b56c9a.png",
+    "display_name": "Androz",
+    "user_id": "422820341791064085"
+}
+```
+
+Status codes:
+* `200`: the data is available and has been returned.
+* `401`: the UPN KEY provided in the Authorization header is not valid, or the package does not exist.
+* `404`: unknown user ID.
+* `500`: an error occurred while fetching the data (can often happen).
+
 ### Delete a package (and abort the processing)
 
 * `DELETE /process/<package_id>`
