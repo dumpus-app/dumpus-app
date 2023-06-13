@@ -1,3 +1,5 @@
+import socket
+
 from flask import Flask, jsonify, request, Response, make_response
 from flask_cors import CORS
 
@@ -10,7 +12,6 @@ from util import check_discord_link, check_whitelisted_link, extract_package_id_
 
 app = Flask(__name__)
 CORS(app)
-
 
 def get_base_status_response():
     return {
@@ -62,6 +63,15 @@ def check_authorization_bearer(req, package_id):
 
     return (True, auth_token)
 
+@app.route('/health', methods=['GET'])
+def health():
+    
+    hostname = socket.gethostname()
+
+    return jsonify({
+        'status': 'alive',
+        'hostname': hostname
+    }), 200
 
 @app.route('/process', methods=['POST'])
 def process_link():
