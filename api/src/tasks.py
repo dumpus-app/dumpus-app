@@ -72,7 +72,7 @@ def download_file(package_id, link, session):
         command = f"curl -L -I {link}"
         process = subprocess.run(command, shell=True, capture_output=True, text=True)
 
-        if "application/zip" not in process.stdout or "HTTP/2 400" in process.stdout:
+        if "application/octet-stream" not in process.stdout or "HTTP/2 400" in process.stdout:
             print('The link does not point to a zip file.')
             raise Exception('EXPIRED_LINK')
 
