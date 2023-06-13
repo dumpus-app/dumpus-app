@@ -4,6 +4,7 @@ from datetime import datetime
 from collections import Counter
 import pandas as pd
 import os
+import base64
 
 discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
 dl_whitelisted_domains_raw = os.getenv('DL_ZIP_WHITELISTED_DOMAINS')
@@ -15,7 +16,13 @@ def check_discord_link (link):
     return True
 
 def extract_upn_from_discord_link (link):
-    upn = re.match(discord_link_regex, link).group(1)
+    # get everything after first / and encore base64
+    t = link.split('/')[1]
+    t_bytes = t.encode('ascii')
+    base64_bytes = base64.b64decode(t_bytes)
+    upn = base64_bytes
+    if re.match(discord_link_regex, link):
+        upn = re.match(discord_link_regex, link).group(1)
     return upn
 
 def extract_package_id_from_discord_link (link):
