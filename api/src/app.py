@@ -53,9 +53,9 @@ def get_base_process_response():
     }
 
 
-def get_base_cancel_response():
+def get_base_delete_response():
     return {
-        "isCancelled": False,
+        "isDeleted": False,
         "errorMessageCode": None
     }
 
