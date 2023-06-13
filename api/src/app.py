@@ -3,15 +3,26 @@ import socket
 from flask import Flask, jsonify, request, Response, make_response
 from flask_cors import CORS
 
+from flask_limiter import Limiter
+
 # make sure tasks is imported before db
 # as env is loaded from tasks (so the celery worker can use it)
 from tasks import handle_package
 from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_data, fetch_package_rank
 
-from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn
+from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn, fetch_diswho_user
 
 app = Flask(__name__)
 CORS(app)
+
+def get_request_package_id():
+    return request.args.get('package_id')
+
+limiter = Limiter(
+    get_request_package_id,
+    app=app,
+    storage_uri="memory://",
+)
 
 def get_base_status_response():
     return {
@@ -204,11 +215,30 @@ def cancel_package(package_id):
 
     return jsonify(res), 200
 
+@app.route('/process/<package_id>/<user_id>/avatar_url', methods=['GET'])
+@limiter.limit("2/second")
+def get_avatar(package_id, user_id):
+    
+        (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
+        if not is_auth:
+            return make_response('', 401)
+    
+        session = Session()
+        data = fetch_package_status(package_id, user_id, auth_upn, session)
+        session.close()
 
-@app.route('/health', methods=['GET'])
-def health_check():
-    return '', 200
+        if not data:
+            return make_response('', 401)
+        
+        user = fetch_diswho_user(user_id)
 
+        if not user:
+            return make_response('', 500)
+
+        return jsonify({
+            'user_id': user_id,
+            'avatar_url': user.avatar_url
+        }), 200
 
 @app.errorhandler(404)
 def page_not_found(e):

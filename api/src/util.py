@@ -6,6 +6,8 @@ import pandas as pd
 import os
 from urllib.parse import urlparse
 import base64
+import jwt
+import requests
 
 discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
 dl_whitelisted_domains_raw = os.getenv('DL_ZIP_WHITELISTED_DOMAINS')
@@ -76,3 +78,25 @@ def count_dates_hours(timestamps):
     # Count occurrences of each unique hour
     date_hour_counts = timestamps_hour.value_counts().to_dict()
     return date_hour_counts
+
+current_jwt = None
+def generate_diswho_jwt():
+    if not current_jwt:
+        current_jwt = jwt.encode({
+            'expirationTimestamp': 100 * 365 * 24 * 60 * 60 + int(datetime.now().timestamp())
+        }, os.getenv('DISWHO_JWT_SECRET'), algorithm="HS256")
+    return current_jwt
+
+def fetch_diswho_user(user_id):
+    diswho_base_url = os.getenv('DISWHO_BASE_URL')
+    diswho_jwt = generate_diswho_jwt()
+
+    headers = {
+        'authorization': f'Bearer {diswho_jwt}'
+    }
+
+    r = requests.get(f'{diswho_base_url}/users/{user_id}', headers=headers)
+    if r.status_code == 200:
+        return r.json()
+    else:
+        return None
