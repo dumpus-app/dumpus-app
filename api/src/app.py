@@ -102,8 +102,10 @@ def process_link():
 
     session.close()
 
+    id = package_process_status.id
+
     handle_package.apply_async(
-        args=[package_id, link], queue='regular_process')
+        args=[id, package_id, link], queue='regular_process')
 
     return jsonify(res), 200
 
@@ -184,8 +186,7 @@ def cancel_package(package_id):
     package_status.is_cancelled = True
     session.commit()
 
-    package_data = session.query(SavedPackageData).filter_by(
-        package_id=package_id).first()
+    package_data = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
     if package_data:
         session.delete(package_data)
         session.commit()

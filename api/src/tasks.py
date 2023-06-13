@@ -58,7 +58,7 @@ def count_sentiments(contents):
 
 app = Celery(config_source='celeryconfig')
 
-def download_file(package_id, link, session):
+def download_file(package_status_id, package_id, link, session):
     # check if file exists in tmp
     path = get_package_zip_path(package_id)
     try:
@@ -77,7 +77,7 @@ def download_file(package_id, link, session):
             raise Exception('EXPIRED_LINK')
 
     print('downloading')
-    update_step(package_id, 'DOWNLOADING', session)
+    update_step(package_status_id, package_id, 'DOWNLOADING', session)
     command = f"curl -L -o {path} {link}"
 
     process = subprocess.Popen(command, shell=True)
@@ -85,8 +85,8 @@ def download_file(package_id, link, session):
 
     return path
 
-def read_analytics_file(package_id, link, session):
-    update_step(package_id, 'ANALYZING', session)
+def read_analytics_file(package_status_id, package_id, link, session):
+    update_step(package_status_id, package_id, 'ANALYZING', session)
     update_progress(package_id, 0, session)
 
     start = time.time()
@@ -588,15 +588,15 @@ def read_analytics_file(package_id, link, session):
 
     print(f'SQLite serialization: {time.time() - start}')
 
-    update_step(package_id, 'PROCESSED', session)
+    update_step(package_status_id, package_id, 'PROCESSED', session)
 
     return analytics_line_count
 
 @app.task()
-def handle_package(package_id, link):
+def handle_package(package_status_id, package_id, link):
     print(f'handling package {package_id} with link {link}')
     session = Session()
-    package_status = session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).first()
+    package_status = session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).first()
     if not package_status:
         print('package not found')
         return
@@ -614,8 +614,8 @@ def handle_package(package_id, link):
         return
 
     try:
-        download_file(package_id, link, session)
-        read_analytics_file(package_id, link, session)
+        download_file(package_status_id, package_id, link, session)
+        read_analytics_file(package_status_id, package_id, link, session)
     except Exception as e:
         expected = ('EXPIRED_LINK')
         current = str(e)
@@ -623,7 +623,7 @@ def handle_package(package_id, link):
         if expected not in current:
             current = 'UNKNOWN_ERROR'
             e_traceback = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
-        session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).update({
+        session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).update({
             'is_errored': True,
             'error_message_code': current,
             'error_message_traceback': e_traceback

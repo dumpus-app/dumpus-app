@@ -41,15 +41,15 @@ Base.metadata.create_all(engine)
 
 Session = sessionmaker(bind=engine)
 
-def update_progress (package_id, current_progress, session):
-    package = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
+def update_progress (package_status_id, package_id, current_progress, session):
+    package = session.query(PackageProcessStatus).filter_by(id=package_status_id).first()
     if package:
         package.progress = current_progress
         package.updated_at = datetime.now()
         session.commit()
 
-def update_step (package_id, step, session):
-    package = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
+def update_step (package_status_id, package_id, step, session):
+    package = session.query(PackageProcessStatus).filter_by(id=package_status_id).first()
     if package:
         package.step = step
         package.updated_at = datetime.now()
@@ -82,13 +82,13 @@ def fetch_package_rank (package_id, package_status, session):
     return (row_count, total_row_count)
 
 def fetch_package_status(package_id, session):
-    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
+    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
     return status
 
 def fetch_package_data(package_id, auth_upn, session):
-    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).first()
+    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
     if status and status.step == 'PROCESSED':
-        result = session.query(SavedPackageData).filter_by(package_id=package_id).first()
+        result = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(SavedPackageData.created_at.desc()).first()
         encrypted_data = result.encrypted_data
         iv = result.iv
         sqlite_buffer = decrypt_sqlite_data(encrypted_data, iv, auth_upn)
