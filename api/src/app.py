@@ -215,7 +215,7 @@ def cancel_package(package_id):
 
     return jsonify(res), 200
 
-@app.route('/process/<package_id>/user_avatar/<user_id>', methods=['GET'])
+@app.route('/process/<package_id>/user/<user_id>', methods=['GET'])
 @limiter.limit("2/second")
 def get_avatar(package_id, user_id):
     
@@ -237,7 +237,8 @@ def get_avatar(package_id, user_id):
 
         return jsonify({
             'user_id': user_id,
-            'avatar_url': user.avatar_url
+            'display_name': user['display_name'],
+            'avatar_url': user['avatar_url']
         }), 200
 
 @app.errorhandler(404)
