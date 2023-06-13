@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, send_file, make_response
+from flask import Flask, jsonify, request, Response, make_response
 from flask_cors import CORS
 
 # make sure tasks is imported before db
@@ -162,9 +162,8 @@ def get_package_data(package_id):
 
     if not data:
         return make_response('', 404)
-
-    return send_file(data, mimetype='application/octet-stream')
-
+    
+    return Response(data, mimetype='application/octet-stream')
 
 @app.route('/process/<package_id>', methods=['DELETE'])
 def cancel_package(package_id):
