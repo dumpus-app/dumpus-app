@@ -12,31 +12,58 @@
   "onboarding": {
     "routes": {
       "/": {
-        "label": "C'est parti"
+        "next": "/intro/1",
+        "label": "C'est parti",
+        "progress": null,
+        "previous": null
       },
       "/intro/1": {
-        "label": "Génial!"
+        "next": "/intro/2",
+        "label": "Génial!",
+        "progress": 0,
+        "previous": "/"
       },
       "/intro/2": {
-        "label": "Rassurant!"
+        "next": "/intro/3",
+        "label": "Rassurant!",
+        "progress": "0.33",
+        "previous": "/intro/1"
       },
       "/intro/3": {
-        "label": "Il me tarde!"
+        "next": "/setup",
+        "label": "Il me tarde!",
+        "progress": "0.66",
+        "previous": "/intro/2"
       },
       "/setup": {
-        "label": "C'est fait!"
+        "next": "/access",
+        "label": "C'est fait!",
+        "progress": 1,
+        "previous": "/intro/3"
       },
       "/access": {
-        "label": null
+        "next": null,
+        "label": null,
+        "progress": 2,
+        "previous": "/setup"
       },
       "/access/link": {
-        "label": null
+        "next": null,
+        "label": null,
+        "progress": "2.5",
+        "previous": "/access"
       },
       "/access/email": {
-        "label": null
+        "next": null,
+        "label": null,
+        "progress": "2.5",
+        "previous": "/access"
       },
       "/loading": {
-        "label": null
+        "next": null,
+        "label": null,
+        "progress": 3,
+        "previous": null
       }
     },
     "shared": {
@@ -48,7 +75,11 @@
       "welcome": "Bienvenue sur Dumpus",
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
-      "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
+      "steps": [
+        "Explication",
+        "Obtenez vos données",
+        "Démarrez l'analyse"
+      ]
     },
     "slides": [
       {
