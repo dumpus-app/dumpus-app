@@ -100,9 +100,9 @@ def process_link():
     package_process_status.queue_total_when_started = queue_total
     session.commit()
 
-    session.close()
-
     id = package_process_status.id
+
+    session.close()
 
     handle_package.apply_async(
         args=[id, package_id, link], queue='regular_process')
