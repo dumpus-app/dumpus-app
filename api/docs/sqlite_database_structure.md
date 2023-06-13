@@ -3,62 +3,62 @@ Note: this documentation was generated automatically from the tasks.py code usin
 
 **activity table**
 
-| Column                 | Description                                                                                              |
-|------------------------|----------------------------------------------------------------------------------------------------------|
-| event_name             | The name of the event, for example, "message_sent".                                                     |
-| day                    | The date when the event occurred, in the format YYYY-MM-DD.                                             |
-| hour                   | The hour when the event occurred (0-23).                                                                |
-| occurence_count        | The number of times the event occurred during the specified hour.                                       |
-| associated_dm_user_id  | The user ID associated with the event, if applicable (for Direct Messages only).                        |
-| associated_channel_id  | The channel ID associated with the event.                                                               |
-| associated_guild_id    | The guild ID associated with the event (for Guild channels only).                                      |
+| Column                | Description                                                                                                 |
+|-----------------------|-------------------------------------------------------------------------------------------------------------|
+| event_name            | Event type, such as "message_sent"; represents the activities within channels.                              |
+| day                   | The date (YYYY-MM-DD format) when the event occurred.                                                       |
+| hour                  | The hour (0-23) when the event occurred.                                                                    |
+| occurence_count       | The number of occurrences of the event within the specified hour.                                           |
+| associated_dm_user_id | The user ID associated with direct message (DM) channels, if applicable.                                    |
+| associated_channel_id | The ID of the channel where the event occurred.                                                             |
+| associated_guild_id   | The ID of the guild (server) where the event occurred, if applicable.                                       |
 
 **dm_channels_data table**
 
-| Column                     | Description                                                                                          |
-|----------------------------|------------------------------------------------------------------------------------------------------|
-| channel_id                 | The ID of the Direct Message channel.                                                               |
-| dm_user_id                 | The user ID associated with the Direct Message channel.                                             |
-| user_name                  | The username of the user associated with the Direct Message channel.                                 |
-| user_avatar_url            | The avatar URL of the user associated with the Direct Message channel.                               |
-| total_message_count        | The total number of messages in the Direct Message channel.                                         |
-| total_voice_channel_duration | The total duration of voice channel sessions in the Direct Message channel (in minutes).            |
-| sentiment_score            | The sentiment score of the messages in the Direct Message channel.                                  |
+| Column                      | Description                                                             |
+|-----------------------------|-------------------------------------------------------------------------|
+| channel_id                  | The ID of the direct message (DM) channel.                             |
+| dm_user_id                  | The ID of the user associated with the DM channel.                      |
+| user_name                   | The name of the user associated with the DM channel.                    |
+| user_avatar_url             | The URL of the user's avatar associated with the DM channel.            |
+| total_message_count         | The total number of messages sent in the DM channel.                    |
+| total_voice_channel_duration| The total duration (in minutes) of voice channel sessions.              |
+| sentiment_score             | Sentiment score of messages in the DM channel.                          |
 
 **guild_channels_data table**
 
-| Column                     | Description                                                                                          |
-|----------------------------|------------------------------------------------------------------------------------------------------|
-| channel_id                 | The ID of the Guild channel.                                                                        |
-| channel_name               | The name of the Guild channel.                                                                      |
-| guild_id                   | The guild ID associated with the Guild channel.                                                      |
-| total_message_count        | The total number of messages in the Guild channel.                                                  |
-| total_voice_channel_duration | The total duration of voice channel sessions in the Guild channel (in minutes).                     |
+| Column                      | Description                                                                                           |
+|-----------------------------|-------------------------------------------------------------------------------------------------------|
+| channel_id                  | The ID of the guild (server) channel.                                                                |
+| guild_id                    | The ID of the guild (server) that the channel belongs to.                                            |
+| channel_name                | The name of the guild channel.                                                                       |
+| total_message_count         | The total number of messages sent in the guild channel.                                               |
+| total_voice_channel_duration| The total duration (in minutes) of voice channel sessions within the guild channel.                   |
 
 **guilds table**
 
-| Column                 | Description                                                                                              |
-|------------------------|----------------------------------------------------------------------------------------------------------|
-| guild_id               | The ID of the guild.                                                                                     |
-| guild_name             | The name of the guild.                                                                                   |
-| total_message_count    | The total number of messages across all channels in the guild.                                          |
+| Column              | Description                                                   |
+|---------------------|---------------------------------------------------------------|
+| guild_id            | The ID of the guild (server).                                 |
+| guild_name          | The name of the guild.                                        |
+| total_message_count | The total number of messages sent across all guild channels.  |
 
 **payments table**
 
-| Column                 | Description                                                                                              |
-|------------------------|----------------------------------------------------------------------------------------------------------|
-| payment_id             | The unique ID of the payment.                                                                            |
-| payment_date           | The date when the payment was made, in the format YYYY-MM-DD.                                           |
-| payment_amount         | The amount of the payment (integer).                                                                     |
-| payment_currency       | The currency used for the payment (for example, "USD").                                                  |
-| payment_description    | A brief description of the payment.                                                                      |
+| Column              | Description                                                   |
+|---------------------|---------------------------------------------------------------|
+| payment_id          | The unique ID of the payment.                                 |
+| payment_date        | The date (YYYY-MM-DD format) when the payment was made.       |
+| payment_amount      | The amount of the payment.                                    |
+| payment_currency    | The currency of the payment.                                  |
+| payment_description | A description of the payment.                                 |
 
 **voice_sessions table**
 
-| Column                 | Description                                                                                              |
-|------------------------|----------------------------------------------------------------------------------------------------------|
-| channel_id             | The ID of the channel associated with the voice session.                                                 |
-| guild_id               | The guild ID associated with the voice session (if applicable).                                          |
-| duration_mins          | The duration of the voice session in minutes.                                                            |
-| started_date           | The start date of the voice session in the format YYYY-MM-DD.                                           |
-| ended_date             | The end date of the voice session in the format YYYY-MM-DD.                                             |
+| Column        | Description                                                   |
+|---------------|---------------------------------------------------------------|
+| channel_id    | The ID of the channel where the voice session occurred.       |
+| guild_id      | The ID of the guild (server) where the voice session occurred, if applicable. |
+| duration_mins | The duration (in minutes) of the voice session.               |
+| started_date  | The date (YYYY-MM-DD format) when the voice session started.  |
+| ended_date    | The date (YYYY-MM-DD format) when the voice session ended.    |
