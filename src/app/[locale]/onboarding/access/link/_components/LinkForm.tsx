@@ -70,9 +70,12 @@ export default function LinkForm() {
     },
   });
 
-  function onSubmit(values: Schema) {
-    console.log(values);
-    router.push(`${i18next.language}/onboarding/loading/`);
+  function onSubmit({ discordLink, backendURL }: Schema) {
+    router.push(
+      `${i18next.language}/onboarding/loading/?packageLink=${encodeURIComponent(
+        discordLink
+      )}&backendURL=${encodeURIComponent(backendURL)}`
+    );
   }
 
   return (

@@ -1,82 +1,76 @@
 "use client";
 
+import { useMutation, useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
+import usePackageAPI from "~/hooks/use-package-api";
 import useSQL from "~/hooks/use-sql";
-import { useTranslation } from "~/i18n";
-import { PageProps } from "~/types";
-import { Activity } from "~/types/sql";
-
-// export default async function Page({ params: { locale } }: PageProps) {
-//   const { t } = await useTranslation(locale);
-
-//   return <div>Onboarding loading</div>;
-// }
-
-function DataDisplay() {
-  const { db, resultAsList } = useSQL();
-  return (
-    <>
-      <pre>
-        {JSON.stringify(
-          resultAsList<Activity>(db?.exec("SELECT * FROM activity")[0]),
-          null,
-          2
-        )}
-      </pre>
-      <pre>
-        {JSON.stringify(
-          resultAsList<Activity>(
-            db?.exec("SELECT * FROM activity WHERE count >= $count", {
-              $count: 4,
-            })[0]
-          ),
-          null,
-          2
-        )}
-      </pre>
-      <pre>
-        {JSON.stringify(
-          // @ts-expect-error
-          resultAsList<Pick<Activity, "hour" | "count">>(
-            db?.exec("SELECT hour, count FROM activity")[0]
-          ),
-          null,
-          2
-        )}
-      </pre>
-    </>
-  );
-}
+import { useTranslation } from "~/i18n/client";
 
 export default function Page() {
+  const { t } = useTranslation();
+
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const packageLink = searchParams?.get("packageLink") || undefined;
+  const backendURL = searchParams?.get("backendURL") || undefined;
+  const UPNKey = packageLink
+    ? new URL(packageLink).searchParams.get("upn") || undefined
+    : undefined;
+
   const { init } = useSQL();
-  const [ready, setReady] = useState(false);
+  const api = usePackageAPI({ baseURL: backendURL });
 
+  const isInitializedRef = useRef(false);
+
+  const processMutation = useMutation({
+    mutationKey: ["package-api", "process", packageLink],
+    mutationFn: api.process,
+  });
+
+  // Initial mutation
   useEffect(() => {
-    init();
-    setReady(true);
-    // router.push(`/${i18next.language}/overview`);
-  }, [init, router]);
+    if (!packageLink || isInitializedRef.current) return;
+    isInitializedRef.current = true;
 
-  return (
-    <div>
-      <div>Onboarding loading...</div>
-      {ready && <DataDisplay />}
-    </div>
-  );
+    setTimeout(() => {
+      processMutation.mutate({ packageLink });
+    }, 10);
+  }, [packageLink, processMutation]);
+
+  const statusQuery = useQuery({
+    queryKey: ["package-api", "status", processMutation.data?.packageId],
+    queryFn: () =>
+      api.status({
+        packageID: processMutation.data!.packageId,
+        UPNKey: UPNKey!,
+      }),
+    enabled: processMutation.data?.isAccepted,
+    refetchInterval: 1000, // 1s
+  });
+
+  // useEffect(() => {
+  // init();
+  // router.push(`/${i18next.language}/overview`);
+  // }, [init]);
 
   return (
     <div className="flex flex-col items-center space-y-4">
       <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
-      <div className="max-w-xs text-center">
-        <h1 className="text-xl font-bold text-white">
-          We’re loading your data
-        </h1>
-        <p className="mt-2 text-gray-400">Please wait...</p>
-      </div>
+      {processMutation.isSuccess || statusQuery.isSuccess ? (
+        <div>{JSON.stringify(statusQuery.data, null, 2)}</div>
+      ) : (
+        <div className="max-w-xs text-center">
+          <h1 className="text-xl font-bold text-white">
+            We’re loading your data
+          </h1>
+          <p className="mt-2 text-gray-400">
+            Please wait... {processMutation.status}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

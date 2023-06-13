@@ -3,12 +3,10 @@
 import { useAtom } from "jotai";
 import initSqlJs, { type QueryExecResult } from "sql.js";
 import { dbAtom } from "~/stores/db";
+import usePackageAPI from "./use-package-api";
 import LZString from "lz-string";
-
-function splitQuery(query: string) {
-  const parts = query.split("\n");
-  return parts;
-}
+import pako from "pako";
+import { useRef } from "react";
 
 const STORAGE_KEY = "db";
 const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
@@ -32,31 +30,28 @@ const TEMP_ID = "0";
 
 export default function useSQL() {
   const [db, setDb] = useAtom(dbAtom);
+  const api = usePackageAPI({});
+  const isInitializedRef = useRef(false);
 
   function init() {
-    if (db) return;
-    const data = retrieve(TEMP_ID);
+    if (isInitializedRef.current) return;
+    isInitializedRef.current = true;
+    let data = retrieve(TEMP_ID);
     initSqlJs({
       locateFile: (file) => `https://sql.js.org/dist/${file}`,
-    }).then((SQL) => {
-      const _db = new SQL.Database(data);
+    }).then(async (SQL) => {
       if (!data) {
-        // const query = await fetch("/").then(res => res.text())
-        const rawQuery = `
-        CREATE TABLE activity (event_name TEXT NOT NULL,day TEXT NOT NULL,hour INTEGER,count INTEGER NOT NULL,associated_dm_user_id TEXT,associated_channel_id TEXT,associated_guild_id TEXT,PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id));
-        INSERT INTO "activity" VALUES('message_sent','2020-03-30',2,4,NULL,'694126491427930113',NULL);
-        INSERT INTO "activity" VALUES('message_sent','2020-01-03',1,2,NULL,'662713138508202018',NULL);
-        INSERT INTO "activity" VALUES('message_sent','2022-03-01',1,5,NULL,'947940752720285736',NULL);
-        INSERT INTO "activity" VALUES('message_sent','2020-05-18',2,1,NULL,'711789210176061493',NULL);
-        INSERT INTO "activity" VALUES('message_sent','2019-04-21',2,16,NULL,'569552594419318794',NULL);
-        INSERT INTO "activity" VALUES('message_sent','2019-05-30',2,7,NULL,'569552594419318794',NULL);
-                `;
-        const queries = splitQuery(rawQuery);
-        for (const query of queries) {
-          _db.run(query);
-        }
-        store(TEMP_ID, _db.export());
+        console.log("retrieve");
+        const res = await api.data({
+          packageID: "",
+          UPNKey: "",
+        });
+        // TODO: handleError
+        const decompressed = pako.inflate(res.data!);
+        store(TEMP_ID, decompressed);
+        data = decompressed;
       }
+      const _db = new SQL.Database(data);
       setDb(_db);
     });
   }

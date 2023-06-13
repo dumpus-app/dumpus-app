@@ -34,8 +34,11 @@ export default function usePackageAPI({
     const data = (await api({
       path: "/process",
       method: "POST",
-      headers: { Accept: "application/json" },
-      body: { packageLink },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: { package_link: packageLink },
     }).then((res) => res.json())) as PackageAPIProcessResponse;
     return data;
   }
@@ -73,15 +76,14 @@ export default function usePackageAPI({
         Authorization: `Bearer ${UPNKey}`,
       },
     });
-    let data: PackageAPIDataResponse;
-    switch (response.status) {
-      case 401:
-        data = { data: null, errorMessageCode: "UNAUTHORIZED" };
-      case 404:
-        data = { data: null, errorMessageCode: "UNKNOWN_PACKAGE_ID" };
-      default:
-        data = { data: await response.text(), errorMessageCode: null };
-    }
+
+    const data: PackageAPIDataResponse =
+      response.status === 401
+        ? { data: null, errorMessageCode: "UNAUTHORIZED" }
+        : response.status === 404
+        ? { data: null, errorMessageCode: "UNKNOWN_PACKAGE_ID" }
+        : { data: await response.arrayBuffer(), errorMessageCode: null };
+
     return data;
   }
 

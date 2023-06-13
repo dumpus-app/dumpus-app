@@ -47,7 +47,7 @@ export type PackageAPIStatusResponse = Prettify<
 >;
 
 export type PackageAPIDataResponse = Prettify<
-  | { data: string; errorMessageCode: null }
+  | { data: ArrayBuffer; errorMessageCode: null }
   | { data: null; errorMessageCode: "UNKNOWN_PACKAGE_ID" | "UNAUTHORIZED" }
 >;
 
