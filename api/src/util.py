@@ -84,7 +84,7 @@ def generate_diswho_jwt():
     global current_jwt
     if not current_jwt:
         current_jwt = jwt.encode({
-            'expirationTimestamp': 100 * 365 * 24 * 60 * 60 + int(datetime.now().timestamp())
+            'expirationTimestamp': (100 * 365 * 24 * 60 * 60 + int(datetime.now().timestamp())) * 1000
         }, os.getenv('DISWHO_JWT_SECRET'), algorithm="HS256")
     return current_jwt
 
@@ -97,7 +97,6 @@ def fetch_diswho_user(user_id):
     }
 
     r = requests.get(f'{diswho_base_url}/user/{user_id}', headers=headers)
-    print(r.status_code)
     if r.status_code == 200:
         return r.json()
     else:
