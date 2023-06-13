@@ -147,7 +147,11 @@
         },
         "email": {
           "title": "Transfer the email",
-          "href": "/onboarding/access/email"
+          "href": "/onboarding/access/email",
+          "content": [
+            "Transfer the email received from Discord to **process@dumpus-app.net**. We'll send you a link when it's ready.",
+            "See you soon!"
+          ]
         }
       }
     }
