@@ -11,17 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Get Commit Message
-        id: commit
-        run: |
-          MESSAGE=$(git log --format=%B -n 1 ${{ github.event.after }})
-          MESSAGE_NO_NEWLINES=${MESSAGE//$'\n'/ }   # Replace newlines with spaces
-          echo "::set-output name=message::$MESSAGE_NO_NEWLINES"
-        shell: bash
-
       - name: Check for rebuild-docs
         run: |
           echo "Commit message: '${{ steps.commit.outputs.message }}'"
@@ -29,9 +18,9 @@ jobs:
             echo "Commit message contains --rebuild-docs. Continue to next step."
           else
             echo "Commit message does not contain --rebuild-docs. Skipping subsequent steps."
-            exit 1
-          fi
+            exit 78
         shell: bash
+        continue-on-error: true
 
       - name: Setup Python
         uses: actions/setup-python@v2
