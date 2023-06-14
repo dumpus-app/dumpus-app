@@ -135,3 +135,40 @@ Result
 |23  |767          |
 
 */
+
+WITH RECURSIVE dates(day) AS (
+  VALUES('2021-06-01')
+  UNION ALL
+  SELECT date(day, '+1 day')
+  FROM dates
+  WHERE date(day, '+1 day') <= '2021-06-10'
+)
+SELECT 
+    dates.day,
+    IFNULL(SUM(a.occurence_count),0) AS message_count
+FROM 
+    dates
+LEFT JOIN 
+    activity a ON dates.day = a.day 
+    AND a.event_name = 'message_sent'
+GROUP BY 
+    dates.day
+ORDER BY 
+    dates.day ASC;
+
+/*
+
+|day|message_count|
+|---|-------------|
+|2021-06-01|102          |
+|2021-06-02|78           |
+|2021-06-03|36           |
+|2021-06-04|12           |
+|2021-06-05|85           |
+|2021-06-06|88           |
+|2021-06-07|96           |
+|2021-06-08|23           |
+|2021-06-09|52           |
+|2021-06-10|75           |
+
+*/
