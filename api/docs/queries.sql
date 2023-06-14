@@ -188,3 +188,15 @@ ORDER BY
 |2021-06-10|75           |
 
 */
+
+SELECT SUM(payment_amount) / 100 as total_spent FROM payments
+
+/*
+
+Result
+
+|total_spent|
+|-----------|
+|8          |
+
+*/
