@@ -85,3 +85,53 @@ Result
 |commands-staff       |1            |
 
 */
+
+WITH hours AS (
+    SELECT value AS hour FROM generate_series(0,23)
+)
+SELECT 
+    hours.hour,
+    IFNULL(SUM(a.occurence_count), 0) AS message_count
+FROM 
+    hours
+LEFT JOIN 
+    activity a ON hours.hour = a.hour 
+    AND a.event_name = 'message_sent' 
+    AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
+GROUP BY 
+    hours.hour
+ORDER BY 
+    hours.hour ASC;
+
+/*
+
+Result
+
+|hour|message_count|
+|----|-------------|
+|0   |224          |
+|1   |52           |
+|2   |5            |
+|3   |7            |
+|4   |165          |
+|5   |2049         |
+|6   |3977         |
+|7   |5929         |
+|8   |7820         |
+|9   |8698         |
+|10  |7089         |
+|11  |6211         |
+|12  |8547         |
+|13  |8386         |
+|14  |9159         |
+|15  |11080        |
+|16  |13999        |
+|17  |12942        |
+|18  |10500        |
+|19  |10993        |
+|20  |8576         |
+|21  |4287         |
+|22  |2012         |
+|23  |767          |
+
+*/
