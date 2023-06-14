@@ -27,3 +27,60 @@ Result
 |456500252048883714|Clem's#4013               |https://cdn.discordapp.com/avatars/456500252048883714/5046d6c3774832074f658f99e79c05b2.jpg|306          |557601710210809856|
 |365942020923064340|Hunam#6067                |https://cdn.discordapp.com/avatars/365942020923064340/7bdf0094f6c645502b99cc92985fd463.jpg|303          |558310926411890689|
 */
+
+SELECT guild_name,
+    COUNT(a.event_name) AS message_count
+FROM guilds
+JOIN activity a ON a.associated_guild_id = guilds.guild_id
+WHERE a.event_name = 'message_sent'
+AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
+GROUP BY guild_name
+ORDER BY message_count DESC;
+
+/*
+
+Result
+
+|guild_name           |message_count|
+|---------------------|-------------|
+|AndrozDev            |28           |
+|ManageInvite's Lounge|9            |
+|ManageInvite Staff   |4            |
+|Visio                |1            |
+|TechCord             |1            |
+
+*/
+
+SELECT channel_name,
+    COUNT(a.event_name) AS message_count    
+FROM guild_channels_data channels
+JOIN activity a ON a.associated_channel_id = channels.channel_id
+WHERE a.event_name = 'message_sent'
+AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
+GROUP BY channel_name
+ORDER BY message_count DESC;
+
+/*
+
+Result
+
+|channel_name         |message_count|
+|---------------------|-------------|
+|chat                 |19           |
+|general-chat         |4            |
+|pronote-notifications|3            |
+|💬》chat              |2            |
+|👑》premium-chat      |2            |
+|private-commands     |2            |
+|chat-n-questions     |2            |
+|🗞》news              |1            |
+|testing-2            |1            |
+|testing-1            |1            |
+|premium-logs         |1            |
+|offtopic             |1            |
+|général              |1            |
+|general-support      |1            |
+|general              |1            |
+|commands-staff       |1            |
+
+*/
