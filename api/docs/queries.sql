@@ -1,7 +1,5 @@
 -- SQLite (v3.34 or higher required)
 
--- Get the complete DM channels leaderboard
-
 SELECT d.dm_user_id,
     d.user_name,
     d.user_avatar_url,
@@ -14,7 +12,7 @@ AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
 GROUP BY d.dm_user_id
 ORDER BY message_count DESC;
 
-/*
+/* (dm channels top graph)
 
 Result
 
@@ -38,7 +36,7 @@ AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
 GROUP BY guild_name
 ORDER BY message_count DESC;
 
-/*
+/* (guilds top graph)
 
 Result
 
@@ -63,7 +61,7 @@ ORDER BY message_count DESC;
 
 /*
 
-Result
+Result (channels top graph)
 
 |channel_name         |message_count|
 |---------------------|-------------|
@@ -119,7 +117,7 @@ GROUP BY
 ORDER BY 
     hours.hour ASC;
 
-/*
+/* (hours graph)
 
 Result
 
@@ -152,6 +150,26 @@ Result
 
 */
 
+SELECT hour,
+    SUM(occurence_count) AS message_count
+FROM 
+    activity
+WHERE event_name = 'message_sent' 
+    AND day BETWEEN '2021-06-01' AND '2021-06-10'
+GROUP BY hour
+ORDER BY occurence_count DESC
+LIMIT 1
+
+/* (best hour)
+
+Result
+
+|hour|message_count|
+|----|-------------|
+|15  |30           |
+
+*/
+
 WITH RECURSIVE dates(day) AS (
   VALUES('2021-06-01')
   UNION ALL
@@ -172,7 +190,7 @@ GROUP BY
 ORDER BY 
     dates.day ASC;
 
-/*
+/* (days graph)
 
 |day|message_count|
 |---|-------------|
@@ -193,7 +211,7 @@ SELECT SUM(payment_amount) / 100 as total_spent FROM payments
 
 /*
 
-Result
+Result (total spent)
 
 |total_spent|
 |-----------|
