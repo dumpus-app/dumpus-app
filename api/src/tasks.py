@@ -388,7 +388,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     voice_channel_logs_duration.append({
                         'channel_id': channel_id,
                         'guild_id': join['guild_id'] if 'guild_id' in join else None,
-                        'duration_mins': duration // 1000 // 60,
+                        'duration_mins': duration // 60,
                         'started_date': join['timestamp'],
                         'ended_date': next_leave['timestamp'] if next_leave else None
                     })
