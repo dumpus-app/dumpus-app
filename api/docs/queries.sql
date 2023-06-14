@@ -5,7 +5,7 @@
 SELECT d.dm_user_id,
     d.user_name,
     d.user_avatar_url,
-    COUNT(a.event_name) AS message_count,
+    SUM(a.occurence_count) AS message_count,
     d.channel_id
 FROM activity a
 JOIN dm_channels_data d ON a.associated_channel_id = d.channel_id
@@ -29,7 +29,7 @@ Result
 */
 
 SELECT guild_name,
-    COUNT(a.event_name) AS message_count
+    SUM(a.occurence_count) AS message_count
 FROM guilds
 JOIN activity a ON a.associated_guild_id = guilds.guild_id
 WHERE a.event_name = 'message_sent'
@@ -52,7 +52,7 @@ Result
 */
 
 SELECT channel_name,
-    COUNT(a.event_name) AS message_count    
+    SUM(a.occurence_count) AS message_count    
 FROM guild_channels_data channels
 JOIN activity a ON a.associated_channel_id = channels.channel_id
 WHERE a.event_name = 'message_sent'
