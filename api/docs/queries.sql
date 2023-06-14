@@ -1,4 +1,4 @@
--- SQLite
+-- SQLite (v3.34 or higher required)
 
 -- Get the complete DM channels leaderboard
 
@@ -83,6 +83,22 @@ Result
 |general-support      |1            |
 |general              |1            |
 |commands-staff       |1            |
+
+*/
+
+/*
+
+NOTE 
+
+Use
+
+  SELECT MIN(day) AS start FROM activity
+  UNION ALL
+  SELECT date(day, '+1 day')
+  FROM dates
+  WHERE day < (SELECT MAX(day) FROM activity)
+
+if you want to generate a list of dates between the first and last activity day
 
 */
 
