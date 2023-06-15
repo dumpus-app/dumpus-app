@@ -3,7 +3,6 @@
 import { useAtom } from "jotai";
 import initSqlJs, { type QueryExecResult } from "sql.js";
 import { dbAtom } from "~/stores/db";
-import usePackageAPI from "./use-package-api";
 import LZString from "lz-string";
 import pako from "pako";
 import { useRef } from "react";
@@ -25,34 +24,32 @@ function retrieve(id: string) {
   return null;
 }
 
-// TODO: make dynamic
-const TEMP_ID = "0";
-
 export default function useSQL() {
   const [db, setDb] = useAtom(dbAtom);
-  const api = usePackageAPI({});
   const isInitializedRef = useRef(false);
 
-  function init() {
+  function init({
+    id,
+    initialData,
+  }: {
+    id: string;
+    initialData?: ArrayBuffer;
+  }) {
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
-    let data = retrieve(TEMP_ID);
+
+    let data: Uint8Array;
+    if (initialData) {
+      data = pako.inflate(initialData);
+      store(id, data);
+    } else {
+      data = retrieve(id)!;
+    }
+
     initSqlJs({
       locateFile: (file) => `https://sql.js.org/dist/${file}`,
-    }).then(async (SQL) => {
-      if (!data) {
-        console.log("retrieve");
-        const res = await api.data({
-          packageID: "",
-          UPNKey: "",
-        });
-        // TODO: handleError
-        const decompressed = pako.inflate(res.data!);
-        store(TEMP_ID, decompressed);
-        data = decompressed;
-      }
-      const _db = new SQL.Database(data);
-      setDb(_db);
+    }).then(({ Database }) => {
+      setDb(new Database(data));
     });
   }
 
