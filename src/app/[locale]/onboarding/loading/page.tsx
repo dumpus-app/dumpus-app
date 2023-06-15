@@ -2,11 +2,13 @@
 
 import { useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
+import { useAtomValue } from "jotai";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQL from "~/hooks/use-sql";
 import { useTranslation } from "~/i18n/client";
+import { nextDbIdAtom } from "~/stores/db";
 import { PackageAPIProcessResponse } from "~/types/package-api";
 
 export default function Page() {
@@ -51,9 +53,12 @@ export default function Page() {
     refetchInterval: 1000, // 1s
   });
 
+  const nextDbId = useAtomValue(nextDbIdAtom);
+
   useEffect(() => {
     if (
-      statusQuery.data?.processingStep !== "PROCESSED" ||
+      // TODO: change back to !== "PROCESSED"
+      !["PROCESSED", null].includes(statusQuery.data?.processingStep || null) ||
       !UPNKey ||
       !processData
     ) {
@@ -64,12 +69,11 @@ export default function Page() {
     api
       .data({ packageID: processData!.packageId, UPNKey: UPNKey! })
       .then(({ data }) => {
-        // TODO: make dynamic
         // TODO: handle Error
-        init({ id: "0", initialData: data || undefined });
+        init({ id: nextDbId, initialData: data || undefined });
       });
     router.push(`/${i18next.language}/overview`);
-  }, [UPNKey, api, init, processData, router, statusQuery]);
+  }, [UPNKey, api, init, nextDbId, processData, router, statusQuery]);
 
   return (
     <div className="flex flex-col items-center space-y-4">
@@ -132,6 +136,8 @@ export default function Page() {
                     case "ANALYZING":
                       return 1;
                     case "PROCESSED":
+                    // TODO: remove
+                    case null:
                       return 2;
                   }
                 })();

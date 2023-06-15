@@ -6,6 +6,7 @@ import { dbAtom } from "~/stores/db";
 import LZString from "lz-string";
 import pako from "pako";
 import { useRef } from "react";
+import { configAtom } from "~/stores";
 
 const STORAGE_KEY = "db";
 const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
@@ -26,6 +27,8 @@ function retrieve(id: string) {
 
 export default function useSQL() {
   const [db, setDb] = useAtom(dbAtom);
+  const [config, setConfig] = useAtom(configAtom);
+
   const isInitializedRef = useRef(false);
 
   function init({
@@ -42,6 +45,14 @@ export default function useSQL() {
     if (initialData) {
       data = pako.inflate(initialData);
       store(id, data);
+      // TODO: use defu
+      setConfig({
+        ...config,
+        db: {
+          ...config.db,
+          selectedId: id,
+        },
+      });
     } else {
       data = retrieve(id)!;
     }
