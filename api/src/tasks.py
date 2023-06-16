@@ -517,7 +517,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
         if 'dm_user_id' in channel:
             user = next(filter(lambda x: x['id'] == channel['dm_user_id'], users), None)
-            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['display_name'], user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
+            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['display_name'] if user else None, user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
         elif 'guild_id' in channel:
             guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
     
