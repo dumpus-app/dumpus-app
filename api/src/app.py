@@ -158,6 +158,7 @@ def get_package_status(package_id):
 
     if package_status.step == 'PROCESSED':
         res['isDataAvailable'] = True
+        res['processingStep'] = package_status.step
 
     else:
         res['isProcessing'] = True
