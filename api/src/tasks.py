@@ -264,9 +264,13 @@ def read_analytics_file(package_status_id, package_id, link, session):
                 continue
             is_dm = full_name.startswith('Direct Message with')
             name = full_name if not is_dm else full_name[20:]
+            is_new_username = '#0000' in name
+            if is_new_username:
+                name = name[:-5]
             channels.append({
                 'id': channel_id,
                 'name': name,
+                'is_new_username': is_new_username,
                 'is_dm': is_dm
             })
 
@@ -432,6 +436,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
             channel_id TEXT NOT NULL,
             dm_user_id TEXT NOT NULL,
             user_name TEXT NOT NULL,
+            is_new_username INTEGER NOT NULL,
             user_avatar_url TEXT,
             total_message_count INTEGER NOT NULL,
             total_voice_channel_duration INTEGER NOT NULL,
@@ -500,7 +505,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
         if 'dm_user_id' in channel:
             user = next(filter(lambda x: x['id'] == channel['dm_user_id'], users), None)
-            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
+            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], ch_data['is_new_username'], user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
         elif 'guild_id' in channel:
             guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
     
@@ -528,8 +533,8 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     dm_user_query = '''
         INSERT INTO dm_channels_data
-        (channel_id, dm_user_id, user_name, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
+        (channel_id, dm_user_id, user_name, is_new_username, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     '''
 
     guild_channel_query = '''
