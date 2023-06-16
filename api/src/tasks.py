@@ -145,7 +145,8 @@ def read_analytics_file(package_status_id, package_id, link, session):
                 'id': relation_ship['id'],
                 'username': relation_ship['user']['username'],
                 'discriminator': relation_ship['user']['discriminator'],
-                'avatar_url': generate_avatar_url_from_user_id_avatar_hash(relation_ship['id'], relation_ship['user']['avatar'])
+                'avatar_url': generate_avatar_url_from_user_id_avatar_hash(relation_ship['id'], relation_ship['user']['avatar']),
+                'display_name': 'display_name' in relation_ship and relation_ship['display_name'] or None,
             })
         for payment in user_json['payments']:
             payments.append({
@@ -270,7 +271,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
             channels.append({
                 'id': channel_id,
                 'name': name,
-                'is_new_username': is_new_username,
                 'is_dm': is_dm
             })
 
@@ -436,7 +436,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
             channel_id TEXT NOT NULL,
             dm_user_id TEXT NOT NULL,
             user_name TEXT NOT NULL,
-            is_new_username INTEGER NOT NULL,
+            display_name TEXT,
             user_avatar_url TEXT,
             total_message_count INTEGER NOT NULL,
             total_voice_channel_duration INTEGER NOT NULL,
@@ -505,7 +505,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
         if 'dm_user_id' in channel:
             user = next(filter(lambda x: x['id'] == channel['dm_user_id'], users), None)
-            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], ch_data['is_new_username'], user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
+            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['display_name'], user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
         elif 'guild_id' in channel:
             guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
     
@@ -533,7 +533,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     dm_user_query = '''
         INSERT INTO dm_channels_data
-        (channel_id, dm_user_id, user_name, is_new_username, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
+        (channel_id, dm_user_id, user_name, display_name, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     '''
 
