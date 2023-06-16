@@ -49,10 +49,11 @@ export function useTopChannelsData() {
   const { db, resultAsList, start, end } = useDataSources();
 
   const query = `
-  SELECT channel_name, channel_id, guild_id,
+  SELECT channel_name, channel_id, c.guild_id, g.guild_name,
     SUM(a.occurence_count) AS message_count    
-FROM guild_channels_data channels
-JOIN activity a ON a.associated_channel_id = channels.channel_id
+FROM guild_channels_data c
+JOIN activity a ON a.associated_channel_id = c.channel_id
+JOIN guilds g ON g.guild_id = c.guild_id
 WHERE a.event_name = 'message_sent'
 AND a.day BETWEEN '${start}' AND '${end}'
 GROUP BY channel_name
@@ -60,9 +61,10 @@ ORDER BY message_count DESC;
   `;
 
   const data = resultAsList<
-    Pick<GuildChannelsData, "channel_name" | "channel_id" | "guild_id"> & {
-      message_count: number;
-    }
+    Pick<GuildChannelsData, "channel_name" | "channel_id" | "guild_id"> &
+      Pick<Guild, "guild_name"> & {
+        message_count: number;
+      }
   >(db.exec(query)[0]);
 
   return data.map((channel, i) => ({

@@ -3,50 +3,27 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import i18next from "i18next";
 import DetailCard from "~/components/data/DetailCard";
-
-const DATA = [
-  {
-    name: "Androz",
-    messages: 45_000,
-  },
-  {
-    name: "welkenburg",
-    messages: 12_000,
-  },
-  {
-    name: "Skanix",
-    messages: 11_000,
-  },
-  {
-    name: "JsonLines",
-    messages: 8_000,
-  },
-  {
-    name: "GARY",
-    messages: 897,
-  },
-].map((dm, i) => ({
-  ...dm,
-  rank: i + 1,
-}));
+import { useTopGuildsData } from "~/hooks/use-data";
 
 export default function TopGuildsList() {
+  const data = useTopGuildsData();
+
   return (
     <div className="grid gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8">
-      {DATA.map((dm) => (
+      {data.map((guild) => (
         <DetailCard.WithRank
-          key={dm.rank}
-          href={`/top/guilds/details?id=${dm.rank}`}
-          rank={dm.rank}
-          title={dm.name}
+          key={guild.rank}
+          href={`/top/guilds/details?id=${guild.guild_id}`}
+          rank={guild.rank}
+          title={guild.guild_name}
           description={
             Intl.NumberFormat(i18next.language, {
               notation: "compact",
-            }).format(dm.messages) + " messages sent"
+            }).format(guild.message_count) + " messages sent"
           }
           leftSlot={
             <div className="relative flex aspect-square w-10 items-center justify-center rounded-lg bg-brand-300 text-2xl font-bold uppercase text-gray-950">
-              <div>{dm.name[0]}</div>
+              <div>{guild.guild_name[0]}</div>
             </div>
           }
           rightIcon={ChevronRightIcon}

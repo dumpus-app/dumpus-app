@@ -3,51 +3,28 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import i18next from "i18next";
 import DetailCard from "~/components/data/DetailCard";
-
-const DATA = [
-  {
-    name: "Androz",
-    messages: 45_000,
-  },
-  {
-    name: "welkenburg",
-    messages: 12_000,
-  },
-  {
-    name: "Skanix",
-    messages: 11_000,
-  },
-  {
-    name: "JsonLines",
-    messages: 8_000,
-  },
-  {
-    name: "GARY",
-    messages: 897,
-  },
-].map((dm, i) => ({
-  ...dm,
-  name: `#${dm.name}`,
-  rank: i + 1,
-}));
+import { useTopChannelsData } from "~/hooks/use-data";
 
 export default function TopChannelsList() {
+  const data = useTopChannelsData();
+
   return (
     <div className="grid gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8">
-      {DATA.map((dm) => (
+      {data.map((channel) => (
         <DetailCard.WithRank
-          key={dm.rank}
-          href={`/top/channels/details?id=${dm.rank}`}
-          rank={dm.rank}
-          title={dm.name}
-          description={
-            Intl.NumberFormat(i18next.language, {
+          key={channel.rank}
+          href={`/top/channels/details?guild_id=${channel.guild_id}&channel_id=${channel.channel_id}`}
+          rank={channel.rank}
+          title={"#" + channel.channel_name}
+          description={`${channel.guild_name} · ${Intl.NumberFormat(
+            i18next.language,
+            {
               notation: "compact",
-            }).format(dm.messages) + " messages sent"
-          }
+            }
+          ).format(channel.message_count)} messages sent`}
           leftSlot={
             <div className="relative flex aspect-square w-10 items-center justify-center rounded-lg bg-brand-300 text-2xl font-bold uppercase text-gray-950">
-              <div>{dm.name[1]}</div>
+              <div>{channel.channel_name[0]}</div>
             </div>
           }
           rightIcon={ChevronRightIcon}
