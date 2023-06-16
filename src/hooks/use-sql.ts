@@ -31,7 +31,7 @@ export default function useSQL() {
 
   const isInitializedRef = useRef(false);
 
-  function init({
+  async function init({
     id,
     initialData,
   }: {
@@ -57,16 +57,15 @@ export default function useSQL() {
       data = retrieve(id)!;
     }
 
-    initSqlJs({
+    const { Database } = await initSqlJs({
       locateFile: (file) => `https://sql.js.org/dist/${file}`,
-    }).then(({ Database }) => {
-      setDb(new Database(data));
     });
+    setDb(new Database(data));
   }
 
   type DefaultT = Record<string, any>;
-  function resultAsList<T extends DefaultT>(data?: QueryExecResult) {
-    if (!data) return null;
+  function resultAsList<T extends DefaultT>(data: QueryExecResult) {
+    // if (!data) return null;
     const { columns, values } = data;
     return values.map((value) => {
       const obj: DefaultT = {};

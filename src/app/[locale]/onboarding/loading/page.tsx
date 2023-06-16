@@ -70,9 +70,10 @@ export default function Page() {
       .data({ packageID: processData!.packageId, UPNKey: UPNKey! })
       .then(({ data }) => {
         // TODO: handle Error
-        init({ id: nextDbId, initialData: data || undefined });
+        init({ id: nextDbId, initialData: data || undefined }).then(() => {
+          router.push(`/${i18next.language}/overview`);
+        });
       });
-    router.push(`/${i18next.language}/overview`);
   }, [UPNKey, api, init, nextDbId, processData, router, statusQuery]);
 
   return (

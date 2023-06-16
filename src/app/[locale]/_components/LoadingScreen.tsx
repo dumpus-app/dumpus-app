@@ -32,8 +32,9 @@ export default function LoadingScreen({
 
     setConfig(config);
     if (config.db.selectedId) {
-      init({ id: config.db.selectedId });
-      setLoading(false);
+      init({ id: config.db.selectedId }).then(() => {
+        setLoading(false);
+      });
     } else if (!pathname.startsWith(redirectPath)) {
       router.replace(redirectPath);
       setShouldRedirect(true);
