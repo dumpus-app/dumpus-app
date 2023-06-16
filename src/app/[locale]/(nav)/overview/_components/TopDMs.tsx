@@ -1,48 +1,22 @@
 "use client";
 
+import { useAtomValue } from "jotai";
 import Image from "next/image";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
 import useSafeDB from "~/hooks/use-safe-db";
 import useSQL from "~/hooks/use-sql";
+import { timeRangeDates } from "~/stores/db";
 import type { DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
-
-const DATA = [
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/0.png",
-    name: "Androz",
-    messages: 45_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/1.png",
-    name: "welkenburg",
-    messages: 12_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/2.png",
-    name: "Skanix",
-    messages: 11_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/3.png",
-    name: "JsonLines",
-    messages: 8_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/4.png",
-    name: "GARY",
-    messages: 897,
-  },
-].map((dm, i) => ({
-  ...dm,
-  rank: i + 1,
-}));
 
 function useData() {
   const db = useSafeDB();
   const { resultAsList } = useSQL();
+
+  const [start, end] = useAtomValue(timeRangeDates);
+
   const query = `
   SELECT d.dm_user_id,
     d.user_name,
@@ -52,7 +26,7 @@ function useData() {
   FROM activity a
   JOIN dm_channels_data d ON a.associated_channel_id = d.channel_id
   WHERE a.event_name = 'message_sent'
-  AND a.day BETWEEN '2023-01-15' AND '2023-06-15'
+  AND a.day BETWEEN '${start}' AND '${end}'
   GROUP BY d.dm_user_id
   ORDER BY message_count DESC;
   `;
@@ -64,7 +38,7 @@ function useData() {
     > & { message_count: number }
   >(db.exec(query)[0]);
 
-  return data?.map((dm, i) => ({
+  return data.map((dm, i) => ({
     ...dm,
     rank: i + 1,
   }));
