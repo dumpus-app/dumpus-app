@@ -138,12 +138,13 @@ def read_analytics_file(package_status_id, package_id, link, session):
             'username': user_json['username'],
             'discriminator': user_json['discriminator'],
             'email': user_json['email'],
-            'avatar_url': generate_avatar_url_from_user_id_avatar_hash(user_json['id'], user_json['avatar_hash'])
+            'avatar_url': generate_avatar_url_from_user_id_avatar_hash(user_json['id'], user_json['avatar_hash']),
+            'display_name': 'display_name' in user_json and user_json['display_name'] or None,
         }
         for relation_ship in user_json['relationships']:
             users.append({
                 'id': relation_ship['id'],
-                'username': relation_ship['user']['username'],
+                'username': relation_ship['user']['username'], # here username is not User#0000, but the actual username. No need to check for new usernames type.
                 'discriminator': relation_ship['user']['discriminator'],
                 'avatar_url': generate_avatar_url_from_user_id_avatar_hash(relation_ship['id'], relation_ship['user']['avatar']),
                 'display_name': 'display_name' in relation_ship and relation_ship['display_name'] or None,
@@ -487,6 +488,17 @@ def read_analytics_file(package_status_id, package_id, link, session):
         )
     ''')
 
+    cur.execute('''
+        CREATE TABLE package_data (
+            package_id TEXT NOT NULL,
+            package_version TEXT NOT NULL,
+            
+            package_owner_name TEXT NOT NULL,
+            package_owner_display_name TEXT,
+            package_owner_avatar_url TEXT
+        )
+    ''')
+
     message_sent_data = []
     guild_channel_data = []
     guild_data = []
@@ -567,6 +579,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
     cur.executemany(guild_query, guild_data)
     cur.executemany(payment_query, payments_data)
     cur.executemany(voice_session_query, voice_session_data)
+
+    cur.execute('''
+        INSERT INTO package_data
+        (package_id, package_version, package_owner_name, package_owner_display_name, package_owner_avatar_url)
+        VALUES (?, ?, ?, ?, ?);
+    ''', (package_id, '0.1.0', user_data['username'], user_data['display_name'], user_data['avatar_url']))
 
     conn.commit()
 
