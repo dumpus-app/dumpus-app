@@ -1,45 +1,12 @@
 "use client";
 
-import { useAtomValue } from "jotai";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
-import useSafeDB from "~/hooks/use-safe-db";
-import useSQL from "~/hooks/use-sql";
-import { timeRangeDates } from "~/stores/db";
-import { GuildChannelsData } from "~/types/sql";
-
-function useData() {
-  const db = useSafeDB();
-  const { resultAsList } = useSQL();
-
-  const [start, end] = useAtomValue(timeRangeDates);
-
-  const query = `
-  SELECT channel_name, channel_id, guild_id,
-    SUM(a.occurence_count) AS message_count    
-FROM guild_channels_data channels
-JOIN activity a ON a.associated_channel_id = channels.channel_id
-WHERE a.event_name = 'message_sent'
-AND a.day BETWEEN '${start}' AND '${end}'
-GROUP BY channel_name
-ORDER BY message_count DESC;
-  `;
-
-  const data = resultAsList<
-    Pick<GuildChannelsData, "channel_name" | "channel_id" | "guild_id"> & {
-      message_count: number;
-    }
-  >(db.exec(query)[0]);
-
-  return data.map((channel, i) => ({
-    ...channel,
-    rank: i + 1,
-  }));
-}
+import { useTopChannelsData } from "~/hooks/use-data";
 
 export default function TopChannels() {
-  const data = useData();
+  const data = useTopChannelsData();
 
   return (
     <Section title="Top channels" href="/top/channels">
