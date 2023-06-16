@@ -506,8 +506,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
     payments_data = []
     voice_session_data = []
 
-    suma = 0
-
     for channel in [*dms_channels_data, *guild_channels_data]:
 
         ch_data = next(filter(lambda x: x['id'] == channel['channel_id'], channels), None)
@@ -525,7 +523,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
             message_sent_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None))
-            suma += count
 
     for guild in guilds:
         total_message_count = sum(channel['total_message_count'] for channel in guild_channels_data if channel['guild_id'] == guild['id'])
