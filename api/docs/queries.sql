@@ -1,5 +1,18 @@
 -- SQLite (v3.34 or higher required)
 
+SELECT SUM(a.occurence_count) as join_count
+FROM activity a
+WHERE a.event_name = 'guild_joined'
+AND a.day BETWEEN '2021-06-01' AND '2021-06-10';
+
+/* (guild join count)
+
+|join_count|
+|----------|
+|606       |
+
+*/
+
 SELECT d.dm_user_id,
     d.user_name,
     d.user_avatar_url,

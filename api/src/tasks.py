@@ -28,6 +28,7 @@ import sqlite3
 import tempfile
 
 import os
+from collections import defaultdict
 
 from db import update_progress, update_step, SavedPackageData, Session, PackageProcessStatus
 from util import (
@@ -499,7 +500,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         )
     ''')
 
-    message_sent_data = []
+    activity_data = []
     guild_channel_data = []
     guild_data = []
     dm_user_data = []
@@ -522,7 +523,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         for timestamp, count in channel['message_timestamps'].items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            message_sent_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None))
+            activity_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None))
 
     for guild in guilds:
         total_message_count = sum(channel['total_message_count'] for channel in guild_channels_data if channel['guild_id'] == guild['id'])
@@ -534,7 +535,19 @@ def read_analytics_file(package_status_id, package_id, link, session):
     for voice_session in voice_channel_logs_duration:
         voice_session_data.append((voice_session['channel_id'], voice_session['guild_id'], voice_session['duration_mins'], voice_session['started_date'], voice_session['ended_date']))
 
-    message_sent_query = '''
+    # regroup guild joined per guild, then regroup each guild's entries per hour
+    guild_joined_per_guild_id = defaultdict(list)
+    for guild_joined in guild_joined:
+        guild_joined_per_guild_id[guild_joined['guild_id']].append(guild_joined)
+
+    for guild_id, guild_joined_entries in guild_joined_per_guild_id.items():
+        entries = count_dates_hours(map(lambda ev: ev['timestamp'], guild_joined_entries))
+        for timestamp, count in entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('guild_joined', day, hour, count, None, guild_id))
+
+    activity_query = '''
         INSERT INTO activity
         (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id)
         VALUES (?, ?, ?, ?, ?, ?);
@@ -572,7 +585,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     cur.executemany(dm_user_query, dm_user_data)
     cur.executemany(guild_channel_query, guild_channel_data)
-    cur.executemany(message_sent_query, message_sent_data)
+    cur.executemany(activity_query, activity_data)
     cur.executemany(guild_query, guild_data)
     cur.executemany(payment_query, payments_data)
     cur.executemany(voice_session_query, voice_session_data)
