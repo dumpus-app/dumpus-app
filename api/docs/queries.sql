@@ -1,5 +1,16 @@
 -- SQLite (v3.34 or higher required)
 
+SELECT COUNT(DISTINCT dm_user_id) as network_size
+FROM dm_channels_data;
+
+/* (network size)
+
+|network_size|
+|------------|
+|2832        |
+
+*/
+
 SELECT SUM(a.occurence_count) as join_count
 FROM activity a
 WHERE a.event_name = 'guild_joined'
