@@ -2,11 +2,11 @@ from crypto import decrypt_sqlite_data
 import os
 
 from datetime import datetime
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary, Boolean, QueuePool
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func, text
 
-engine = create_engine(os.getenv('POSTGRES_URL'))
+engine = create_engine(os.getenv('POSTGRES_URL'), poolclass=QueuePool)
 
 Base = declarative_base()
 
