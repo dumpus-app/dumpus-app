@@ -24,8 +24,9 @@ from io import TextIOWrapper
 
 # Export database
 import gzip
-import sqlite3
 import tempfile
+
+from sqlite import create_new_empty_database, export_sqlite_to_bin
 
 import os
 from collections import defaultdict
@@ -417,88 +418,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     # auto-generated SQLite documentation starts here
 
-    conn = sqlite3.connect(':memory:')
-    cur = conn.cursor()
-
-    cur.execute('''
-        CREATE TABLE activity (
-            event_name TEXT NOT NULL,
-            day TEXT NOT NULL,
-            hour INTEGER,
-            occurence_count INTEGER NOT NULL,
-            associated_dm_user_id TEXT,
-            associated_channel_id TEXT,
-            associated_guild_id TEXT,
-            PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id)
-        )
-    ''')
-
-    cur.execute('''
-        CREATE TABLE dm_channels_data (
-            channel_id TEXT NOT NULL,
-            dm_user_id TEXT NOT NULL,
-            user_name TEXT NOT NULL,
-            display_name TEXT,
-            user_avatar_url TEXT,
-            total_message_count INTEGER NOT NULL,
-            total_voice_channel_duration INTEGER NOT NULL,
-            sentiment_score REAL NOT NULL,
-            PRIMARY KEY (channel_id)
-        )
-    ''')
-
-    cur.execute('''
-        CREATE TABLE guild_channels_data (
-            channel_id TEXT NOT NULL,
-            channel_name TEXT NOT NULL,
-            guild_id TEXT NOT NULL,
-            total_message_count INTEGER NOT NULL,
-            total_voice_channel_duration INTEGER NOT NULL,
-            PRIMARY KEY (channel_id)
-        )
-    ''')
-
-    cur.execute('''
-        CREATE TABLE guilds (
-            guild_id TEXT NOT NULL,
-            guild_name TEXT NOT NULL,
-            total_message_count INTEGER NOT NULL,
-            PRIMARY KEY (guild_id)
-        )
-    ''')
-
-    cur.execute('''
-        CREATE TABLE payments (
-            payment_id TEXT NOT NULL,
-            payment_date TEXT NOT NULL,
-            payment_amount INTEGER NOT NULL,
-            payment_currency TEXT NOT NULL,
-            payment_description TEXT NOT NULL,
-            PRIMARY KEY (payment_id)
-        )
-    ''')
-
-    cur.execute('''
-        CREATE TABLE voice_sessions (
-            channel_id TEXT NOT NULL,
-            guild_id TEXT,
-            duration_mins INTEGER NOT NULL,
-            started_date TEXT NOT NULL,
-            ended_date TEXT NOT NULL,
-            PRIMARY KEY (channel_id, started_date)
-        )
-    ''')
-
-    cur.execute('''
-        CREATE TABLE package_data (
-            package_id TEXT NOT NULL,
-            package_version TEXT NOT NULL,
-            
-            package_owner_name TEXT NOT NULL,
-            package_owner_display_name TEXT,
-            package_owner_avatar_url TEXT
-        )
-    ''')
+    (conn, cur) = create_new_empty_database()
 
     activity_data = []
     guild_channel_data = []
@@ -603,21 +523,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     conn.commit()
 
-    # creating a temporary file is the only way to get a file-like object from sqlite3 (the format the client expects)
-    with tempfile.NamedTemporaryFile() as tempf:
-        with sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True) as disk_db:
-            conn.backup(disk_db)
+    zipped_buffer = export_sqlite_to_bin(cur, conn)
+    key = extract_key_from_discord_link(link)
+    (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
 
-        tempf.seek(0)
-        sqlite_buffer = tempf.read()
-
-        zipped_buffer = gzip.compress(sqlite_buffer)
-
-        key = extract_key_from_discord_link(link)
-        (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
-
-        session.add(SavedPackageData(package_id=package_id, encrypted_data=data, iv=iv))
-        session.commit()
+    session.add(SavedPackageData(package_id=package_id, encrypted_data=data, iv=iv))
+    session.commit()
 
     print(f'SQLite serialization: {time.time() - start}')
 

@@ -10,6 +10,8 @@ from flask_limiter import Limiter
 from tasks import handle_package
 from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_data, fetch_package_rank
 
+from sqlite import generate_demo_database
+
 from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn, fetch_diswho_user
 
 app = Flask(__name__)
@@ -173,6 +175,17 @@ def get_package_status(package_id):
 
 @app.route('/process/<package_id>/data', methods=['GET'])
 def get_package_data(package_id):
+
+    if package_id == 'demo':
+        session = Session()
+        data = fetch_package_data('demo', 'demo', session)
+        if not data:
+            binary_data = generate_demo_database()
+            session.add(SavedPackageData(package_id='demo', encrypted_data=binary_data, iv='demo'))
+            session.commit()
+            data = binary_data
+        session.close()
+        return Response(data, mimetype='application/octet-stream')
 
     (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
     if not is_auth:

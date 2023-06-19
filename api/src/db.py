@@ -86,9 +86,10 @@ def fetch_package_status(package_id, session):
     return status
 
 def fetch_package_data(package_id, auth_upn, session):
-    status = session.query(PackageProcessStatus).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
-    if status and status.step == 'PROCESSED':
-        result = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(SavedPackageData.created_at.desc()).first()
+    result = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(SavedPackageData.created_at.desc()).first()
+    if result:
+        if package_id == 'demo':
+            return result.encrypted_data
         encrypted_data = result.encrypted_data
         iv = result.iv
         sqlite_buffer = decrypt_sqlite_data(encrypted_data, iv, auth_upn)
