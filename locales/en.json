@@ -150,7 +150,7 @@
           "backendURL": "Backend URL",
           "optional": "optional",
           "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our privacy policy and our terms.",
+          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
           "explore": "Explore!",
           "errors": {
             "required": "Required",
@@ -166,6 +166,10 @@
             "Transfer the email received from Discord to **process@dumpus-app.net**. We'll send you a link when it's ready.",
             "See you soon!"
           ]
+        },
+        "demo": {
+          "title": "Demo",
+          "href": "/onboarding/loading/?packageLink=demo&backendURL="
         }
       }
     }
