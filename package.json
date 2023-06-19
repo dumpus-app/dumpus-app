@@ -7,10 +7,13 @@
     "dev:mobile": "cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next dev",
     "dev:desktop": "cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next dev",
     "dev:tauri": "tauri dev",
-    "build": "next build",
+    "build": "pnpm pdf:build && next build",
     "start": "serve out",
     "lint": "next lint",
-    "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android"
+    "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android",
+    "pdf:build:privacy": "markdown-pdf legal/privacy.md --out public/legal/privacy.pdf --paper-format 'A4' --css-path legal/style.css",
+    "pdf:build:terms": "markdown-pdf legal/terms.md --out public/legal/terms.pdf --paper-format 'A4' --css-path legal/style.css",
+    "pdf:build": "pnpm pdf:build:privacy && pnpm pdf:build:terms"
   },
   "dependencies": {
     "@capacitor/android": "^5.0.3",
@@ -62,6 +65,7 @@
     "@types/pako": "^2.0.0",
     "@types/sql.js": "^1.4.4",
     "cross-env": "^7.0.3",
+    "markdown-pdf": "^11.0.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "serve": "^14.2.0"
