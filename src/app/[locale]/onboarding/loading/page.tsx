@@ -20,7 +20,9 @@ export default function Page() {
   const packageLink = searchParams?.get("packageLink") || undefined;
   const backendURL = searchParams?.get("backendURL") || undefined;
   const UPNKey = packageLink
-    ? new URL(packageLink).searchParams.get("upn") || undefined
+    ? packageLink === "demo"
+      ? "demo"
+      : new URL(packageLink).searchParams.get("upn") || undefined
     : undefined;
 
   const { init } = useSQL();

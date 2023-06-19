@@ -166,6 +166,10 @@
             "Transfer the email received from Discord to **process@dumpus-app.net**. We'll send you a link when it's ready.",
             "See you soon!"
           ]
+        },
+        "demo": {
+          "title": "Demo",
+          "href": "/onboarding/loading/?packageLink=demo&backendURL="
         }
       }
     }

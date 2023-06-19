@@ -166,6 +166,10 @@
             "Transférez l'e-mail reçu de Discord à **process@dumpus-app.net**. Nous vous enverrons un lien lorsqu'il sera prêt.",
             "A tout de suite !"
           ]
+        },
+        "demo": {
+          "title": "Démo",
+          "href": "/onboarding/loading/?packageLink=demo&backendURL="
         }
       }
     }
