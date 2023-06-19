@@ -8,7 +8,7 @@
     "dev:desktop": "pnpm script:fetch-sqljs && cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next dev",
     "dev:tauri": "tauri dev",
     "build": "pnpm script:fetch-sqljs && next build",
-    "start": "serve out",
+    "start": "serve dist",
     "lint": "next lint",
     "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android",
     "script:fetch-sqljs": "node ./scripts/fetch-sqljs.mjs"
