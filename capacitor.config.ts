@@ -12,7 +12,7 @@ const ipAddress = network.find((e) => e.family === "IPv4")!.address;
 const devURL = `http://${ipAddress}:3000`;
 
 export default {
-  appId: "net.dumpusapp.app",
+  appId: "app.dumpus.app",
   appName: "Dumpus",
   // webDir: "out",
   server: {

@@ -1,4 +1,4 @@
-package net.dumpusapp.app;
+package app.dumpus.app;
 
 import com.getcapacitor.BridgeActivity;
 
