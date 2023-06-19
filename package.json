@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NEXT_PUBLIC_DEPLOY_ENV=web next dev",
-    "dev:mobile": "cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next dev",
-    "dev:desktop": "cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next dev",
+    "dev": "pnpm script:fetch-sqljs && cross-env NEXT_PUBLIC_DEPLOY_ENV=web next dev",
+    "dev:mobile": "pnpm script:fetch-sqljs && cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next dev",
+    "dev:desktop": "pnpm script:fetch-sqljs && cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next dev",
     "dev:tauri": "tauri dev",
-    "build": "next build",
+    "build": "pnpm script:fetch-sqljs && next build",
     "start": "serve out",
     "lint": "next lint",
-    "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android"
+    "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android",
+    "script:fetch-sqljs": "node ./scripts/fetch-sqljs.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^5.0.3",
@@ -63,6 +64,7 @@
     "@types/pako": "^2.0.0",
     "@types/sql.js": "^1.4.4",
     "cross-env": "^7.0.3",
+    "node-fetch": "^3.3.1",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "serve": "^14.2.0"

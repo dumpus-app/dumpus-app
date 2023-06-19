@@ -59,8 +59,7 @@ export default function Page() {
 
   useEffect(() => {
     if (
-      // TODO: change back to !== "PROCESSED"
-      !["PROCESSED", null].includes(statusQuery.data?.processingStep || null) ||
+      statusQuery.data?.processingStep !== "PROCESSED" ||
       !UPNKey ||
       !processData
     ) {
@@ -139,8 +138,6 @@ export default function Page() {
                     case "ANALYZING":
                       return 1;
                     case "PROCESSED":
-                    // TODO: remove
-                    case null:
                       return 2;
                   }
                 })();
