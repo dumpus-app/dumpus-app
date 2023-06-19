@@ -75,11 +75,7 @@
       "welcome": "Bienvenue sur Dumpus",
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
-      "steps": [
-        "Explication",
-        "Obtenez vos données",
-        "Démarrez l'analyse"
-      ]
+      "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
     },
     "slides": [
       {
@@ -154,7 +150,7 @@
           "backendURL": "URL du backend",
           "optional": "facultatif",
           "backendURLHint": "Votre propre URL de serveur open source hébergé",
-          "notice": "En poursuivant, vous acceptez notre politique de confidentialité et nos conditions.",
+          "notice": "En poursuivant, vous acceptez notre [politique de confidentialité](/privacy) et nos [conditions](/terms).",
           "explore": "Explorez !",
           "errors": {
             "required": "Obligatoire",

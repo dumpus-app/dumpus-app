@@ -12,13 +12,14 @@ export default function RenderMarkdown({
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
-      components={
-        noClosingTag
+      components={{
+        a: (props: any) => <a {...props} target="_blank" />,
+        ...(noClosingTag
           ? {
               p: Fragment,
             }
-          : undefined
-      }
+          : {}),
+      }}
     >
       {content}
     </ReactMarkdown>

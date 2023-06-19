@@ -11,6 +11,7 @@ import i18next from "i18next";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { useTranslation } from "~/i18n/client";
+import RenderMarkdown from "~/components/RenderMarkdown";
 
 function useSchema() {
   const { t } = useTranslation();
@@ -159,8 +160,10 @@ export default function LinkForm() {
           )}
         </Disclosure>
         <div className="max-w-xs text-center">
-          <p className="text-gray-400">
-            {t("onboarding.access.methods.link.notice")}
+          <p className="text-gray-400 transition [&>a]:text-brand-300 [&>a]:underline hover:[&>a]:text-brand-400">
+            <RenderMarkdown
+              content={t("onboarding.access.methods.link.notice")}
+            />
           </p>
         </div>
         <Button type="submit" className="w-full">
