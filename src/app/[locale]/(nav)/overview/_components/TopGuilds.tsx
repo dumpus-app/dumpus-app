@@ -3,46 +3,25 @@
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
-
-const DATA = [
-  {
-    name: "Androz",
-    messages: 45_000,
-  },
-  {
-    name: "welkenburg",
-    messages: 12_000,
-  },
-  {
-    name: "Skanix",
-    messages: 11_000,
-  },
-  {
-    name: "JsonLines",
-    messages: 8_000,
-  },
-  {
-    name: "GARY",
-    messages: 897,
-  },
-].map((dm, i) => ({
-  ...dm,
-  rank: i + 1,
-}));
+import { useTopGuildsData } from "~/hooks/use-data";
 
 export default function TopGuilds() {
+  const data = useTopGuildsData();
+
   return (
     <Section title="Top guilds" href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {DATA.map((dm) => (
+          {data.map((guild) => (
             <AvatarCard
-              key={dm.rank}
-              {...dm}
-              href={`/top/guilds/details?id=${dm.rank}`}
+              key={guild.rank}
+              name={guild.guild_name}
+              messages={guild.message_count}
+              rank={guild.rank}
+              href={`/top/guilds/details?id=${guild.guild_id}`}
               image={
                 <div className="relative flex aspect-square w-full items-center justify-center rounded-lg bg-brand-300 text-4xl font-bold uppercase text-gray-950">
-                  <div>{dm.name[0]}</div>
+                  <div>{guild.guild_name[0]}</div>
                 </div>
               }
             />

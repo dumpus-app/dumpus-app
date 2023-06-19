@@ -30,13 +30,8 @@ export type PackageAPIStatusResponse = Prettify<
     (
       | {
           isDataAvailable: false;
-          isProcessing: false;
-          processingStep: "LOCKED";
-        }
-      | {
-          isDataAvailable: false;
           isProcessing: true;
-          processingStep: "DOWNLOADING" | "ANALYZING";
+          processingStep: "LOCKED" | "DOWNLOADING" | "ANALYZING";
         }
       | {
           isDataAvailable: true;

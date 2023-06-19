@@ -7,20 +7,65 @@ import Stats from "./_components/Stats";
 import DailySentMessages from "./_components/DailySentMessages";
 import Header from "~/components/layout/Header";
 import { SimpleIconsDiscord } from "~/components/icons";
+import { useSearchParams } from "next/navigation";
+import { useDataSources } from "~/hooks/use-data";
+import type { DmChannelsData } from "~/types/sql";
+import { avatarURLFallback } from "~/utils/discord";
+import i18next from "i18next";
+
+// TODO: refactor
+function useData(id: string) {
+  const { db, resultAsList, start, end } = useDataSources();
+
+  let query = `
+    SELECT
+      user_name,
+      user_avatar_url,
+      dm_user_id
+    FROM dm_channels_data
+    WHERE dm_user_id = '${id}'
+    LIMIT 1;
+  `;
+
+  const user = resultAsList<
+    Pick<DmChannelsData, "user_name" | "user_avatar_url" | "dm_user_id">
+  >(db.exec(query)[0])[0];
+
+  query = `
+  SELECT
+    SUM(a.occurence_count) AS message_count
+  FROM activity a
+  JOIN dm_channels_data d ON a.associated_channel_id = d.channel_id
+  WHERE a.event_name = 'message_sent'
+  AND a.day BETWEEN '${start}' AND '${end}'
+  AND d.dm_user_id = '${id}'
+  GROUP BY d.dm_user_id
+  LIMIT 1;
+  `;
+
+  const { message_count } = resultAsList<{ message_count: number }>(
+    db.exec(query)[0]
+  )[0];
+
+  return { user, stats: { message_count } };
+}
 
 export default function Page() {
-  const name = "Androz";
+  const params = useSearchParams()!;
+  const id = params.get("id")!;
+
+  const { user, stats } = useData(id);
 
   return (
     <>
-      <PageHeader title={name} />
+      <PageHeader title={user.user_name} />
       <ProfileHeader
-        description="@androz2091"
-        title={name}
+        description="TODO"
+        title={user.user_name + stats.message_count}
         imageSlot={
           <div className="relative h-16 w-16 sm:h-32 sm:w-32">
             <Image
-              src="https://cdn.discordapp.com/embed/avatars/5.png"
+              src={avatarURLFallback(user.user_avatar_url, user.dm_user_id)}
               alt="Avatar"
               fill
               priority
@@ -30,14 +75,20 @@ export default function Page() {
         }
       >
         <Header.Icon
-          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          href={`discord://discord.com/users/${user.dm_user_id}`}
           target="_blank"
           noI18n
           icon={SimpleIconsDiscord}
           className="absolute right-2 top-4 hidden sm:block"
         />
       </ProfileHeader>
-      <Stats />
+      <Stats
+        messageCount={Intl.NumberFormat(i18next.language, {
+          notation: "compact",
+        }).format(stats.message_count)}
+        topHour="5 AM TODO"
+        reactionCount="7k TODO"
+      />
       <DailySentMessages />
     </>
   );

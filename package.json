@@ -10,7 +10,6 @@
     "build": "next build",
     "start": "serve out",
     "lint": "next lint",
-    "cap": "cap",
     "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android"
   },
   "dependencies": {
@@ -30,6 +29,7 @@
     "autoprefixer": "10.4.14",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
+    "crc-32": "^1.2.2",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "i18next": "^22.4.15",
@@ -58,6 +58,7 @@
     "@capacitor/cli": "^5.0.3",
     "@ionic/cli": "^7.1.1",
     "@swc-jotai/react-refresh": "^0.0.8",
+    "@tailwindcss/typography": "^0.5.9",
     "@tauri-apps/cli": "^1.3.1",
     "@types/pako": "^2.0.0",
     "@types/sql.js": "^1.4.4",

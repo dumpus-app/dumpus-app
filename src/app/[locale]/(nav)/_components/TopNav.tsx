@@ -88,7 +88,7 @@ export default function TopNav() {
                   icon={ChevronLeftIcon}
                 />
               )}
-              {showTopLinks && <TopSelector />}
+              {showTopLinks && <TopSelector desktop={true} />}
               <TimeSelector />
             </div>
           </div>

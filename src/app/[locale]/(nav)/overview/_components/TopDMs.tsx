@@ -4,53 +4,28 @@ import Image from "next/image";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
-
-const DATA = [
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/0.png",
-    name: "Androz",
-    messages: 45_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/1.png",
-    name: "welkenburg",
-    messages: 12_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/2.png",
-    name: "Skanix",
-    messages: 11_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/3.png",
-    name: "JsonLines",
-    messages: 8_000,
-  },
-  {
-    image: "https://cdn.discordapp.com/embed/avatars/4.png",
-    name: "GARY",
-    messages: 897,
-  },
-].map((dm, i) => ({
-  ...dm,
-  rank: i + 1,
-}));
+import { useTopDMsData } from "~/hooks/use-data";
+import { avatarURLFallback } from "~/utils/discord";
 
 export default function TopDMs() {
+  const data = useTopDMsData();
+
   return (
     <Section title="Top DMs" href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {DATA.map((dm) => (
+          {data.map((dm) => (
             <AvatarCard
               key={dm.rank}
-              {...dm}
-              href={`/top/dms/details?id=${dm.rank}`}
+              name={dm.user_name}
+              messages={dm.message_count}
+              rank={dm.rank}
+              href={`/top/dms/details?id=${dm.dm_user_id}`}
               image={
                 <div className="relative aspect-square w-full">
                   <Image
-                    src={dm.image}
-                    alt={`${dm.name}'s avatar`}
+                    src={avatarURLFallback(dm.user_avatar_url, dm.dm_user_id)}
+                    alt={`${dm.user_name}'s avatar`}
                     fill
                     className="rounded-full object-cover object-center"
                   />

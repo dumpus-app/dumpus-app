@@ -24,7 +24,11 @@ const links = [
   },
 ] satisfies Omit<LinkType, "icon">[];
 
-export default function TopSelector() {
+export default function TopSelector({
+  desktop = false,
+}: {
+  desktop?: boolean;
+}) {
   const pathname = useI18nPathname();
   const scrolled = useScrolled();
 
@@ -32,7 +36,11 @@ export default function TopSelector() {
     <div
       className={clsx(
         "border-b transition-all",
-        scrolled ? "border-b-gray-800" : "border-b-transparent"
+        desktop
+          ? "border-b-transparent"
+          : scrolled
+          ? "border-b-gray-800"
+          : "border-b-transparent"
       )}
     >
       <div className="flex items-center space-x-1 px-1 py-1 sm:p-0">
