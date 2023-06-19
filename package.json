@@ -10,7 +10,6 @@
     "build": "next build",
     "start": "serve out",
     "lint": "next lint",
-    "cap": "cap",
     "cap:dev:android": "cap sync && cross-env NODE_ENV=development cap run android"
   },
   "dependencies": {
