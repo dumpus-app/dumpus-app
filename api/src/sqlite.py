@@ -160,14 +160,20 @@ def generate_demo_database():
         animal = random.choice(animals)
         random_num = random.randint(0, 1000)
         return f"{color}{animal}{random_num}"
+    
+    def generate_random_18_digit_id():
+        id = ""
+        for i in range(0, 18):
+            id += str(random.randint(0, 9))
+        return id
 
     dm_user_data = []
 
     for i in range(0, 100):
         username = generate_username()
         lowercase_username = username.lower()
-        channel_id = str(random.randint(1000, 10000))
-        user_id = str(random.randint(1000, 10000))
+        channel_id = generate_random_18_digit_id()
+        user_id = generate_random_18_digit_id()
         tag = str(random.randint(0, 5))
         score = random.uniform(0, 1)
         total_msg_count = random.randint(0, 1000)
@@ -176,29 +182,41 @@ def generate_demo_database():
         dm_user_data.append(data)
         cur.execute(dm_user_query, data)
 
+    guild_data = []
+
     for i in range(0, 100):
-        channel_id = str(random.randint(1000, 10000))
-        guild_id = str(random.randint(1000, 10000))
+        guild_id = generate_random_18_digit_id()
+        guild_name = f"{generate_username()}'s server"
+        total_msg_count = random.randint(0, 1000)
+        data = (guild_id, guild_name, total_msg_count)
+        guild_data.append(data)
+        cur.execute(guild_query, data)
+
+    guild_channel_data = []
+
+    for i in range(0, 100):
+        channel_id = generate_random_18_digit_id()
+        guild_id = random.choice(guild_data)[0]
         channel_name = f"#{generate_username()}"
         total_msg_count = random.randint(0, 1000)
         total_voice_channel_duration = random.randint(0, 10)
-        cur.execute(guild_channel_query, (channel_id, guild_id, channel_name, total_msg_count, total_voice_channel_duration))
-
-    for i in range(0, 100):
-        guild_id = str(random.randint(1000, 10000))
-        guild_name = f"{generate_username()}'s server"
-        total_msg_count = random.randint(0, 1000)
-        cur.execute(guild_query, (guild_id, guild_name, total_msg_count))
+        data = (channel_id, guild_id, channel_name, total_msg_count, total_voice_channel_duration)
+        guild_channel_data.append(data)
+        cur.execute(guild_channel_query, data)
 
     for i in range(0, 1000):
         event_name = random.choice(["message_sent", "guild_joined"])
         if event_name == "message_sent":
-            user = random.choice(dm_user_data)
-            associated_channel_id = user[0]
-            associated_guild_id = None
+            is_dm = random.choice([True, False])
+            if is_dm:
+                user = random.choice(dm_user_data)
+                associated_channel_id = user[0]
+            else:
+                guild_channel = random.choice(guild_channel_data)
+                associated_channel_id = guild_channel[0]
         else:
             associated_channel_id = None
-            associated_guild_id = str(random.randint(1000, 10000))
+            associated_guild_id = generate_random_18_digit_id()
         # random day between 2021 and now
         day = datetime.date(random.randint(2021, datetime.datetime.now().year), random.randint(1, 12), random.randint(1, 28))
         hour = random.randint(0, 23)
