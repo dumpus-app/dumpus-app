@@ -17,7 +17,7 @@ export default function Footer({ href, label }: Props) {
           // TODO: show popup
           alert("show popup");
         }}
-        className="text-gray-400 underline transition-colors hover:text-gray-300"
+        className="w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
       >
         {t("onboarding.shared.trust")}
       </button>
