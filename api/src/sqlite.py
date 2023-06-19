@@ -168,7 +168,7 @@ def generate_demo_database():
         lowercase_username = username.lower()
         channel_id = str(random.randint(1000, 10000))
         user_id = str(random.randint(1000, 10000))
-        tag = str(random(0, 5))
+        tag = str(random.randint(0, 5))
         score = random.uniform(0, 1)
         total_msg_count = random.randint(0, 1000)
         total_voice_channel_duration = random.randint(0, 10)
