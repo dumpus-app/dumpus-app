@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBi
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func, text
 
-engine = create_engine(os.getenv('POSTGRES_URL'), pool_recycle=3600)
+engine = create_engine(os.getenv('POSTGRES_URL'), pool_recycle=3600, pool_pre_ping=True)
 
 Base = declarative_base()
 
