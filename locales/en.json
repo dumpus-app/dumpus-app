@@ -64,6 +64,12 @@
         "label": null,
         "progress": 3,
         "previous": null
+      },
+      "/loading/demo": {
+        "next": null,
+        "label": null,
+        "progress": 3,
+        "previous": null
       }
     },
     "shared": {
