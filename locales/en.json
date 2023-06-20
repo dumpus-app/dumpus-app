@@ -169,7 +169,7 @@
         },
         "demo": {
           "title": "Demo",
-          "href": "/onboarding/loading/?packageLink=demo&backendURL="
+          "href": "/onboarding/loading/demo"
         }
       }
     }
