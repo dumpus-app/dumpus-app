@@ -16,7 +16,11 @@ export default function DangerZone() {
   async function handler() {
     setLoading(true);
 
-    const { packages } = config.db;
+    let packages: typeof config.db.packages = [];
+    try {
+      packages = config.db.packages;
+    } catch (err) {}
+
     for (const { backendURL, package_id, UPNKey, id } of packages) {
       localStorage.removeItem(getStorageKey(id));
       if (package_id === "demo") break;

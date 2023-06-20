@@ -11,6 +11,7 @@ import { selectedPackageAtom } from "~/stores";
 
 export default function PackageDetails() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
+
   const [state, copyToClipboard] = useCopyToClipboard();
 
   useEffect(() => {
@@ -20,6 +21,9 @@ export default function PackageDetails() {
       alert("Copied to clipboard!");
     }
   }, [state]);
+
+  // During reset
+  if (!selectedPackage) return null;
 
   return (
     <Section title="Package details">
