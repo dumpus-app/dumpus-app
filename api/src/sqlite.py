@@ -214,6 +214,7 @@ def generate_demo_database():
             else:
                 guild_channel = random.choice(guild_channel_data)
                 associated_channel_id = guild_channel[0]
+                associated_guild_id = guild_channel[1]
         else:
             associated_channel_id = None
             associated_guild_id = generate_random_18_digit_id()
