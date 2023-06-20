@@ -2,17 +2,54 @@
 
 import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
 import i18next from "i18next";
-import { useAtomValue } from "jotai";
-import { useEffect } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useEffect, useState } from "react";
 import { useCopyToClipboard } from "react-use";
+import Button from "~/components/Button";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
-import { selectedPackageAtom } from "~/stores";
+import usePackageAPI from "~/hooks/use-package-api";
+import { getStorageKey } from "~/hooks/use-sql";
+import {
+  CONFIG_ATOM_INITIAL_VALUE,
+  configAtom,
+  selectedPackageAtom,
+} from "~/stores";
 
 export default function PackageDetails() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
+  const [config, setConfig] = useAtom(configAtom);
+  const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
 
   const [state, copyToClipboard] = useCopyToClipboard();
+  const [loading, setLoading] = useState(false);
+
+  async function handler() {
+    setLoading(true);
+
+    const { package_id, UPNKey, id } = selectedPackage;
+
+    localStorage.removeItem(getStorageKey(id));
+    if (package_id !== "demo") {
+      await api.remove({
+        packageID: package_id,
+        UPNKey,
+      });
+    }
+
+    const newConfig = { ...config };
+    const packageIndex = newConfig.db.packages.findIndex((p) => p.id === id)!;
+    newConfig.db.packages.splice(packageIndex, 1);
+
+    if (newConfig.db.packages.length === 0) {
+      setConfig(CONFIG_ATOM_INITIAL_VALUE);
+      window.location.href = "/";
+    } else {
+      newConfig.db.selectedId = newConfig.db.packages[0].id;
+      setConfig(newConfig);
+      window.location.reload();
+    }
+  }
 
   useEffect(() => {
     if (state.error) {
@@ -87,6 +124,16 @@ export default function PackageDetails() {
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
+        <Button asChild variant="danger">
+          <button
+            onClick={(e) => {
+              handler();
+            }}
+            disabled={loading}
+          >
+            {loading ? "Deleting..." : "Delete"}
+          </button>
+        </Button>
       </div>
     </Section>
   );
