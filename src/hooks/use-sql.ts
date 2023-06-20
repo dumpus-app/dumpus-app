@@ -78,9 +78,10 @@ export default function useSQL() {
                   issueDate,
                   ...packageData,
                 },
-              ] satisfies (typeof config)["db"]["packages"],
+              ],
+              selectedId: id,
             },
-          },
+          } satisfies typeof config,
           config
         )
       );

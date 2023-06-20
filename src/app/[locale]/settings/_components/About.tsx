@@ -30,10 +30,10 @@ export default function About() {
           leftSlot={<LeftIcon icon={InformationCircleIcon} />}
         />
         <DetailCard
-          href="https://dumpus-app.net"
+          href="https://dumpus.app"
           noI18n
           target="_blank"
-          title="dumpus-app.net"
+          title="dumpus.app"
           description="Web application"
           reverseTexts
           leftSlot={<LeftIcon icon={GlobeAltIcon} />}
