@@ -56,6 +56,9 @@ dependencies:
   crc-32:
     specifier: ^1.2.2
     version: 1.2.2
+  defu:
+    specifier: ^6.1.2
+    version: 6.1.2
   eslint:
     specifier: 8.40.0
     version: 8.40.0
@@ -1891,6 +1894,10 @@ packages:
     dependencies:
       has-property-descriptors: 1.0.0
       object-keys: 1.1.1
+    dev: false
+
+  /defu@6.1.2:
+    resolution: {integrity: sha512-+uO4+qr7msjNNWKYPHqN/3+Dx3NFkmIzayk2L1MyZQlvgZb/J1A0fo410dpKrN2SnqFjt8n4JL8fDJE0wIgjFQ==}
     dev: false
 
   /degenerator@3.0.4:

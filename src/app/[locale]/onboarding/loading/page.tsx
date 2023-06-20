@@ -60,6 +60,7 @@ export default function Page() {
   useEffect(() => {
     if (
       statusQuery.data?.processingStep !== "PROCESSED" ||
+      !packageLink ||
       !UPNKey ||
       !processData
     ) {
@@ -71,11 +72,29 @@ export default function Page() {
       .data({ packageID: processData!.packageId, UPNKey: UPNKey! })
       .then(({ data }) => {
         // TODO: handle Error
-        init({ id: nextDbId, initialData: data || undefined }).then(() => {
+        init({
+          id: nextDbId,
+          initData: data
+            ? {
+                initialData: data,
+                packageLink,
+                UPNKey,
+              }
+            : undefined,
+        }).then(() => {
           router.push(`/${i18next.language}/overview`);
         });
       });
-  }, [UPNKey, api, init, nextDbId, processData, router, statusQuery]);
+  }, [
+    UPNKey,
+    api,
+    init,
+    nextDbId,
+    packageLink,
+    processData,
+    router,
+    statusQuery,
+  ]);
 
   return (
     <div className="flex flex-col items-center space-y-4">

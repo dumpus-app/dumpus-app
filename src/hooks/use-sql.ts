@@ -7,6 +7,8 @@ import LZString from "lz-string";
 import pako from "pako";
 import { useRef } from "react";
 import { configAtom } from "~/stores";
+import { defu } from "defu";
+import type { PackageData } from "~/types/sql";
 
 const STORAGE_KEY = "db";
 const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
@@ -33,25 +35,22 @@ export default function useSQL() {
 
   async function init({
     id,
-    initialData,
+    initData,
   }: {
     id: string;
-    initialData?: ArrayBuffer;
+    initData?: {
+      initialData: ArrayBuffer;
+      packageLink: string;
+      UPNKey: string;
+    };
   }) {
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
 
     let data: Uint8Array;
-    if (initialData) {
-      data = pako.inflate(initialData);
+    if (initData) {
+      data = pako.inflate(initData.initialData);
       store(id, data);
-      setConfig({
-        ...config,
-        db: {
-          ...config.db,
-          selectedId: id,
-        },
-      });
     } else {
       data = retrieve(id)!;
     }
@@ -59,7 +58,34 @@ export default function useSQL() {
     const { Database } = await initSqlJs({
       locateFile: (file) => `/sqljs/${file}`,
     });
-    setDb(new Database(data));
+    const _db = new Database(data);
+    if (initData) {
+      const issueDate = resultAsList<{ issue_date: string }>(
+        _db.exec("SELECT MIN(day) AS issue_date FROM activity")[0]
+      )[0].issue_date;
+      const packageData = resultAsList<PackageData>(
+        _db.exec("SELECT * FROM package_data LIMIT 1;")[0]
+      )[0];
+      setConfig(
+        defu(
+          {
+            db: {
+              packages: [
+                {
+                  id,
+                  packageLink: initData.packageLink,
+                  UPNKey: initData.UPNKey,
+                  issueDate,
+                  ...packageData,
+                },
+              ] satisfies (typeof config)["db"]["packages"],
+            },
+          },
+          config
+        )
+      );
+    }
+    setDb(_db);
   }
 
   type DefaultT = Record<string, any>;

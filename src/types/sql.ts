@@ -52,3 +52,11 @@ export type VoiceSession = {
   started_date: string;
   ended_date: string;
 };
+
+export type PackageData = {
+  package_id: string;
+  package_version: string;
+  package_owner_name: string;
+  package_owner_display_name: string;
+  package_owner_avatar_url: string;
+};
