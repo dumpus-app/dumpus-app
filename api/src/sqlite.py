@@ -197,7 +197,7 @@ def generate_demo_database():
     for i in range(0, 100):
         channel_id = generate_random_18_digit_id()
         guild_id = random.choice(guild_data)[0]
-        channel_name = f"#{generate_username()}"
+        channel_name = f"{generate_username()}"
         total_msg_count = random.randint(0, 1000)
         total_voice_channel_duration = random.randint(0, 10)
         data = (channel_id, guild_id, channel_name, total_msg_count, total_voice_channel_duration)
