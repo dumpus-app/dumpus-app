@@ -1,15 +1,12 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { PageProps } from "~/types";
-import { Rubik } from "next/font/google";
-import { locales } from "~/i18n/settings";
-import LoadingScreen from "./_components/LoadingScreen";
 import { initI18next, useTranslation } from "~/i18n";
+import { locales } from "~/i18n/settings";
+import { PageProps } from "~/types";
+import LoadingScreen from "./_components/LoadingScreen";
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }
-
-const font = Rubik({ subsets: ["latin"] });
 
 export async function generateMetadata(
   { params: { locale } }: PageProps,
