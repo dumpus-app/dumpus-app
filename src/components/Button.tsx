@@ -7,7 +7,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 const buttonVariants = cva(
   [
-    "flex items-center justify-center rounded-lg px-6 py-3 text-lg font-medium text-gray-950 transition-colors",
+    "flex items-center justify-center rounded-lg px-6 py-3 text-lg font-medium text-gray-950 transition-colors disabled:opacity-75",
   ],
   {
     variants: {

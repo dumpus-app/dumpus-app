@@ -11,7 +11,7 @@ import { defu } from "defu";
 import type { PackageData } from "~/types/sql";
 
 const STORAGE_KEY = "db";
-const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
+export const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
 
 function store(id: string, value: Uint8Array) {
   localStorage.setItem(
