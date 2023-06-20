@@ -29,3 +29,5 @@ export const links = [
 export const DEFAULT_PACKAGE_API_URL = "https://api.dumpus.app";
 
 export const DEFAULT_REMOTION_API_URL = "https://remotion-api.sys.dumpus.app";
+
+export const SQL_DEFAULT_LIMIT = 40;

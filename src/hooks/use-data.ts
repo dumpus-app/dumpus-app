@@ -5,6 +5,7 @@ import useSafeDB from "./use-safe-db";
 import useSQL from "./use-sql";
 import { timeRangeDates } from "~/stores/db";
 import type { DmChannelsData, Guild, GuildChannelsData } from "~/types/sql";
+import { SQL_DEFAULT_LIMIT } from "~/constants";
 
 export function useDataSources() {
   const db = useSafeDB();
@@ -19,17 +20,20 @@ export function useTopDMsData() {
   const { db, resultAsList, start, end } = useDataSources();
 
   const query = `
-  SELECT d.dm_user_id,
-    d.user_name,
-    d.user_avatar_url,
-    SUM(a.occurence_count) AS message_count,
-    d.channel_id
-  FROM activity a
-  JOIN dm_channels_data d ON a.associated_channel_id = d.channel_id
-  WHERE a.event_name = 'message_sent'
-  AND a.day BETWEEN '${start}' AND '${end}'
-  GROUP BY d.dm_user_id
-  ORDER BY message_count DESC;
+    SELECT
+      d.dm_user_id,
+      d.user_name,
+      d.user_avatar_url,
+      SUM(a.occurence_count) AS message_count,
+      d.channel_id
+    FROM activity a
+    JOIN dm_channels_data d
+      ON a.associated_channel_id = d.channel_id
+    WHERE a.event_name = 'message_sent'
+    AND a.day BETWEEN '${start}' AND '${end}'
+    GROUP BY d.dm_user_id
+    ORDER BY message_count DESC
+    LIMIT ${SQL_DEFAULT_LIMIT};
   `;
 
   const data = resultAsList<
@@ -49,15 +53,22 @@ export function useTopChannelsData() {
   const { db, resultAsList, start, end } = useDataSources();
 
   const query = `
-  SELECT channel_name, channel_id, c.guild_id, g.guild_name,
-    SUM(a.occurence_count) AS message_count    
-FROM guild_channels_data c
-JOIN activity a ON a.associated_channel_id = c.channel_id
-JOIN guilds g ON g.guild_id = c.guild_id
-WHERE a.event_name = 'message_sent'
-AND a.day BETWEEN '${start}' AND '${end}'
-GROUP BY channel_name
-ORDER BY message_count DESC;
+    SELECT
+      channel_name,
+      channel_id,
+      c.guild_id,
+      g.guild_name,
+      SUM(a.occurence_count) AS message_count    
+    FROM guild_channels_data c
+    JOIN activity a
+      ON a.associated_channel_id = c.channel_id
+    JOIN guilds g
+      ON g.guild_id = c.guild_id
+    WHERE a.event_name = 'message_sent'
+    AND a.day BETWEEN '${start}' AND '${end}'
+    GROUP BY channel_name
+    ORDER BY message_count DESC
+    LIMIT ${SQL_DEFAULT_LIMIT};
   `;
 
   const data = resultAsList<
@@ -77,15 +88,18 @@ export function useTopGuildsData() {
   const { db, resultAsList, start, end } = useDataSources();
 
   const query = `
-SELECT guild_name,
-    guild_id,
-    SUM(a.occurence_count) AS message_count
-FROM guilds
-JOIN activity a ON a.associated_guild_id = guilds.guild_id
-WHERE a.event_name = 'message_sent'
-AND a.day BETWEEN '${start}' AND '${end}'
-GROUP BY guild_name
-ORDER BY message_count DESC;
+    SELECT
+      guild_name,
+      guild_id,
+      SUM(a.occurence_count) AS message_count
+    FROM guilds
+    JOIN activity a
+      ON a.associated_guild_id = guilds.guild_id
+    WHERE a.event_name = 'message_sent'
+    AND a.day BETWEEN '${start}' AND '${end}'
+    GROUP BY guild_name
+    ORDER BY message_count DESC
+    LIMIT ${SQL_DEFAULT_LIMIT};
   `;
   const data = resultAsList<
     Pick<Guild, "guild_name" | "guild_id"> & { message_count: number }
