@@ -25,3 +25,7 @@ export const links = [
     icon: ChartBarIcon,
   },
 ] satisfies Link[];
+
+export const DEFAULT_PACKAGE_API_URL = "https://api.dumpus.app";
+
+export const DEFAULT_REMOTION_API_URL = "https://remotion-api.sys.dumpus.app";

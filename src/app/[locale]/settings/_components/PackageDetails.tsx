@@ -72,6 +72,17 @@ export default function PackageDetails() {
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
+        <DetailCard
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            copyToClipboard(selectedPackage.backendURL);
+          }}
+          title={selectedPackage.backendURL}
+          description="Backend URL"
+          reverseTexts
+          rightIcon={ClipboardDocumentIcon}
+        />
       </div>
     </Section>
   );

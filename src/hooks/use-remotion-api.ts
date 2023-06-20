@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { DEFAULT_REMOTION_API_URL } from "~/constants";
 import type {
   RemotionAPICreateResponse,
   RemotionAPIStatus,
 } from "~/types/remotion-api";
 
 export default function useRemotionAPI({
-  baseURL = "https://remotion-api.sys.dumpus.app",
+  baseURL = DEFAULT_REMOTION_API_URL,
 }: {
   baseURL?: string;
 }) {

@@ -1,5 +1,6 @@
 "use client";
 
+import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import type {
   PackageAPIDataResponse,
   PackageAPIProcessResponse,
@@ -8,7 +9,7 @@ import type {
 } from "~/types/package-api";
 
 export default function usePackageAPI({
-  baseURL = "https://api.dumpus.app",
+  baseURL = DEFAULT_PACKAGE_API_URL,
 }: {
   baseURL?: string;
 }) {

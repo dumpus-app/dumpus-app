@@ -42,6 +42,7 @@ export default function useSQL() {
       initialData: ArrayBuffer;
       packageLink: string;
       UPNKey: string;
+      backendURL: string;
     };
   }) {
     if (isInitializedRef.current) return;
@@ -76,6 +77,7 @@ export default function useSQL() {
                   packageLink: initData.packageLink,
                   UPNKey: initData.UPNKey,
                   issueDate,
+                  backendURL: initData.backendURL,
                   ...packageData,
                 },
               ],

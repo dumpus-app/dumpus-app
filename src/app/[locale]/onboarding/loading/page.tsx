@@ -5,6 +5,7 @@ import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQL from "~/hooks/use-sql";
 import { useTranslation } from "~/i18n/client";
@@ -79,6 +80,7 @@ export default function Page() {
                 initialData: data,
                 packageLink,
                 UPNKey,
+                backendURL: backendURL || DEFAULT_PACKAGE_API_URL,
               }
             : undefined,
         }).then(() => {
@@ -88,6 +90,7 @@ export default function Page() {
   }, [
     UPNKey,
     api,
+    backendURL,
     init,
     nextDbId,
     packageLink,
