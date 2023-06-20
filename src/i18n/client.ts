@@ -9,7 +9,7 @@ import resourcesToBackend from "i18next-resources-to-backend";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { getOptions } from "./settings";
 
-export const i18nInstance = i18next
+i18next
   .use(initReactI18next)
   .use(LanguageDetector)
   .use(
