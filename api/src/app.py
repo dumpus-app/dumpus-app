@@ -220,6 +220,8 @@ def cancel_package(package_id):
     session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).delete()
     session.query(SavedPackageData).filter(SavedPackageData.package_id == package_id).delete()
 
+    res['isDeleted'] = True
+
     session.commit()
 
     session.close()
