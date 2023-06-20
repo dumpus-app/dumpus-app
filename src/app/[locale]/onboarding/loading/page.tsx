@@ -21,9 +21,7 @@ export default function Page() {
   const packageLink = searchParams?.get("packageLink") || undefined;
   const backendURL = searchParams?.get("backendURL") || undefined;
   const UPNKey = packageLink
-    ? packageLink === "demo"
-      ? "demo"
-      : new URL(packageLink).searchParams.get("upn") || undefined
+    ? new URL(packageLink).searchParams.get("upn") || undefined
     : undefined;
 
   const { init } = useSQL();
@@ -71,18 +69,19 @@ export default function Page() {
 
     api
       .data({ packageID: processData!.packageId, UPNKey: UPNKey! })
-      .then(({ data }) => {
-        // TODO: handle Error
+      .then(({ data, errorMessageCode }) => {
+        if (errorMessageCode) {
+          // TODO: handle Error
+          return;
+        }
         init({
           id: nextDbId,
-          initData: data
-            ? {
-                initialData: data,
-                packageLink,
-                UPNKey,
-                backendURL: backendURL || DEFAULT_PACKAGE_API_URL,
-              }
-            : undefined,
+          initData: {
+            initialData: data,
+            packageLink,
+            UPNKey,
+            backendURL: backendURL || DEFAULT_PACKAGE_API_URL,
+          },
         }).then(() => {
           router.push(`/${i18next.language}/overview`);
         });

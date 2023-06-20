@@ -87,7 +87,6 @@ AND a.day BETWEEN '${start}' AND '${end}'
 GROUP BY guild_name
 ORDER BY message_count DESC;
   `;
-
   const data = resultAsList<
     Pick<Guild, "guild_name" | "guild_id"> & { message_count: number }
   >(db.exec(query)[0]);
