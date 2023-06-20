@@ -7,6 +7,7 @@ import Languages from "./_components/Languages";
 import DangerZone from "./_components/DangerZone";
 import TopNav from "../(nav)/_components/TopNav";
 import PackageDetails from "./_components/PackageDetails";
+import Actions from "./_components/Actions";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
@@ -17,6 +18,7 @@ export default async function Page({ params: { locale } }: PageProps) {
       <PageHeader />
       <About />
       <PackageDetails />
+      <Actions />
       <PackageSwitch />
       <div className="flex flex-col desktop-container sm:flex-row sm:space-x-2 sm:px-2">
         <Languages />
