@@ -6,7 +6,7 @@ import AvatarCard from "~/components/data/AvatarCard";
 import { useTopChannelsData } from "~/hooks/use-data";
 
 export default function TopChannels() {
-  const data = useTopChannelsData();
+  const data = useTopChannelsData().getData({});
 
   return (
     <Section title="Top channels" href="/top/channels">
