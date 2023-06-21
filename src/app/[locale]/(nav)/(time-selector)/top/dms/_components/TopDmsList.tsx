@@ -6,36 +6,58 @@ import i18next from "i18next";
 import DetailCard from "~/components/data/DetailCard";
 import { useTopDMsData } from "~/hooks/use-data";
 import { avatarURLFallback } from "~/utils/discord";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export default function TopDMsList() {
-  const data = useTopDMsData();
+  const { getData, count } = useTopDMsData();
+
+  const { data: queryData, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["top-dms"],
+    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam }),
+    getNextPageParam: (lastPage, pages) => pages.length,
+  });
+
+  const data = queryData?.pages.flat() || getData({});
 
   return (
-    <div className="grid gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8">
-      {data.map((dm) => (
-        <DetailCard.WithRank
-          key={dm.rank}
-          href={`/top/dms/details?id=${dm.dm_user_id}`}
-          rank={dm.rank}
-          title={dm.user_name}
-          description={
-            Intl.NumberFormat(i18next.language, {
-              notation: "compact",
-            }).format(dm.message_count) + " messages sent"
-          }
-          leftSlot={
-            <div className="relative aspect-square w-10">
-              <Image
-                src={avatarURLFallback(dm.user_avatar_url, dm.dm_user_id)}
-                alt={`${dm.user_name}'s avatar`}
-                fill
-                className="rounded-full object-cover object-center"
-              />
-            </div>
-          }
-          rightIcon={ChevronRightIcon}
-        />
-      ))}
+    <div className="px-2 py-4 desktop-container sm:py-8">
+      <div className="grid gap-2 sm:grid-cols-2">
+        {data.map((dm) => (
+          <DetailCard.WithRank
+            key={dm.rank}
+            href={`/top/dms/details?id=${dm.dm_user_id}`}
+            rank={dm.rank}
+            title={dm.user_name}
+            description={
+              Intl.NumberFormat(i18next.language, {
+                notation: "compact",
+              }).format(dm.message_count) + " messages sent"
+            }
+            leftSlot={
+              <div className="relative aspect-square w-10">
+                <Image
+                  src={avatarURLFallback(dm.user_avatar_url, dm.dm_user_id)}
+                  alt={`${dm.user_name}'s avatar`}
+                  fill
+                  className="rounded-full object-cover object-center"
+                />
+              </div>
+            }
+            rightIcon={ChevronRightIcon}
+          />
+        ))}
+      </div>
+      {data.length < count && (
+        <div className="mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={() => fetchNextPage()}
+            className="text-brand-300 hover:underline"
+          >
+            Load more
+          </button>
+        </div>
+      )}
     </div>
   );
 }

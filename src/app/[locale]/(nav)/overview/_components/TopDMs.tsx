@@ -8,7 +8,7 @@ import { useTopDMsData } from "~/hooks/use-data";
 import { avatarURLFallback } from "~/utils/discord";
 
 export default function TopDMs() {
-  const data = useTopDMsData();
+  const data = useTopDMsData().getData({});
 
   return (
     <Section title="Top DMs" href="/top/dms">
