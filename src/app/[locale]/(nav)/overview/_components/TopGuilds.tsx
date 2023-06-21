@@ -6,7 +6,7 @@ import AvatarCard from "~/components/data/AvatarCard";
 import { useTopGuildsData } from "~/hooks/use-data";
 
 export default function TopGuilds() {
-  const data = useTopGuildsData();
+  const data = useTopGuildsData().getData({});
 
   return (
     <Section title="Top guilds" href="/top/guilds">
