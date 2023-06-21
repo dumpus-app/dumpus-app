@@ -12,7 +12,8 @@
     "build:desktop": "pnpm script:fetch-sqljs && cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next build",
     "start": "serve dist",
     "lint": "next lint",
-    "cap:dev:android": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",
+    "android:dev": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",
+    "android:dev:static": "cross-env-shell NODE_ENV=production \"pnpm build:mobile && cap sync && cap run android\"",
     "script:fetch-sqljs": "node ./scripts/fetch-sqljs.mjs"
   },
   "dependencies": {

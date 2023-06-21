@@ -2,5 +2,6 @@
   "css.lint.unknownAtRules": "ignore",
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
