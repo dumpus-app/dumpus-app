@@ -2,6 +2,7 @@
 
 import i18next from "i18next";
 import { Rubik } from "next/font/google";
+import useCapacitor from "~/hooks/use-capacitor";
 import "~/i18n/client";
 import "./globals.css";
 import Providers from "./providers";
@@ -14,6 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const { language: locale = "en", dir = () => "ltr" } = i18next;
+  useCapacitor();
 
   return (
     <Providers>

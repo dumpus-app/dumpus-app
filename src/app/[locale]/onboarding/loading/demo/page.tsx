@@ -40,7 +40,7 @@ export default function Page() {
           backendURL: DEFAULT_PACKAGE_API_URL,
         },
       }).then(() => {
-        router.push(`/${i18next.language}/overview`);
+        router.replace(`/${i18next.language}/overview`);
       });
     });
   }, [api, init, nextDbId, router]);

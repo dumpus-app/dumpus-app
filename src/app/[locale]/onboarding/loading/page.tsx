@@ -83,7 +83,7 @@ export default function Page() {
             backendURL: backendURL || DEFAULT_PACKAGE_API_URL,
           },
         }).then(() => {
-          router.push(`/${i18next.language}/overview`);
+          router.replace(`/${i18next.language}/overview`);
         });
       });
   }, [

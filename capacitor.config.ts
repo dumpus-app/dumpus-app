@@ -10,11 +10,14 @@ const ipAddress = network.find((e) => e.family === "IPv4")!.address;
 export default {
   appId: "app.dumpus.app",
   appName: "Dumpus",
-  webDir: "dist",
-  server: isDev
+  ...(isDev
     ? {
-        url: `http://${ipAddress}:3000`,
-        cleartext: true,
+        server: {
+          url: `http://${ipAddress}:3000`,
+          cleartext: true,
+        },
       }
-    : undefined,
+    : {
+        webDir: "dist",
+      }),
 } satisfies CapacitorConfig;
