@@ -103,7 +103,7 @@ def create_new_empty_database():
         CREATE TABLE package_data (
             package_id TEXT NOT NULL,
             package_version TEXT NOT NULL,
-            
+            package_owner_id TEXT NOT NULL,
             package_owner_name TEXT NOT NULL,
             package_owner_display_name TEXT,
             package_owner_avatar_url TEXT
