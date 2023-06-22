@@ -2,67 +2,74 @@ Note: this documentation was generated automatically from the tasks.py code usin
 
 
 **activity table**
-| Column | Description |
-|---|---|
-| event_name | Type of event occurring in this record, e.g. 'message_sent' or 'guild_joined'. |
-| day | Date of the event in format 'YYYY-MM-DD'. |
-| hour | Hour of the day when the event occurred (0-23). |
-| occurence_count | Number of occurrences of the event within the given hour. |
-| associated_channel_id | The ID of the channel associated with the event, if applicable. |
-| associated_guild_id | The ID of the guild associated with the event, if applicable. |
+
+| Column                | Description                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| event_name            | The type of event associated with an activity, such as "message_sent" or "guild_joined".                     |
+| day                   | The day of the event in the format 'YYYY-MM-DD'.                                                              |
+| hour                  | The hour of the day when the event occurred (0-23).                                                           |
+| occurence_count       | The number of occurrences of the event within the given hour.                                                 |
+| associated_channel_id | The ID of the channel associated with the event, if applicable.                                               |
+| associated_guild_id   | The ID of the guild associated with the event, if applicable.                                                 |
 
 **dm_channels_data table**
-| Column | Description |
-|---|---|
-| channel_id | Unique identifier for the direct message channel. |
-| dm_user_id | Unique identifier for the user in the direct message channel. |
-| user_name | User's name in the direct message channel. |
-| display_name | User's display name in the direct message channel. |
-| user_avatar_url | URL of the user's avatar in the direct message channel. |
-| total_message_count | Total number of messages sent in the direct message channel. |
-| total_voice_channel_duration | Total duration of voice channel usage in minutes, if applicable. |
-| sentiment_score | Sentiment score of the messages in the direct message channel. |
+
+| Column                   | Description                                                                                                   |
+|--------------------------|---------------------------------------------------------------------------------------------------------------|
+| channel_id               | The ID of the DM (Direct Message) channel.                                                                   |
+| dm_user_id               | The ID of the user participating in the DM.                                                                   |
+| user_name                | The username of the user participating in the DM.                                                             |
+| display_name             | The display name of the user participating in the DM.                                                         |
+| user_avatar_url          | The URL of the user's avatar participating in the DM.                                                         |
+| total_message_count      | The total number of messages sent in the DM channel.                                                          |
+| total_voice_channel_duration | The total duration spent in voice channels associated with the DM, in minutes.                            |
+| sentiment_score          | The sentiment score of the messages in the DM channel.                                                        |
 
 **guild_channels_data table**
-| Column | Description |
-|---|---|
-| channel_id | Unique identifier for the guild channel. |
-| guild_id | Unique identifier for the guild associated with the channel. |
-| channel_name | Name of the guild channel. |
-| total_message_count | Total number of messages sent in the guild channel. |
-| total_voice_channel_duration | Total duration of voice channel usage in minutes, if applicable. |
+
+| Column                   | Description                                                                                                   |
+|--------------------------|---------------------------------------------------------------------------------------------------------------|
+| channel_id               | The ID of the guild channel.                                                                                  |
+| guild_id                 | The ID of the guild.                                                                                          |
+| channel_name             | The name of the guild channel.                                                                                |
+| total_message_count      | The total number of messages sent in the guild channel.                                                       |
+| total_voice_channel_duration | The total duration spent in voice channels associated with the guild channel, in minutes.                 |
 
 **guilds table**
-| Column | Description |
-|---|---|
-| guild_id | Unique identifier for the guild. |
-| guild_name | Name of the guild. |
-| total_message_count | Total number of messages sent in the guild. |
+
+| Column                | Description                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| guild_id              | The ID of the guild.                                                                                          |
+| guild_name            | The name of the guild.                                                                                        |
+| total_message_count   | The total number of messages sent in the guild.                                                               |
 
 **payments table**
-| Column | Description |
-|---|---|
-| payment_id | Unique identifier for the payment. |
-| payment_date | Date of the payment in format 'YYYY-MM-DD'. |
-| payment_amount | Amount of the payment. |
-| payment_currency | Currency of the payment. |
-| payment_description | Description of the payment. |
+
+| Column                | Description                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| payment_id            | The ID of the payment.                                                                                        |
+| payment_date          | The date of the payment in the format 'YYYY-MM-DD'.                                                           |
+| payment_amount        | The amount of the payment.                                                                                    |
+| payment_currency      | The currency of the payment (e.g. "USD").                                                                    |
+| payment_description   | The description of the payment.                                                                               |
 
 **voice_sessions table**
-| Column | Description |
-|---|---|
-| channel_id | Unique identifier for the voice channel. |
-| guild_id | Unique identifier for the guild associated with the voice channel. |
-| duration_mins | Duration of the voice session in minutes. |
-| started_date | Start date and time of the voice session in format 'YYYY-MM-DD HH:MM:SS'. |
-| ended_date | End date and time of the voice session in format 'YYYY-MM-DD HH:MM:SS'. |
+
+| Column                | Description                                                                                                   |
+|-----------------------|---------------------------------------------------------------------------------------------------------------|
+| channel_id            | The ID of the channel associated with the voice session.                                                      |
+| guild_id              | The ID of the guild associated with the voice session.                                                        |
+| duration_mins         | The duration of the voice session in minutes.                                                                 |
+| started_date          | The date and time when the voice session started in the format 'YYYY-MM-DD HH:mm:ss'.                         |
+| ended_date            | The date and time when the voice session ended in the format 'YYYY-MM-DD HH:mm:ss'.                           |
 
 **package_data table**
-| Column | Description |
-|---|---|
-| package_id | Unique identifier for the package. |
-| package_version | Version of the package. |
-| package_owner_id | Unique identifier for the owner of the package. |
-| package_owner_name | Username of the package owner. |
-| package_owner_display_name | Display name of the package owner. |
-| package_owner_avatar_url | URL of the package owner's avatar. |
+
+| Column                  | Description                                                                                                   |
+|-------------------------|---------------------------------------------------------------------------------------------------------------|
+| package_id              | The ID of the package.                                                                                        |
+| package_version         | The version of the package (e.g. "0.1.0").                                                                   |
+| package_owner_id        | The ID of the user who owns the package.                                                                     |
+| package_owner_name      | The username of the user who owns the package.                                                               |
+| package_owner_display_name | The display name of the user who owns the package.                                                         |
+| package_owner_avatar_url | The URL of the user's avatar who owns the package.                                                          |
