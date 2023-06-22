@@ -37,6 +37,8 @@ export const timeRangeDates = atom((get) => {
   const timeRange = get(timeRangeAtom);
   const extremityDates = get(dbExtremityDatesAtom);
 
+  console.log(extremityDates);
+
   const firstDateLimit = new Date(extremityDates?.[0] || "2015-05-13");
   const endDate = extremityDates ? new Date(extremityDates[1]) : new Date();
 

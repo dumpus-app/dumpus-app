@@ -243,38 +243,8 @@ export function useDailySentMessagesData() {
   const totalDays = new Date(end).getTime() - new Date(start).getTime();
   const days = Math.floor(totalDays / (1000 * 60 * 60 * 24));
 
-  let periodLength = 0;
+  const periodLength = days > 360 ? 30 : days > 90 ? 7 : 1;
 
-  if (days > 360) {
-    periodLength = 30;
-  } else if (days > 90) {
-    periodLength = 7;
-  } else {
-    periodLength = 1;
-  }
-
-  //   const query = `
-  //     WITH RECURSIVE dates(day) AS (
-  //   VALUES('${start}')
-  //   UNION ALL
-  //   SELECT date(day, '+1 day')
-  //   FROM dates
-  //   WHERE date(day, '+1 day') <= '${end}'
-  // )
-  // SELECT
-  //     dates.day,
-  //     IFNULL(SUM(a.occurence_count),0) AS message_count
-  // FROM
-  //     dates
-  // LEFT JOIN
-  //     activity a ON dates.day = a.day
-  //     AND a.event_name = 'message_sent'
-  // GROUP BY
-  //     dates.day
-  // ORDER BY
-  //     dates.day ASC;
-  //   `;
-console.log(start, end, days, periodLength)
   const query = `
     WITH RECURSIVE dates(day, day_group) AS (
       VALUES('${start}', 1)
@@ -298,28 +268,6 @@ console.log(start, end, days, periodLength)
     ORDER BY 
       period_start ASC;
   `;
-
-  console.log(`WITH RECURSIVE dates(day, day_group) AS (
-    VALUES('${start}', 1)
-    UNION ALL
-    SELECT date(day, '+1 day'), 
-    CASE WHEN (julianday(date(day, '+1 day')) - julianday('${start}')) % ${periodLength} = 0 THEN day_group + 1 ELSE day_group END
-    FROM dates
-    WHERE day < date('${start}', '+${days} days')
-  )
-  SELECT 
-    MIN(dates.day) as period_start,
-    MAX(dates.day) as period_end,
-    IFNULL(SUM(a.occurence_count),0) AS message_count
-  FROM 
-    dates
-  LEFT JOIN 
-    activity a ON dates.day = a.day 
-    AND a.event_name = 'message_sent'
-  GROUP BY 
-    day_group
-  ORDER BY 
-    period_start ASC;`)
 
   const data = resultAsList<{ period_start: string; message_count: number }>(
     db.exec(query)[0]
