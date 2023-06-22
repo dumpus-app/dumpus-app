@@ -512,9 +512,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     cur.execute('''
         INSERT INTO package_data
-        (package_id, package_version, package_owner_name, package_owner_display_name, package_owner_avatar_url)
+        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url)
         VALUES (?, ?, ?, ?, ?);
-    ''', (package_id, '0.1.0', user_data['username'], user_data['display_name'], user_data['avatar_url']))
+    ''', (package_id, '0.1.0',  user_data['id'], user_data['username'], user_data['display_name'], user_data['avatar_url']))
 
     conn.commit()
 
