@@ -282,7 +282,7 @@ console.log(start, end, days, periodLength)
       SELECT date(day, '+1 day'), 
       CASE WHEN (julianday(date(day, '+1 day')) - julianday('${start}')) % ${periodLength} = 0 THEN day_group + 1 ELSE day_group END
       FROM dates
-      WHERE day < date('${end}', '+${days} days')
+      WHERE day < date('${start}', '+${days} days')
     )
     SELECT 
       MIN(dates.day) as period_start,
