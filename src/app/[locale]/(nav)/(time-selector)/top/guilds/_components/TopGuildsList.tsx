@@ -3,14 +3,17 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import i18next from "i18next";
+import { useAtomValue } from "jotai";
 import DetailCard from "~/components/data/DetailCard";
 import { useTopGuildsData } from "~/hooks/use-data";
+import { timeRangeAtom } from "~/stores/db";
 
 export default function TopGuildsList() {
   const { getData, count } = useTopGuildsData();
+  const timeRange = useAtomValue(timeRangeAtom);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["top-dms"],
+    queryKey: ["top-guilds", timeRange],
     queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam }),
     getNextPageParam: (lastPage, pages) => pages.length,
   });

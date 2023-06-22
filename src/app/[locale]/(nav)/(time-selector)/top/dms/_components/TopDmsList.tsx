@@ -7,12 +7,15 @@ import DetailCard from "~/components/data/DetailCard";
 import { useTopDMsData } from "~/hooks/use-data";
 import { avatarURLFallback } from "~/utils/discord";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useAtomValue } from "jotai";
+import { timeRangeAtom } from "~/stores/db";
 
 export default function TopDMsList() {
   const { getData, count } = useTopDMsData();
+  const timeRange = useAtomValue(timeRangeAtom);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["top-dms"],
+    queryKey: ["top-dms", timeRange],
     queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam }),
     getNextPageParam: (lastPage, pages) => pages.length,
   });
