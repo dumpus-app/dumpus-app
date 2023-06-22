@@ -228,7 +228,7 @@ def generate_demo_database():
     cur.execute('''
         INSERT INTO package_data
         (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url)
-        VALUES (?, ?, ?, ?, ?);
+        VALUES (?, ?, ?, ?, ?, ?);
     ''', ('demo', '0.1.0', generate_random_18_digit_id(), 'wumpus', 'Wumpus', 'https://cdn.discordapp.com/embed/avatars/0.png'))
 
     conn.commit()
