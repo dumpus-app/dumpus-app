@@ -7,7 +7,6 @@ export async function initCapacitor() {
   const { App } = await import("@capacitor/app");
 
   App.addListener("backButton", ({ canGoBack }) => {
-    console.log({ canGoBack });
     if (canGoBack) {
       window.history.back();
     } else {
