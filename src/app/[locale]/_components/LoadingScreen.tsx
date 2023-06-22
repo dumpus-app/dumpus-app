@@ -4,6 +4,7 @@ import i18next from "i18next";
 import { useAtom } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useEffectOnce } from "react-use";
 import useSQL from "~/hooks/use-sql";
 import { configAtom } from "~/stores";
 
@@ -15,39 +16,50 @@ export default function LoadingScreen({
   data: { title: string; description: string };
 }) {
   const [loading, setLoading] = useState(true);
-  const isInitializedRef = useRef(false);
-  const [shouldRedirect, setShouldRedirect] = useState(false);
 
   const pathname = usePathname() || "/";
   const router = useRouter();
 
   const [config, setConfig] = useAtom(configAtom);
   const { init } = useSQL();
+  const isInitializedRef = useRef(false);
 
-  const redirectPath = `/${i18next.language}/onboarding/`;
+  const redirectPath = `/${i18next.language}/onboarding`;
 
-  useEffect(() => {
+  useEffectOnce(() => {
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
 
     setConfig(config);
-    if (config.db.selectedId) {
-      init({ id: config.db.selectedId }).then(() => {
-        setLoading(false);
-      });
-    } else if (!pathname.startsWith(redirectPath)) {
-      router.replace(redirectPath);
-      setShouldRedirect(true);
-    } else {
-      setLoading(false);
+
+    const hasSelectedPackage = !!config.db.selectedId;
+
+    if (pathname.startsWith(redirectPath)) {
+      if (!hasSelectedPackage && config.goToOnboardingAccess) {
+        router.replace(redirectPath + "/access");
+      }
+
+      return;
     }
-  }, [config, init, pathname, redirectPath, router, setConfig]);
+
+    if (hasSelectedPackage) {
+      init({ id: config.db.selectedId! }).then(() => {
+        router.push(`/${i18next.language}/overview`);
+        return;
+      });
+    }
+
+    router.replace(redirectPath);
+  });
 
   useEffect(() => {
-    if (loading && shouldRedirect && pathname === redirectPath) {
+    if (!loading) return;
+
+    const prefix = `/${i18next.language}/`;
+    if (pathname.startsWith(prefix) && pathname !== prefix) {
       setLoading(false);
     }
-  }, [loading, pathname, redirectPath, router, shouldRedirect]);
+  }, [loading, pathname]);
 
   if (loading)
     return (

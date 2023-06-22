@@ -9,6 +9,7 @@ export const CONFIG_ATOM_INITIAL_VALUE = {
     packages: [],
     selectedId: null,
   },
+  goToOnboardingAccess: false,
 };
 
 export const configAtom = atomWithLocalStorage<{
@@ -22,6 +23,7 @@ export const configAtom = atomWithLocalStorage<{
     } & PackageData)[];
     selectedId: null | string;
   };
+  goToOnboardingAccess: boolean;
 }>("config", CONFIG_ATOM_INITIAL_VALUE);
 
 export const selectedPackageAtom = atom((get) => {

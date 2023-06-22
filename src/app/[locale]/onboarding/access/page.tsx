@@ -1,9 +1,26 @@
-import { useTranslation } from "~/i18n";
-import { PageProps } from "~/types";
-import Methods from "./_components/Methods";
+"use client";
 
-export default async function Page({ params: { locale } }: PageProps) {
-  const { t } = await useTranslation(locale);
+import { useTranslation } from "~/i18n/client";
+import Methods from "./_components/Methods";
+import { useEffectOnce } from "react-use";
+import { useAtom } from "jotai";
+import { configAtom } from "~/stores";
+import { defu } from "defu";
+
+export default function Page() {
+  const { t } = useTranslation();
+  const [config, setConfig] = useAtom(configAtom);
+
+  useEffectOnce(() => {
+    setConfig(
+      defu(
+        {
+          goToOnboardingAccess: true,
+        },
+        config
+      )
+    );
+  });
 
   return (
     <div className="flex flex-col items-center space-y-4">

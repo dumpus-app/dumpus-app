@@ -1,7 +1,13 @@
 "use client";
 
-import { Redirect } from "~/i18n/redirect";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
-  return Redirect({ to: "/overview" });
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/");
+  }, [router]);
+
+  return null;
 }
