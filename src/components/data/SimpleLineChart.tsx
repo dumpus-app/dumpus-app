@@ -20,9 +20,15 @@ export type Props = {
   }[];
   className?: string;
   legend: string;
+  showSmallDots?: boolean;
 };
 
-export default function SimpleLineChart({ data, className, legend }: Props) {
+export default function SimpleLineChart({
+  data,
+  className,
+  legend,
+  showSmallDots = false,
+}: Props) {
   return (
     <div className={clsx("h-48 overflow-hidden sm:h-72", className)}>
       <ResponsiveContainer width="100%" height="100%">
@@ -64,9 +70,17 @@ export default function SimpleLineChart({ data, className, legend }: Props) {
             // stroke-brand-300
             stroke="#7dd3fc"
             strokeWidth={2}
-            dot={{ fill: "#7dd3fc", stroke: "#7dd3fc", strokeWidth: 3 }}
+            dot={{
+              fill: "#7dd3fc",
+              stroke: "#7dd3fc",
+              strokeWidth: showSmallDots ? 0 : 3,
+            }}
             // stroke-brand-200
-            activeDot={{ fill: "#7dd3fc", stroke: "#7dd3fc", strokeWidth: 4 }}
+            activeDot={{
+              fill: "#7dd3fc",
+              stroke: "#7dd3fc",
+              strokeWidth: showSmallDots ? 1 : 4,
+            }}
           />
         </LineChart>
       </ResponsiveContainer>

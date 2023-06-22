@@ -6,6 +6,7 @@ import useSQL from "./use-sql";
 import { timeRangeDates } from "~/stores/db";
 import type { DmChannelsData, Guild, GuildChannelsData } from "~/types/sql";
 import { SQL_DEFAULT_LIMIT } from "~/constants";
+import i18next from "i18next";
 
 function sqlOffset(offset: number) {
   return offset * SQL_DEFAULT_LIMIT;
@@ -234,4 +235,64 @@ export function useSendingTimesData() {
   ];
 
   return { chartData, statsData };
+}
+
+export function useDailySentMessagesData() {
+  const { db, resultAsList, start, end } = useDataSources();
+
+  //   const query = `
+  //     WITH RECURSIVE dates(day) AS (
+  //   VALUES('${start}')
+  //   UNION ALL
+  //   SELECT date(day, '+1 day')
+  //   FROM dates
+  //   WHERE date(day, '+1 day') <= '${end}'
+  // )
+  // SELECT
+  //     dates.day,
+  //     IFNULL(SUM(a.occurence_count),0) AS message_count
+  // FROM
+  //     dates
+  // LEFT JOIN
+  //     activity a ON dates.day = a.day
+  //     AND a.event_name = 'message_sent'
+  // GROUP BY
+  //     dates.day
+  // ORDER BY
+  //     dates.day ASC;
+  //   `;
+
+  const query = `
+WITH RECURSIVE months(month) AS (
+  VALUES('${start}')
+  UNION ALL
+  SELECT date(month, '+1 month')
+  FROM months
+  WHERE date(month, '+1 month') <= '${end}'
+)
+SELECT 
+    months.month,
+    IFNULL(SUM(a.occurence_count),0) AS message_count
+FROM 
+    months
+LEFT JOIN 
+    activity a ON strftime('%Y-%m', months.month) = strftime('%Y-%m', a.day) 
+    AND a.event_name = 'message_sent'
+GROUP BY 
+    months.month
+ORDER BY 
+    months.month ASC;
+  `;
+
+  const data = resultAsList<{ month: string; message_count: number }>(
+    db.exec(query)[0]
+  ).map(({ month, message_count }) => ({
+    label: new Intl.DateTimeFormat(i18next.language, {
+      year: "2-digit",
+      month: "2-digit",
+    }).format(new Date(month)),
+    value: message_count,
+  }));
+
+  return data;
 }
