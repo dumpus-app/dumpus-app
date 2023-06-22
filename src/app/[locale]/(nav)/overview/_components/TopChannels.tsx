@@ -4,6 +4,7 @@ import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
 import { useTopChannelsData } from "~/hooks/use-data";
+import { iconColor } from "~/utils/discord";
 
 export default function TopChannels() {
   const data = useTopChannelsData().getData({});
@@ -20,7 +21,14 @@ export default function TopChannels() {
               rank={channel.rank}
               href={`/top/channels/details?guild_id=${channel.guild_id}&channel_id=${channel.channel_id}`}
               image={
-                <div className="relative flex aspect-square w-full items-center justify-center rounded-lg bg-brand-300 text-4xl font-bold uppercase text-gray-950">
+                <div
+                  className="relative flex aspect-square w-full items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950"
+                  style={{
+                    backgroundColor: iconColor(
+                      channel.guild_id + channel.channel_id
+                    ),
+                  }}
+                >
                   <div>{channel.channel_name[0]}</div>
                 </div>
               }

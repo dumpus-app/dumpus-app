@@ -5,6 +5,7 @@ import i18next from "i18next";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import type { Guild } from "~/types/sql";
+import { iconColor } from "~/utils/discord";
 
 export default function RelatedGuild({ guild }: { guild: Guild }) {
   return (
@@ -19,7 +20,12 @@ export default function RelatedGuild({ guild }: { guild: Guild }) {
             }).format(guild.total_message_count) + " messages sent TODO"
           }
           leftSlot={
-            <div className="relative flex aspect-square w-10 items-center justify-center rounded-lg bg-brand-300 text-2xl font-bold uppercase text-gray-950">
+            <div
+              className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
+              style={{
+                backgroundColor: iconColor(guild.guild_id),
+              }}
+            >
               <div>{guild.guild_name[0]}</div>
             </div>
           }

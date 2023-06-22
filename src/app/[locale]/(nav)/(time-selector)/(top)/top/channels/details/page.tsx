@@ -10,6 +10,7 @@ import { SimpleIconsDiscord } from "~/components/icons";
 import { useSearchParams } from "next/navigation";
 import { useDataSources } from "~/hooks/use-data";
 import type { Guild, GuildChannelsData } from "~/types/sql";
+import { iconColor } from "~/utils/discord";
 
 // TODO: refactor
 function useData({
@@ -63,7 +64,12 @@ export default function Page() {
         description={guild.guild_name}
         title={"#" + channel.channel_name}
         imageSlot={
-          <div className="relative flex aspect-square w-16 shrink-0 items-center justify-center rounded-lg bg-brand-300 text-4xl font-bold uppercase text-gray-950 sm:h-32 sm:w-32 sm:text-6xl">
+          <div
+            className="relative flex aspect-square w-16 shrink-0 items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950 sm:h-32 sm:w-32 sm:text-6xl"
+            style={{
+              backgroundColor: iconColor(guild.guild_id + channel.channel_id),
+            }}
+          >
             <div>{channel.channel_name[0]}</div>
           </div>
         }

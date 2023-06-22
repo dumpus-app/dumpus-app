@@ -9,6 +9,7 @@ import { useTopGuildsData } from "~/hooks/use-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
 import { timeRangeAtom } from "~/stores/db";
 import Image from "next/image";
+import { iconColor } from "~/utils/discord";
 
 function GuildCard({
   guild,
@@ -44,7 +45,12 @@ function GuildCard({
             />
           </div>
         ) : (
-          <div className="relative flex aspect-square w-10 items-center justify-center rounded-lg bg-brand-300 text-2xl font-bold uppercase text-gray-950">
+          <div
+            className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
+            style={{
+              backgroundColor: iconColor(guild.guild_id),
+            }}
+          >
             <div>{guild.guild_name[0]}</div>
           </div>
         )
