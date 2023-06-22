@@ -1,12 +1,16 @@
 "use client";
 
-import { useAtomValue } from "jotai";
-import useSafeDB from "./use-safe-db";
-import useSQL from "./use-sql";
+import i18next from "i18next";
+import { useAtom, useAtomValue } from "jotai";
+import { SQL_DEFAULT_LIMIT } from "~/constants";
+import { configAtom, selectedPackageAtom } from "~/stores";
 import { timeRangeDates } from "~/stores/db";
 import type { DmChannelsData, Guild, GuildChannelsData } from "~/types/sql";
-import { SQL_DEFAULT_LIMIT } from "~/constants";
-import i18next from "i18next";
+import useSafeDB from "./use-safe-db";
+import useSQL from "./use-sql";
+import { useQuery } from "@tanstack/react-query";
+import usePackageAPI from "./use-package-api";
+import { useEffect } from "react";
 
 function sqlOffset(offset: number) {
   return offset * SQL_DEFAULT_LIMIT;
@@ -280,4 +284,54 @@ export function useDailySentMessagesData() {
   }));
 
   return data;
+}
+
+export function useUserData() {
+  const selectedPackage = useAtomValue(selectedPackageAtom);
+  const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
+  const [config, setConfig] = useAtom(configAtom);
+
+  const { data } = useQuery({
+    queryKey: ["user", selectedPackage.package_owner_name],
+    queryFn: () =>
+      api.user({
+        packageID: selectedPackage.package_id,
+        UPNKey: selectedPackage.UPNKey,
+        userID: selectedPackage.package_owner_id,
+      }),
+  });
+
+  useEffect(() => {
+    if (!data || data?.errorMessageCode) return;
+
+    const newConfig = { ...config };
+    const packageIndex = newConfig.db.packages.findIndex(
+      (p) => p.id === selectedPackage.package_id
+    )!;
+    const pkg = newConfig.db.packages.splice(packageIndex, 1)[0];
+
+    if (data.display_name !== selectedPackage.package_owner_display_name) {
+      pkg.package_owner_display_name = data.display_name;
+    }
+
+    if (data.avatar_url !== selectedPackage.package_owner_avatar_url) {
+      pkg.package_owner_avatar_url = data.avatar_url;
+    }
+
+    newConfig.db.packages.push(pkg);
+
+    setConfig(newConfig);
+  }, [config, data, selectedPackage, setConfig]);
+
+  return {
+    ...selectedPackage,
+    package_owner_display_name:
+      selectedPackage.package_owner_display_name === ""
+        ? selectedPackage.package_owner_name
+        : selectedPackage.package_owner_display_name,
+    package_owner_avatar_url:
+      selectedPackage.package_owner_avatar_url == ""
+        ? "https://cdn.discordapp.com/embed/avatars/0.png"
+        : selectedPackage.package_owner_avatar_url,
+  };
 }

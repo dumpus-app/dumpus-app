@@ -6,6 +6,7 @@ import type {
   PackageAPIProcessResponse,
   PackageAPIRemoveResponse,
   PackageAPIStatusResponse,
+  PackageAPIUserResponse,
 } from "~/types/package-api";
 
 export default function usePackageAPI({
@@ -106,5 +107,37 @@ export default function usePackageAPI({
     return data;
   }
 
-  return { process, status, data, remove };
+  async function user({
+    packageID,
+    UPNKey,
+    userID,
+  }: {
+    packageID: string;
+    UPNKey: string;
+    userID: string;
+  }) {
+    const response = await api({
+      path: `/process/${packageID}/user/${userID}`,
+      method: "GET",
+      headers: {
+        Accept: "text/plain",
+        Authorization: `Bearer ${UPNKey}`,
+      },
+    });
+
+    const data: PackageAPIUserResponse =
+      response.status === 401
+        ? { errorMessageCode: "UNAUTHORIZED" }
+        : response.status === 404
+        ? { errorMessageCode: "UNKNOWN_USER_ID" }
+        : response.status === 429
+        ? { errorMessageCode: "RATE_LIMITED" }
+        : response.status === 500
+        ? { errorMessageCode: "FETCH_ERROR" }
+        : { ...(await response.json()), errorMessageCode: null };
+
+    return data;
+  }
+
+  return { process, status, data, remove, user };
 }

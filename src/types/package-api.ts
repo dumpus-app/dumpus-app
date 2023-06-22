@@ -50,3 +50,22 @@ export type PackageAPIRemoveResponse = Prettify<{
   isDeleted: boolean;
   errorMessageCode: "UNKNOWN_PACKAGE_ID" | "UNAUTHORIZED";
 }>;
+
+export type PackageAPIUserResponse = Prettify<
+  | {
+      avatar_url: string;
+      display_name: string;
+      user_id: string;
+      errorMessageCode: null;
+    }
+  | {
+      errorMessageCode:
+        | "UNAUTHORIZED"
+        | "UNKNOWN_USER_ID"
+        | "FETCH_ERROR"
+        | "RATE_LIMITED";
+      avatar_url: undefined;
+      display_name: undefined;
+      user_id: undefined;
+    }
+>;
