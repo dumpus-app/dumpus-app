@@ -373,12 +373,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
         
         for join in sorted_joins:
             # Find the next leave event that happened after this join
-            next_leave = next((leave for leave in sorted_leaves if leave['timestamp'] > join['timestamp']), None)
+            next_leave = next((leave for leave in sorted_leaves if leave['timestamp'] >= join['timestamp']), None)
             
             # Calculate duration
             duration = next_leave['timestamp'] - join['timestamp'] if next_leave else 0
             
-            if duration > 24 * 60 * 60 * 1000:
+            if duration > 24 * 60 * 60:
                 pass
             elif not next_leave:
                 pass

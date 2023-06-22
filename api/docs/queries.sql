@@ -36,7 +36,7 @@ AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
 GROUP BY d.dm_user_id
 ORDER BY message_count DESC;
 
-/* (dm channels top graph)
+/* (dm channels top)
 
 Result
 
@@ -60,7 +60,7 @@ AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
 GROUP BY guild_name
 ORDER BY message_count DESC;
 
-/* (guilds top graph)
+/* (guilds top)
 
 Result
 
@@ -85,7 +85,7 @@ ORDER BY message_count DESC;
 
 /*
 
-Result (channels top graph)
+Result (channels top)
 
 |channel_name         |message_count|
 |---------------------|-------------|
@@ -241,4 +241,42 @@ Result (total spent)
 |-----------|
 |8          |
 
+*/
+
+SELECT vc.channel_id, SUM(duration_mins) as total_call_mins, dm.user_name FROM voice_sessions vc
+JOIN dm_channels_data dm ON vc.channel_id = dm.channel_id
+WHERE started_date BETWEEN '2021-06-01' AND '2021-06-10'
+GROUP BY vc.channel_id
+ORDER BY total_call_mins DESC
+
+/*
+
+Result (voice channels top)
+
+|channel_id         |total_call_mins|user_name                 |
+|-------------------|---------------|--------------------------|
+|558695545531662337 |10364          |Eddroid#1589              |
+|752798142709366854 |1503           |Mene#4179                 |
+|797004021516337152 |1499           |thizz#0000                |
+|558310926411890689 |1082           |Hunam#6067                |
+|879760016545026088 |1082           |Kaizeur#0237              |
+|571698678557835284 |769            |Ellobo#3453               |
+|607112896094404608 |425            |Deleted User 2589c57b#0397|
+|836589924685709333 |396            |florian-lefebvre#1325     |
+|828608205692862546 |344            |JsonLines#6725            |
+|902270143026053130 |298            |.zorion.#0000             |
+|939840765591453727 |272            |Crxcodile#1975            |
+|910626713413775400 |265            |drushbag#0000             |
+|557621380531879936 |263            |Deleted User 179202e3#2667|
+|557458819463118861 |209            |kaki87#0000               |
+|643199035263549462 |200            |Julien#6579               |
+|989239354000031844 |168            |eden#5567                 |
+|1071572662003978270|159            |JazzyTrades#2653          |
+|774354822463094804 |156            |Deleted User e2db00f2#1021|
+|971355142861520916 |152            |The Seer &#124; KRYPTVIEW#5743 |
+|910609422051594240 |151            |heyenter#0000             |
+|557460092996288532 |146            |Deleted User 248c8274#8764|
+|884299342129799249 |134            |leo5imon#0000             |
+|1010575909193011312|128            |ayrtoncoindraw#0000       |
+|600703894015967252 |127            |dev_apollo#0000           |
 */
