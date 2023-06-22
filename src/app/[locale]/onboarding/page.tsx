@@ -10,8 +10,8 @@ export default async function Page({ params: { locale } }: PageProps) {
     <div className="flex flex-col items-center space-y-4">
       <div className="relative h-16 w-16">
         <Image
-          src="https://cdn.discordapp.com/embed/avatars/0.png"
-          alt="Avatar"
+          src="/assets/logo.png"
+          alt="Dumpus"
           fill
           priority
           className="rounded-full object-cover object-center"

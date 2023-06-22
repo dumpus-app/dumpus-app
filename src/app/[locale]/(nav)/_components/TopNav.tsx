@@ -36,8 +36,8 @@ export default function TopNav() {
             >
               <div className="relative h-10 w-10">
                 <Image
-                  src="https://cdn.discordapp.com/embed/avatars/0.png"
-                  alt="Avatar"
+                  src="/assets/logo.png"
+                  alt="Dumpus"
                   fill
                   priority
                   className="rounded-full object-cover object-center"
