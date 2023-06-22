@@ -3,7 +3,7 @@ import path from "node:path";
 import fetch from "node-fetch";
 
 const assetUrl =
-  "https://raw.githubusercontent.com/dumpus-app/sql.js/dist/sql-wasm.wasm";
+  "https://raw.githubusercontent.com/dumpus-app/sql.js/master/dist/sql-wasm.wasm";
 const localPath = path.join(process.cwd(), "./public/sqljs/sql-wasm.wasm");
 
 const localDir = path.dirname(localPath);
