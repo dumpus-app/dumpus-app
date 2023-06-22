@@ -27,6 +27,7 @@ export default function LoadingScreen({
   const redirectPath = `/${i18next.language}/onboarding`;
 
   useEffectOnce(() => {
+    // TODO: check if required. Was probably a bug
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
 
