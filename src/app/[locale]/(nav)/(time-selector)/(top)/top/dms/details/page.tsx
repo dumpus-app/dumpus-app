@@ -12,6 +12,7 @@ import { useDataSources } from "~/hooks/use-data";
 import type { DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
 import i18next from "i18next";
+import { useNetworkState } from "react-use";
 
 // TODO: refactor
 function useData(id: string) {
@@ -56,6 +57,21 @@ export default function Page() {
 
   const { user, stats } = useData(id);
 
+  const networkState = useNetworkState();
+
+  const size = (() => {
+    switch (networkState.effectiveType) {
+      case "slow-2g":
+      case "2g":
+        return 512;
+
+      case "3g":
+      case "4g":
+      default:
+        return 2048;
+    }
+  })();
+
   return (
     <>
       <PageHeader title={user.user_name} />
@@ -65,7 +81,10 @@ export default function Page() {
         imageSlot={
           <div className="relative h-16 w-16 sm:h-32 sm:w-32">
             <Image
-              src={avatarURLFallback(user.user_avatar_url, user.dm_user_id)}
+              src={
+                avatarURLFallback(user.user_avatar_url, user.dm_user_id) +
+                `?size=${size}`
+              }
               alt="Avatar"
               fill
               priority
