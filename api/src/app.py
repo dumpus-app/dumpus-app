@@ -265,3 +265,11 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return jsonify({'error': 'Internal server error.'}), 500
+
+def rm_demo():
+    session = Session()
+    session.query(SavedPackageData).filter(SavedPackageData.package_id == 'demo').delete()
+    session.commit()
+    session.close()
+
+rm_demo()
