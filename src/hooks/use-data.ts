@@ -192,48 +192,51 @@ export function useTopGuildsData() {
 }
 
 export function useSendingTimesData() {
-  const chartData = [
-    {
-      label: "12 AM",
-      value: 125,
-    },
-    {
-      label: "3 AM",
-      value: 2,
-    },
-    {
-      label: "6 AM",
-      value: 753,
-    },
-    {
-      label: "9 AM",
-      value: 1864,
-    },
-    {
-      label: "12 PM",
-      value: 1803,
-    },
-    {
-      label: "3 PM",
-      value: 475,
-    },
-    {
-      label: "6 PM",
-      value: 3574,
-    },
-    {
-      label: "9 PM",
-      value: 2756,
-    },
-  ];
+  const { db, resultAsList, start, end } = useDataSources();
+
+  const chartQuery = `
+  SELECT
+    a.hour,
+    SUM(a.occurence_count) as message_count
+  FROM activity a
+  WHERE a.event_name = 'message_sent' 
+  AND a.day BETWEEN '${start}' AND '${end}'
+  GROUP BY hour
+  ORDER BY hour ASC;
+  `;
+
+  const rawChartData = resultAsList<{ hour: number; message_count: number }>(
+    db.exec(chartQuery)[0]
+  );
+
+  for (let i = 0; i < 24; i++) {
+    const stat: (typeof rawChartData)[0] | undefined = rawChartData[i];
+
+    if (!stat || stat?.hour !== i) {
+      rawChartData.splice(i, 0, { hour: i, message_count: 0 });
+    }
+  }
+
+  const chartData = rawChartData.map(({ hour, message_count }) => ({
+    label: new Intl.DateTimeFormat(i18next.language, {
+      hour: "numeric",
+    }).format(
+      (() => {
+        const date = new Date();
+        date.setHours(hour);
+        return date;
+      })()
+    ),
+    value: message_count,
+  }));
 
   const statsData = [
     {
-      value: "1h43",
+      value: "1h43 TODO",
       label: "average time spent per day",
     },
     {
-      value: "15",
+      value: "15 TODO",
       label: "Discord app openings per day",
     },
   ];
