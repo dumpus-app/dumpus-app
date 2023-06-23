@@ -30,7 +30,7 @@ export const timeRanges = ["4 weeks", "6 months", "Year", "Lifetime"] as const;
 
 export const timeRangeAtom = atomWithLocalStorage<(typeof timeRanges)[number]>(
   "time-range",
-  "6 months"
+  "Lifetime"
 );
 
 export const timeRangeDates = atom((get) => {
