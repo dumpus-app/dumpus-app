@@ -5,7 +5,6 @@ import { useNetworkState } from "react-use";
 import Button from "~/components/Button";
 import ProfileHeader from "~/components/ProfileHeader";
 import { useUserData } from "~/hooks/use-data";
-import usePackageAPI from "~/hooks/use-package-api";
 
 export default function Profile() {
   const userData = useUserData();
@@ -13,10 +12,7 @@ export default function Profile() {
     package_owner_name,
     package_owner_display_name,
     package_owner_avatar_url,
-    backendURL,
   } = userData;
-
-  const api = usePackageAPI({ baseURL: backendURL });
 
   const networkState = useNetworkState();
 

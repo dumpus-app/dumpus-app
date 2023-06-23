@@ -9,7 +9,7 @@ export default function TimeSelector() {
 
   return (
     <div className="border-t border-gray-800 bg-gray-900 sm:border-none sm:bg-transparent">
-      <div className="flex items-center space-x-1 px-1 py-1 sm:p-0">
+      <div className="flex items-center space-x-1 px-1 py-1 sm:space-x-0 sm:p-0 md:space-x-1">
         {timeRanges.map((time) => (
           <button
             key={time}

@@ -43,7 +43,7 @@ export default function TopSelector({
           : "border-b-transparent"
       )}
     >
-      <div className="flex items-center space-x-1 px-1 py-1 sm:p-0">
+      <div className="flex items-center space-x-1 px-1 py-1 sm:space-x-0 sm:p-0 md:space-x-1">
         {links.map((link) => (
           <Link
             key={link.href}

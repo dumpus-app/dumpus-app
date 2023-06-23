@@ -1,16 +1,16 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
 import { useAtom, useAtomValue } from "jotai";
+import { useRef } from "react";
 import { SQL_DEFAULT_LIMIT } from "~/constants";
 import { configAtom, selectedPackageAtom } from "~/stores";
 import { timeRangeDates } from "~/stores/db";
 import type { DmChannelsData, Guild, GuildChannelsData } from "~/types/sql";
+import usePackageAPI from "./use-package-api";
 import useSafeDB from "./use-safe-db";
 import useSQL from "./use-sql";
-import { useQuery } from "@tanstack/react-query";
-import usePackageAPI from "./use-package-api";
-import { useEffect } from "react";
 
 function sqlOffset(offset: number) {
   return offset * SQL_DEFAULT_LIMIT;
@@ -290,6 +290,7 @@ export function useUserData() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
   const [config, setConfig] = useAtom(configAtom);
+  const doneRef = useRef(false);
 
   const { data } = useQuery({
     queryKey: ["user", selectedPackage.package_owner_name],
@@ -302,27 +303,28 @@ export function useUserData() {
     staleTime: Infinity,
   });
 
-  useEffect(() => {
-    if (!data || data?.errorMessageCode) return;
+  if (data && !data.errorMessageCode && !doneRef.current) {
+    doneRef.current = true;
 
-    const newConfig = { ...config };
+    const newConfig = structuredClone(config);
+
     const packageIndex = newConfig.db.packages.findIndex(
-      (p) => p.id === selectedPackage.package_id
-    )!;
-    const pkg = newConfig.db.packages.splice(packageIndex, 1)[0];
+      (p) => p.id === selectedPackage.id
+    );
+
+    const pkg = newConfig.db.packages.slice()[packageIndex];
 
     if (data.display_name !== selectedPackage.package_owner_display_name) {
       pkg.package_owner_display_name = data.display_name;
     }
-
     if (data.avatar_url !== selectedPackage.package_owner_avatar_url) {
       pkg.package_owner_avatar_url = data.avatar_url;
     }
 
-    newConfig.db.packages.push(pkg);
+    newConfig.db.packages[packageIndex] = pkg;
 
     setConfig(newConfig);
-  }, [config, data, selectedPackage, setConfig]);
+  }
 
   return {
     ...selectedPackage,
