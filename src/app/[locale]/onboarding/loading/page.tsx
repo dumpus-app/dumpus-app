@@ -1,6 +1,8 @@
 "use client";
 
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
+import clsx from "clsx";
 import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -103,74 +105,61 @@ export default function Page() {
       <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
       {processData && statusQuery.isSuccess && statusQuery.data ? (
         <>
-          {statusQuery.data.processingStep === "LOCKED"
-            ? (function () {
-                const queueData = statusQuery.data.processingQueuePosition;
+          {statusQuery.data.processingStep === "LOCKED" ? (
+            <div className="max-w-xs text-center">
+              <h1 className="text-xl font-bold text-white">Almost there!</h1>
+              <h2 className="mt-4 text-7xl font-bold text-brand-300">
+                {statusQuery.data.processingQueuePosition.user}
+              </h2>
+              <p className="text-gray-400">people before you</p>
+            </div>
+          ) : (
+            (function () {
+              /**
+               * 0 Downloading
+               * 1 Analyzing
+               * 2 Setup DB
+               */
+              const currentStep = (() => {
+                switch (statusQuery.data.processingStep) {
+                  case "DOWNLOADING":
+                    return 0;
+                  case "ANALYZING":
+                    return 1;
+                  case "PROCESSED":
+                    return 2;
+                }
+              })();
 
-                const queuePosition = queueData.user;
-                const queueTotal = queueData.totalWhenStarted;
+              const steps = ["Downloading", "Analyzing", "Processed"];
 
-                // user - (totalWhenStarted - total)
-                // const queuePosition = 100 - Math.abs(100 - 100);
-                // const queuePosition = 95 - Math.abs(100 - 95);
-                // const queuePosition = 95 - Math.abs(100 - 105);
-                // const queuePosition = 91 - Math.abs(100 - 104);
-                // totalWhenStarted
-                // const queueTotal = 100;
+              return (
+                <div className="space-y-2">
+                  {steps.map((step, i) => {
+                    const valid = currentStep >= i;
 
-                // const usersJoinedAfter =
-                //   queueData.user - queueData.userWhenStarted;
-                // const queuePosition = usersJoinedAfter + 1;
-                // const queueTotal =
-                //   queueData.total -
-                //   queueData.totalWhenStarted +
-                //   queueData.userWhenStarted;
-
-                return (
-                  <div>
-                    <div>
-                      <div className="mb-2">
-                        Position in queue: {queuePosition}/{queueTotal}
-                      </div>
-                      <div className="relative h-3 overflow-hidden rounded-full bg-brand-950 duration-700">
+                    return (
+                      <div key={i} className="flex items-center space-x-2">
+                        {valid ? (
+                          <CheckCircleIcon className="h-6 w-6 text-brand-300" />
+                        ) : (
+                          <div className="ml-[2.5px] h-5 w-5 rounded-full border-2 border-gray-400" />
+                        )}
                         <div
-                          className="absolute inset-0 origin-[0%] bg-brand-300 transition-transform duration-300 ease-in-out"
-                          style={{
-                            transform: `scaleX(clamp(0, ${
-                              1 - queuePosition / queueTotal
-                            }, 1))`,
-                          }}
-                        />
+                          className={clsx(
+                            "text-lg",
+                            valid ? "font-medium text-white" : "text-gray-400"
+                          )}
+                        >
+                          {step}
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                );
-              })()
-            : (function () {
-                /**
-                 * 0 Downloading
-                 * 1 Analyzing
-                 * 2 Setup DB
-                 */
-                const step = (() => {
-                  switch (statusQuery.data.processingStep) {
-                    case "DOWNLOADING":
-                      return 0;
-                    case "ANALYZING":
-                      return 1;
-                    case "PROCESSED":
-                      return 2;
-                  }
-                })();
-                // TODO: create checklist
-                return (
-                  <div>
-                    <div>Downloading: {JSON.stringify(step >= 0)}</div>
-                    <div>Analyzing: {JSON.stringify(step >= 1)}</div>
-                    <div>Processed: {JSON.stringify(step >= 2)}</div>
-                  </div>
-                );
-              })()}
+                    );
+                  })}
+                </div>
+              );
+            })()
+          )}
         </>
       ) : (
         <div className="max-w-xs text-center">
