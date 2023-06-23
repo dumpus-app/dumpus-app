@@ -299,6 +299,7 @@ export function useUserData() {
         UPNKey: selectedPackage.UPNKey,
         userID: selectedPackage.package_owner_id,
       }),
+    staleTime: Infinity,
   });
 
   useEffect(() => {

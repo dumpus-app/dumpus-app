@@ -1,12 +1,15 @@
 "use client";
 
 import i18next from "i18next";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useEffectOnce } from "react-use";
+import { useEffect, useState } from "react";
 import useSQL from "~/hooks/use-sql";
 import { configAtom } from "~/stores";
+import { dbAtom } from "~/stores/db";
+import { createLogger } from "~/utils/logger";
+
+const logger = createLogger({ tag: "loading screen" });
 
 export default function LoadingScreen({
   children,
@@ -21,46 +24,51 @@ export default function LoadingScreen({
   const router = useRouter();
 
   const [config, setConfig] = useAtom(configAtom);
+  const db = useAtomValue(dbAtom);
   const { init } = useSQL();
-  const isInitializedRef = useRef(false);
 
   const redirectPath = `/${i18next.language}/onboarding`;
-
-  useEffectOnce(() => {
-    // TODO: check if required. Was probably a bug
-    if (isInitializedRef.current) return;
-    isInitializedRef.current = true;
-
-    setConfig(config);
-
-    const hasSelectedPackage = !!config.db.selectedId;
-
-    if (pathname.startsWith(redirectPath)) {
-      if (!hasSelectedPackage && config.goToOnboardingAccess) {
-        router.replace(redirectPath + "/access");
-      }
-
-      return;
-    }
-
-    if (hasSelectedPackage) {
-      init({ id: config.db.selectedId! }).then(() => {
-        router.push(`/${i18next.language}/overview`);
-        return;
-      });
-    }
-
-    router.replace(redirectPath);
-  });
 
   useEffect(() => {
     if (!loading) return;
 
-    const prefix = `/${i18next.language}/`;
-    if (pathname.startsWith(prefix) && pathname !== prefix) {
-      setLoading(false);
+    setConfig(config);
+    const hasSelectedPackage = !!config.db.selectedId;
+
+    if (["/", `/${i18next.language}/`].includes(pathname)) {
+      logger.info("/ or /:locale");
+      router.replace(`/${i18next.language}/overview`);
+      return;
     }
-  }, [loading, pathname]);
+
+    if (pathname.startsWith(`/${i18next.language}/onboarding/`)) {
+      logger.info("onboarding");
+      if (!hasSelectedPackage && config.goToOnboardingAccess) {
+        logger.info("go to access");
+        router.replace(redirectPath + "/access");
+      }
+      logger.info("continue");
+      setLoading(false);
+      return;
+    }
+
+    logger.info("no onboarding");
+    if (!hasSelectedPackage) {
+      logger.info("no package");
+      router.replace(`/${i18next.language}/onboarding/`);
+      return;
+    }
+
+    if (db) {
+      logger.info("has db");
+      logger.info("continue");
+      setLoading(false);
+      return;
+    }
+
+    logger.info("init db");
+    init({ id: config.db.selectedId! });
+  }, [config, db, init, loading, pathname, redirectPath, router, setConfig]);
 
   if (loading)
     return (
