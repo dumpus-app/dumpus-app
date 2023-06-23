@@ -83,6 +83,7 @@ export default function useSQL() {
               ],
               selectedId: id,
             },
+            goToOnboardingAccess: config.goToOnboardingAccess,
           } satisfies typeof config,
           config
         )
