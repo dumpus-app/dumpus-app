@@ -6,21 +6,8 @@ import useCapacitor from "~/hooks/use-capacitor";
 import "~/i18n/client";
 import "./globals.css";
 import Providers from "./providers";
-import type { Metadata } from "next";
-import { initI18next } from "~/i18n";
-import { fallbackLocale } from "~/i18n/settings"
 
 const font = Rubik({ subsets: ["latin"] });
-
-export async function generateMetadata(): Promise<Metadata> {
-  const i18nextInstance = await initI18next(fallbackLocale);
-  const t = i18nextInstance.getFixedT(fallbackLocale);
-
-  return {
-    title: t("seo.title"),
-    description: t("seo.description"),
-  };
-}
 
 export default function RootLayout({
   children,
