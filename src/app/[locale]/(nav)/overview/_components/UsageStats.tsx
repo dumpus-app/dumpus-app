@@ -6,18 +6,22 @@ import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import i18next from "i18next";
 
+function formatNumber(n: number) {
+  return Intl.NumberFormat(i18next.language, {
+    notation: "compact",
+  }).format(n);
+}
+
 export default function UsageStats() {
-  const { networkSize } = useUsageStatsData();
+  const { networkSize, joinedGuilds } = useUsageStatsData();
 
   const data = [
-    { value: "75", label: "server joined" },
+    { value: formatNumber(joinedGuilds), label: "server joined" },
     { value: "369", label: "received calls" },
     { value: "845", label: "opened notifs." },
     { value: "2 AM", label: "top hour" },
     {
-      value: Intl.NumberFormat(i18next.language, {
-        notation: "compact",
-      }).format(networkSize),
+      value: formatNumber(networkSize),
       label: "network size",
     },
   ];
