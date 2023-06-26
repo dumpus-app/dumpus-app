@@ -5,7 +5,7 @@ import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import DetailCard from "~/components/data/DetailCard";
-import { useTopGuildsData } from "~/hooks/use-data";
+import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
 import { timeRangeAtom } from "~/stores/db";
 import Image from "next/image";

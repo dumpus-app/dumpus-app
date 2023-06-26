@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import i18next from "i18next";
 import DetailCard from "~/components/data/DetailCard";
-import { useTopDMsData } from "~/hooks/use-data";
+import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import { avatarURLFallback } from "~/utils/discord";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";

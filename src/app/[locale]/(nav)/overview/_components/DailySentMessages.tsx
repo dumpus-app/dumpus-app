@@ -2,7 +2,7 @@
 
 import Section from "~/components/Section";
 import SimpleLineChart from "~/components/data/SimpleLineChart";
-import { useDailySentMessagesData } from "~/hooks/use-data";
+import useDailySentMessagesData from "~/hooks/data/use-daily-sent-messages-data";
 
 export default function DailySentMessages() {
   const data = useDailySentMessagesData();

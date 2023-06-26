@@ -5,7 +5,7 @@ import Image from "next/image";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
-import { useTopGuildsData } from "~/hooks/use-data";
+import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
 import { iconColor } from "~/utils/discord";
 

@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import DetailCard from "~/components/data/DetailCard";
-import { useTopChannelsData } from "~/hooks/use-data";
+import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import { timeRangeAtom } from "~/stores/db";
 import { iconColor } from "~/utils/discord";
 

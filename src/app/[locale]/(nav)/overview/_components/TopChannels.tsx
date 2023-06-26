@@ -3,7 +3,7 @@
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
-import { useTopChannelsData } from "~/hooks/use-data";
+import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import { iconColor } from "~/utils/discord";
 
 export default function TopChannels() {

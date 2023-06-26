@@ -5,7 +5,7 @@ import { useNetworkState } from "react-use";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
-import { useTopDMsData } from "~/hooks/use-data";
+import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import { avatarURLFallback } from "~/utils/discord";
 
 export default function TopDMs() {

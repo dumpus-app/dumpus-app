@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useNetworkState } from "react-use";
 import Button from "~/components/Button";
 import ProfileHeader from "~/components/ProfileHeader";
-import { useUserData } from "~/hooks/use-data";
+import useUserData from "~/hooks/data/use-user-data";
 
 export default function Profile() {
   const userData = useUserData();

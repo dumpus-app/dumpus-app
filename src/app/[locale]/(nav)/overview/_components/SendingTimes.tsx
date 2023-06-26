@@ -3,7 +3,7 @@
 import Section from "~/components/Section";
 import SimpleBarChart from "~/components/data/SimpleBarChart";
 import StatCard from "~/components/data/StatCard";
-import { useSendingTimesData } from "~/hooks/use-data";
+import useSendingTimesData from "~/hooks/data/use-sending-times-data";
 
 function Chart() {
   const { chartData } = useSendingTimesData();
