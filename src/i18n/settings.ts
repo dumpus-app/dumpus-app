@@ -1,4 +1,6 @@
-import { locales } from "./_locales";
+import { locales as _locales } from "./_locales";
+
+export const locales = _locales;
 
 export const fallbackLocale = "en";
 
