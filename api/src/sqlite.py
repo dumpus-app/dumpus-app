@@ -118,8 +118,8 @@ def generate_demo_database():
 
     activity_query = '''
         INSERT INTO activity
-        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id)
-        VALUES (?, ?, ?, ?, ?, ?);
+        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     '''
 
     dm_user_query = '''
@@ -204,8 +204,8 @@ def generate_demo_database():
         guild_channel_data.append(data)
         cur.execute(guild_channel_query, data)
 
-    for i in range(0, 1000):
-        event_name = random.choice(["message_sent", "guild_joined"])
+    for i in range(0, 5000):
+        event_name = random.choice(["message_sent", "guild_joined", "application_command_used"])
         if event_name == "message_sent":
             is_dm = random.choice([True, False])
             if is_dm:
@@ -213,16 +213,23 @@ def generate_demo_database():
                 associated_channel_id = user[0]
             else:
                 guild_channel = random.choice(guild_channel_data)
+                associated_user_id = None
                 associated_channel_id = guild_channel[0]
                 associated_guild_id = guild_channel[1]
-        else:
+        elif event_name == "guild_joined":
+            guild_id = random.choice(guild_data)['guild_id']
+            associated_user_id = None
             associated_channel_id = None
-            associated_guild_id = generate_random_18_digit_id()
+            associated_guild_id = guild_id
+        else:
+            guild_id = random.choice(guild_data)['guild_id']
+            associated_user_id = random.choice(['159985870458322944', '936929561302675456', '432610292342587392', '276060004262477825'])
+            associated_guild_id = guild_id
         # random day between 2021 and now
         day = datetime.date(random.randint(2021, datetime.datetime.now().year), random.randint(1, 12), random.randint(1, 28))
         hour = random.randint(0, 23)
         occurence_count = random.randint(0, 100)
-        data = (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id)
+        data = (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id)
         cur.execute(activity_query, data)
 
     cur.execute('''
