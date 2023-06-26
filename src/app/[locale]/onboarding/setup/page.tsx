@@ -29,9 +29,7 @@ export default function Page() {
   });
 
   useEffect(() => {
-    if (!os) {
-      setSelectedIndex(data.findIndex((e) => e.key === os));
-    }
+    setSelectedIndex(data.findIndex((e) => e.key === os));
   }, [data, os]);
 
   return (

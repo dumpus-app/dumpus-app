@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 export type OS = "android" | "ios" | "desktop";
 
 function getOS(): OS {
-  const userAgent = window.navigator.userAgent.toLowerCase();
+  const userAgent = window.navigator.userAgent;
 
-  if (userAgent.includes("android")) {
+  if (new RegExp(/android/, "i").test(userAgent)) {
     return "android";
-  } else if (/(iphone|ipad|ipod)/.test(userAgent)) {
-    return "ios";
-  } else {
-    return "desktop";
   }
+  if (new RegExp(/(iphone|ipad|ipod)/, "i").test(userAgent)) {
+    return "ios";
+  }
+  return "desktop";
 }
 
 export default function useOS() {
