@@ -42,16 +42,15 @@ export default function useSendingTimesData() {
     value: message_count,
   }));
 
-  const statsData = [
-    {
-      value: "1h43 TODO",
-      label: "average time spent per day",
+  return {
+    chartData,
+    statsData: {
+      avgMessagesSentPerDay: chartData.reduce(
+        (avg, { value }, _, { length }) => {
+          return avg + value / length;
+        },
+        0
+      ),
     },
-    {
-      value: "15 TODO",
-      label: "Discord app openings per day",
-    },
-  ];
-
-  return { chartData, statsData };
+  };
 }

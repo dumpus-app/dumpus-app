@@ -1,5 +1,6 @@
 "use client";
 
+import i18next from "i18next";
 import Section from "~/components/Section";
 import SimpleBarChart from "~/components/data/SimpleBarChart";
 import StatCard from "~/components/data/StatCard";
@@ -18,11 +19,27 @@ function Chart() {
 }
 
 function Stats() {
-  const { statsData } = useSendingTimesData();
+  const {
+    statsData: { avgMessagesSentPerDay },
+  } = useSendingTimesData();
+
+  const data = [
+    {
+      value: Intl.NumberFormat(i18next.language, {
+        notation: "compact",
+      }).format(avgMessagesSentPerDay),
+      label: "average messages sent per day",
+    },
+    {
+      value: "N/A",
+      label: "Discord app openings per day",
+    },
+  ];
+
   return (
     <div className="">
       <div className="grid grid-cols-2 gap-2 px-2 sm:grid-cols-1">
-        {statsData.map((stat, i) => (
+        {data.map((stat, i) => (
           <StatCard key={i} {...stat} />
         ))}
       </div>
