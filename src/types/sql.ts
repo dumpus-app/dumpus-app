@@ -5,7 +5,7 @@ export type Activity = {
   day: string;
   hour?: number;
   occurence_count: number;
-  associated_dm_user_id?: string;
+  associated_user_id?: string;
   associated_channel_id?: string;
   associated_guild_id?: string;
 };
