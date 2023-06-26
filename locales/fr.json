@@ -11,11 +11,11 @@
   },
   "onboarding": {
     "routesLabels": {
-      "/": "C'est parti",
-      "/intro/1": "Génial !",
-      "/intro/2": "Rassurant !",
-      "/intro/3": "Il me tarde !",
-      "/setup": "C'est fait !"
+      "/": "Let's go",
+      "/intro/1": "Awesome!",
+      "/intro/2": "I feel better now!",
+      "/intro/3": "Can't wait!",
+      "/setup": "Done!"
     },
     "shared": {
       "previous": "Précédent",
@@ -26,7 +26,11 @@
       "welcome": "Bienvenue sur Dumpus",
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
-      "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
+      "steps": [
+        "Explication",
+        "Obtenez vos données",
+        "Démarrez l'analyse"
+      ]
     },
     "slides": [
       {
@@ -100,7 +104,7 @@
           "backendURL": "URL du backend",
           "optional": "facultatif",
           "backendURLHint": "Votre propre URL de serveur open source hébergé",
-          "notice": "En poursuivant, vous acceptez notre [politique de confidentialité](/privacy) et nos [conditions](/terms).",
+          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
           "explore": "Explorez !",
           "errors": {
             "required": "Obligatoire",
@@ -117,7 +121,7 @@
           ]
         },
         "demo": {
-          "title": "Démo"
+          "title": "Demo"
         }
       }
     }
