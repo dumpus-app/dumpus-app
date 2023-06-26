@@ -116,11 +116,11 @@ def process_link():
     session.add(package_process_status)
     session.commit()
 
-    (queue_position, queue_total) = fetch_package_rank(
+    (total_upgraded_row_count, total_row_count) = fetch_package_rank(
         package_id, package_process_status, session)
 
-    package_process_status.queue_position_when_started = queue_position
-    package_process_status.queue_total_when_started = queue_total
+    package_process_status.queue_standard_total_when_started = total_upgraded_row_count
+    package_process_status.queue_standard_total_when_started = total_row_count
     session.commit()
 
     id = package_process_status.id
@@ -165,8 +165,10 @@ def get_package_status(package_id):
     else:
         res['isProcessing'] = True
         res['processingStep'] = package_status.step
-        res['processingQueuePosition']['user'] = package_rank[0]
-        res['processingQueuePosition']['total'] = package_rank[1]
+        res['processingQueuePosition']['premiumQueueTotal'] = package_rank[0]
+        res['processingQueuePosition']['standardQueueTotal'] = package_rank[1]
+        res['processingQueuePosition']['premiumQueueUser'] = package_rank[2]
+        res['processingQueuePosition']['standardQueueUser'] = package_rank[3]
         res['processingQueuePosition']['userWhenStarted'] = package_status.queue_position_when_started
         res['processingQueuePosition']['totalWhenStarted'] = package_status.queue_total_when_started
 

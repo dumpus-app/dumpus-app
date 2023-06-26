@@ -27,8 +27,10 @@ class PackageProcessStatus(Base):
     package_id = Column(String(255), nullable=False)
     step = Column(String(255), nullable=False)
     progress = Column(Integer, nullable=True)
-    queue_total_when_started = Column(Integer, nullable=True)
-    queue_position_when_started = Column(Integer, nullable=True)
+    queue_standard_total_when_started = Column(Integer, nullable=True)
+    queue_premium_total_when_started = Column(Integer, nullable=True)
+    queue_standard_total_when_upgraded = Column(Integer, nullable=True)
+    queue_premium_total_when_upgraded = Column(Integer, nullable=True)
     is_upgraded = Column(Boolean, nullable=False, default=False)
     is_errored = Column(Boolean, nullable=False, default=False)
     error_message_code = Column(String(255), nullable=True)
@@ -58,28 +60,30 @@ def update_step (package_status_id, package_id, step, session):
 def fetch_package_rank (package_id, package_status, session):
     if not package_status:
         return None
+    
+    upgraded_row_count = None
+    row_count = None
+
+    query = 'select count(*) from package_process_status where step <> \'PROCESSED\' and is_upgraded = :is_upgraded and is_errored = false and is_cancelled = false;'
+
+    total_upgraded_row_count = session.execute(text(query).bindparams(is_upgraded=True)).fetchone()[0]
+    total_row_count = session.execute(text(query).bindparams(is_upgraded=False)).fetchone()[0]
 
     if package_status.is_upgraded:
-        row_count = session.execute(text("""
+        upgraded_row_count = session.execute(text("""
             select count(*) from package_process_status 
             where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
             and step <> 'PROCESSED'
             and is_upgraded = true and is_errored = false and is_cancelled = false;
         """).bindparams(package_id=package_id)).fetchone()[0]
-        total_upgraded_row_count = session.execute(text("""
-            select count(*) from package_process_status where step <> 'PROCESSED' and is_upgraded = true and is_errored = false and is_cancelled = false;
-        """)).fetchone()[0]
-        return (row_count, total_upgraded_row_count)
-    
-    row_count = session.execute(text("""
-        select count(*) from package_process_status
-        where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
-        and step <> 'PROCESSED' and is_errored = false and is_cancelled = false;
-    """).bindparams(package_id=package_id)).fetchone()[0]
-    total_row_count = session.execute(text("""
-        select count(*) from package_process_status where step <> 'PROCESSED' and is_errored = false and is_cancelled = false;
-    """)).fetchone()[0]
-    return (row_count, total_row_count)
+    else:    
+        row_count = session.execute(text("""
+            select count(*) from package_process_status
+            where id < (select id from package_process_status where package_id = :package_id order by created_at desc limit 1)
+            and step <> 'PROCESSED' and is_errored = false and is_cancelled = false;
+        """).bindparams(package_id=package_id)).fetchone()[0]
+
+    return (total_upgraded_row_count, total_row_count, upgraded_row_count, row_count)
 
 def fetch_package_status(package_id, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
