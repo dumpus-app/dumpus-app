@@ -9,33 +9,79 @@ import { useTranslation } from "~/i18n/client";
 type RouteData = Rename<HeaderProps, "href", "previous"> &
   Rename<FooterProps, "href", "next">;
 
+const ROUTES: Record<string, Omit<RouteData, "label">> = {
+  "/": {
+    next: "/intro/1",
+    progress: null,
+    previous: null,
+  },
+  "/intro/1": {
+    next: "/intro/2",
+    progress: 0,
+    previous: "/",
+  },
+  "/intro/2": {
+    next: "/intro/3",
+    progress: 0.33,
+    previous: "/intro/1",
+  },
+  "/intro/3": {
+    next: "/setup",
+    progress: 0.66,
+    previous: "/intro/2",
+  },
+  "/setup": {
+    next: "/access",
+    progress: 1,
+    previous: "/intro/3",
+  },
+  "/access": {
+    next: null,
+    progress: 2,
+    previous: "/setup",
+  },
+  "/access/link": {
+    next: null,
+    progress: 2.5,
+    previous: "/access",
+  },
+  "/access/email": {
+    next: null,
+    progress: 2.5,
+    previous: "/access",
+  },
+  "/loading": {
+    next: null,
+    progress: 3,
+    previous: null,
+  },
+  "/loading/demo": {
+    next: null,
+    progress: 3,
+    previous: null,
+  },
+};
+
 const ROUTE_PREFIX = "/onboarding";
 
 function getRouteData(
   pathname: string,
   t: ReturnType<typeof useTranslation>["t"]
-) {
+): RouteData {
   pathname = pathname.replace(ROUTE_PREFIX, "");
   if (pathname !== "/") {
     pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
   }
 
-  const next = t(`onboarding.routes.${pathname}.next`, {
+  const { next, progress, previous } = ROUTES[pathname];
+
+  const label = t(`onboarding.routesLabels.${pathname}`, {
     defaultValue: "",
-  }) as unknown as RouteData["next"];
-  const label = t(`onboarding.routes.${pathname}.label`, {
-    defaultValue: "",
-  }) as unknown as RouteData["label"];
-  const progress = t(`onboarding.routes.${pathname}.progress`, {
-    defaultValue: "",
-  }) as unknown as RouteData["progress"];
-  const previous = t(`onboarding.routes.${pathname}.previous`, {
-    defaultValue: "",
-  }) as unknown as RouteData["previous"];
+  }) as string;
 
   return {
     next: next ? ROUTE_PREFIX + next : next,
-    label,
+    label: label === "" ? null : label,
     progress,
     previous: previous ? ROUTE_PREFIX + previous : previous,
   };

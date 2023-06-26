@@ -10,67 +10,12 @@
     }
   },
   "onboarding": {
-    "routes": {
-      "/": {
-        "next": "/intro/1",
-        "label": "C'est parti",
-        "progress": null,
-        "previous": null
-      },
-      "/intro/1": {
-        "next": "/intro/2",
-        "label": "Génial!",
-        "progress": 0,
-        "previous": "/"
-      },
-      "/intro/2": {
-        "next": "/intro/3",
-        "label": "Rassurant!",
-        "progress": "0.33",
-        "previous": "/intro/1"
-      },
-      "/intro/3": {
-        "next": "/setup",
-        "label": "Il me tarde!",
-        "progress": "0.66",
-        "previous": "/intro/2"
-      },
-      "/setup": {
-        "next": "/access",
-        "label": "C'est fait!",
-        "progress": 1,
-        "previous": "/intro/3"
-      },
-      "/access": {
-        "next": null,
-        "label": null,
-        "progress": 2,
-        "previous": "/setup"
-      },
-      "/access/link": {
-        "next": null,
-        "label": null,
-        "progress": "2.5",
-        "previous": "/access"
-      },
-      "/access/email": {
-        "next": null,
-        "label": null,
-        "progress": "2.5",
-        "previous": "/access"
-      },
-      "/loading": {
-        "next": null,
-        "label": null,
-        "progress": 3,
-        "previous": null
-      },
-      "/loading/demo": {
-        "next": null,
-        "label": null,
-        "progress": 3,
-        "previous": null
-      }
+    "routesLabels": {
+      "/": "C'est parti",
+      "/intro/1": "Génial !",
+      "/intro/2": "Rassurant !",
+      "/intro/3": "Il me tarde !",
+      "/setup": "C'est fait !"
     },
     "shared": {
       "previous": "Précédent",
