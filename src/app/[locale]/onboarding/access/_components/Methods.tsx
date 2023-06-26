@@ -14,7 +14,7 @@ export default function Methods() {
       rawData
     ) as (keyof TypeOptions["resources"]["translation"]["onboarding"]["access"]["methods"])[]
   ).map((key) => {
-    return { ...rawData[key], key };
+    return { ...rawData[key], key, href: `/onboarding/access/${key}` };
   });
 
   return (

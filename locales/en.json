@@ -94,7 +94,6 @@
       "methods": {
         "link": {
           "title": "Enter your Discord link",
-          "href": "/onboarding/access/link",
           "description": "You can obtain it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
           "discordLink": "Discord link",
           "advanced": "Advanced",
@@ -112,15 +111,13 @@
         },
         "email": {
           "title": "Transfer the email",
-          "href": "/onboarding/access/email",
           "content": [
             "Transfer the email received from Discord to **process@dumpus-app.net**. We'll send you a link when it's ready.",
             "See you soon!"
           ]
         },
         "demo": {
-          "title": "Demo",
-          "href": "/onboarding/loading/demo"
+          "title": "Demo"
         }
       }
     }

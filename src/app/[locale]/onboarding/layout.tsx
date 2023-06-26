@@ -50,12 +50,12 @@ const ROUTES: Record<string, Omit<RouteData, "label">> = {
     progress: 2.5,
     previous: "/access",
   },
-  "/loading": {
+  "/access/demo": {
     next: null,
     progress: 3,
     previous: null,
   },
-  "/loading/demo": {
+  "/loading": {
     next: null,
     progress: 3,
     previous: null,
