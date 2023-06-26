@@ -11,11 +11,11 @@
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Awesome!",
-      "/intro/2": "I feel better now!",
-      "/intro/3": "Can't wait!",
-      "/setup": "Done!"
+      "/": "Allons-y",
+      "/intro/1": "Fantastique !",
+      "/intro/2": "Rassurant !",
+      "/intro/3": "Il me tarde !",
+      "/setup": "C'est fait !"
     },
     "shared": {
       "previous": "Précédent",
@@ -121,7 +121,7 @@
           ]
         },
         "demo": {
-          "title": "Demo"
+          "title": "Démo"
         }
       }
     }
