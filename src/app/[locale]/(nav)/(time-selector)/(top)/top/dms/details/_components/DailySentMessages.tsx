@@ -2,11 +2,15 @@
 
 import Section from "~/components/Section";
 import SimpleLineChart from "~/components/data/SimpleLineChart";
-import useDailySentMessagesData from "~/hooks/data/use-daily-sent-messages-data";
 
-export default function DailySentMessages() {
-  const data = useDailySentMessagesData();
-
+export default function DailySentMessages({
+  data,
+}: {
+  data: {
+    label: string;
+    value: number;
+  }[];
+}) {
   return (
     <Section title="Daily sent messages" href="/stats#daily-sent-messages">
       <SimpleLineChart

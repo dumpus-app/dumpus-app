@@ -19,7 +19,7 @@ export default function Page() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 
-  const { hasData, user, stats } = useDMData({ userID: id });
+  const { hasData, user, stats, dailySentMessages } = useDMData({ userID: id });
 
   const networkState = useNetworkState();
 
@@ -79,7 +79,7 @@ export default function Page() {
             topHour={stats.topChatHour.toString()}
             reactionCount="N/A"
           />
-          <DailySentMessages />
+          <DailySentMessages data={dailySentMessages} />
         </>
       ) : (
         <NoDataAvailable />
