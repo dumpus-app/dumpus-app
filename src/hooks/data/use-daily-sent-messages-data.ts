@@ -23,12 +23,14 @@ export default function useDailySentMessagesData() {
     SELECT 
       MIN(dates.day) as period_start,
       MAX(dates.day) as period_end,
-      IFNULL(SUM(a.occurence_count),0) AS message_count
+      IFNULL(SUM(joined_data.occurence_count),0) AS message_count
     FROM 
       dates
     LEFT JOIN 
-      activity a ON dates.day = a.day 
-      AND a.event_name = 'message_sent'
+      (SELECT a.day, a.occurence_count
+      FROM activity a
+      ) AS joined_data
+      ON dates.day = joined_data.day 
     GROUP BY 
       day_group
     ORDER BY 
