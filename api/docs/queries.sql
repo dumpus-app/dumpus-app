@@ -1,5 +1,26 @@
 -- SQLite (v3.34 or higher required)
 
+SELECT
+    ROUND(AVG(daily_occurences)) AS average_daily_occurences
+FROM (
+    SELECT
+        day,
+        SUM(occurence_count) AS daily_occurences
+    FROM 
+        activity
+    GROUP BY 
+        day
+) AS daily_summary;
+
+/*
+
+Result (average daily messages sent)
+
+|average_daily_occurences|
+|99.0                    |
+
+*/
+
 SELECT 
     SUM(a.occurence_count) AS total_occurences, 
     a.associated_user_id, 
@@ -99,7 +120,7 @@ FROM guilds
 JOIN activity a ON a.associated_guild_id = guilds.guild_id
 WHERE a.event_name = 'message_sent'
 AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
-GROUP BY guild_name
+GROUP BY guild_id
 ORDER BY message_count DESC;
 
 /* (guilds top)
