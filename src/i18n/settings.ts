@@ -1,10 +1,10 @@
+import { locales } from "./_locales";
+
 export const fallbackLocale = "en";
-export const locales = [fallbackLocale, "fr"];
 
 export function getOptions(locale = fallbackLocale) {
   return {
-    // debug: true,
-    supportedLngs: locales,
+    supportedLngs: [fallbackLocale, locales],
     fallbackLng: fallbackLocale,
     lng: locale,
   };

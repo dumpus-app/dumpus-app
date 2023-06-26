@@ -3,17 +3,19 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "dev": "cross-env NEXT_PUBLIC_DEPLOY_ENV=web next dev",
-    "dev:mobile": "cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next dev",
-    "dev:desktop": "cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next dev",
+    "prepare": "pnpm script:list-locales",
+    "dev": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=web next dev",
+    "dev:mobile": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next dev",
+    "dev:desktop": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next dev",
     "dev:tauri": "tauri dev",
-    "build": "cross-env NEXT_PUBLIC_DEPLOY_ENV=web next build",
-    "build:mobile": "cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next build",
-    "build:desktop": "cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next build",
+    "build": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=web next build",
+    "build:mobile": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=mobile next build",
+    "build:desktop": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=desktop next build",
     "start": "serve dist",
-    "lint": "cross-env NEXT_PUBLIC_DEPLOY_ENV=web next lint",
+    "lint": "pnpm script:list-locales && cross-env NEXT_PUBLIC_DEPLOY_ENV=web next lint",
     "android:dev": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",
-    "android:dev:static": "cross-env-shell NODE_ENV=production \"pnpm build:mobile && cap sync && cap run android\""
+    "android:dev:static": "cross-env-shell NODE_ENV=production \"pnpm build:mobile && cap sync && cap run android\"",
+    "script:list-locales": "node ./scripts/list-locales.mjs"
   },
   "dependencies": {
     "@capacitor/android": "^5.0.3",
