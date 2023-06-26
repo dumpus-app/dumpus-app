@@ -11,13 +11,17 @@ import PageHeader from "./_components/PageHeader";
 import RelatedGuild from "./_components/RelatedGuild";
 import Stats from "./_components/Stats";
 import i18next from "i18next";
+import NoDataAvailable from "~/components/NoDataAvailable";
 
 export default function Page() {
   const params = useSearchParams()!;
   const guildId = params.get("guild_id")!;
   const channelId = params.get("channel_id")!;
 
-  const { channel, guild, stats } = useChannelData({ guildId, channelId });
+  const { hasData, channel, guild, stats } = useChannelData({
+    guildId,
+    channelId,
+  });
 
   return (
     <>
@@ -45,16 +49,22 @@ export default function Page() {
         />
       </ProfileHeader>
       <RelatedGuild guild={guild} />
-      <Stats
-        messageCount={Intl.NumberFormat(i18next.language, {
-          notation: "compact",
-        }).format(stats.messagesCount)}
-        invitesCount="N/A"
-        topHour="N/A"
-        reactionCount="N/A"
-        channelOpenings="N/A"
-      />
-      <DailySentMessages />
+      {hasData ? (
+        <>
+          <Stats
+            messageCount={Intl.NumberFormat(i18next.language, {
+              notation: "compact",
+            }).format(stats.messagesCount)}
+            invitesCount="N/A"
+            topHour="N/A"
+            reactionCount="N/A"
+            channelOpenings="N/A"
+          />
+          <DailySentMessages />
+        </>
+      ) : (
+        <NoDataAvailable />
+      )}
     </>
   );
 }
