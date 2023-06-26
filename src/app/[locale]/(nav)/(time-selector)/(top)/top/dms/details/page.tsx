@@ -13,12 +13,13 @@ import { avatarURLFallback } from "~/utils/discord";
 import DailySentMessages from "./_components/DailySentMessages";
 import PageHeader from "./_components/PageHeader";
 import Stats from "./_components/Stats";
+import NoDataAvailable from "~/components/NoDataAvailable";
 
 export default function Page() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 
-  const { user, stats } = useDMData({ userID: id });
+  const { hasData, user, stats } = useDMData({ userID: id });
 
   const networkState = useNetworkState();
 
@@ -69,14 +70,20 @@ export default function Page() {
           className="absolute right-2 top-4 hidden sm:block"
         />
       </ProfileHeader>
-      <Stats
-        messageCount={Intl.NumberFormat(i18next.language, {
-          notation: "compact",
-        }).format(stats.messagesCount)}
-        topHour={stats.topChatHour.toString()}
-        reactionCount="N/A"
-      />
-      <DailySentMessages />
+      {hasData ? (
+        <>
+          <Stats
+            messageCount={Intl.NumberFormat(i18next.language, {
+              notation: "compact",
+            }).format(stats.messagesCount)}
+            topHour={stats.topChatHour.toString()}
+            reactionCount="N/A"
+          />
+          <DailySentMessages />
+        </>
+      ) : (
+        <NoDataAvailable />
+      )}
     </>
   );
 }
