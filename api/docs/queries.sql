@@ -122,7 +122,7 @@ FROM guild_channels_data channels
 JOIN activity a ON a.associated_channel_id = channels.channel_id
 WHERE a.event_name = 'message_sent'
 AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
-GROUP BY channel_name
+GROUP BY channel_id
 ORDER BY message_count DESC;
 
 /*
