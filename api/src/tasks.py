@@ -430,7 +430,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         for timestamp, count in channel['message_timestamps'].items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None))
+            activity_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None, None))
 
     for guild in guilds:
         total_message_count = sum(channel['total_message_count'] for channel in guild_channels_data if channel['guild_id'] == guild['id'])
@@ -452,7 +452,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         for timestamp, count in entries.items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('guild_joined', day, hour, count, None, guild_id))
+            activity_data.append(('guild_joined', day, hour, count, None, guild_id, None))
 
     application_command_used_pdf = pd.DataFrame(application_command_used)
     application_command_used_pdf_grouped = application_command_used_pdf.groupby(['guild_id', 'application_id'])
