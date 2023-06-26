@@ -42,10 +42,10 @@ To do this, two Dockerfiles are required:
 
 * `Dockerfile.worker`: contains the code used to process Discord data packets. Multiple instances can be launched, but a single instance is sufficient for personal use.
 
-You'll also need a PostgreSQL database and a Redis database. The two Docker containers above will need two environment variables to run:
+You'll also need a PostgreSQL database and a RabbitMQ instance. The two Docker containers above will need two environment variables to run:
 ```
 POSTGRES_URL=postgresql://<user>:<password>@<host>:<port>/<database>
-REDIS_URL=redis://<host>:<port>
+RABBITMQ_URL=amqp://<host>:<port>
 ```
 
 The `Dockerfile.flower` is used to launch an instance of Flower, a web interface for monitoring workers. It is not necessary to launch this instance for personal use.
