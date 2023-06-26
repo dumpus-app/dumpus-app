@@ -1,61 +1,23 @@
 "use client";
 
-import PageHeader from "./_components/PageHeader";
+import { useSearchParams } from "next/navigation";
 import ProfileHeader from "~/components/ProfileHeader";
+import { SimpleIconsDiscord } from "~/components/icons";
+import Header from "~/components/layout/Header";
+import useChannelData from "~/hooks/data/use-channel-data";
+import { iconColor } from "~/utils/discord";
+import DailySentMessages from "./_components/DailySentMessages";
+import PageHeader from "./_components/PageHeader";
 import RelatedGuild from "./_components/RelatedGuild";
 import Stats from "./_components/Stats";
-import DailySentMessages from "./_components/DailySentMessages";
-import Header from "~/components/layout/Header";
-import { SimpleIconsDiscord } from "~/components/icons";
-import { useSearchParams } from "next/navigation";
-import { useDataSources } from "~/hooks/data/_shared";
-import type { Guild, GuildChannelsData } from "~/types/sql";
-import { iconColor } from "~/utils/discord";
-
-// TODO: refactor
-function useData({
-  guildId,
-  channelId,
-}: {
-  guildId: string;
-  channelId: string;
-}) {
-  const { db, resultAsList, start, end } = useDataSources();
-
-  let query = `
-    SELECT
-      channel_name,
-      channel_id 
-    FROM guild_channels_data
-    WHERE channel_id = '${channelId}'
-    LIMIT 1;
-  `;
-
-  const channel = resultAsList<
-    Pick<GuildChannelsData, "channel_name" | "channel_id">
-  >(db.exec(query)[0])[0];
-
-  query = `
-    SELECT
-      guild_name,
-      guild_id,
-      total_message_count
-    FROM guilds
-    WHERE guild_id = '${guildId}'
-    LIMIT 1;
-  `;
-
-  const guild = resultAsList<Guild>(db.exec(query)[0])[0];
-
-  return { channel, guild };
-}
+import i18next from "i18next";
 
 export default function Page() {
   const params = useSearchParams()!;
   const guildId = params.get("guild_id")!;
   const channelId = params.get("channel_id")!;
 
-  const { channel, guild } = useData({ guildId, channelId });
+  const { channel, guild, stats } = useChannelData({ guildId, channelId });
 
   return (
     <>
@@ -83,7 +45,15 @@ export default function Page() {
         />
       </ProfileHeader>
       <RelatedGuild guild={guild} />
-      <Stats />
+      <Stats
+        messageCount={Intl.NumberFormat(i18next.language, {
+          notation: "compact",
+        }).format(stats.messagesCount)}
+        invitesCount="N/A"
+        topHour="N/A"
+        reactionCount="N/A"
+        channelOpenings="N/A"
+      />
       <DailySentMessages />
     </>
   );
