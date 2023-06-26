@@ -94,6 +94,7 @@ export default function useSQL() {
 
   type DefaultT = Record<string, any>;
   function resultAsList<T extends DefaultT>(data: QueryExecResult) {
+    if (!data) return [];
     const { columns, values } = data;
     return values.map((value) => {
       const obj: DefaultT = {};
