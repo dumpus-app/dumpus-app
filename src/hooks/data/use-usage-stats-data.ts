@@ -1,5 +1,6 @@
 "use client";
 
+import i18next from "i18next";
 import { useDataSources } from "./_shared";
 
 export default function useUsageStatsData() {
@@ -31,8 +32,38 @@ export default function useUsageStatsData() {
     return data.join_count;
   }
 
+  function getTopHour() {
+    const query = `
+    SELECT hour,
+      SUM(occurence_count) AS message_count
+    FROM 
+        activity
+    WHERE event_name = 'message_sent' 
+        AND day BETWEEN '${start}' AND '${end}'
+    GROUP BY hour
+    ORDER BY occurence_count DESC
+    LIMIT 1
+    `;
+
+    const { hour, message_count } = resultAsList<{
+      hour: number;
+      message_count: number;
+    }>(db.exec(query)[0])[0];
+
+    return new Intl.DateTimeFormat(i18next.language, {
+      hour: "numeric",
+    }).format(
+      (() => {
+        const date = new Date();
+        date.setHours(hour);
+        return date;
+      })()
+    );
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
+    topHour: getTopHour(),
   };
 }

@@ -13,13 +13,13 @@ function formatNumber(n: number) {
 }
 
 export default function UsageStats() {
-  const { networkSize, joinedGuilds } = useUsageStatsData();
+  const { networkSize, joinedGuilds, topHour } = useUsageStatsData();
 
   const data = [
     { value: formatNumber(joinedGuilds), label: "server joined" },
     { value: "N/A", label: "received calls" },
     { value: "N/A", label: "opened notifs." },
-    { value: "N/A", label: "top hour" },
+    { value: topHour, label: "top hour" },
     {
       value: formatNumber(networkSize),
       label: "network size",
