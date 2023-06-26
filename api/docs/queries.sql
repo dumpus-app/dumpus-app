@@ -1,5 +1,47 @@
 -- SQLite (v3.34 or higher required)
 
+SELECT 
+    SUM(a.occurence_count) AS total_occurences, 
+    a.associated_user_id, 
+    d.user_name, 
+    d.display_name, 
+    d.user_avatar_url
+FROM activity a
+LEFT JOIN dm_channels_data d ON a.associated_user_id = d.dm_user_id
+WHERE a.event_name = 'application_command_used'
+AND a.guild_id = 'some_guild_id87497847846478464874'
+AND a.day BETWEEN '2021-06-01' AND '2021-06-10';
+GROUP BY a.associated_user_id
+ORDER BY total_occurences DESC;
+
+/* (most used bots per guild)
+
+|total_occurences|associated_user_id|user_name              |display_name|user_avatar_url|
+|----------------|------------------|-----------------------|------------|---------------|
+|833             |947799404738412555|NULL                   |NULL        |NULL           |
+|318             |940265902748880937|NULL                   |NULL        |NULL           |
+|317             |676154105865175040|Thizz Bot#3220         |NULL        |NULL           |
+|294             |936673445838725180|NULL                   |NULL        |NULL           |
+|292             |939219302911987762|NULL                   |NULL        |NULL           |
+|237             |879765851211968573|Distrobot#9101         |NULL        |NULL           |
+|232             |627543171576102932|Lootbot#0405           |NULL        |NULL           |
+|181             |939470576576233512|NULL                   |NULL        |NULL           |
+|180             |619894044893380618|ManageInvite#9551      |NULL        |NULL           |
+|174             |901194954607575040|NULL                   |NULL        |NULL           |
+|152             |721710367990087690|NULL                   |NULL        |NULL           |
+|146             |890635663664365628|Kaisea#1226            |NULL        |NULL           |
+|139             |970622043739533343|NULL                   |NULL        |NULL           |
+|136             |639817080664883200|ManageInvite Alpha#4301|NULL        |NULL           |
+|130             |895722936219090975|NULL                   |NULL        |NULL           |
+|119             |946321846951890995|NULL                   |NULL        |NULL           |
+|105             |953654237760475206|NULL                   |NULL        |NULL           |
+|103             |911976781333020722|NULL                   |NULL        |NULL           |
+|103             |898558825014124554|NULL                   |NULL        |NULL           |
+|103             |802981153865728062|WHMCS BOT#8606         |NULL        |NULL           |
+
+*/
+
+
 SELECT COUNT(DISTINCT dm_user_id) as network_size
 FROM dm_channels_data;
 

@@ -41,6 +41,7 @@ from util import (
     get_package_zip_path,
     # time utilities
     count_dates_hours,
+    count_dates_day,
     get_ts_regular_string_parser,
     get_ts_string_parser
 )
@@ -224,12 +225,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
                 if analytics_line_json['event_type'] == 'application_command_used':
-                    if analytics_line_json['application_id'] == '-1' or 'channel_id' not in analytics_line_json:
+                    if analytics_line_json['application_id'] == '-1' or 'guild_id' not in analytics_line_json:
                         continue
                     application_command_used.append({
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                         'application_id': analytics_line_json['application_id'],
-                        'channel_id': analytics_line_json['channel_id']
+                        'guild_id': analytics_line_json['guild_id']
                     })
 
             except:
@@ -402,20 +403,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     print(f'Finish processing: {time.time() - start}')
 
-    '''
-    plaintext = orjson.dumps({
-        'analytics_line_count': analytics_line_count,
-        'guilds': guilds,
-        'channels': channels,
-        'user_data': user_data,
-        'users': users,
-        'payments': payments,
-        'dms_channels_data': dms_channels_data,
-        'guild_channels_data': guild_channels_data,
-        'voice_channel_logs_duration': voice_channel_logs_duration
-    })
-    '''
-
     # auto-generated SQLite documentation starts here
 
     (conn, cur) = create_new_empty_database()
@@ -467,10 +454,20 @@ def read_analytics_file(package_status_id, package_id, link, session):
             hour = int(timestamp.strftime('%H'))
             activity_data.append(('guild_joined', day, hour, count, None, guild_id))
 
+    application_command_used_pdf = pd.DataFrame(application_command_used)
+    application_command_used_pdf_grouped = application_command_used_pdf.groupby(['guild_id', 'application_id'])
+    for (guild_id, application_id), group in application_command_used_pdf_grouped:
+        # check if first element includes a guild_id key
+        entries = count_dates_day(group['timestamp'])
+        for timestamp, count in entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('application_command_used', day, hour, count, None, guild_id, application_id))
+
     activity_query = '''
         INSERT INTO activity
-        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id)
-        VALUES (?, ?, ?, ?, ?, ?);
+        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
     '''
 
     dm_user_query = '''

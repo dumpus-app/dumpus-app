@@ -79,6 +79,15 @@ def count_dates_hours(timestamps):
     date_hour_counts = timestamps_hour.value_counts().to_dict()
     return date_hour_counts
 
+def count_dates_day(timestamps):
+    # Convert list of timestamps to a pandas Series
+    timestamps_series = pd.Series(timestamps)
+    # Convert timestamps to datetime and floor to nearest hour
+    timestamps_day = pd.to_datetime(timestamps_series, unit='s').dt.floor('D')
+    # Count occurrences of each unique hour
+    date_hour_counts = timestamps_day.value_counts().to_dict()
+    return date_hour_counts
+
 current_jwt = None
 def generate_diswho_jwt():
     global current_jwt

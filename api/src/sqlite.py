@@ -36,10 +36,10 @@ def create_new_empty_database():
             day TEXT NOT NULL,
             hour INTEGER,
             occurence_count INTEGER NOT NULL,
-            associated_dm_user_id TEXT,
+            associated_user_id TEXT,
             associated_channel_id TEXT,
             associated_guild_id TEXT,
-            PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id)
+            PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id, associated_user_id)
         )
     ''')
 
