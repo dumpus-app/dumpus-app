@@ -102,10 +102,12 @@ Response:
     "isProcessing": true, // whether or not the package is still being processed
     "processingStep": "messages", // the current processing step
     "processingQueuePosition": {
-        "user": 12, // will decrease until 0
-        "total": 230, // will change
-        "userWhenStarted": 20, // will not change
-        "totalWhenStarted": 200 // will not change
+        "premiumQueueTotal": 20, // the number of premium packages in the queue
+        "standardQueueTotal": 300, // the number of standard packages in the queue
+        "premiumQueueUser": null, // the number of premium packages in the queue before the user's package
+        "standardQueueUser": 63, // the number of standard packages in the queue before the user's package
+        "standardWhenJoined": 150, // the number of standard packages in the queue when the user's package joined the queue
+        "premiumWhenJoined": 10 // the number of premium packages in the queue when the user's package joined the queue
     }
 }
 ```

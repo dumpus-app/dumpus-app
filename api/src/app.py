@@ -169,8 +169,8 @@ def get_package_status(package_id):
         res['processingQueuePosition']['standardQueueTotal'] = package_rank[1]
         res['processingQueuePosition']['premiumQueueUser'] = package_rank[2]
         res['processingQueuePosition']['standardQueueUser'] = package_rank[3]
-        res['processingQueuePosition']['userWhenStarted'] = package_status.queue_position_when_started
-        res['processingQueuePosition']['totalWhenStarted'] = package_status.queue_total_when_started
+        res['processingQueuePosition']['standardWhenJoined'] = package_status.queue_standard_total_when_started
+        res['processingQueuePosition']['premiumWhenJoined'] = package_status.queue_premium_total_when_started
 
     return jsonify(res), 200
 
