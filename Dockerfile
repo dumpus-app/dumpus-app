@@ -13,8 +13,7 @@ COPY package.json pnpm-lock.yaml ./
 # Copy scripts and locales
 COPY scripts ./scripts
 COPY locales ./locales
-
-# Create src/i18n
+# used to store the _locales file
 RUN mkdir -p src/i18n
 
 # Install dependencies
