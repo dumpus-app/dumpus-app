@@ -70,7 +70,7 @@ export default function useChannelData({
 
     const { message_count } = resultAsList<{ message_count: number }>(
       db.exec(query)[0]
-    )[0];
+    )?.[0] || { message_count: 0 };
 
     return message_count;
   }
@@ -100,7 +100,9 @@ export default function useChannelData({
     const { hour, message_count } = resultAsList<{
       hour: number;
       message_count: number;
-    }>(db.exec(query)[0])[0];
+    }>(db.exec(query)[0])?.[0] || { hour: -1, message_count: 0 };
+
+    if (hour === -1) return "N/A";
 
     return new Intl.DateTimeFormat(i18next.language, {
       hour: "numeric",
