@@ -64,7 +64,7 @@ export default function useChannelData({
     WHERE a.event_name = 'message_sent'
     AND c.channel_id = '${channelId}'
     AND a.day BETWEEN '${start}' AND '${end}'
-    GROUP BY channel_name
+    GROUP BY channel_id
     LIMIT 1;
   `;
 
