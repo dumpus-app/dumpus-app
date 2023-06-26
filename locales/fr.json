@@ -104,7 +104,7 @@
           "backendURL": "URL du backend",
           "optional": "facultatif",
           "backendURLHint": "Votre propre URL de serveur open source hébergé",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
+          "notice": "En poursuivant, vous acceptez notre [politique de confidentialité](/privacy) et nos [conditions](/terms).",
           "explore": "Explorez !",
           "errors": {
             "required": "Obligatoire",
