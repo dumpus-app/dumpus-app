@@ -61,6 +61,7 @@ export default function SimpleBarChart({ data, className, legend }: Props) {
             name={legend}
             // fill-brand-300
             fill="#7dd3fc"
+            animationDuration={300}
           />
         </BarChart>
       </ResponsiveContainer>

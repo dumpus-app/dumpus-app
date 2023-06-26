@@ -3,9 +3,13 @@
 import type { DmChannelsData } from "~/types/sql";
 import { useDataSources } from "./_shared";
 import i18next from "i18next";
+import useTopDMsData from "~/hooks/data/use-top-dms-data";
 
 export default function useDMData({ userID }: { userID: string }) {
   const { db, resultAsList, start, end } = useDataSources();
+  const topDMsData = useTopDMsData().getData({});
+
+  const hasData = !!topDMsData.find((dm) => dm.dm_user_id === userID);
 
   function getUser() {
     const query = `
@@ -26,6 +30,8 @@ export default function useDMData({ userID }: { userID: string }) {
   }
 
   function getMessagesCount() {
+    if (!hasData) return 0;
+
     const query = `
     SELECT
         SUM(a.occurence_count) AS message_count
@@ -46,6 +52,8 @@ export default function useDMData({ userID }: { userID: string }) {
   }
 
   function getTopChatHour() {
+    if (!hasData) return "";
+
     const query = `
     SELECT hour,
       SUM(a.occurence_count) AS message_count
@@ -78,6 +86,7 @@ export default function useDMData({ userID }: { userID: string }) {
   }
 
   return {
+    hasData,
     user: getUser(),
     stats: {
       messagesCount: getMessagesCount(),
