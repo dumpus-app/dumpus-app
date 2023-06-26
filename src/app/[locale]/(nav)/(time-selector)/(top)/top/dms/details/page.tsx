@@ -76,7 +76,7 @@ export default function Page() {
             messageCount={Intl.NumberFormat(i18next.language, {
               notation: "compact",
             }).format(stats.messagesCount)}
-            topHour={stats.topChatHour.toString()}
+            topHour={stats.topChatHour}
             reactionCount="N/A"
           />
           <DailySentMessages data={dailySentMessages} />

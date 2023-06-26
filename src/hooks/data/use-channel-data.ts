@@ -1,5 +1,6 @@
 "use client";
 
+import i18next from "i18next";
 import { useDataSources } from "~/hooks/data/_shared";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import type { Guild, GuildChannelsData } from "~/types/sql";
@@ -15,8 +16,7 @@ export default function useChannelData({
   const topChannelsData = useTopChannelsData().getData({});
 
   const hasData = !!topChannelsData.find(
-    (channel) =>
-      channel.channel_id === channelId && channel.guild_id === guildId
+    (channel) => channel.channel_id === channelId
   );
 
   function getChannel() {
@@ -75,12 +75,51 @@ export default function useChannelData({
     return message_count;
   }
 
+  function getTopChatHour() {
+    if (!hasData) return "";
+
+    // TODO: fix
+    const query = `
+    SELECT
+    d.channel_id,
+      hour,
+      SUM(a.occurence_count) AS message_count
+    FROM 
+      activity a
+    JOIN dm_channels_data d
+      ON d.channel_id = a.associated_channel_id
+    WHERE event_name = 'message_sent' 
+    AND day BETWEEN '${start}' AND '${end}'
+    AND d.channel_id = '${channelId}'
+    GROUP BY hour
+    LIMIT 1
+    `;
+
+    console.log(db.exec(query)[0]);
+
+    const { hour, message_count } = resultAsList<{
+      hour: number;
+      message_count: number;
+    }>(db.exec(query)[0])[0];
+
+    return new Intl.DateTimeFormat(i18next.language, {
+      hour: "numeric",
+    }).format(
+      (() => {
+        const date = new Date();
+        date.setHours(hour);
+        return date;
+      })()
+    );
+  }
+
   return {
     hasData,
     channel: getChannel(),
     guild: getGuild(),
     stats: {
       messagesCount: getMessagesCount(),
+      topChatHour: getTopChatHour(),
     },
   };
 }
