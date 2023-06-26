@@ -1,5 +1,50 @@
 -- SQLite (v3.34 or higher required)
 
+WITH RECURSIVE dates(day, day_group) AS (
+    VALUES('2022-01-01', 1)
+    UNION ALL
+    SELECT date(day, '+1 day'), 
+    CASE WHEN (julianday(date(day, '+1 day')) - julianday('2022-01-01')) % 30 = 0 THEN day_group + 1 ELSE day_group END
+    FROM dates
+    WHERE day < date('2022-01-01', '+365 days')
+)
+SELECT 
+    MIN(dates.day) as period_start,
+    MAX(dates.day) as period_end,
+    IFNULL(SUM(joined_data.occurence_count),0) AS message_count
+FROM 
+    dates
+LEFT JOIN 
+    (SELECT a.day, a.occurence_count
+    FROM activity a
+    ) AS joined_data
+    ON dates.day = joined_data.day 
+GROUP BY 
+    day_group
+ORDER BY 
+    period_start ASC;
+
+/*
+
+Result (sent message count per 30 days for graph)
+
+period_start,period_end,message_count
+2022-01-01,2022-01-30,1374
+2022-01-31,2022-03-01,3415
+2022-03-02,2022-03-31,1680
+2022-04-01,2022-04-30,1551
+2022-05-01,2022-05-30,2006
+2022-05-31,2022-06-29,1547
+2022-06-30,2022-07-29,2867
+2022-07-30,2022-08-28,1599
+2022-08-29,2022-09-27,887
+2022-09-28,2022-10-27,703
+2022-10-28,2022-11-26,1302
+2022-11-27,2022-12-26,1636
+2022-12-27,2023-01-01,138
+
+*/
+
 SELECT
     ROUND(AVG(daily_occurences)) AS average_daily_occurences
 FROM (
