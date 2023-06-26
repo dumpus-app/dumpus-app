@@ -8,7 +8,7 @@ import DailySentMessages from "./_components/DailySentMessages";
 import Header from "~/components/layout/Header";
 import { SimpleIconsDiscord } from "~/components/icons";
 import { useSearchParams } from "next/navigation";
-import { useDataSources } from "~/hooks/use-data";
+import { useDataSources } from "~/hooks/data/_shared";
 import type { DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
 import i18next from "i18next";

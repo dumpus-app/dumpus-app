@@ -7,7 +7,7 @@ import TopChannels from "./_components/TopChannels";
 import FirstMessages from "./_components/FirstMessages";
 import DailySentMessages from "./_components/DailySentMessages";
 import { useSearchParams } from "next/navigation";
-import { useDataSources } from "~/hooks/use-data";
+import { useDataSources } from "~/hooks/data/_shared";
 import type { Guild } from "~/types/sql";
 import Profile from "./_components/Profile";
 
