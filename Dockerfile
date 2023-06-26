@@ -10,6 +10,13 @@ WORKDIR /app
 # Copy package.json and pnpm-lock.yaml from the host to the container
 COPY package.json pnpm-lock.yaml ./
 
+# Copy scripts and locales
+COPY scripts ./scripts
+COPY locales ./locales
+
+# Create src/i18n
+RUN mkdir -p src/i18n
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
