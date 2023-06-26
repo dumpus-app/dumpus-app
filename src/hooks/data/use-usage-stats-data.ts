@@ -41,7 +41,7 @@ export default function useUsageStatsData() {
     WHERE event_name = 'message_sent' 
         AND day BETWEEN '${start}' AND '${end}'
     GROUP BY hour
-    ORDER BY occurence_count DESC
+    ORDER BY message_count DESC
     LIMIT 1
     `;
 
