@@ -81,6 +81,7 @@ export default function SimpleLineChart({
               stroke: "#7dd3fc",
               strokeWidth: showSmallDots ? 1 : 4,
             }}
+            animationDuration={300}
           />
         </LineChart>
       </ResponsiveContainer>
