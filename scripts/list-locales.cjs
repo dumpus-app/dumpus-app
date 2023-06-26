@@ -1,5 +1,5 @@
-import fsp from "node:fs/promises";
-import path from "node:path";
+const fsp = require("node:fs/promises");
+const path = require("node:path");
 
 /**
  * @param str {string}
@@ -15,7 +15,7 @@ async function main() {
     .map((name) => name.split(".")[0])
     .filter((name) => name !== "en");
 
-  const content = `export const locales = ${JSON.stringify(locales)};`;
+  const content = `export const _locales = ${JSON.stringify(locales)};`;
   const template = getTemplate(content);
 
   await fsp.writeFile(
