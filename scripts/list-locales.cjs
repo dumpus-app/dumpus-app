@@ -1,4 +1,4 @@
-const fsp = require("node:fs/promises");
+const fsp = require("fs/promises");
 const path = require("node:path");
 
 /**
@@ -10,7 +10,7 @@ function getTemplate(str) {
 }
 
 async function main() {
-  const fileNames = await fsp.readdir(path.join(process.cwd(), "./locales/"));
+  const fileNames = await fsp.readdir(path.resolve("./locales/"));
   const locales = fileNames
     .map((name) => name.split(".")[0])
     .filter((name) => name !== "en");
@@ -19,7 +19,7 @@ async function main() {
   const template = getTemplate(content);
 
   await fsp.writeFile(
-    path.join(process.cwd(), "./src/i18n/_locales.ts"),
+    path.resolve("./src/i18n/_locales.ts"),
     template,
     "utf-8"
   );
