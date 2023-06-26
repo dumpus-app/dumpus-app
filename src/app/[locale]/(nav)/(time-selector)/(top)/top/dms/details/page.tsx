@@ -1,61 +1,24 @@
 "use client";
 
-import Image from "next/image";
-import PageHeader from "./_components/PageHeader";
-import ProfileHeader from "~/components/ProfileHeader";
-import Stats from "./_components/Stats";
-import DailySentMessages from "./_components/DailySentMessages";
-import Header from "~/components/layout/Header";
-import { SimpleIconsDiscord } from "~/components/icons";
-import { useSearchParams } from "next/navigation";
-import { useDataSources } from "~/hooks/data/_shared";
-import type { DmChannelsData } from "~/types/sql";
-import { avatarURLFallback } from "~/utils/discord";
 import i18next from "i18next";
+import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useNetworkState } from "react-use";
-
-// TODO: refactor
-function useData(id: string) {
-  const { db, resultAsList, start, end } = useDataSources();
-
-  let query = `
-    SELECT
-      user_name,
-      user_avatar_url,
-      dm_user_id
-    FROM dm_channels_data
-    WHERE dm_user_id = '${id}'
-    LIMIT 1;
-  `;
-
-  const user = resultAsList<
-    Pick<DmChannelsData, "user_name" | "user_avatar_url" | "dm_user_id">
-  >(db.exec(query)[0])[0];
-
-  query = `
-  SELECT
-    SUM(a.occurence_count) AS message_count
-  FROM activity a
-  JOIN dm_channels_data d ON a.associated_channel_id = d.channel_id
-  WHERE a.event_name = 'message_sent'
-  AND a.day BETWEEN '${start}' AND '${end}'
-  AND d.dm_user_id = '${id}'
-  GROUP BY d.dm_user_id
-  LIMIT 1;
-  `;
-
-  const { message_count } = resultAsList<{ message_count: number }>(
-    db.exec(query)[0]
-  )[0];
-
-  return { user, stats: { message_count } };
-}
+import ProfileHeader from "~/components/ProfileHeader";
+import { SimpleIconsDiscord } from "~/components/icons";
+import Header from "~/components/layout/Header";
+import useDMData from "~/hooks/data/use-dm-data";
+import useUserDetails from "~/hooks/use-user-details";
+import { avatarURLFallback } from "~/utils/discord";
+import DailySentMessages from "./_components/DailySentMessages";
+import PageHeader from "./_components/PageHeader";
+import Stats from "./_components/Stats";
 
 export default function Page() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 
-  const { user, stats } = useData(id);
+  const { user, stats } = useDMData({ userID: id });
 
   const networkState = useNetworkState();
 
@@ -72,20 +35,25 @@ export default function Page() {
     }
   })();
 
+  const data = useUserDetails({ userID: user.dm_user_id });
+
+  const username = user.user_name;
+  const displayName = data?.display_name || username;
+  const avatarURL = data?.avatar_url || user.user_avatar_url;
+
   return (
     <>
-      <PageHeader title={user.user_name} />
+      <PageHeader title={username} />
       <ProfileHeader
-        description="TODO"
-        title={user.user_name + stats.message_count}
+        description={username}
+        title={displayName}
         imageSlot={
           <div className="relative h-16 w-16 sm:h-32 sm:w-32">
             <Image
               src={
-                avatarURLFallback(user.user_avatar_url, user.dm_user_id) +
-                `?size=${size}`
+                avatarURLFallback(avatarURL, user.dm_user_id) + `?size=${size}`
               }
-              alt="Avatar"
+              alt={`${username}'s avatar`}
               fill
               priority
               className="rounded-full object-cover object-center"
@@ -104,9 +72,9 @@ export default function Page() {
       <Stats
         messageCount={Intl.NumberFormat(i18next.language, {
           notation: "compact",
-        }).format(stats.message_count)}
-        topHour="5 AM TODO"
-        reactionCount="7k TODO"
+        }).format(stats.messagesCount)}
+        topHour={stats.topChatHour.toString()}
+        reactionCount="N/A"
       />
       <DailySentMessages />
     </>

@@ -1,27 +1,16 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useAtom, useAtomValue } from "jotai";
 import { useRef } from "react";
 import { configAtom, selectedPackageAtom } from "~/stores";
-import usePackageAPI from "../use-package-api";
+import useUserDetails from "../use-user-details";
 
 export default function useUserData() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
-  const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
   const [config, setConfig] = useAtom(configAtom);
   const doneRef = useRef(false);
 
-  const { data } = useQuery({
-    queryKey: ["user", selectedPackage.package_owner_name],
-    queryFn: () =>
-      api.user({
-        packageID: selectedPackage.package_id,
-        UPNKey: selectedPackage.UPNKey,
-        userID: selectedPackage.package_owner_id,
-      }),
-    staleTime: Infinity,
-  });
+  const data = useUserDetails({ userID: selectedPackage.package_owner_id });
 
   if (data && !data.errorMessageCode && !doneRef.current) {
     doneRef.current = true;
