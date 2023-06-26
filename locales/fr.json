@@ -11,8 +11,8 @@
   },
   "onboarding": {
     "routesLabels": {
-      "/": "C'est parti",
-      "/intro/1": "Génial !",
+      "/": "Allons-y",
+      "/intro/1": "Fantastique !",
       "/intro/2": "Rassurant !",
       "/intro/3": "Il me tarde !",
       "/setup": "C'est fait !"
@@ -26,7 +26,11 @@
       "welcome": "Bienvenue sur Dumpus",
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
-      "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
+      "steps": [
+        "Explication",
+        "Obtenez vos données",
+        "Démarrez l'analyse"
+      ]
     },
     "slides": [
       {

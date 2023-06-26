@@ -1,0 +1,129 @@
+{
+  "seo": {
+    "title": "Dumpus | Stats for Discord",
+    "description": "Obtén información y estadísticas detalladas de tu cuenta de Discord"
+  },
+  "global": {
+    "loading": {
+      "title": "Loading...",
+      "description": "Please wait."
+    }
+  },
+  "onboarding": {
+    "routesLabels": {
+      "/": "Let's go",
+      "/intro/1": "Awesome!",
+      "/intro/2": "I feel better now!",
+      "/intro/3": "Can't wait!",
+      "/setup": "Done!"
+    },
+    "shared": {
+      "previous": "Previous",
+      "trust": "Why should I trust the app?",
+      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!"
+    },
+    "/": {
+      "welcome": "Welcome to Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Step {{n}}",
+      "steps": [
+        "Explanation",
+        "Obtain your data",
+        "Start the analyze"
+      ]
+    },
+    "slides": [
+      {
+        "title": "What does Dumpus really do?",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      },
+      {
+        "title": "Dumpus is safe",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. GitHub Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      },
+      {
+        "title": "Share it with your friends!",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+      }
+    ],
+    "setup": {
+      "title": "How do I get my data package?",
+      "description": "Select an operating system to get started.",
+      "data": {
+        "android": {
+          "display": "Android",
+          "steps": [
+            {
+              "name": "Open your settings android",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Open your settings android",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        },
+        "ios": {
+          "display": "iOS",
+          "steps": [
+            {
+              "name": "Open your settings ios",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        },
+        "desktop": {
+          "display": "Desktop",
+          "steps": [
+            {
+              "name": "Open your settings desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Open your settings desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            },
+            {
+              "name": "Open your settings desktop",
+              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+            }
+          ]
+        }
+      }
+    },
+    "access": {
+      "title": "I want the stats!",
+      "description": "Choose your preferred method.",
+      "method": "Method {{n}}",
+      "methods": {
+        "link": {
+          "title": "Enter your Discord link",
+          "description": "You can obtain it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
+          "discordLink": "Discord link",
+          "advanced": "Advanced",
+          "backendURL": "Backend URL",
+          "optional": "optional",
+          "backendURLHint": "Your own hosted open source server URL",
+          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
+          "explore": "Explore!",
+          "errors": {
+            "required": "Required",
+            "url": "Invalid URL",
+            "startWith": "Link must start with {{url}}",
+            "emptyKey": "UPN key can't be empty"
+          }
+        },
+        "email": {
+          "title": "Transfer the email",
+          "content": [
+            "Transfer the email received from Discord to **process@dumpus-app.net**. We'll send you a link when it's ready.",
+            "See you soon!"
+          ]
+        },
+        "demo": {
+          "title": "Demo"
+        }
+      }
+    }
+  }
+}
