@@ -14,6 +14,9 @@ COPY package.json pnpm-lock.yaml ./
 COPY scripts ./scripts
 COPY locales ./locales
 
+# Create src/i18n
+RUN mkdir -p src/i18n
+
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
