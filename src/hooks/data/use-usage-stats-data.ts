@@ -47,9 +47,20 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].hour;
   }
 
+  function getSpentMoney() {
+    const { data, hasError } = sql<{ total_spent: number }>`
+      SELECT
+        SUM(payment_amount) / 100 as total_spent
+      FROM payments
+    `;
+
+    return hasError ? null : data[0].total_spent;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
     topHour: getTopHour(),
+    spentMoney: getSpentMoney(),
   };
 }
