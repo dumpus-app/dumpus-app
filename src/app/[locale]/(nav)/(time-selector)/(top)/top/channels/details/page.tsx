@@ -12,6 +12,7 @@ import RelatedGuild from "./_components/RelatedGuild";
 import Stats from "./_components/Stats";
 import i18next from "i18next";
 import NoDataAvailable from "~/components/NoDataAvailable";
+import NotFoundState from "~/components/NotFoundState";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -23,8 +24,7 @@ export default function Page() {
     channelId,
   });
 
-  // TODO: handle 404
-  if (!channel || !guild) return <NoDataAvailable />;
+  if (!channel || !guild) return <NotFoundState />;
 
   return (
     <>

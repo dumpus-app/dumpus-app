@@ -14,6 +14,7 @@ import DailySentMessages from "./_components/DailySentMessages";
 import PageHeader from "./_components/PageHeader";
 import Stats from "./_components/Stats";
 import NoDataAvailable from "~/components/NoDataAvailable";
+import NotFoundState from "~/components/NotFoundState";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -38,8 +39,7 @@ export default function Page() {
 
   const data = useUserDetails({ userID: user?.dm_user_id || "" });
 
-  // TODO: handle 404
-  if (!user) return <NoDataAvailable />;
+  if (!user) return <NotFoundState />;
 
   const username = user.user_name;
   const displayName = data?.display_name || username;

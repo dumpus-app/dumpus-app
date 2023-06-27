@@ -3,13 +3,14 @@
 import { useSearchParams } from "next/navigation";
 import useGuildData from "~/hooks/data/use-guild-data";
 import DailySentMessages from "./_components/DailySentMessages";
-import FirstMessages from "./_components/FirstMessages";
+// import FirstMessages from "./_components/FirstMessages";
 import PageHeader from "./_components/PageHeader";
 import Profile from "./_components/Profile";
 import Stats from "./_components/Stats";
 import TopChannels from "./_components/TopChannels";
 import TopUsedBots from "./_components/TopUsedBots";
 import NoDataAvailable from "~/components/NoDataAvailable";
+import NotFoundState from "~/components/NotFoundState";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -20,8 +21,7 @@ export default function Page() {
       guildID: id,
     });
 
-  // TODO: handle 404. Make title and description customizable
-  if (!guild) return <NoDataAvailable />;
+  if (!guild) return <NotFoundState />;
 
   return (
     <>
