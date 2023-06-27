@@ -110,12 +110,8 @@ export default function useDMData({ userID }: { userID: string }) {
       return null;
     }
 
-    // TODO: do formatting in frontend
     return data.map(({ period_start, message_count }) => ({
-      label: new Intl.DateTimeFormat(i18next.language, {
-        year: "2-digit",
-        month: "2-digit",
-      }).format(new Date(period_start)),
+      label: period_start,
       value: message_count,
     }));
   }

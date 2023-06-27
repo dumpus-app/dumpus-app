@@ -1,10 +1,10 @@
 "use client";
 
-import i18next from "i18next";
 import Section from "~/components/Section";
 import SimpleBarChart from "~/components/data/SimpleBarChart";
 import StatCard from "~/components/data/StatCard";
 import useSendingTimesData from "~/hooks/data/use-sending-times-data";
+import { formatHour, formatNumber } from "~/utils/format";
 
 function Chart() {
   const { chartData } = useSendingTimesData();
@@ -12,7 +12,10 @@ function Chart() {
   return (
     <SimpleBarChart
       // TODO: handle no data
-      data={chartData || []}
+      data={(chartData || []).map(({ value, label }) => ({
+        value,
+        label: formatHour(label),
+      }))}
       className="flex-1 px-2"
       legend="Messages sent"
     />
@@ -27,9 +30,7 @@ function Stats() {
   const data = [
     {
       value: avgMessagesSentPerDay
-        ? Intl.NumberFormat(i18next.language, {
-            notation: "compact",
-          }).format(avgMessagesSentPerDay)
+        ? formatNumber(avgMessagesSentPerDay)
         : "N/A",
       label: "average messages sent per day",
     },
@@ -52,7 +53,7 @@ function Stats() {
 
 export default function SendingTimes() {
   return (
-    <Section title="Sending times" href="/stats#sending-times">
+    <Section title="Sending times">
       <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0">
         <Chart />
         <Stats />

@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useNetworkState } from "react-use";
@@ -15,6 +14,7 @@ import PageHeader from "./_components/PageHeader";
 import Stats from "./_components/Stats";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
+import { formatDate, formatHour, formatNumber } from "~/utils/format";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -77,17 +77,27 @@ export default function Page() {
         <>
           <Stats
             messagesCount={
-              stats.messagesCount
-                ? Intl.NumberFormat(i18next.language, {
-                    notation: "compact",
-                  }).format(stats.messagesCount)
-                : "N/A"
+              stats.messagesCount ? formatNumber(stats.messagesCount) : "N/A"
             }
-            topChatHour={stats.topChatHour?.toString() || "N/A"}
-            reactionsCount={stats.reactionsCount?.toString() || "N/A"}
+            topChatHour={
+              stats.topChatHour ? formatHour(stats.topChatHour) : "N/A"
+            }
+            reactionsCount={
+              stats.reactionsCount ? formatNumber(stats.reactionsCount) : "N/A"
+            }
           />
           {/* TODO: handle no data */}
-          <DailySentMessages data={dailySentMessages || []} />
+          <DailySentMessages
+            data={(dailySentMessages || []).map(({ value, label }) => ({
+              value,
+              label: formatDate(label, {
+                year: "2-digit",
+                day: false,
+                hour: false,
+                minute: false,
+              }),
+            }))}
+          />
         </>
       ) : (
         <NoDataAvailable />

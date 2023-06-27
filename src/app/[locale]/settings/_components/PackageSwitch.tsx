@@ -2,11 +2,11 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { defu } from "defu";
-import i18next from "i18next";
 import { useAtom, useAtomValue } from "jotai";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import { configAtom, unselectedPackagesAtom } from "~/stores";
+import { formatDate } from "~/utils/format";
 
 export default function PackageSwitch() {
   const unselectedPackages = useAtomValue(unselectedPackagesAtom);
@@ -26,14 +26,10 @@ export default function PackageSwitch() {
               key={rank}
               rank={rank}
               title={package_owner_name}
-              description={`Generated on ${new Intl.DateTimeFormat(
-                i18next.language,
-                {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                }
-              ).format(new Date(issueDate))}`}
+              description={`Generated on ${formatDate(issueDate, {
+                hour: false,
+                minute: false,
+              })}`}
               reverseTexts
               href="#"
               onClick={(e) => {

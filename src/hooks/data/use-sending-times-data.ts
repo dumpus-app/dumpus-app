@@ -31,15 +31,7 @@ export default function useSendingTimesData() {
     }
 
     return data.map(({ hour, message_count }) => ({
-      label: new Intl.DateTimeFormat(i18next.language, {
-        hour: "numeric",
-      }).format(
-        (() => {
-          const date = new Date();
-          date.setHours(hour);
-          return date;
-        })()
-      ),
+      label: hour,
       value: message_count,
     }));
   }

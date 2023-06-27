@@ -22,7 +22,32 @@ export function formatHour(hour: number) {
   const date = new Date();
   date.setHours(hour);
 
-  return new Intl.DateTimeFormat(i18next.language, {
+  return new Intl.DateTimeFormat(locale, {
     hour: "numeric",
   }).format(date);
+}
+
+export function formatDate(
+  date: Date | string,
+  {
+    year = "numeric",
+    month = true,
+    day = true,
+    hour = true,
+    minute = true,
+  }: {
+    year?: false | "numeric" | "2-digit";
+    month?: boolean;
+    day?: boolean;
+    hour?: boolean;
+    minute?: boolean;
+  } = {}
+) {
+  return new Intl.DateTimeFormat(locale, {
+    year: year === false ? undefined : year,
+    month: month ? "2-digit" : undefined,
+    day: day ? "2-digit" : undefined,
+    hour: hour ? "2-digit" : undefined,
+    minute: minute ? "2-digit" : undefined,
+  }).format(typeof date === "string" ? new Date(date) : date);
 }

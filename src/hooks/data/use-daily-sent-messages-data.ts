@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import { useDataSources } from "./_shared";
 
 export default function useDailySentMessagesData() {
@@ -44,12 +43,8 @@ export default function useDailySentMessagesData() {
     return null;
   }
 
-  // TODO: format on front
   return data.map(({ period_start, message_count }) => ({
-    label: new Intl.DateTimeFormat(i18next.language, {
-      year: "2-digit",
-      month: "2-digit",
-    }).format(new Date(period_start)),
+    label: period_start,
     value: message_count,
   }));
 }

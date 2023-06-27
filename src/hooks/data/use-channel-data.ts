@@ -101,17 +101,6 @@ export default function useChannelData({
     }
 
     return data[0].hour;
-
-    // TODO: format
-    // return new Intl.DateTimeFormat(i18next.language, {
-    //   hour: "numeric",
-    // }).format(
-    //   (() => {
-    //     const date = new Date();
-    //     // date.setHours(hour);
-    //     return date;
-    //   })()
-    // );
   }
 
   function getReactionsCount() {

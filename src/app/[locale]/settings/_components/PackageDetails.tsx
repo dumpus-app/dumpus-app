@@ -1,13 +1,13 @@
 "use client";
 
 import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
-import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { useCopyToClipboard } from "react-use";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import { selectedPackageAtom } from "~/stores";
+import { formatDate } from "~/utils/format";
 
 export default function PackageDetails() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
@@ -44,11 +44,11 @@ export default function PackageDetails() {
             e.preventDefault();
             copyToClipboard(selectedPackage.issueDate);
           }}
-          title={new Intl.DateTimeFormat(i18next.language, {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-          }).format(new Date(selectedPackage.issueDate))}
+          // TODO: issueDate seems wrong. Check in sql init
+          title={formatDate(selectedPackage.issueDate, {
+            hour: false,
+            minute: false,
+          })}
           description="Generated on"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}

@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import i18next from "i18next";
 import DetailCard from "~/components/data/DetailCard";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import { avatarURLFallback } from "~/utils/discord";
@@ -10,6 +9,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { timeRangeAtom } from "~/stores/db";
 import NoDataAvailable from "~/components/NoDataAvailable";
+import { formatNumber } from "~/utils/format";
 
 export default function TopDMsList() {
   const { getData, count } = useTopDMsData();
@@ -35,11 +35,7 @@ export default function TopDMsList() {
             href={`/top/dms/details?id=${dm.dm_user_id}`}
             rank={dm.rank}
             title={dm.user_name}
-            description={
-              Intl.NumberFormat(i18next.language, {
-                notation: "compact",
-              }).format(dm.message_count) + " messages sent"
-            }
+            description={`${formatNumber(dm.message_count)} messages sent`}
             leftSlot={
               <div className="relative aspect-square w-10">
                 <Image

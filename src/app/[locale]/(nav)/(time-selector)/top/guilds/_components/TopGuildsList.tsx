@@ -2,7 +2,6 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import DetailCard from "~/components/data/DetailCard";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
@@ -11,6 +10,7 @@ import { timeRangeAtom } from "~/stores/db";
 import Image from "next/image";
 import { iconColor } from "~/utils/discord";
 import NoDataAvailable from "~/components/NoDataAvailable";
+import { formatNumber } from "~/utils/format";
 
 function GuildCard({
   guild,
@@ -32,11 +32,7 @@ function GuildCard({
       href={`/top/guilds/details?id=${guild.guild_id}`}
       rank={guild.rank}
       title={guild.guild_name}
-      description={
-        Intl.NumberFormat(i18next.language, {
-          notation: "compact",
-        }).format(guild.message_count) + " messages sent"
-      }
+      description={`${formatNumber(guild.message_count)} messages sent`}
       leftSlot={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-10">

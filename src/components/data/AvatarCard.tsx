@@ -1,7 +1,7 @@
 "use client";
 
-import i18next from "i18next";
 import Link from "../Link";
+import { formatNumber } from "~/utils/format";
 
 export type Props = {
   href: string;
@@ -29,10 +29,7 @@ export default function AvatarCard({
         <span className="font-bold text-white">{name}</span>
       </div>
       <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-400 sm:text-lg">
-        {Intl.NumberFormat(i18next.language, {
-          notation: "compact",
-        }).format(messages)}{" "}
-        messages
+        {formatNumber(messages)} messages
       </div>
     </Link>
   );

@@ -2,13 +2,13 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import { timeRangeAtom } from "~/stores/db";
 import { iconColor } from "~/utils/discord";
+import { formatNumber } from "~/utils/format";
 
 export default function TopChannelsList() {
   const { getData, count } = useTopChannelsData();
@@ -33,12 +33,9 @@ export default function TopChannelsList() {
             href={`/top/channels/details?guild_id=${channel.guild_id}&channel_id=${channel.channel_id}`}
             rank={channel.rank}
             title={"#" + channel.channel_name}
-            description={`${channel.guild_name} · ${Intl.NumberFormat(
-              i18next.language,
-              {
-                notation: "compact",
-              }
-            ).format(channel.message_count)} messages sent`}
+            description={`${channel.guild_name} · ${formatNumber(
+              channel.message_count
+            )} messages sent`}
             leftSlot={
               <div
                 className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"

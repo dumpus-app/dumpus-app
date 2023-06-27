@@ -1,9 +1,9 @@
 "use client";
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import i18next from "i18next";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
+import { formatDate } from "~/utils/format";
 
 const DATA = [
   {
@@ -34,16 +34,7 @@ export default function FirstMessages() {
             }}
             rank={msg.rank}
             title={msg.message}
-            description={`${msg.channel} · ${new Intl.DateTimeFormat(
-              i18next.language,
-              {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-              }
-            ).format(new Date(msg.date))}`}
+            description={`${msg.channel} · ${formatDate(msg.date)}`}
             rightIcon={ChevronRightIcon}
             reverseTexts
           />

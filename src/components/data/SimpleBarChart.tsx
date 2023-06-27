@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import i18next from "i18next";
+import { formatNumber } from "~/utils/format";
 
 export type Props = {
   data: {
@@ -41,11 +41,7 @@ export default function SimpleBarChart({ data, className, legend }: Props) {
             width={45}
             // stroke-gray-400
             stroke="#94a3b8"
-            tickFormatter={(v, i) =>
-              new Intl.NumberFormat(i18next.language, {
-                notation: "compact",
-              }).format(v)
-            }
+            tickFormatter={(v, i) => formatNumber(v)}
           />
           <Tooltip
             contentStyle={{
