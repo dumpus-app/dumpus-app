@@ -36,7 +36,10 @@ export default function Page() {
     }
   })();
 
-  const data = useUserDetails({ userID: user.dm_user_id });
+  const data = useUserDetails({ userID: user?.dm_user_id || "" });
+
+  // TODO: handle 404
+  if (!user) return <NoDataAvailable />;
 
   const username = user.user_name;
   const displayName = data?.display_name || username;
@@ -73,13 +76,18 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messageCount={Intl.NumberFormat(i18next.language, {
-              notation: "compact",
-            }).format(stats.messagesCount)}
-            topHour={stats.topChatHour}
-            reactionCount={stats.reactionsCount || "N/A"}
+            messagesCount={
+              stats.messagesCount
+                ? Intl.NumberFormat(i18next.language, {
+                    notation: "compact",
+                  }).format(stats.messagesCount)
+                : "N/A"
+            }
+            topChatHour={stats.topChatHour?.toString() || "N/A"}
+            reactionsCount={stats.reactionsCount?.toString() || "N/A"}
           />
-          <DailySentMessages data={dailySentMessages} />
+          {/* TODO: handle no data */}
+          <DailySentMessages data={dailySentMessages || []} />
         </>
       ) : (
         <NoDataAvailable />
