@@ -218,12 +218,12 @@ def generate_demo_database():
                 associated_channel_id = guild_channel[0]
                 associated_guild_id = guild_channel[1]
         elif event_name == "guild_joined":
-            guild_id = random.choice(guild_data)['guild_id']
+            guild_id = random.choice(guild_data)[0]
             associated_user_id = None
             associated_channel_id = None
             associated_guild_id = guild_id
         else:
-            guild_id = random.choice(guild_data)['guild_id']
+            guild_id = random.choice(guild_data)[0]
             associated_user_id = random.choice(['159985870458322944', '936929561302675456', '432610292342587392', '276060004262477825'])
             associated_guild_id = guild_id
         # random day between 2021 and now
