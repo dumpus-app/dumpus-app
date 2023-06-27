@@ -12,7 +12,9 @@ import { iconColor } from "~/utils/discord";
 function GuildCard({
   guild,
 }: {
-  guild: ReturnType<ReturnType<typeof useTopGuildsData>["getData"]>[0];
+  guild: NonNullable<
+    ReturnType<ReturnType<typeof useTopGuildsData>["getData"]>
+  >[0];
 }) {
   const { getGuild } = useWidgetAPI({});
 
@@ -60,7 +62,8 @@ export default function TopGuilds() {
     <Section title="Top guilds" href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {data.map((guild) => (
+          {/* TODO: handle no data */}
+          {(data || []).map((guild) => (
             <GuildCard key={guild.rank} guild={guild} />
           ))}
           <ScrollArea.Spacer />

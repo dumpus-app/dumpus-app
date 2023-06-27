@@ -10,11 +10,14 @@ import useWidgetAPI from "~/hooks/use-widget-api";
 import { timeRangeAtom } from "~/stores/db";
 import Image from "next/image";
 import { iconColor } from "~/utils/discord";
+import NoDataAvailable from "~/components/NoDataAvailable";
 
 function GuildCard({
   guild,
 }: {
-  guild: ReturnType<ReturnType<typeof useTopGuildsData>["getData"]>[0];
+  guild: NonNullable<
+    ReturnType<ReturnType<typeof useTopGuildsData>["getData"]>
+  >[0];
 }) {
   const { getGuild } = useWidgetAPI({});
 
@@ -66,11 +69,13 @@ export default function TopGuildsList() {
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-guilds", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam }),
+    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 
-  const data = queryData?.pages.flat() || getData({});
+  if (!count) return <NoDataAvailable />;
+
+  const data = queryData?.pages.flat() || getData({})!;
 
   return (
     <div className="px-2 py-4 desktop-container sm:py-8">
