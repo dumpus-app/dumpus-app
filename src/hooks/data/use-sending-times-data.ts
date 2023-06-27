@@ -29,6 +29,24 @@ export default function useSendingTimesData() {
     }
   }
 
+  const avgQuery = `
+    SELECT
+      ROUND(AVG(daily_occurences)) AS average_daily_occurences
+    FROM (
+      SELECT
+          day,
+          SUM(occurence_count) AS daily_occurences
+      FROM 
+          activity
+      GROUP BY 
+          day
+    ) AS daily_summary;
+  `;
+
+  const { average_daily_occurences } = resultAsList<{
+    average_daily_occurences: number;
+  }>(db.exec(avgQuery)[0])[0];
+
   const chartData = rawChartData.map(({ hour, message_count }) => ({
     label: new Intl.DateTimeFormat(i18next.language, {
       hour: "numeric",
@@ -45,12 +63,7 @@ export default function useSendingTimesData() {
   return {
     chartData,
     statsData: {
-      avgMessagesSentPerDay: chartData.reduce(
-        (avg, { value }, _, { length }) => {
-          return avg + value / length;
-        },
-        0
-      ),
+      avgMessagesSentPerDay: average_daily_occurences
     },
   };
 }
