@@ -32,7 +32,7 @@ export default function useUserData() {
 
     newConfig.db.packages[packageIndex] = pkg;
 
-    setConfig(newConfig);
+    setTimeout(() => setConfig(newConfig));
   }
 
   return {
