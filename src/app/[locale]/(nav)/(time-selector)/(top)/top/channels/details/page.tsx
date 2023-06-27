@@ -56,7 +56,7 @@ export default function Page() {
               notation: "compact",
             }).format(stats.messagesCount)}
             invitesCount="N/A"
-            topHour={stats.topChatHour}
+            topHour={stats.topChatHour || "N/A"}
             reactionCount="N/A"
             channelOpenings="N/A"
           />

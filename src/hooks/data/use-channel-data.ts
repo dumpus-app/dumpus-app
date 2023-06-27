@@ -13,7 +13,7 @@ export default function useChannelData({
   channelId: string;
 }) {
   const { db, resultAsList, start, end } = useDataSources();
-  const topChannelsData = useTopChannelsData().getData({});
+  const topChannelsData = useTopChannelsData().getData({ offset: false });
 
   const hasData = !!topChannelsData.find(
     (channel) => channel.channel_id === channelId
@@ -95,9 +95,10 @@ export default function useChannelData({
     LIMIT 1
     `;
 
-    console.log(db.exec(query)[0]);
+    const dbResult = db.exec(query);
+    if (dbResult.length === 0) return null;
 
-    const { hour, message_count } = resultAsList<{
+    const { hour } = resultAsList<{
       hour: number;
       message_count: number;
     }>(db.exec(query)[0])[0];

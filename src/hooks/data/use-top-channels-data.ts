@@ -29,7 +29,7 @@ export default function useTopChannelsData() {
   `)[0]
   )[0];
 
-  function getData({ offset = 0 }: { offset?: number }) {
+  function getData({ offset = 0 }: { offset?: number | false }) {
     const query = `
     SELECT
       channel_name,
@@ -46,7 +46,11 @@ export default function useTopChannelsData() {
     AND a.day BETWEEN '${start}' AND '${end}'
     GROUP BY channel_name
     ORDER BY message_count DESC
-    LIMIT ${SQL_DEFAULT_LIMIT} OFFSET ${sqlOffset(offset)};
+    ${
+      offset === false
+        ? ""
+        : `LIMIT ${SQL_DEFAULT_LIMIT} OFFSET ${sqlOffset(offset)}`
+    };
   `;
 
     const data = resultAsList<
@@ -56,7 +60,7 @@ export default function useTopChannelsData() {
         }
     >(db.exec(query)[0]).map((channel, i) => ({
       ...channel,
-      rank: sqlOffset(offset) + i + 1,
+      rank: (offset === false ? 0 : sqlOffset(offset)) + i + 1,
     }));
 
     return data;
