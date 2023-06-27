@@ -9,7 +9,8 @@ export default function useDMData({ userID }: { userID: string }) {
   const { db, resultAsList, start, end } = useDataSources();
   const topDMsData = useTopDMsData().getData({ offset: false });
 
-  const hasData = !!topDMsData.find((dm) => dm.dm_user_id === userID);
+  const hasData =
+    topDMsData && !!topDMsData.find((dm) => dm.dm_user_id === userID);
 
   function getUser() {
     const query = `

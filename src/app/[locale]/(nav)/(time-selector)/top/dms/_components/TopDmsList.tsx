@@ -9,18 +9,22 @@ import { avatarURLFallback } from "~/utils/discord";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import { timeRangeAtom } from "~/stores/db";
+import NoDataAvailable from "~/components/NoDataAvailable";
 
 export default function TopDMsList() {
   const { getData, count } = useTopDMsData();
+
   const timeRange = useAtomValue(timeRangeAtom);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-dms", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam }),
+    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 
-  const data = queryData?.pages.flat() || getData({});
+  if (!count) return <NoDataAvailable />;
+
+  const data = queryData?.pages.flat() || getData({})!;
 
   return (
     <div className="px-2 py-4 desktop-container sm:py-8">

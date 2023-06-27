@@ -1,13 +1,13 @@
 "use client";
 
+import { defu } from "defu";
 import { useAtom } from "jotai";
-import initSqlJs, { type QueryExecResult } from "sql.js";
-import { dbAtom } from "~/stores/db";
 import LZString from "lz-string";
 import pako from "pako";
 import { useRef } from "react";
+import initSqlJs, { type QueryExecResult } from "sql.js";
 import { configAtom } from "~/stores";
-import { defu } from "defu";
+import { dbAtom } from "~/stores/db";
 import type { PackageData } from "~/types/sql";
 
 const STORAGE_KEY = "db";
@@ -93,6 +93,10 @@ export default function useSQL() {
   }
 
   type DefaultT = Record<string, any>;
+  // TODO: extract to sql utils
+  /**
+   * @deprecated use {sql} instead
+   */
   function resultAsList<T extends DefaultT>(data: QueryExecResult) {
     const { columns, values } = data;
     return values.map((value) => {
@@ -104,5 +108,5 @@ export default function useSQL() {
     });
   }
 
-  return { init, db, resultAsList };
+  return { init, resultAsList };
 }

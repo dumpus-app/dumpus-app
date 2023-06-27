@@ -29,7 +29,8 @@ export default function TopDMs() {
     <Section title="Top DMs" href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {data.map((dm) => (
+          {/* TODO: handle no data */}
+          {(data || []).map((dm) => (
             <AvatarCard
               key={dm.rank}
               name={dm.user_name}
