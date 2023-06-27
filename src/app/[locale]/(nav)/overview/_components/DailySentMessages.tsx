@@ -10,10 +10,11 @@ export default function DailySentMessages() {
   return (
     <Section title="Daily sent messages" href="/stats#daily-sent-messages">
       <SimpleLineChart
-        data={data}
+        // TODO: handle no data
+        data={data || []}
         className="px-2"
         legend="Messages sent"
-        showSmallDots={data.length > 12}
+        showSmallDots={(data?.length || 0) > 12}
       />
     </Section>
   );

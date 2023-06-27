@@ -4,14 +4,17 @@ import i18next from "i18next";
 import { useDataSources } from "./_shared";
 
 export default function useDailySentMessagesData() {
-  const { db, resultAsList, start, end } = useDataSources();
+  const { sql, start, end } = useDataSources();
 
   const totalDays = new Date(end).getTime() - new Date(start).getTime();
   const days = Math.floor(totalDays / (1000 * 60 * 60 * 24));
 
   const periodLength = days > 360 ? 30 : days > 90 ? 7 : 1;
 
-  const query = `
+  const { data, hasError } = sql<{
+    period_start: string;
+    message_count: number;
+  }>`
     WITH RECURSIVE dates(day, day_group) AS (
       VALUES('${start}', 1)
       UNION ALL
@@ -37,15 +40,16 @@ export default function useDailySentMessagesData() {
       period_start ASC;
   `;
 
-  const data = resultAsList<{ period_start: string; message_count: number }>(
-    db.exec(query)[0]
-  ).map(({ period_start, message_count }) => ({
+  if (hasError) {
+    return null;
+  }
+
+  // TODO: format on front
+  return data.map(({ period_start, message_count }) => ({
     label: new Intl.DateTimeFormat(i18next.language, {
       year: "2-digit",
       month: "2-digit",
     }).format(new Date(period_start)),
     value: message_count,
   }));
-
-  return data;
 }
