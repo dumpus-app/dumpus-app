@@ -4,25 +4,7 @@ import Section from "~/components/Section";
 import ScrollArea from "~/components/ScrollArea";
 import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
-import i18next from "i18next";
-
-function formatNumber(n: number) {
-  return Intl.NumberFormat(i18next.language, {
-    notation: "compact",
-  }).format(n);
-}
-
-function formatHour(hour: number) {
-  return new Intl.DateTimeFormat(i18next.language, {
-    hour: "numeric",
-  }).format(
-    (() => {
-      const date = new Date();
-      date.setHours(hour);
-      return date;
-    })()
-  );
-}
+import { formatHour, formatNumber } from "~/utils/format";
 
 export default function UsageStats() {
   const { networkSize, joinedGuilds, topHour } = useUsageStatsData();

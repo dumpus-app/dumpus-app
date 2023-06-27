@@ -1,26 +1,8 @@
 "use client";
 
-import i18next from "i18next";
 import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
-
-function formatNumber(n: number) {
-  return Intl.NumberFormat(i18next.language, {
-    notation: "compact",
-  }).format(n);
-}
-
-function formatHour(hour: number) {
-  return new Intl.DateTimeFormat(i18next.language, {
-    hour: "numeric",
-  }).format(
-    (() => {
-      const date = new Date();
-      date.setHours(hour);
-      return date;
-    })()
-  );
-}
+import { formatHour, formatMoney, formatNumber } from "~/utils/format";
 
 export default function Stats() {
   const { networkSize, joinedGuilds, topHour, spentMoney } =
@@ -39,7 +21,7 @@ export default function Stats() {
       label: "network size",
     },
     {
-      value: (spentMoney || 0).toString(),
+      value: formatMoney(spentMoney || 0),
       label: "spent",
     },
   ];

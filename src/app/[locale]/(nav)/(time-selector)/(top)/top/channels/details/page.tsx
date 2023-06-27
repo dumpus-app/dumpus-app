@@ -13,6 +13,7 @@ import Stats from "./_components/Stats";
 import i18next from "i18next";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
+import { formatNumber } from "~/utils/format";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -56,16 +57,20 @@ export default function Page() {
         <>
           <Stats
             messagesCount={
-              stats.messagesCount
-                ? Intl.NumberFormat(i18next.language, {
-                    notation: "compact",
-                  }).format(stats.messagesCount)
+              stats.messagesCount ? formatNumber(stats.messagesCount) : "N/A"
+            }
+            invitesCount={
+              stats.invitesCount ? formatNumber(stats.invitesCount) : "N/A"
+            }
+            topChatHour={stats.topChatHour?.toString() || "N/A"}
+            reactionsCount={
+              stats.reactionsCount ? formatNumber(stats.reactionsCount) : "N/A"
+            }
+            channelOpenings={
+              stats.channelOpenings
+                ? formatNumber(stats.channelOpenings)
                 : "N/A"
             }
-            invitesCount={stats.invitesCount?.toString() || "N/A"}
-            topChatHour={stats.topChatHour?.toString() || "N/A"}
-            reactionsCount={stats.reactionsCount?.toString() || "N/A"}
-            channelOpenings={stats.channelOpenings?.toString() || "N/A"}
           />
           <DailySentMessages data={dailySentMessages || []} />
         </>
