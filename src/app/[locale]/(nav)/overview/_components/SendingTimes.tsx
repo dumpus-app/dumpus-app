@@ -11,7 +11,8 @@ function Chart() {
 
   return (
     <SimpleBarChart
-      data={chartData}
+      // TODO: handle no data
+      data={chartData || []}
       className="flex-1 px-2"
       legend="Messages sent"
     />
@@ -25,9 +26,11 @@ function Stats() {
 
   const data = [
     {
-      value: Intl.NumberFormat(i18next.language, {
-        notation: "compact",
-      }).format(avgMessagesSentPerDay),
+      value: avgMessagesSentPerDay
+        ? Intl.NumberFormat(i18next.language, {
+            notation: "compact",
+          }).format(avgMessagesSentPerDay)
+        : "N/A",
       label: "average messages sent per day",
     },
     {
