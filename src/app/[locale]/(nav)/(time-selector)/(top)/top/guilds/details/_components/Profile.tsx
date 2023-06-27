@@ -23,7 +23,7 @@ export default function Profile({ guild }: { guild: Guild }) {
       description={
         isSuccess && data.error === undefined
           ? `${data.member_count} members`
-          : "todo"
+          : "N/A members"
       }
       title={guild.guild_name}
       imageSlot={

@@ -14,6 +14,7 @@ export type DmChannelsData = {
   channel_id: string;
   dm_user_id: string;
   user_name: string;
+  display_name?: string;
   user_avatar_url?: string;
   total_message_count: number;
   total_voice_channel_duration: number;
