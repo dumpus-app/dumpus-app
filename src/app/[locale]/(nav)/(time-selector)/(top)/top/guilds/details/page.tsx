@@ -20,6 +20,9 @@ export default function Page() {
       guildID: id,
     });
 
+  // TODO: handle 404. Make title and description customizable
+  if (!guild) return <NoDataAvailable />;
+
   return (
     <>
       <PageHeader title={guild.guild_name} />
@@ -27,13 +30,16 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messagesCount={stats.messagesCount || "N/A"}
-            invitesCount={stats.invitesCount || "N/A"}
-            joinsCount={stats.joinsCount || "N/A"}
-            topChatHour={stats.topChatHour || "N/A"}
+            // TODO: format
+            messagesCount={stats.messagesCount?.toString() || "N/A"}
+            invitesCount={stats.invitesCount?.toString() || "N/A"}
+            joinsCount={stats.joinsCount?.toString() || "N/A"}
+            topChatHour={stats.topChatHour?.toString() || "N/A"}
           />
-          <TopUsedBots bots={topBots} />
-          <TopChannels channels={topChannels} />
+          {/* TODO: handle no data */}
+          <TopUsedBots bots={topBots || []} />
+          {/* TODO: handle no data */}
+          <TopChannels channels={topChannels || []} />
           {/* TODO: implement */}
           {/* <FirstMessages /> */}
           <DailySentMessages data={dailySentMessages || []} />
