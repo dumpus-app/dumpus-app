@@ -255,7 +255,7 @@ def get_avatar(package_id, user_id):
 
         return jsonify({
             'user_id': user_id,
-            'display_name': user['display_name'] or None,
+            'display_name': user['display_name'] if 'display_name' in user and user['display_name'] else user['username'],
             'avatar_url': avatar_url
         }), 200
 
