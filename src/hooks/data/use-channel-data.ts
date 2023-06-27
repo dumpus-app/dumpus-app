@@ -15,7 +15,7 @@ export default function useChannelData({
   const { db, resultAsList, start, end } = useDataSources();
   const topChannelsData = useTopChannelsData().getData({ offset: false });
 
-  const hasData = !!topChannelsData.find(
+  const hasData = !!topChannelsData?.find(
     (channel) => channel.channel_id === channelId
   );
 

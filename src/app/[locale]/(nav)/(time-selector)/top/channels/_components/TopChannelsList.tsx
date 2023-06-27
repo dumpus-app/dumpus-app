@@ -4,6 +4,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import i18next from "i18next";
 import { useAtomValue } from "jotai";
+import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import { timeRangeAtom } from "~/stores/db";
@@ -15,11 +16,13 @@ export default function TopChannelsList() {
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-channels", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam }),
+    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 
-  const data = queryData?.pages.flat() || getData({});
+  if (!count) return <NoDataAvailable />;
+
+  const data = queryData?.pages.flat() || getData({})!;
 
   return (
     <div className="px-2 py-4 desktop-container sm:py-8">
