@@ -75,6 +75,18 @@ export default function useChannelData({
     return message_count;
   }
 
+  function getInvitesCount() {
+    return null;
+
+    // TODO: implement query
+    // const query = `
+    // `;
+
+    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
+
+    // return invite_count
+  }
+
   function getTopChatHour() {
     if (!hasData) return "";
 
@@ -114,13 +126,53 @@ export default function useChannelData({
     );
   }
 
+  function getReactionsCount() {
+    return null;
+
+    // TODO: implement query
+    // const query = `
+    // `;
+
+    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
+
+    // return invite_count
+  }
+
+  function getChannelOpenings() {
+    return null;
+
+    // TODO: implement query
+    // const query = `
+    // `;
+
+    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
+
+    // return invite_count
+  }
+
+  function getDailySentMessages() {
+    return null;
+
+    // TODO: implement query
+    // const query = `
+    // `;
+
+    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
+
+    // return invite_count
+  }
+
   return {
     hasData,
     channel: getChannel(),
     guild: getGuild(),
     stats: {
       messagesCount: getMessagesCount(),
+      invitesCount: getInvitesCount(),
       topChatHour: getTopChatHour(),
+      reactionsCount: getReactionsCount(),
+      channelOpenings: getChannelOpenings(),
     },
+    dailySentMessages: getDailySentMessages(),
   };
 }

@@ -18,7 +18,7 @@ export default function Page() {
   const guildId = params.get("guild_id")!;
   const channelId = params.get("channel_id")!;
 
-  const { hasData, channel, guild, stats } = useChannelData({
+  const { hasData, channel, guild, stats, dailySentMessages } = useChannelData({
     guildId,
     channelId,
   });
@@ -55,12 +55,12 @@ export default function Page() {
             messageCount={Intl.NumberFormat(i18next.language, {
               notation: "compact",
             }).format(stats.messagesCount)}
-            invitesCount="N/A"
+            invitesCount={stats.invitesCount || "N/A"}
             topHour={stats.topChatHour || "N/A"}
-            reactionCount="N/A"
-            channelOpenings="N/A"
+            reactionCount={stats.reactionsCount || "N/A"}
+            channelOpenings={stats.channelOpenings || "N/A"}
           />
-          <DailySentMessages />
+          <DailySentMessages data={dailySentMessages || []} />
         </>
       ) : (
         <NoDataAvailable />
