@@ -25,7 +25,7 @@ export default function useTopGuildsData() {
   `)[0]
   )[0];
 
-  function getData({ offset = 0 }: { offset?: number }) {
+  function getData({ offset = 0 }: { offset?: number | false }) {
     const query = `
     SELECT
       guild_name,
@@ -38,13 +38,17 @@ export default function useTopGuildsData() {
     AND a.day BETWEEN '${start}' AND '${end}'
     GROUP BY guild_name
     ORDER BY message_count DESC
-    LIMIT ${SQL_DEFAULT_LIMIT} OFFSET ${sqlOffset(offset)};
+    ${
+      offset === false
+        ? ""
+        : `LIMIT ${SQL_DEFAULT_LIMIT} OFFSET ${sqlOffset(offset)}`
+    };
   `;
     const data = resultAsList<
       Pick<Guild, "guild_name" | "guild_id"> & { message_count: number }
     >(db.exec(query)[0]).map((guild, i) => ({
       ...guild,
-      rank: sqlOffset(offset) + i + 1,
+      rank: (offset === false ? 0 : sqlOffset(offset)) + i + 1,
     }));
 
     return data;
