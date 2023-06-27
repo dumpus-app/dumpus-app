@@ -38,8 +38,8 @@ export default function useSendingTimesData() {
           SUM(occurence_count) AS daily_occurences
       FROM 
           activity
-      WHERE a.event_name = 'message_sent' 
-      AND a.day BETWEEN '${start}' AND '${end}'
+      WHERE event_name = 'message_sent' 
+      AND day BETWEEN '${start}' AND '${end}'
       GROUP BY 
           day
     ) AS daily_summary;
