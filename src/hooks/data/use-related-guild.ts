@@ -3,9 +3,9 @@
 import { useDataSources } from "~/hooks/data/_shared";
 
 export default function useRelatedGuild({ guildID }: { guildID: string }) {
-  const { db, resultAsList, start, end } = useDataSources();
+  const { sql, start, end } = useDataSources();
 
-  const query = `
+  const { data, hasError } = sql<{ message_count: number }>`
     SELECT
       SUM(a.occurence_count) AS message_count
     FROM guilds
@@ -15,9 +15,6 @@ export default function useRelatedGuild({ guildID }: { guildID: string }) {
     AND a.day BETWEEN '${start}' AND '${end}'
     AND guilds.guild_id = '${guildID}';
   `;
-  const { message_count } = resultAsList<{ message_count: number }>(
-    db.exec(query)[0]
-  )[0];
 
-  return { messagesCount: message_count };
+  return { messagesCount: hasError ? null : data[0].message_count };
 }
