@@ -1,8 +1,14 @@
 "use client";
 
-import type { Activity, DmChannelsData, Guild } from "~/types/sql";
+import type {
+  Activity,
+  DmChannelsData,
+  Guild,
+  GuildChannelsData,
+} from "~/types/sql";
 import { useDataSources } from "./_shared";
 import useTopGuildsData from "./use-top-guilds-data";
+import { SQL_DEFAULT_LIMIT } from "~/constants";
 
 export default function useGuildData({ guildID }: { guildID: string }) {
   const { db, resultAsList, start, end } = useDataSources();
@@ -102,6 +108,52 @@ export default function useGuildData({ guildID }: { guildID: string }) {
     return data;
   }
 
+  function getTopChannels() {
+    const query = `
+    SELECT
+      channel_name,
+      channel_id,
+      c.guild_id,
+      g.guild_name,
+      SUM(a.occurence_count) AS message_count    
+    FROM guild_channels_data c
+    JOIN activity a
+      ON a.associated_channel_id = c.channel_id
+    JOIN guilds g
+      ON g.guild_id = c.guild_id
+    WHERE a.event_name = 'message_sent'
+    AND a.day BETWEEN '${start}' AND '${end}'
+    AND a.associated_guild_id = '${guildID}'
+    GROUP BY channel_id
+    ORDER BY message_count DESC
+    LIMIT ${SQL_DEFAULT_LIMIT};
+  `;
+
+    const data = resultAsList<
+      Pick<GuildChannelsData, "channel_name" | "channel_id" | "guild_id"> &
+        Pick<Guild, "guild_name"> & {
+          message_count: number;
+        }
+    >(db.exec(query)[0]).map((channel, i) => ({
+      ...channel,
+      rank: i + 1,
+    }));
+
+    return data;
+  }
+
+  function getDailySentMessages() {
+    return null;
+
+    // TODO: implement query
+    // const query = `
+    // `;
+
+    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
+
+    // return invite_count
+  }
+
   return {
     hasData,
     guild: getGuild(),
@@ -112,5 +164,7 @@ export default function useGuildData({ guildID }: { guildID: string }) {
       topChatHour: getTopChatHour(),
     },
     topBots: getTopBots(),
+    topChannels: getTopChannels(),
+    dailySentMessages: getDailySentMessages(),
   };
 }

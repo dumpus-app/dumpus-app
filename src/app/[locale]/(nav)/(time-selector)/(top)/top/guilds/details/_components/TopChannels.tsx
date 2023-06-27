@@ -3,47 +3,40 @@
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
+import type { Guild, GuildChannelsData } from "~/types/sql";
+import { iconColor } from "~/utils/discord";
 
-const DATA = [
-  {
-    name: "Androz",
-    messages: 45_000,
-  },
-  {
-    name: "welkenburg",
-    messages: 12_000,
-  },
-  {
-    name: "Skanix",
-    messages: 11_000,
-  },
-  {
-    name: "JsonLines",
-    messages: 8_000,
-  },
-  {
-    name: "GARY",
-    messages: 897,
-  },
-].map((dm, i) => ({
-  ...dm,
-  name: `#${dm.name}`,
-  rank: i + 1,
-}));
+type Channel = Pick<
+  GuildChannelsData,
+  "channel_name" | "channel_id" | "guild_id"
+> &
+  Pick<Guild, "guild_name"> & {
+    message_count: number;
+    rank: number;
+  };
 
-export default function TopChannels() {
+export default function TopChannels({ channels }: { channels: Channel[] }) {
   return (
-    <Section title="Top channels" href="/top/channels">
+    <Section title="Top channels">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {DATA.map((dm) => (
+          {channels.map((channel) => (
             <AvatarCard
-              key={dm.rank}
-              {...dm}
-              href={`/top/channels/details?id=${dm.rank}`}
+              key={channel.rank}
+              name={"#" + channel.channel_name}
+              messages={channel.message_count}
+              rank={channel.rank}
+              href={`/top/channels/details?guild_id=${channel.guild_id}&channel_id=${channel.channel_id}`}
               image={
-                <div className="relative flex aspect-square w-full items-center justify-center rounded-lg bg-brand-300 text-4xl font-bold uppercase text-gray-950">
-                  <div>{dm.name[1]}</div>
+                <div
+                  className="relative flex aspect-square w-full items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950"
+                  style={{
+                    backgroundColor: iconColor(
+                      channel.guild_id + channel.channel_id
+                    ),
+                  }}
+                >
+                  <div>{channel.channel_name[0]}</div>
                 </div>
               }
             />

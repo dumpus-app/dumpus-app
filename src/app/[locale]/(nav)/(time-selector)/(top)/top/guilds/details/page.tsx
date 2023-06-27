@@ -15,7 +15,10 @@ export default function Page() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 
-  const { hasData, guild, stats, topBots } = useGuildData({ guildID: id });
+  const { hasData, guild, stats, topBots, topChannels, dailySentMessages } =
+    useGuildData({
+      guildID: id,
+    });
 
   return (
     <>
@@ -30,9 +33,10 @@ export default function Page() {
             topChatHour={stats.topChatHour || "N/A"}
           />
           <TopUsedBots bots={topBots} />
-          <TopChannels />
-          <FirstMessages />
-          <DailySentMessages />
+          <TopChannels channels={topChannels} />
+          {/* TODO: implement */}
+          {/* <FirstMessages /> */}
+          <DailySentMessages data={dailySentMessages || []} />
         </>
       ) : (
         <NoDataAvailable />

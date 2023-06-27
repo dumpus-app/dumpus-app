@@ -29,7 +29,7 @@ function BotCard({ bot }: { bot: Bot }) {
     staleTime: Infinity,
   });
 
-  const username = bot.user_name;
+  const username = bot.user_name || bot.associated_user_id;
   const displayName = data?.display_name || bot.display_name || username;
   const avatarURL = data?.avatar_url || bot.user_avatar_url;
 
