@@ -75,8 +75,8 @@ SELECT
 FROM activity a
 LEFT JOIN dm_channels_data d ON a.associated_user_id = d.dm_user_id
 WHERE a.event_name = 'application_command_used'
-AND a.guild_id = 'some_guild_id87497847846478464874'
-AND a.day BETWEEN '2021-06-01' AND '2021-06-10';
+AND a.associated_guild_id = 'some_guild_id87497847846478464874'
+AND a.day BETWEEN '2021-06-01' AND '2021-06-10'
 GROUP BY a.associated_user_id
 ORDER BY total_occurences DESC;
 
