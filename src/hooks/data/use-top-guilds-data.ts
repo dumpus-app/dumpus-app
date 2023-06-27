@@ -20,7 +20,7 @@ export default function useTopGuildsData() {
           ON a.associated_guild_id = guilds.guild_id
         WHERE a.event_name = 'message_sent'
         AND a.day BETWEEN '${start}' AND '${end}'
-        GROUP BY guild_name
+        GROUP BY guild_id
       ) subquery;
   `)[0]
   )[0];
@@ -36,7 +36,7 @@ export default function useTopGuildsData() {
       ON a.associated_guild_id = guilds.guild_id
     WHERE a.event_name = 'message_sent'
     AND a.day BETWEEN '${start}' AND '${end}'
-    GROUP BY guild_name
+    GROUP BY guild_id
     ORDER BY message_count DESC
     ${
       offset === false

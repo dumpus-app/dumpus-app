@@ -24,7 +24,7 @@ export default function useTopChannelsData() {
           ON g.guild_id = c.guild_id
         WHERE a.event_name = 'message_sent'
         AND a.day BETWEEN '${start}' AND '${end}'
-        GROUP BY channel_name
+        GROUP BY channel_id
       ) subquery;
   `)[0]
   )[0];
@@ -44,7 +44,7 @@ export default function useTopChannelsData() {
       ON g.guild_id = c.guild_id
     WHERE a.event_name = 'message_sent'
     AND a.day BETWEEN '${start}' AND '${end}'
-    GROUP BY channel_name
+    GROUP BY channel_id
     ORDER BY message_count DESC
     ${
       offset === false

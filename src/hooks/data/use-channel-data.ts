@@ -64,13 +64,13 @@ export default function useChannelData({
     WHERE a.event_name = 'message_sent'
     AND c.channel_id = '${channelId}'
     AND a.day BETWEEN '${start}' AND '${end}'
-    GROUP BY channel_name
+    GROUP BY channel_id
     LIMIT 1;
   `;
 
     const { message_count } = resultAsList<{ message_count: number }>(
       db.exec(query)[0]
-    )[0];
+    )?.[0] || { message_count: 0 };
 
     return message_count;
   }
@@ -101,7 +101,9 @@ export default function useChannelData({
     const { hour } = resultAsList<{
       hour: number;
       message_count: number;
-    }>(db.exec(query)[0])[0];
+    }>(db.exec(query)[0])?.[0] || { hour: -1, message_count: 0 };
+
+    if (hour === -1) return "N/A";
 
     return new Intl.DateTimeFormat(i18next.language, {
       hour: "numeric",
