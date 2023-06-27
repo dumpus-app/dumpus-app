@@ -77,7 +77,7 @@ export default function Page() {
               notation: "compact",
             }).format(stats.messagesCount)}
             topHour={stats.topChatHour}
-            reactionCount="N/A"
+            reactionCount={stats.reactionsCount || "N/A"}
           />
           <DailySentMessages data={dailySentMessages} />
         </>

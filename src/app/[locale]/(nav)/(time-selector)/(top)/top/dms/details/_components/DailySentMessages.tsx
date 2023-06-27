@@ -12,7 +12,7 @@ export default function DailySentMessages({
   }[];
 }) {
   return (
-    <Section title="Daily sent messages" href="/stats#daily-sent-messages">
+    <Section title="Daily sent messages">
       <SimpleLineChart
         data={data}
         className="px-2"

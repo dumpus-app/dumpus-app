@@ -132,12 +132,25 @@ export default function useDMData({ userID }: { userID: string }) {
     return data;
   }
 
+  function getReactionsCount() {
+    return null;
+
+    // TODO: implement query
+    // const query = `
+    // `;
+
+    // const { reaction_count } = resultAsList<{ reaction_count: number }>(db.exec(query)[0])[0]
+
+    // return reaction_count
+  }
+
   return {
     hasData,
     user: getUser(),
     stats: {
       messagesCount: getMessagesCount(),
       topChatHour: getTopChatHour(),
+      reactionsCount: getReactionsCount(),
     },
     dailySentMessages: getDailySentMessages(),
   };
