@@ -211,6 +211,7 @@ def generate_demo_database():
             if is_dm:
                 user = random.choice(dm_user_data)
                 associated_channel_id = user[0]
+                associated_guild_id = None
             else:
                 guild_channel = random.choice(guild_channel_data)
                 associated_user_id = None
