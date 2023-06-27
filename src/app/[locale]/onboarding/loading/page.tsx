@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
-import useSQL from "~/hooks/use-sql";
+import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
 import { nextDbIdAtom } from "~/stores/db";
 import { PackageAPIProcessResponse } from "~/types/package-api";
@@ -26,7 +26,7 @@ export default function Page() {
     ? new URL(packageLink).searchParams.get("upn") || undefined
     : undefined;
 
-  const { init } = useSQL();
+  const { init } = useSQLInit();
   const api = usePackageAPI({ baseURL: backendURL });
 
   const isInitializedRef = useRef(false);

@@ -6,7 +6,7 @@ import Button from "~/components/Button";
 import Link from "~/components/Link";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
-import { getStorageKey } from "~/hooks/use-sql";
+import { getStorageKey } from "~/hooks/use-sql-init";
 import {
   CONFIG_ATOM_INITIAL_VALUE,
   configAtom,

@@ -1,112 +1,48 @@
 "use client";
 
-import { defu } from "defu";
-import { useAtom } from "jotai";
-import LZString from "lz-string";
-import pako from "pako";
-import { useRef } from "react";
-import initSqlJs, { type QueryExecResult } from "sql.js";
-import { configAtom } from "~/stores";
-import { dbAtom } from "~/stores/db";
-import type { PackageData } from "~/types/sql";
+import { resultAsList } from "~/utils/sql";
+import useSafeDB from "./use-safe-db";
+import { createLogger } from "~/utils/logger";
+import { concatTemplateStringArgs } from "~/utils";
 
-const STORAGE_KEY = "db";
-export const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
-
-function store(id: string, value: Uint8Array) {
-  localStorage.setItem(
-    getStorageKey(id),
-    LZString.compressToUTF16(JSON.stringify(Array.from(value)))
-  );
-}
-function retrieve(id: string) {
-  let data = localStorage.getItem(getStorageKey(id));
-  if (data) {
-    return new Uint8Array(JSON.parse(LZString.decompressFromUTF16(data)));
-  }
-  return null;
-}
+const logger = createLogger({ tag: "Temp SQL" });
 
 export default function useSQL() {
-  const [db, setDb] = useAtom(dbAtom);
-  const [config, setConfig] = useAtom(configAtom);
+  const db = useSafeDB();
 
-  const isInitializedRef = useRef(false);
+  function sql<T extends Record<string, any> = never, TRes extends T = T>(
+    strings: TemplateStringsArray,
+    ...expr: (string | number)[]
+  ):
+    | {
+        data: TRes[];
+        hasError: false;
+        error: null;
+      }
+    | {
+        data: null;
+        hasError: true;
+        error: Error;
+      } {
+    const query = concatTemplateStringArgs(strings, expr);
 
-  async function init({
-    id,
-    initData,
-  }: {
-    id: string;
-    initData?: {
-      initialData: ArrayBuffer;
-      packageLink: string;
-      UPNKey: string;
-      backendURL: string;
-    };
-  }) {
-    if (isInitializedRef.current) return;
-    isInitializedRef.current = true;
+    try {
+      const data = resultAsList<TRes>(db.exec(query)[0]);
 
-    let data: Uint8Array;
-    if (initData) {
-      data = pako.inflate(initData.initialData);
-      store(id, data);
-    } else {
-      data = retrieve(id)!;
+      return {
+        data,
+        hasError: false,
+        error: null,
+      };
+    } catch (err) {
+      logger.error(err);
+      return {
+        data: null,
+        hasError: true,
+        error: err as Error,
+      };
     }
-
-    const { Database } = await initSqlJs({
-      locateFile: (file) => `/sqljs/${file}`,
-    });
-    const _db = new Database(data);
-    if (initData) {
-      const issueDate = resultAsList<{ issue_date: string }>(
-        _db.exec("SELECT MIN(day) AS issue_date FROM activity")[0]
-      )[0].issue_date;
-      const packageData = resultAsList<PackageData>(
-        _db.exec("SELECT * FROM package_data LIMIT 1;")[0]
-      )[0];
-      setConfig(
-        defu(
-          {
-            db: {
-              packages: [
-                {
-                  id,
-                  packageLink: initData.packageLink,
-                  UPNKey: initData.UPNKey,
-                  issueDate,
-                  backendURL: initData.backendURL,
-                  ...packageData,
-                },
-              ],
-              selectedId: id,
-            },
-            goToOnboardingAccess: config.goToOnboardingAccess,
-          } satisfies typeof config,
-          config
-        )
-      );
-    }
-    setDb(_db);
   }
 
-  type DefaultT = Record<string, any>;
-  // TODO: extract to sql utils
-  /**
-   * @deprecated use {sql} instead
-   */
-  function resultAsList<T extends DefaultT>(data: QueryExecResult) {
-    const { columns, values } = data;
-    return values.map((value) => {
-      const obj: DefaultT = {};
-      columns.forEach((column, i) => {
-        obj[column] = value[i];
-      });
-      return obj as T;
-    });
-  }
-
-  return { init, resultAsList };
+  return sql;
 }

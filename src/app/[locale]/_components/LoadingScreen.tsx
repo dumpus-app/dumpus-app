@@ -4,7 +4,7 @@ import i18next from "i18next";
 import { useAtom, useAtomValue } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useSQL from "~/hooks/use-sql";
+import useSQLInit from "~/hooks/use-sql-init";
 import { configAtom } from "~/stores";
 import { dbAtom } from "~/stores/db";
 import { createLogger } from "~/utils/logger";
@@ -25,7 +25,7 @@ export default function LoadingScreen({
 
   const [config, setConfig] = useAtom(configAtom);
   const db = useAtomValue(dbAtom);
-  const { init } = useSQL();
+  const { init } = useSQLInit();
 
   const redirectPath = `/${i18next.language}/onboarding`;
 

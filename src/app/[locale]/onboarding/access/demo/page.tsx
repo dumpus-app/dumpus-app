@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
-import useSQL from "~/hooks/use-sql";
+import useSQLInit from "~/hooks/use-sql-init";
 import { nextDbIdAtom } from "~/stores/db";
 
 const packageID = "demo";
@@ -17,7 +17,7 @@ export default function Page() {
   const router = useRouter();
 
   const nextDbId = useAtomValue(nextDbIdAtom);
-  const { init } = useSQL();
+  const { init } = useSQLInit();
   const api = usePackageAPI({});
 
   const isInitializedRef = useRef(false);
