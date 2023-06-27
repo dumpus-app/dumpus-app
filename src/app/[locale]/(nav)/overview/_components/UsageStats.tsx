@@ -12,16 +12,31 @@ function formatNumber(n: number) {
   }).format(n);
 }
 
+function formatHour(hour: number) {
+  return new Intl.DateTimeFormat(i18next.language, {
+    hour: "numeric",
+  }).format(
+    (() => {
+      const date = new Date();
+      date.setHours(hour);
+      return date;
+    })()
+  );
+}
+
 export default function UsageStats() {
   const { networkSize, joinedGuilds, topHour } = useUsageStatsData();
 
   const data = [
-    { value: formatNumber(joinedGuilds), label: "server joined" },
+    {
+      value: joinedGuilds ? formatNumber(joinedGuilds) : "N/A",
+      label: "server joined",
+    },
     { value: "N/A", label: "received calls" },
     { value: "N/A", label: "opened notifs." },
-    { value: topHour, label: "top hour" },
+    { value: topHour ? formatHour(topHour) : "N/A", label: "top hour" },
     {
-      value: formatNumber(networkSize),
+      value: networkSize ? formatNumber(networkSize) : "N/A",
       label: "network size",
     },
   ];
