@@ -23,6 +23,9 @@ export default function Page() {
     channelId,
   });
 
+  // TODO: handle 404
+  if (!channel || !guild) return <NoDataAvailable />;
+
   return (
     <>
       <PageHeader title={"#" + channel.channel_name} />
@@ -52,13 +55,17 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messageCount={Intl.NumberFormat(i18next.language, {
-              notation: "compact",
-            }).format(stats.messagesCount)}
-            invitesCount={stats.invitesCount || "N/A"}
-            topHour={stats.topChatHour || "N/A"}
-            reactionCount={stats.reactionsCount || "N/A"}
-            channelOpenings={stats.channelOpenings || "N/A"}
+            messagesCount={
+              stats.messagesCount
+                ? Intl.NumberFormat(i18next.language, {
+                    notation: "compact",
+                  }).format(stats.messagesCount)
+                : "N/A"
+            }
+            invitesCount={stats.invitesCount?.toString() || "N/A"}
+            topChatHour={stats.topChatHour?.toString() || "N/A"}
+            reactionsCount={stats.reactionsCount?.toString() || "N/A"}
+            channelOpenings={stats.channelOpenings?.toString() || "N/A"}
           />
           <DailySentMessages data={dailySentMessages || []} />
         </>

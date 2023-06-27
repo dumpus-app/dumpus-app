@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import { useDataSources } from "~/hooks/data/_shared";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import type { Guild, GuildChannelsData } from "~/types/sql";
@@ -12,7 +11,7 @@ export default function useChannelData({
   guildId: string;
   channelId: string;
 }) {
-  const { db, resultAsList, start, end } = useDataSources();
+  const { sql, start, end } = useDataSources();
   const topChannelsData = useTopChannelsData().getData({ offset: false });
 
   const hasData = !!topChannelsData?.find(
@@ -20,148 +19,120 @@ export default function useChannelData({
   );
 
   function getChannel() {
-    const query = `
-    SELECT
-      channel_name,
-      channel_id 
-    FROM guild_channels_data
-    WHERE channel_id = '${channelId}'
-    LIMIT 1;
-  `;
-
-    const channel = resultAsList<
+    const { data, hasError } = sql<
       Pick<GuildChannelsData, "channel_name" | "channel_id">
-    >(db.exec(query)[0])[0];
+    >`
+      SELECT
+        channel_name,
+        channel_id 
+      FROM guild_channels_data
+      WHERE channel_id = '${channelId}'
+      LIMIT 1;
+    `;
 
-    return channel;
+    return hasError ? null : data[0];
   }
 
   function getGuild() {
-    const query = `
-    SELECT
-      guild_name,
-      guild_id,
-      total_message_count
-    FROM guilds
-    WHERE guild_id = '${guildId}'
-    LIMIT 1;
-  `;
+    const { data, hasError } = sql<Guild>`
+      SELECT
+        guild_name,
+        guild_id,
+        total_message_count
+      FROM guilds
+      WHERE guild_id = '${guildId}'
+      LIMIT 1;
+    `;
 
-    const guild = resultAsList<Guild>(db.exec(query)[0])[0];
-
-    return guild;
+    return hasError ? null : data[0];
   }
 
   function getMessagesCount() {
-    if (!hasData) return 0;
+    if (!hasData) return null;
 
-    const query = `
-    SELECT
-      SUM(a.occurence_count) AS message_count    
-    FROM guild_channels_data c
-    JOIN activity a
-      ON a.associated_channel_id = c.channel_id
-    WHERE a.event_name = 'message_sent'
-    AND c.channel_id = '${channelId}'
-    AND a.day BETWEEN '${start}' AND '${end}'
-    GROUP BY channel_id
-    LIMIT 1;
-  `;
+    const { data, hasError } = sql<{ message_count: number }>`
+      SELECT
+        SUM(a.occurence_count) AS message_count    
+      FROM guild_channels_data c
+      JOIN activity a
+        ON a.associated_channel_id = c.channel_id
+      WHERE a.event_name = 'message_sent'
+      AND c.channel_id = '${channelId}'
+      AND a.day BETWEEN '${start}' AND '${end}'
+      GROUP BY channel_id
+      LIMIT 1;
+    `;
 
-    const { message_count } = resultAsList<{ message_count: number }>(
-      db.exec(query)[0]
-    )?.[0] || { message_count: 0 };
-
-    return message_count;
+    return hasError ? null : data[0].message_count;
   }
 
   function getInvitesCount() {
-    return null;
-
     // TODO: implement query
-    // const query = `
-    // `;
+    const { data, hasError } = sql<{ invite_count: number }>``;
 
-    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
-
-    // return invite_count
+    return hasError ? null : data[0].invite_count;
   }
 
   function getTopChatHour() {
-    if (!hasData) return "";
+    if (!hasData) return null;
 
     // TODO: fix
-    const query = `
-    SELECT
-    d.channel_id,
-      hour,
-      SUM(a.occurence_count) AS message_count
-    FROM 
-      activity a
-    JOIN dm_channels_data d
-      ON d.channel_id = a.associated_channel_id
-    WHERE event_name = 'message_sent' 
-    AND day BETWEEN '${start}' AND '${end}'
-    AND d.channel_id = '${channelId}'
-    GROUP BY hour
-    LIMIT 1
-    `;
-
-    const dbResult = db.exec(query);
-    if (dbResult.length === 0) return null;
-
-    const { hour } = resultAsList<{
+    const { data, hasError } = sql<{
       hour: number;
       message_count: number;
-    }>(db.exec(query)[0])?.[0] || { hour: -1, message_count: 0 };
+    }>`
+      SELECT
+      d.channel_id,
+        hour,
+        SUM(a.occurence_count) AS message_count
+      FROM 
+        activity a
+      JOIN dm_channels_data d
+        ON d.channel_id = a.associated_channel_id
+      WHERE event_name = 'message_sent' 
+      AND day BETWEEN '${start}' AND '${end}'
+      AND d.channel_id = '${channelId}'
+      GROUP BY hour
+      LIMIT 1
+    `;
 
-    if (hour === -1) return "N/A";
+    if (hasError) {
+      return null;
+    }
 
-    return new Intl.DateTimeFormat(i18next.language, {
-      hour: "numeric",
-    }).format(
-      (() => {
-        const date = new Date();
-        date.setHours(hour);
-        return date;
-      })()
-    );
+    return data[0].hour;
+
+    // TODO: format
+    // return new Intl.DateTimeFormat(i18next.language, {
+    //   hour: "numeric",
+    // }).format(
+    //   (() => {
+    //     const date = new Date();
+    //     // date.setHours(hour);
+    //     return date;
+    //   })()
+    // );
   }
 
   function getReactionsCount() {
-    return null;
-
     // TODO: implement query
-    // const query = `
-    // `;
+    const { data, hasError } = sql<{ reaction_count: number }>``;
 
-    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
-
-    // return invite_count
+    return hasError ? null : data[0].reaction_count;
   }
 
   function getChannelOpenings() {
-    return null;
-
     // TODO: implement query
-    // const query = `
-    // `;
+    const { data, hasError } = sql<{ opening_count: number }>``;
 
-    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
-
-    // return invite_count
+    return hasError ? null : data[0].opening_count;
   }
 
   function getDailySentMessages() {
-    return null;
-
     // TODO: implement query
-    // const query = `
-    // `;
+    const { data, hasError } = sql<{ message_count: number }>``;
 
-    // const { invite_count } = resultAsList<{ invite_count: number }>(db.exec(query)[0])[0]
-
-    // return invite_count
+    return hasError ? null : [];
   }
 
   return {

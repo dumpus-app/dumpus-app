@@ -1,21 +1,21 @@
 import StatCard from "~/components/data/StatCard";
 
 export default function Stats({
-  messageCount,
+  messagesCount,
   invitesCount,
-  topHour,
-  reactionCount,
+  topChatHour,
+  reactionsCount,
   channelOpenings,
 }: {
-  messageCount: string;
+  messagesCount: string;
   invitesCount: string;
-  topHour: string;
-  reactionCount: string;
+  topChatHour: string;
+  reactionsCount: string;
   channelOpenings: string;
 }) {
   const data = [
     {
-      value: messageCount,
+      value: messagesCount,
       label: "total messages sent",
     },
     {
@@ -23,11 +23,11 @@ export default function Stats({
       label: "invites created",
     },
     {
-      value: topHour,
+      value: topChatHour,
       label: "top chat hour",
     },
     {
-      value: reactionCount,
+      value: reactionsCount,
       label: "reactions added",
     },
     {
