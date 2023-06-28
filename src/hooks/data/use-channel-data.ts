@@ -104,8 +104,13 @@ export default function useChannelData({
   }
 
   function getReactionsCount() {
-    // TODO: implement query
-    const { data, hasError } = sql<{ reaction_count: number }>``;
+    const { data, hasError } = sql<{ reaction_count: number }>`
+      SELECT SUM(a.occurence_count) AS reaction_count
+      FROM activity a
+      WHERE a.event_name = 'add_reaction'
+      AND a.associated_channel_id = '${channelId}'
+      AND a.day BETWEEN '${start}' AND '${end}';
+    `;
 
     return hasError ? null : data[0].reaction_count;
   }
