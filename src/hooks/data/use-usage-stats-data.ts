@@ -61,7 +61,7 @@ export default function useUsageStatsData() {
     const { data, hasError } = sql<{ message_count: number }>`
       SELECT
         SUM(a.occurence_count) AS message_count    
-      FROM guild_channels_data c
+      FROM activity a
       WHERE a.event_name = 'message_sent'
       AND a.day BETWEEN '${start}' AND '${end}'
     `;
