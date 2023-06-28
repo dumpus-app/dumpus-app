@@ -62,9 +62,7 @@ export default function useSQLInit() {
     });
     const _db = new Database(data);
     if (initData) {
-      const issueDate = resultAsList<{ issue_date: string }>(
-        _db.exec("SELECT MIN(day) AS issue_date FROM activity")[0]
-      )[0].issue_date;
+      const dateAdded = new Date().toISOString();
       const packageData = resultAsList<PackageData>(
         _db.exec("SELECT * FROM package_data LIMIT 1;")[0]
       )[0];
@@ -77,7 +75,7 @@ export default function useSQLInit() {
                   id,
                   packageLink: initData.packageLink,
                   UPNKey: initData.UPNKey,
-                  issueDate,
+                  dateAdded,
                   backendURL: initData.backendURL,
                   ...packageData,
                 },

@@ -18,7 +18,7 @@ export const configAtom = atomWithLocalStorage<{
       id: string;
       packageLink: string;
       UPNKey: string;
-      issueDate: string;
+      dateAdded: string;
       backendURL: string;
     } & PackageData)[];
     selectedId: null | string;

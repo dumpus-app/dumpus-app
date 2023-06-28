@@ -42,14 +42,18 @@ export default function PackageDetails() {
           href="#"
           onClick={(e) => {
             e.preventDefault();
-            copyToClipboard(selectedPackage.issueDate);
+            copyToClipboard(
+              formatDate(selectedPackage.dateAdded, {
+                hour: false,
+                minute: false,
+              })
+            );
           }}
-          // TODO: issueDate seems wrong. Check in sql init
-          title={formatDate(selectedPackage.issueDate, {
+          title={formatDate(selectedPackage.dateAdded, {
             hour: false,
             minute: false,
           })}
-          description="Generated on"
+          description="Added on"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />

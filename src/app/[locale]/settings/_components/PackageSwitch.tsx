@@ -21,12 +21,12 @@ export default function PackageSwitch() {
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         {unselectedPackages
           .map((e, i) => ({ ...e, rank: i + 1 }))
-          .map(({ id, rank, package_owner_name, issueDate }) => (
+          .map(({ id, rank, package_owner_name, dateAdded }) => (
             <DetailCard.WithRank
               key={rank}
               rank={rank}
               title={package_owner_name}
-              description={`Generated on ${formatDate(issueDate, {
+              description={`Generated on ${formatDate(dateAdded, {
                 hour: false,
                 minute: false,
               })}`}
