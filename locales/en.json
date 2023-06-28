@@ -20,6 +20,11 @@
     "shared": {
       "previous": "Previous",
       "trust": "Why should I trust the app?",
+      "trustContent": [
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+      ],
       "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!"
     },
     "/": {
@@ -31,7 +36,7 @@
     "slides": [
       {
         "title": "What does Dumpus really do?",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+        "description": "Lorem **ipsum** dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
       },
       {
         "title": "Dumpus is safe",
