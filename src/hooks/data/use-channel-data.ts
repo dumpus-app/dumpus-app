@@ -82,18 +82,15 @@ export default function useChannelData({
       message_count: number;
     }>`
       SELECT
-      d.channel_id,
-        hour,
-        SUM(a.occurence_count) AS message_count
-      FROM 
-        activity a
-      JOIN dm_channels_data d
-        ON d.channel_id = a.associated_channel_id
+        hour, SUM(occurence_count) as occurence_count
+      FROM
+          activity a
       WHERE event_name = 'message_sent' 
       AND day BETWEEN '${start}' AND '${end}'
-      AND d.channel_id = '${channelId}'
+      AND associated_channel_id = '${channelId}'
       GROUP BY hour
-      LIMIT 1
+      ORDER BY occurence_count DESC
+      LIMIT 1;
     `;
 
     if (hasError) {
