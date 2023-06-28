@@ -82,16 +82,16 @@
           "display": "Desktop",
           "steps": [
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/fr/step1.png"
             },
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Click on \"Privacy & Safety\"",
+              "image": "/assets/onboarding/en/step2.png"
             },
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/step3.png"
             }
           ]
         }
