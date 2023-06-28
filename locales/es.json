@@ -32,7 +32,11 @@
       "welcome": "Welcome to Dumpus",
       "description": "$t(seo.description)",
       "step": "Step {{n}}",
-      "steps": ["Explanation", "Obtain your data", "Start the analyze"]
+      "steps": [
+        "Explanation",
+        "Obtain your data",
+        "Start the analyze"
+      ]
     },
     "slides": [
       {
