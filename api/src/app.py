@@ -231,7 +231,7 @@ def cancel_package(package_id):
     return jsonify(res), 200
 
 @app.route('/process/<package_id>/user/<user_id>', methods=['GET'])
-@limiter.limit("2/second")
+#@limiter.limit("2/second")
 def get_avatar(package_id, user_id):
     
         (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
