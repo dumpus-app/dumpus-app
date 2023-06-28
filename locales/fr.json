@@ -82,16 +82,16 @@
           "display": "PC/Mac",
           "steps": [
             {
-              "name": "Ouvrez vos paramètres Discord",
+              "name": "Open your Discord settings",
               "image": "/assets/onboarding/fr/step1.png"
             },
             {
-              "name": "Ouvrez l'onglet \"Confidentialité\"",
-              "image": "/assets/onboarding/fr/step2.png"
+              "name": "Click on \"Privacy & Safety\"",
+              "image": "/assets/onboarding/en/step2.png"
             },
             {
-              "name": "Appuyez sur \"Demande de données\"",
-              "image": "/assets/onboarding/fr/step3.png"
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/step3.png"
             }
           ]
         }
