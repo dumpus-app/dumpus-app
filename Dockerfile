@@ -1,5 +1,5 @@
 # Base image: Node LTS
-FROM node:16.15.0-alpine
+FROM node:16.20.1-alpine
 
 # Install PNPM
 RUN npm install -g pnpm
