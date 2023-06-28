@@ -5,9 +5,10 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import i18next from "i18next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Fragment, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
+import { useTranslation } from "~/i18n/client";
 import { locales } from "~/i18n/settings";
 
 function LocalesList() {
@@ -48,7 +49,7 @@ function LocalesList() {
                   as="span"
                   className="font-medium text-gray-400"
                 >
-                  {locale}
+                  {i18next.getFixedT(locale)("localeDisplay")}
                 </RadioGroup.Label>
                 <span
                   className={clsx(
@@ -74,6 +75,12 @@ function LocaleSwitcher({
   open: boolean;
   setOpen: (v: boolean) => void;
 }) {
+  const loadedRef = useRef(false);
+  if (!loadedRef.current) {
+    loadedRef.current = true;
+    i18next.loadLanguages(locales);
+  }
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={setOpen}>
@@ -122,8 +129,8 @@ function LocaleSwitcher({
 }
 
 export default function Languages() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const { language } = i18next;
 
   return (
     <>
@@ -135,7 +142,7 @@ export default function Languages() {
               e.preventDefault();
               setOpen(true);
             }}
-            title={language}
+            title={t("localeDisplay")}
             description={`${locales.length} available`}
             reverseTexts
             rightIcon={ChevronRightIcon}
