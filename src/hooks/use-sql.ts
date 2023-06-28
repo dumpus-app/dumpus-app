@@ -5,7 +5,7 @@ import useSafeDB from "./use-safe-db";
 import { createLogger } from "~/utils/logger";
 import { concatTemplateStringArgs } from "~/utils";
 
-const logger = createLogger({ tag: "Temp SQL" });
+const logger = createLogger({ tag: "SQL" });
 
 export default function useSQL() {
   const db = useSafeDB();
@@ -27,7 +27,9 @@ export default function useSQL() {
     const query = concatTemplateStringArgs(strings, expr);
 
     try {
+      const startDate = new Date();
       const data = resultAsList<TRes>(db.exec(query)[0]);
+      logger.log(`Query\n${query}\ntook ${+new Date() - +startDate}ms`);
 
       return {
         data,
