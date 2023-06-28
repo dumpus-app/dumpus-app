@@ -3,6 +3,7 @@ import { PageProps } from "~/types";
 import Slide1 from "./_components/Slide1";
 import Slide2 from "./_components/Slide2";
 import Slide3 from "./_components/Slide3";
+import RenderMarkdown from "~/components/RenderMarkdown";
 
 const SLIDES = [Slide1, Slide2, Slide3].map((e) => ({ image: e }));
 
@@ -31,7 +32,9 @@ export default async function Page({
     <div className="flex flex-col space-y-4 text-center">
       <Img className="w-full" />
       <h1 className="text-xl font-bold text-white">{title}</h1>
-      <p className="text-gray-400">{description}</p>
+      <p className="text-gray-400">
+        <RenderMarkdown content={description} />
+      </p>
     </div>
   );
 }
