@@ -40,7 +40,7 @@ export default function Page() {
               stats.invitesCount ? formatNumber(stats.invitesCount) : "N/A"
             }
             joinsCount={
-              stats.joinsCount ? formatNumber(stats.joinsCount) : "N/A"
+              stats.joinsCount !== null ? formatNumber(stats.joinsCount) : "N/A"
             }
             topChatHour={
               stats.topChatHour ? formatHour(stats.topChatHour) : "N/A"
