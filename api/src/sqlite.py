@@ -207,7 +207,7 @@ def generate_demo_database():
         cur.execute(guild_channel_query, data)
 
     for i in range(0, 5000):
-        event_name = random.choice(["message_sent", "guild_joined", "application_command_used"])
+        event_name = random.choice(["message_sent", "guild_joined", "application_command_used", "add_reaction"])
         
         extra_field_1 = None
         extra_field_2 = None
