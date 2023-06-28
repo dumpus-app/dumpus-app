@@ -15,12 +15,15 @@ import Stats from "./_components/Stats";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
 import { formatDate, formatHour, formatNumber } from "~/utils/format";
+import SentimentScore from "./_components/SentimentScore";
 
 export default function Page() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 
-  const { hasData, user, stats, dailySentMessages } = useDMData({ userID: id });
+  const { hasData, user, stats, dailySentMessages, sentimentScore } = useDMData(
+    { userID: id }
+  );
 
   const networkState = useNetworkState();
 
@@ -88,6 +91,7 @@ export default function Page() {
               stats.reactionsCount ? formatNumber(stats.reactionsCount) : "N/A"
             }
           />
+          {sentimentScore && <SentimentScore score={sentimentScore} />}
           {/* TODO: handle no data */}
           <DailySentMessages
             data={(dailySentMessages || []).map(({ value, label }) => ({

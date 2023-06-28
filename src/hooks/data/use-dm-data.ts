@@ -122,6 +122,17 @@ export default function useDMData({ userID }: { userID: string }) {
     return hasError ? null : data[0].reaction_count;
   }
 
+  function getSentimentScore() {
+    const { data, hasError } = sql<Pick<DmChannelsData, "sentiment_score">>`
+      SELECT
+        sentiment_score
+      FROM dm_channels_data
+      WHERE dm_user_id = '${userID}';
+    `;
+
+    return hasError ? null : data[0].sentiment_score;
+  }
+
   return {
     hasData,
     user: getUser(),
@@ -130,6 +141,7 @@ export default function useDMData({ userID }: { userID: string }) {
       topChatHour: getTopChatHour(),
       reactionsCount: getReactionsCount(),
     },
+    sentimentScore: getSentimentScore(),
     dailySentMessages: getDailySentMessages(),
   };
 }

@@ -9,6 +9,7 @@ export default {
       brand: colors.sky,
       gray: colors.slate,
       danger: colors.rose,
+      success: colors.emerald,
       white: "#fff",
       transparent: "transparent",
       inherit: "inherit",

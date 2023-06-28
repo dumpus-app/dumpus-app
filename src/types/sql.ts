@@ -18,6 +18,7 @@ export type DmChannelsData = {
   user_avatar_url?: string;
   total_message_count: number;
   total_voice_channel_duration: number;
+  sentiment_score: number;
 };
 
 export type GuildChannelsData = {
