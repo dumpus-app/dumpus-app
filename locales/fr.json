@@ -15,7 +15,7 @@
       "/": "Allons-y",
       "/intro/1": "Compris !",
       "/intro/2": "Parfait !",
-      "/intro/3": "Allons récupérer mon package !",
+      "/intro/3": "Allons récupérer mes données !",
       "/setup": "Compris !"
     },
     "shared": {
@@ -98,7 +98,7 @@
       }
     },
     "access": {
-      "title": "Envoyez votre Data Package",
+      "title": "Envoyez votre paquet de données",
       "description": "Choisissez votre méthode préférée.",
       "method": "Méthode {{n}}",
       "methods": {
