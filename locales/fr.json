@@ -82,16 +82,16 @@
           "display": "PC/Mac",
           "steps": [
             {
-              "name": "Ouvre vos paramètres desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Ouvrez vos paramètres Discord",
+              "image": "/assets/onboarding/fr/step1.png"
             },
             {
-              "name": "Ouvre vos paramètres desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Ouvrez l'onglet \"Confidentialité\"",
+              "image": "/assets/onboarding/fr/step2.png"
             },
             {
-              "name": "Ouvre vos paramètres desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Appuyez sur \"Demande de données\"",
+              "image": "/assets/onboarding/fr/step3.png"
             }
           ]
         }
