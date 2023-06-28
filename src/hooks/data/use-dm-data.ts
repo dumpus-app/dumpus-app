@@ -6,7 +6,6 @@ import useTopDMsData from "~/hooks/data/use-top-dms-data";
 
 export default function useDMData({ userID }: { userID: string }) {
   const { sql, start, end } = useDataSources();
-  // TODO: only return ids
   const topDMsData = useTopDMsData().getData({ offset: false });
 
   const hasData = !!topDMsData?.find((dm) => dm.dm_user_id === userID);
