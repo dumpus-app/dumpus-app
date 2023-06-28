@@ -2,75 +2,70 @@ Note: this documentation was generated automatically from the tasks.py code usin
 
 
 **activity table**
-
 |Column|Description|
-|------|-----------|
-|event_name|The type of event activity, such as 'message_sent', 'guild_joined', or 'application_command_used'|
-|day|The date (YYYY-MM-DD format) when the event occurred|
-|hour|The hour (integer format) when the event occurred|
-|occurence_count|The number of events happened during the specified hour|
-|associated_channel_id|The ID of the associated channel (if applicable)|
-|associated_guild_id|The ID of the associated guild (if applicable)|
-|associated_user_id|The ID of the associated user (if applicable)|
+|-|-|
+|event_name|The type of event associated with the record. Examples include "message_sent", "guild_joined", and "application_command_used", among others.|
+|day|The date the event took place, formatted as 'YYYY-MM-DD'.|
+|hour|The hour during which the event took place, in 24h format.|
+|occurence_count|The number of times the event occurred within the specified hour.|
+|associated_channel_id|The ID of the channel related to the event, if any.|
+|associated_guild_id|The ID of the guild related to the event, if any.|
+|associated_user_id|The ID of the user related to the event, if any.|
+|extra_field_1|An additional field for storing event-related details. Its usage varies depending on the event.|
+|extra_field_2|Another additional field for storing event-related details. Its usage varies depending on the event.|
 
 **dm_channels_data table**
-
 |Column|Description|
-|------|-----------|
-|channel_id|The ID of the Direct Message (DM) channel|
-|dm_user_id|The ID of the user involved in the DM|
-|user_name|The username of the user involved in the DM|
-|display_name|The display name of the user involved in the DM|
-|user_avatar_url|The avatar URL of the user involved in the DM|
-|total_message_count|The total number of messages in the DM channel|
-|total_voice_channel_duration|The duration (in minutes) spent by the user in voice channels|
-|sentiment_score|The sentiment score of the messages in the DM channel|
+|-|-|
+|channel_id|The ID of the direct message (DM) channel.|
+|dm_user_id|The ID of the user the direct messages are with.|
+|user_name|The username of the DM user.|
+|display_name|The display name of the DM user.|
+|user_avatar_url|The URL of the avatar of the DM user.|
+|total_message_count|The total count of messages in the DM channel.|
+|total_voice_channel_duration|The total duration, in minutes, of voice sessions in the DM channel (currently always zero, reserved for future use).|
+|sentiment_score|The sentiment score for the DM channel.|
 
 **guild_channels_data table**
-
 |Column|Description|
-|------|-----------|
-|channel_id|The ID of the guild channel|
-|guild_id|The ID of the associated guild|
-|channel_name|The name of the guild channel|
-|total_message_count|The total number of messages in the guild channel|
-|total_voice_channel_duration|The total duration (in minutes) spent by users in the voice channel|
+|-|-|
+|channel_id|The ID of the channel.|
+|guild_id|The ID of the guild the channel belongs to.|
+|channel_name|The name of the channel.|
+|total_message_count|The total count of messages in the channel.|
+|total_voice_channel_duration|The total duration, in minutes, of voice sessions in the channel.|
 
 **guilds table**
-
 |Column|Description|
-|------|-----------|
-|guild_id|The ID of the guild|
-|guild_name|The name of the guild|
-|total_message_count|The total number of messages in the guild|
+|-|-|
+|guild_id|The ID of the guild.|
+|guild_name|The name of the guild.|
+|total_message_count|The total count of messages sent within the guild.|
 
 **payments table**
-
 |Column|Description|
-|------|-----------|
-|payment_id|The ID of the payment|
-|payment_date|The date (YYYY-MM-DD format) of the payment|
-|payment_amount|The amount of the payment|
-|payment_currency|The currency of the payment|
-|payment_description|The description of the payment|
+|-|-|
+|payment_id|The ID of the payment.|
+|payment_date|The date the payment was made, formatted as 'YYYY-MM-DD'.|
+|payment_amount|The amount of the payment.|
+|payment_currency|The currency in which the payment was made.|
+|payment_description|A description of what the payment is for.|
 
 **voice_sessions table**
-
 |Column|Description|
-|------|-----------|
-|channel_id|The ID of the voice channel|
-|guild_id|The ID of the associated guild|
-|duration_mins|The duration (in minutes) of the voice session|
-|started_date|The start date and time (datetime format) of the voice session|
-|ended_date|The end date and time (datetime format) of the voice session|
+|-|-|
+|channel_id|The ID of the channel in which the voice session occurred.|
+|guild_id|The ID of the guild in which the voice session took place.|
+|duration_mins|The duration of the voice session, in minutes.|
+|started_date|The date the voice session began, formatted as 'YYYY-MM-DD HH:MM:SS'.|
+|ended_date|The date the voice session ended, formatted as 'YYYY-MM-DD HH:MM:SS'.|
 
 **package_data table**
-
 |Column|Description|
-|------|-----------|
-|package_id|The ID of the package|
-|package_version|The version of the package|
-|package_owner_id|The ID of the package owner|
-|package_owner_name|The username of the package owner|
-|package_owner_display_name|The display name of the package owner|
-|package_owner_avatar_url|The avatar URL of the package owner|
+|-|-|
+|package_id|The unique identifier of the package.|
+|package_version|The version of the package.|
+|package_owner_id|The ID of the owner of the package.|
+|package_owner_name|The username of the owner of the package.|
+|package_owner_display_name|The display name of the owner of the package.|
+|package_owner_avatar_url|The URL of the avatar of the package's owner.|
