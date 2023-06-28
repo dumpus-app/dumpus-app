@@ -11,6 +11,7 @@ import TopChannels from "./_components/TopChannels";
 import TopUsedBots from "./_components/TopUsedBots";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
+import { formatHour, formatNumber } from "~/utils/format";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -30,11 +31,18 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            // TODO: format
-            messagesCount={stats.messagesCount?.toString() || "N/A"}
-            invitesCount={stats.invitesCount?.toString() || "N/A"}
-            joinsCount={stats.joinsCount?.toString() || "N/A"}
-            topChatHour={stats.topChatHour?.toString() || "N/A"}
+            messagesCount={
+              stats.messagesCount ? formatNumber(stats.messagesCount) : "N/A"
+            }
+            invitesCount={
+              stats.invitesCount ? formatNumber(stats.invitesCount) : "N/A"
+            }
+            joinsCount={
+              stats.joinsCount ? formatNumber(stats.joinsCount) : "N/A"
+            }
+            topChatHour={
+              stats.topChatHour ? formatHour(stats.topChatHour) : "N/A"
+            }
           />
           {/* TODO: handle no data */}
           <TopUsedBots bots={topBots || []} />
