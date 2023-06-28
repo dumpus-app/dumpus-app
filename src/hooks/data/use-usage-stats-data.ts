@@ -57,10 +57,23 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].total_spent;
   }
 
+  function getMessageCount() {
+    const { data, hasError } = sql<{ message_count: number }>`
+      SELECT
+        SUM(a.occurence_count) AS message_count    
+      FROM guild_channels_data c
+      WHERE a.event_name = 'message_sent'
+      AND a.day BETWEEN '${start}' AND '${end}'
+    `;
+
+    return hasError ? null : data[0].message_count;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
     topHour: getTopHour(),
     spentMoney: getSpentMoney(),
+    messageCount: getMessageCount(),
   };
 }

@@ -7,9 +7,13 @@ import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import { formatHour, formatNumber } from "~/utils/format";
 
 export default function UsageStats() {
-  const { networkSize, joinedGuilds, topHour } = useUsageStatsData();
+  const { messageCount, networkSize, joinedGuilds, topHour } = useUsageStatsData();
 
   const data = [
+    {
+      value: messageCount ? formatNumber(messageCount) : "N/A",
+      label: "messages sent",
+    },
     {
       value: joinedGuilds ? formatNumber(joinedGuilds) : "N/A",
       label: "server joined",
