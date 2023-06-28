@@ -117,6 +117,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
     payments = []
 
     guild_joined = []
+    add_reaction = []
 
     # dev
     bot_token_compromised = []
@@ -170,7 +171,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
         '''
 
         analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics') and name.endswith('.json')), None)
-
 
         compute_time_per_line = []
         for line in TextIOWrapper(zip.open(analytics_file_name)):
@@ -231,6 +231,15 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                         'application_id': analytics_line_json['application_id'],
                         'guild_id': analytics_line_json['guild_id']
+                    })
+
+                if analytics_line_json['event_type'] == 'add_reaction':
+                    add_reaction.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        'user_id': analytics_line_json['user_id'],
+                        'guild_id': analytics_line_json['guild_id'],
+                        'channel_id': analytics_line_json['channel_id'],
+                        'emoji_name': analytics_line_json['emoji_name']
                     })
 
             except:
@@ -430,7 +439,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         for timestamp, count in channel['message_timestamps'].items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None, None))
+            activity_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None, None, None, None))
 
     for guild in guilds:
         total_message_count = sum(channel['total_message_count'] for channel in guild_channels_data if channel['guild_id'] == guild['id'])
@@ -452,7 +461,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         for timestamp, count in entries.items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('guild_joined', day, hour, count, None, guild_id, None))
+            activity_data.append(('guild_joined', day, hour, count, None, guild_id, None, None, None))
 
     application_command_used_pdf = pd.DataFrame(application_command_used)
     application_command_used_pdf_grouped = application_command_used_pdf.groupby(['guild_id', 'application_id'])
@@ -462,12 +471,23 @@ def read_analytics_file(package_status_id, package_id, link, session):
         for timestamp, count in entries.items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('application_command_used', day, hour, count, None, guild_id, application_id))
+            activity_data.append(('application_command_used', day, hour, count, None, guild_id, application_id, None, None))
+
+    add_reaction_pdf = pd.DataFrame(add_reaction)
+    add_reaction_pdf_grouped = add_reaction_pdf.groupby(['channel_id', 'emoji_name'])
+    for (channel_id, emoji_name), group in add_reaction_pdf_grouped:
+        # check with first item if is custom
+        is_custom = '1' if group.iloc[0]['is_custom_emoji'] is True else '0'
+        entries = count_dates_day(group['timestamp'])
+        for timestamp, count in entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('add_reaction', day, hour, count, channel_id, None, None, emoji_name, is_custom))
 
     activity_query = '''
         INSERT INTO activity
-        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
+        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     '''
 
     dm_user_query = '''

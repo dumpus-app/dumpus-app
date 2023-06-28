@@ -39,7 +39,9 @@ def create_new_empty_database():
             associated_user_id TEXT,
             associated_channel_id TEXT,
             associated_guild_id TEXT,
-            PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id, associated_user_id)
+            extra_field_1 TEXT,
+            extra_field_2 TEXT,
+            PRIMARY KEY (event_name, day, hour, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1)
         )
     ''')
 
