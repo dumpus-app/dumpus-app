@@ -237,9 +237,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     add_reaction.append({
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                         'user_id': analytics_line_json['user_id'],
-                        'guild_id': analytics_line_json['guild_id'],
                         'channel_id': analytics_line_json['channel_id'],
-                        'emoji_name': analytics_line_json['emoji_name']
+                        'emoji_name': analytics_line_json['emoji_name'],
+                        'is_custom_emoji': 'emoji_id' in analytics_line_json
                     })
 
             except:
