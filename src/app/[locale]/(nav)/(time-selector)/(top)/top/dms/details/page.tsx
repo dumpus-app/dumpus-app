@@ -92,7 +92,6 @@ export default function Page() {
             }
           />
           {sentimentScore && <SentimentScore score={sentimentScore} />}
-          {/* TODO: handle no data */}
           <DailySentMessages
             data={(dailySentMessages || []).map(({ value, label }) => ({
               value,

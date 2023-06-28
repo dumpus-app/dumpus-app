@@ -63,7 +63,6 @@ export default function TopDMs() {
     <Section title="Top DMs" href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {/* TODO: handle no data */}
           {(data || []).map((dm) => (
             <DMCard key={dm.rank} dm={dm} size={size} />
           ))}

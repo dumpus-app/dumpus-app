@@ -20,7 +20,6 @@ export default function DailySentMessages() {
   return (
     <Section title="Daily sent messages" href="/stats#daily-sent-messages">
       <SimpleLineChart
-        // TODO: handle no data
         data={data}
         className="px-2"
         legend="Messages sent"

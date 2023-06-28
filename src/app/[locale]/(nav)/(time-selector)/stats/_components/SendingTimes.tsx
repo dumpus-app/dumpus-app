@@ -11,7 +11,6 @@ function Chart() {
 
   return (
     <SimpleBarChart
-      // TODO: handle no data
       data={(chartData || []).map(({ value, label }) => ({
         value,
         label: formatHour(label),

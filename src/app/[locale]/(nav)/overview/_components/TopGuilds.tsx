@@ -63,7 +63,6 @@ export default function TopGuilds() {
     <Section title="Top guilds" href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {/* TODO: handle no data */}
           {(data || []).map((guild) => (
             <GuildCard key={guild.rank} guild={guild} />
           ))}

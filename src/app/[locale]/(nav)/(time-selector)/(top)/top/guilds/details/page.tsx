@@ -48,7 +48,6 @@ export default function Page() {
           />
           {/* TODO: handle no data */}
           <TopUsedBots bots={topBots || []} />
-          {/* TODO: handle no data */}
           <TopChannels channels={topChannels || []} />
           {/* TODO: implement */}
           {/* <FirstMessages /> */}

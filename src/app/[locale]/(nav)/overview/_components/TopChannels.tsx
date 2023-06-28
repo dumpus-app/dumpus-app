@@ -14,7 +14,6 @@ export default function TopChannels() {
     <Section title="Top channels" href="/top/channels">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {/* TODO: handle no data */}
           {(data || []).map((channel) => (
             <AvatarCard
               key={channel.rank}
