@@ -1,7 +1,7 @@
 "use client";
 
 import { ComputerDesktopIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useOS, { type OS } from "~/hooks/use-os";
 import type { Icon } from "~/types";
 import { Tab } from "@headlessui/react";
@@ -21,12 +21,14 @@ export default function Page() {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const rawData = t("onboarding.setup.data", {
-    returnObjects: true,
-  });
-  const data = (Object.keys(rawData) as OS[]).map((key) => {
-    return { ...rawData[key], key, icon: icons[key] };
-  });
+  const data = useMemo(() => {
+    const rawData = t("onboarding.setup.data", {
+      returnObjects: true,
+    });
+    return (Object.keys(rawData) as OS[]).map((key) => {
+      return { ...rawData[key], key, icon: icons[key] };
+    });
+  }, [t]);
 
   useEffect(() => {
     setSelectedIndex(data.findIndex((e) => e.key === os));
