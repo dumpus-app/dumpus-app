@@ -1,5 +1,5 @@
 {
-  "localeDisplay": "Français",
+  "localeDisplay": "English",
   "seo": {
     "title": "Dumpus | Stats pour Discord",
     "description": "Obtenez des informations et des statistiques détaillées sur votre compte Discord"
@@ -32,7 +32,11 @@
       "welcome": "Bienvenue sur Dumpus",
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
-      "steps": ["Explication", "Obtenez vos données", "Démarrez l'analyse"]
+      "steps": [
+        "Explication",
+        "Obtenez vos données",
+        "Démarrez l'analyse"
+      ]
     },
     "slides": [
       {
