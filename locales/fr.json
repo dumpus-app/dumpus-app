@@ -61,15 +61,15 @@
           "steps": [
             {
               "name": "Ouvrez vos paramètres Discord",
-              "image": "/assets/onboarding/fr/android/step1.png"
+              "image": "/assets/onboarding/fr/android/step1.jpg"
             },
             {
               "name": "Ouvrez l'onglet \"Confidentialité\"",
-              "image": "/assets/onboarding/fr/android/step2.png"
+              "image": "/assets/onboarding/fr/android/step2.jpg"
             },
             {
               "name": "Appuyez sur \"Demande de données\"",
-              "image": "/assets/onboarding/fr/android/step3.png"
+              "image": "/assets/onboarding/fr/android/step3.jpg"
             }
           ]
         },
