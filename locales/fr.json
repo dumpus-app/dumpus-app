@@ -20,6 +20,11 @@
     "shared": {
       "previous": "Précédent",
       "trust": "Pourquoi devrais-je faire confiance à l'application ?",
+      "trustContent": [
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+      ],
       "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !"
     },
     "/": {
@@ -35,7 +40,7 @@
     "slides": [
       {
         "title": "Que fait vraiment Dumpus ?",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+        "description": "Lorem **ipsum** dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
       },
       {
         "title": "Dumpus est sécurisé",
