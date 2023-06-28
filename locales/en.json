@@ -56,12 +56,16 @@
           "display": "Android",
           "steps": [
             {
-              "name": "Open your settings android",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/android/step1.jpg"
             },
             {
-              "name": "Open your settings android",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/android/step2.jpg"
+            },
+            {
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/android/step3.jpg"
             }
           ]
         },
@@ -78,16 +82,16 @@
           "display": "Desktop",
           "steps": [
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
         }
