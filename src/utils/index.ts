@@ -21,3 +21,7 @@ export function concatTemplateStringArgs(
   });
   return str;
 }
+
+export function firstCharFromUnicode(str: string) {
+  return [...str][0];
+}

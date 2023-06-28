@@ -8,6 +8,7 @@ import useWidgetAPI from "~/hooks/use-widget-api";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { iconColor } from "~/utils/discord";
+import { firstCharFromUnicode } from "~/utils";
 
 export default function Profile({
   guild,
@@ -49,7 +50,7 @@ export default function Profile({
               backgroundColor: iconColor(guild.guild_id),
             }}
           >
-            <div>{guild.guild_name[0]}</div>
+            <div>{firstCharFromUnicode(guild.guild_name)}</div>
           </div>
         )
       }

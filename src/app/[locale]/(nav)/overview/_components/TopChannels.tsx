@@ -4,6 +4,7 @@ import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
+import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 
 export default function TopChannels() {
@@ -30,7 +31,7 @@ export default function TopChannels() {
                     ),
                   }}
                 >
-                  <div>{channel.channel_name[0]}</div>
+                  <div>{firstCharFromUnicode(channel.channel_name)}</div>
                 </div>
               }
             />

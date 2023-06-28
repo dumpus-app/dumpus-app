@@ -7,6 +7,7 @@ import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
+import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 
 function GuildCard({
@@ -47,7 +48,7 @@ function GuildCard({
               backgroundColor: iconColor(guild.guild_id),
             }}
           >
-            <div>{guild.guild_name[0]}</div>
+            <div>{firstCharFromUnicode(guild.guild_name)}</div>
           </div>
         )
       }

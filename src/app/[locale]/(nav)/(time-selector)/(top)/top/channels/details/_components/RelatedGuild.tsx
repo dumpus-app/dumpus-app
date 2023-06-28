@@ -5,6 +5,7 @@ import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import useRelatedGuild from "~/hooks/data/use-related-guild";
 import type { Guild } from "~/types/sql";
+import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 
@@ -27,7 +28,7 @@ export default function RelatedGuild({ guild }: { guild: Guild }) {
                 backgroundColor: iconColor(guild.guild_id),
               }}
             >
-              <div>{guild.guild_name[0]}</div>
+              <div>{firstCharFromUnicode(guild.guild_name)}</div>
             </div>
           }
           rightIcon={ChevronRightIcon}

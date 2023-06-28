@@ -7,6 +7,7 @@ import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import { timeRangeAtom } from "~/stores/db";
+import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 
@@ -45,7 +46,7 @@ export default function TopChannelsList() {
                   ),
                 }}
               >
-                <div>{channel.channel_name[0]}</div>
+                <div>{firstCharFromUnicode(channel.channel_name)}</div>
               </div>
             }
             rightIcon={ChevronRightIcon}

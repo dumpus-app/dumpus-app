@@ -14,6 +14,7 @@ import i18next from "i18next";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
 import { formatHour, formatNumber } from "~/utils/format";
+import { firstCharFromUnicode } from "~/utils";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -45,7 +46,7 @@ export default function Page() {
               backgroundColor: iconColor(guild.guild_id + channel.channel_id),
             }}
           >
-            <div>{channel.channel_name[0]}</div>
+            <div>{firstCharFromUnicode(channel.channel_name)}</div>
           </div>
         }
       >

@@ -11,6 +11,7 @@ import Image from "next/image";
 import { iconColor } from "~/utils/discord";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import { formatNumber } from "~/utils/format";
+import { firstCharFromUnicode } from "~/utils";
 
 function GuildCard({
   guild,
@@ -50,7 +51,7 @@ function GuildCard({
               backgroundColor: iconColor(guild.guild_id),
             }}
           >
-            <div>{guild.guild_name[0]}</div>
+            <div>{firstCharFromUnicode(guild.guild_name)}</div>
           </div>
         )
       }
