@@ -5,7 +5,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSQLInit from "~/hooks/use-sql-init";
-import { configAtom } from "~/stores";
+import { configAtom, usersCacheAtom } from "~/stores";
 import { dbAtom } from "~/stores/db";
 import { createLogger } from "~/utils/logger";
 
@@ -24,6 +24,7 @@ export default function LoadingScreen({
   const router = useRouter();
 
   const [config, setConfig] = useAtom(configAtom);
+  const [usersCache, setUsersCache] = useAtom(usersCacheAtom);
   const db = useAtomValue(dbAtom);
   const { init } = useSQLInit();
 
@@ -33,6 +34,7 @@ export default function LoadingScreen({
     if (!loading) return;
 
     setConfig(config);
+    setUsersCache(usersCache);
     const hasSelectedPackage = !!config.db.selectedId;
 
     if (["/", `/${i18next.language}/`].includes(pathname)) {
@@ -68,7 +70,18 @@ export default function LoadingScreen({
 
     logger.info("init db");
     init({ id: config.db.selectedId! });
-  }, [config, db, init, loading, pathname, redirectPath, router, setConfig]);
+  }, [
+    config,
+    db,
+    init,
+    loading,
+    pathname,
+    redirectPath,
+    router,
+    setConfig,
+    setUsersCache,
+    usersCache,
+  ]);
 
   if (loading)
     return (

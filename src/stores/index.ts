@@ -1,4 +1,5 @@
 import { atom } from "jotai";
+import { PackageAPIUserResponse } from "~/types/package-api";
 import type { PackageData } from "~/types/sql";
 import { atomWithLocalStorage } from "~/utils/jotai";
 
@@ -39,3 +40,10 @@ export const unselectedPackagesAtom = atom((get) => {
   } = get(configAtom);
   return packages.filter(({ id }) => id !== selectedId);
 });
+
+export const USERS_CACHE_ATOM_INITIAL_VALUE = [];
+
+export const usersCacheAtom = atomWithLocalStorage<PackageAPIUserResponse[]>(
+  "users-cache",
+  []
+);

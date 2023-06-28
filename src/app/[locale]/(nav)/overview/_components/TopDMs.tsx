@@ -6,7 +6,41 @@ import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
+import useUserDetails from "~/hooks/use-user-details";
 import { avatarURLFallback } from "~/utils/discord";
+
+function DMCard({
+  dm,
+  size,
+}: {
+  dm: NonNullable<ReturnType<ReturnType<typeof useTopDMsData>["getData"]>>[0];
+  size: number;
+}) {
+  const data = useUserDetails({ userID: dm.dm_user_id });
+
+  const username = dm.user_name;
+  const displayName = data?.display_name || username;
+  const avatarURL = data?.avatar_url || dm.user_avatar_url;
+
+  return (
+    <AvatarCard
+      name={displayName}
+      messages={dm.message_count}
+      rank={dm.rank}
+      href={`/top/dms/details?id=${dm.dm_user_id}`}
+      image={
+        <div className="relative aspect-square w-full">
+          <Image
+            src={avatarURLFallback(avatarURL, dm.dm_user_id) + `?size=${size}`}
+            alt={`${username}'s avatar`}
+            fill
+            className="rounded-full object-cover object-center"
+          />
+        </div>
+      }
+    />
+  );
+}
 
 export default function TopDMs() {
   const data = useTopDMsData().getData({});
@@ -31,26 +65,7 @@ export default function TopDMs() {
         <div className="flex">
           {/* TODO: handle no data */}
           {(data || []).map((dm) => (
-            <AvatarCard
-              key={dm.rank}
-              name={dm.user_name}
-              messages={dm.message_count}
-              rank={dm.rank}
-              href={`/top/dms/details?id=${dm.dm_user_id}`}
-              image={
-                <div className="relative aspect-square w-full">
-                  <Image
-                    src={
-                      avatarURLFallback(dm.user_avatar_url, dm.dm_user_id) +
-                      `?size=${size}`
-                    }
-                    alt={`${dm.user_name}'s avatar`}
-                    fill
-                    className="rounded-full object-cover object-center"
-                  />
-                </div>
-              }
-            />
+            <DMCard key={dm.rank} dm={dm} size={size} />
           ))}
           <ScrollArea.Spacer />
         </div>

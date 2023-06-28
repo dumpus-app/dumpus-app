@@ -1,15 +1,21 @@
 "use client";
 
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { useState } from "react";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import packageAPI from "~/hooks/use-package-api";
 import { getStorageKey } from "~/hooks/use-sql-init";
-import { CONFIG_ATOM_INITIAL_VALUE, configAtom } from "~/stores";
+import {
+  CONFIG_ATOM_INITIAL_VALUE,
+  USERS_CACHE_ATOM_INITIAL_VALUE,
+  configAtom,
+  usersCacheAtom,
+} from "~/stores";
 
 export default function DangerZone() {
   const [config, setConfig] = useAtom(configAtom);
+  const setUsersCache = useSetAtom(usersCacheAtom);
 
   const [loading, setLoading] = useState(false);
 
@@ -31,6 +37,7 @@ export default function DangerZone() {
       });
     }
     setConfig(CONFIG_ATOM_INITIAL_VALUE);
+    setUsersCache(USERS_CACHE_ATOM_INITIAL_VALUE);
     window.location.href = "/";
   }
 
