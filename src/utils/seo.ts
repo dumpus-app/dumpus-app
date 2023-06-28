@@ -36,5 +36,10 @@ export function generateSEO({
       creator: "@dumpus",
       images: ogImage,
     },
+    other: {
+      // Should be an empty string but Next doesn't let
+      // us do such thing
+      "darkreader-lock": "_",
+    },
   };
 }
