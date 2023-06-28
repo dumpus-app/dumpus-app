@@ -120,8 +120,8 @@ def generate_demo_database():
 
     activity_query = '''
         INSERT INTO activity
-        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?);
+    (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
     '''
 
     dm_user_query = '''
