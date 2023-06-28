@@ -53,8 +53,13 @@ export default function useGuildData({ guildID }: { guildID: string }) {
   }
 
   function getJoinsCount() {
-    // TODO: implement query
-    const { data, hasError } = sql<{ join_count: number }>``;
+    const { data, hasError } = sql<{ join_count: number }>`
+    SELECT IFNULL(SUM(occurence_count), 0) AS join_count
+    FROM activity
+    WHERE event_name = 'guild_joined'
+    AND associated_guild_id = '${guildID}'
+    AND day BETWEEN '${start}' AND '${end}';
+    `;
 
     return hasError ? null : data[0].join_count;
   }
