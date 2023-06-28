@@ -13,10 +13,10 @@
   "onboarding": {
     "routesLabels": {
       "/": "Allons-y",
-      "/intro/1": "Fantastique !",
-      "/intro/2": "Rassurant !",
-      "/intro/3": "Il me tarde !",
-      "/setup": "C'est fait !"
+      "/intro/1": "Compris !",
+      "/intro/2": "Parfait !",
+      "/intro/3": "Allons récupérer mes données !",
+      "/setup": "Compris !"
     },
     "shared": {
       "previous": "Précédent",
@@ -33,23 +33,23 @@
       "description": "$t(seo.description)",
       "step": "Etape {{n}}",
       "steps": [
-        "Explication",
-        "Obtenez vos données",
+        "Briefing",
+        "Demander vos données",
         "Démarrez l'analyse"
       ]
     },
     "slides": [
       {
-        "title": "Que fait vraiment Dumpus ?",
-        "description": "Lorem **ipsum** dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+        "title": "Comment marche Dumpus ?",
+        "description": "Discord enregistre chaque action que vous effectuez sur leur application dans votre \"paquet de données\". Dumpus analyse ce paquet pour générer des statistiques sur votre compte."
       },
       {
-        "title": "Dumpus est sécurisé",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. GitHub Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+        "title": "Peut-on faire confiance à Dumpus ?",
+        "description": "Ce \"paquet de données\" est très sensible. C'est pourquoi nous devons être clairs sur ce que l'application Dumpus en fait. Son code source est 100% open source (public). Bien que nous offrions un serveur de traitement gratuit, vous pouvez utiliser votre propre serveur pour garder un contrôle total sur vos données."
       },
       {
         "title": "Partagez-le avec vos amis !",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque a tristique tortor. Fusce gravida tellus eget lorem suscipit."
+        "description": "Si les statistiques sont amusantes à voir, elles le sont encore plus à comparer avec vos amis. C'est pourquoi nous avons fait en sorte qu'il soit facile de partager vos statistiques avec vos amis."
       }
     ],
     "setup": {
@@ -98,13 +98,13 @@
       }
     },
     "access": {
-      "title": "Je veux les stats !",
-      "description": "Choisissez la méthode que vous préférez.",
+      "title": "Envoyez votre paquet de données",
+      "description": "Choisissez votre méthode préférée.",
       "method": "Méthode {{n}}",
       "methods": {
         "link": {
           "title": "Entrez votre lien Discord",
-          "description": "Vous pouvez l'obtenir dans l'e-mail reçu de Discord. Copiez le lien à partir du bouton intitulé **Vous pouvez le télécharger ici**.",
+          "description": "Vous pouvez l'obtenir dans l'email reçu de Discord. Copiez le lien à partir du bouton intitulé **Vous pouvez le télécharger ici**.",
           "discordLink": "Lien Discord",
           "advanced": "Avancé",
           "backendURL": "URL du backend",
@@ -120,9 +120,9 @@
           }
         },
         "email": {
-          "title": "Transférez l'email",
+          "title": "Transférez l'email (bientôt)",
           "content": [
-            "Transférez l'e-mail reçu de Discord à **process@dumpus-app.net**. Nous vous enverrons un lien lorsqu'il sera prêt.",
+            "Transférez l'e-mail reçu de Discord à **process@dumpus.app**. Nous vous enverrons un lien lorsqu'il sera prêt.",
             "A tout de suite !"
           ]
         },
