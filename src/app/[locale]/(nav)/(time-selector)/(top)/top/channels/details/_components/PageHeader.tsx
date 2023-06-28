@@ -4,7 +4,13 @@ import Header from "~/components/layout/Header";
 import { SimpleIconsDiscord } from "~/components/icons";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
-export default function PageHeader({ title }: { title: string }) {
+export default function PageHeader({
+  title,
+  discordLink,
+}: {
+  title: string;
+  discordLink: string;
+}) {
   return (
     <Header
       title={title}
@@ -13,7 +19,7 @@ export default function PageHeader({ title }: { title: string }) {
       leftSlot={<Header.Icon href="/top/channels" icon={ChevronLeftIcon} />}
       rightSlot={
         <Header.Icon
-          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+          href={discordLink}
           target="_blank"
           noI18n
           icon={SimpleIconsDiscord}

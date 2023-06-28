@@ -9,7 +9,13 @@ import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { iconColor } from "~/utils/discord";
 
-export default function Profile({ guild }: { guild: Guild }) {
+export default function Profile({
+  guild,
+  discordLink,
+}: {
+  guild: Guild;
+  discordLink: string;
+}) {
   const { getGuild } = useWidgetAPI({});
 
   const { isSuccess, data } = useQuery({
@@ -49,7 +55,7 @@ export default function Profile({ guild }: { guild: Guild }) {
       }
     >
       <Header.Icon
-        href={`discord://discord.com/guilds/${guild.guild_id}`}
+        href={discordLink}
         target="_blank"
         noI18n
         icon={SimpleIconsDiscord}

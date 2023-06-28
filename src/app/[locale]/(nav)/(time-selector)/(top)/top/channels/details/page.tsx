@@ -27,9 +27,14 @@ export default function Page() {
 
   if (!channel || !guild) return <NotFoundState />;
 
+  const discordLink = `discord://discord.com/channels/${guild.guild_id}/${channel.channel_id}`;
+
   return (
     <>
-      <PageHeader title={"#" + channel.channel_name} />
+      <PageHeader
+        title={"#" + channel.channel_name}
+        discordLink={discordLink}
+      />
       <ProfileHeader
         description={guild.guild_name}
         title={"#" + channel.channel_name}
@@ -45,7 +50,7 @@ export default function Page() {
         }
       >
         <Header.Icon
-          href={`discord://discord.com/channels/${guild.guild_id}/${channel.channel_id}`}
+          href={discordLink}
           target="_blank"
           noI18n
           icon={SimpleIconsDiscord}

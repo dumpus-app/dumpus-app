@@ -45,9 +45,11 @@ export default function Page() {
   const displayName = data?.display_name || username;
   const avatarURL = data?.avatar_url || user.user_avatar_url;
 
+  const discordLink = `discord://discord.com/users/${user.dm_user_id}`;
+
   return (
     <>
-      <PageHeader title={username} />
+      <PageHeader title={username} discordLink={discordLink} />
       <ProfileHeader
         description={username}
         title={displayName}
@@ -66,7 +68,7 @@ export default function Page() {
         }
       >
         <Header.Icon
-          href={`discord://discord.com/users/${user.dm_user_id}`}
+          href={discordLink}
           target="_blank"
           noI18n
           icon={SimpleIconsDiscord}
