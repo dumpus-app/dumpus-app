@@ -34,7 +34,13 @@ export default function useGuildData({ guildID }: { guildID: string }) {
 
   function getMessagesCount() {
     // TODO: implement query
-    const { data, hasError } = sql<{ message_count: number }>``;
+    const { data, hasError } = sql<{ message_count: number }>`
+    SELECT SUM(occurence_count) AS message_count
+    FROM activity
+    WHERE event_name = 'message_sent'
+    AND associated_guild_id = '${guildID}'
+    AND day BETWEEN '${start}' AND '${end}';
+    `;
 
     return hasError ? null : data[0].message_count;
   }
@@ -123,10 +129,49 @@ export default function useGuildData({ guildID }: { guildID: string }) {
   }
 
   function getDailySentMessages() {
-    // TODO: implement query
-    const { data, hasError } = sql<{ total_occurences: number }>``;
+    const totalDays = new Date(end).getTime() - new Date(start).getTime();
+    const days = Math.floor(totalDays / (1000 * 60 * 60 * 24));
 
-    return hasError ? null : [];
+    const periodLength = days > 360 ? 30 : days > 90 ? 7 : 1;
+
+    const { data, hasError } = sql<{
+      period_start: string;
+      message_count: number;
+    }>`
+      WITH RECURSIVE dates(day, day_group) AS (
+        VALUES('${start}', 1)
+        UNION ALL
+        SELECT date(day, '+1 day'), 
+        CASE WHEN (julianday(date(day, '+1 day')) - julianday('${start}')) % ${periodLength} = 0 THEN day_group + 1 ELSE day_group END
+        FROM dates
+        WHERE day < date('${start}', '+${days} days')
+      )
+      SELECT 
+        MIN(dates.day) as period_start,
+        MAX(dates.day) as period_end,
+        IFNULL(SUM(joined_data.occurence_count),0) AS message_count
+      FROM 
+        dates
+      LEFT JOIN 
+        (SELECT a.day, a.occurence_count
+        FROM activity a
+        WHERE a.event_name = 'message_sent' AND a.associated_guild_id = '${guildID}'
+        ) AS joined_data
+        ON dates.day = joined_data.day 
+      GROUP BY 
+        day_group
+      ORDER BY 
+        period_start ASC;
+      `;
+
+    if (hasError) {
+      return null;
+    }
+
+    return data.map(({ period_start, message_count }) => ({
+      label: period_start,
+      value: message_count,
+    }));
   }
 
   return {
