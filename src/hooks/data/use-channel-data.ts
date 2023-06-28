@@ -76,7 +76,6 @@ export default function useChannelData({
   function getTopChatHour() {
     if (!hasData) return null;
 
-    // TODO: fix
     const { data, hasError } = sql<{
       hour: number;
       message_count: number;
