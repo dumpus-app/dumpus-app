@@ -56,6 +56,7 @@ export type PackageAPIUserResponse = Prettify<
       avatar_url: string;
       display_name: string;
       user_id: string;
+      username: string;
       errorMessageCode: null;
     }
   | {
@@ -66,6 +67,7 @@ export type PackageAPIUserResponse = Prettify<
         | "RATE_LIMITED";
       avatar_url: undefined;
       display_name: undefined;
+      username: string;
       user_id: undefined;
     }
 >;

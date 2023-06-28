@@ -29,12 +29,12 @@ function BotCard({ bot }: { bot: Bot }) {
     staleTime: Infinity,
   });
 
-  const username = bot.user_name || bot.associated_user_id;
+  const username = data?.username || bot.user_name;
   const displayName = data?.display_name || bot.display_name || username;
   const avatarURL = data?.avatar_url || bot.user_avatar_url;
 
   return (
-    <StatCard
+    username ? <StatCard
       value={
         <div className="flex items-center">
           <div className="relative mr-1 aspect-square w-6 sm:w-8">
@@ -55,7 +55,7 @@ function BotCard({ bot }: { bot: Bot }) {
           {bot.total_occurences} commands
         </div>
       }
-    />
+    /> : null
   );
 }
 
@@ -63,7 +63,7 @@ export default function TopUsedBots({ bots }: { bots: Bot[] }) {
   return (
     <Section title="Top used bots">
       <div className="grid grid-cols-2 gap-2 px-2">
-        {bots.map((bot, i) => (
+        {bots.slice(0, 4).map((bot, i) => (
           <BotCard key={i} bot={bot} />
         ))}
       </div>
