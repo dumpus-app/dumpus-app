@@ -10,7 +10,6 @@ import DailySentMessages from "./_components/DailySentMessages";
 import PageHeader from "./_components/PageHeader";
 import RelatedGuild from "./_components/RelatedGuild";
 import Stats from "./_components/Stats";
-import i18next from "i18next";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
 import { formatHour, formatNumber } from "~/utils/format";
@@ -62,23 +61,11 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messagesCount={
-              stats.messagesCount ? formatNumber(stats.messagesCount) : "N/A"
-            }
-            invitesCount={
-              stats.invitesCount ? formatNumber(stats.invitesCount) : "N/A"
-            }
-            topChatHour={
-              stats.topChatHour ? formatHour(stats.topChatHour) : "N/A"
-            }
-            reactionsCount={
-              stats.reactionsCount ? formatNumber(stats.reactionsCount) : "N/A"
-            }
-            channelOpenings={
-              stats.channelOpenings
-                ? formatNumber(stats.channelOpenings)
-                : "N/A"
-            }
+            messagesCount={formatNumber(stats.messagesCount)}
+            invitesCount={formatNumber(stats.invitesCount)}
+            topChatHour={formatHour(stats.topChatHour)}
+            reactionsCount={formatNumber(stats.reactionsCount)}
+            channelOpenings={formatNumber(stats.channelOpenings)}
           />
           <DailySentMessages data={dailySentMessages || []} />
         </>

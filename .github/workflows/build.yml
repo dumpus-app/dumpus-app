@@ -1,4 +1,4 @@
-name: Renovate test
+name: Build
 
 on: [pull_request]
 
@@ -8,6 +8,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
@@ -15,5 +18,5 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build web project
+      - name: Build web
         run: pnpm run build

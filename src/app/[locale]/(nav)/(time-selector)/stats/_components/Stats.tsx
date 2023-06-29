@@ -10,14 +10,14 @@ export default function Stats() {
 
   const data = [
     {
-      value: joinedGuilds ? formatNumber(joinedGuilds) : "N/A",
+      value: formatNumber(joinedGuilds),
       label: "server joined",
     },
     { value: "N/A", label: "received calls" },
     { value: "N/A", label: "opened notifs." },
-    { value: topHour ? formatHour(topHour) : "N/A", label: "top hour" },
+    { value: formatHour(topHour), label: "top hour" },
     {
-      value: networkSize ? formatNumber(networkSize) : "N/A",
+      value: formatNumber(networkSize),
       label: "network size",
     },
     {

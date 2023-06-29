@@ -28,9 +28,7 @@ function Stats() {
 
   const data = [
     {
-      value: avgMessagesSentPerDay
-        ? formatNumber(avgMessagesSentPerDay)
-        : "N/A",
+      value: formatNumber(avgMessagesSentPerDay),
       label: "average messages sent per day",
     },
     {
