@@ -3,9 +3,25 @@ import { networkInterfaces } from "os";
 
 const isDev = process.env.NODE_ENV === "development" || false;
 const networks = networkInterfaces();
-const networkKey = "Ethernet" in networks ? "Ethernet" : "Wi-Fi";
-const network = networks[networkKey]!;
-const ipAddress = network.find((e) => e.family === "IPv4")!.address;
+
+let ipAddress;
+
+for (let network of Object.values(networks)) {
+  for (let netInfo of network!) {
+    if (netInfo.family === "IPv4" && !netInfo.internal) {
+      ipAddress = netInfo.address;
+      break;
+    }
+  }
+
+  if (ipAddress) {
+    break;
+  }
+}
+
+if (!ipAddress) {
+  throw new Error("No suitable network interface found.");
+}
 
 export default {
   appId: "app.dumpus.app",
