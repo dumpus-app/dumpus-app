@@ -121,6 +121,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     guild_joined = []
     add_reaction = []
+    app_opened = []
 
     # dev
     bot_token_compromised = []
@@ -243,6 +244,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'channel_id': analytics_line_json['channel_id'],
                         'emoji_name': analytics_line_json['emoji_name'],
                         'is_custom_emoji': 'emoji_id' in analytics_line_json
+                    })
+
+                if analytics_line_json['event_type'] == 'app_opened':
+                    app_opened.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        'os': analytics_line_json['os']
                     })
 
             except:
@@ -486,6 +493,15 @@ def read_analytics_file(package_status_id, package_id, link, session):
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
             activity_data.append(('add_reaction', day, hour, count, channel_id, None, None, emoji_name, is_custom))
+
+    app_opened_pdf = pd.DataFrame(app_opened)
+    app_opened_pdf_grouped = app_opened_pdf.groupby(['os'])
+    for (os,), group in app_opened_pdf_grouped:
+        entries = count_dates_day(group['timestamp'])
+        for timestamp, count in entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('app_opened', day, hour, count, None, None, None, os, None))
 
     activity_query = '''
         INSERT INTO activity
