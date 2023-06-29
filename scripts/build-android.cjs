@@ -1,5 +1,5 @@
 const { exec } = require("node:child_process");
-const path = require("node:path");
+const path = require("path");
 
 const { config } = require("dotenv");
 config();
