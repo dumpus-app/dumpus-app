@@ -73,7 +73,9 @@ export default function LinkForm() {
 
   function onSubmit({ discordLink, backendURL }: Schema) {
     router.push(
-      `${i18next.language}/onboarding/loading/?packageLink=${encodeURIComponent(
+      `/${
+        i18next.language
+      }/onboarding/loading/?packageLink=${encodeURIComponent(
         discordLink
       )}&backendURL=${encodeURIComponent(backendURL)}`
     );
