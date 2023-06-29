@@ -47,8 +47,8 @@ jobs:
           ANDROID_KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
           ANDROID_RELEASE_TYPE: APK
 
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Upload APK Release Asset
+        id: upload-apk-release-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,8 +58,8 @@ jobs:
           asset_name: app-release-apksigner-signed.apk
           asset_content_type: application/vnd.android.package-archive
 
-      - name: Upload Release Asset
-        id: upload-release-asset 
+      - name: Upload AAB Release Asset
+        id: upload-aab-release-asset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
