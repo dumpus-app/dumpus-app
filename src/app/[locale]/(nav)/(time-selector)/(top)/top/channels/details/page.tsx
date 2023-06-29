@@ -61,11 +61,19 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messagesCount={formatNumber(stats.messagesCount)}
-            invitesCount={formatNumber(stats.invitesCount)}
+            messagesCount={formatNumber(stats.messagesCount, {
+              notation: "standard",
+            })}
+            invitesCount={formatNumber(stats.invitesCount, {
+              notation: "standard",
+            })}
             topChatHour={formatHour(stats.topChatHour)}
-            reactionsCount={formatNumber(stats.reactionsCount)}
-            channelOpenings={formatNumber(stats.channelOpenings)}
+            reactionsCount={formatNumber(stats.reactionsCount, {
+              notation: "standard",
+            })}
+            channelOpenings={formatNumber(stats.channelOpenings, {
+              notation: "standard",
+            })}
           />
           <DailySentMessages data={dailySentMessages || []} />
         </>

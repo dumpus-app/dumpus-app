@@ -33,9 +33,15 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messagesCount={formatNumber(stats.messagesCount)}
-            invitesCount={formatNumber(stats.invitesCount)}
-            joinsCount={formatNumber(stats.joinsCount)}
+            messagesCount={formatNumber(stats.messagesCount, {
+              notation: "standard",
+            })}
+            invitesCount={formatNumber(stats.invitesCount, {
+              notation: "standard",
+            })}
+            joinsCount={formatNumber(stats.joinsCount, {
+              notation: "standard",
+            })}
             topChatHour={formatHour(stats.topChatHour)}
           />
           {/* TODO: handle no data */}
