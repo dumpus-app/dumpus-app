@@ -92,16 +92,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
     update_step(package_status_id, package_id, 'ANALYZING', session)
     update_progress(package_status_id, package_id, 0, session)
 
-    # trigger error
-    raise Exception('SOMETHING_WENT_WRONG')
-
     start = time.time()
 
     analytics_line_count = 0
 
     session_starts = []
-
-    guilds_joins = []
 
     user_data = {}
 
@@ -112,8 +107,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
     dms_channels_data = []
     guild_channels_data = []
     
-    channels_messages = []
-
     # Voice Channels Logs, used to compute duration later
     voice_channel_logs = []
 
