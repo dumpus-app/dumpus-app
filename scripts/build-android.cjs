@@ -3,10 +3,11 @@ const path = require("path");
 
 require("dotenv").config();
 
-const ANDROID_KEYSTORE_PATH = process.env.ANDROID_KEYSTORE_PATH;
-const ANDROID_KEYSTORE_PASSWORD = process.env.ANDROID_KEYSTORE_PASSWORD;
-
-const ANDROID_HOME_PATH = process.env.ANDROID_HOME_PATH;
+const {
+  ANDROID_KEYSTORE_PATH,
+  ANDROID_KEYSTORE_PASSWORD,
+  ANDROID_HOME_PATH
+} = process.env;
 
 const keystoreAlias = process.env.ANDROID_KEYSTORE_ALIAS || "upload";
 const androidReleaseType = process.env.ANDROID_RELEASE_TYPE || "AAB";
