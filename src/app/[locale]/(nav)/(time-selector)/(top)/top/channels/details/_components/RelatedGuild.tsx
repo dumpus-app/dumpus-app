@@ -18,9 +18,7 @@ export default function RelatedGuild({ guild }: { guild: Guild }) {
         <DetailCard
           href={`/top/guilds/details?id=${guild.guild_id}`}
           title={guild.guild_name}
-          description={`${
-            messagesCount ? formatNumber(messagesCount) : "N/A"
-          } messages sent`}
+          description={`${formatNumber(messagesCount)} messages sent`}
           leftSlot={
             <div
               className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"

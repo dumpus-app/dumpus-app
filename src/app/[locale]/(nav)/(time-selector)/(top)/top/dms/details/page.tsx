@@ -81,15 +81,9 @@ export default function Page() {
       {hasData ? (
         <>
           <Stats
-            messagesCount={
-              stats.messagesCount ? formatNumber(stats.messagesCount) : "N/A"
-            }
-            topChatHour={
-              stats.topChatHour ? formatHour(stats.topChatHour) : "N/A"
-            }
-            reactionsCount={
-              stats.reactionsCount ? formatNumber(stats.reactionsCount) : "N/A"
-            }
+            messagesCount={formatNumber(stats.messagesCount)}
+            topChatHour={formatHour(stats.topChatHour)}
+            reactionsCount={formatNumber(stats.reactionsCount)}
           />
           {sentimentScore && <SentimentScore score={sentimentScore} />}
           <DailySentMessages
