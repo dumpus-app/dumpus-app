@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import i18next from "i18next";
@@ -131,17 +131,26 @@ export default function Page() {
                 }
               })();
 
+              const errorStep = statusQuery.data.isErrored ? currentStep : null;
+
               const steps = ["Downloading", "Analyzing", "Processed"];
 
               return (
                 <div className="space-y-2">
                   {steps.map((step, i) => {
                     const valid = currentStep >= i;
+                    const hasError = i === errorStep;
+                    const Icon = hasError ? XCircleIcon : CheckCircleIcon;
 
                     return (
                       <div key={i} className="flex items-center space-x-2">
                         {valid ? (
-                          <CheckCircleIcon className="h-6 w-6 text-brand-300" />
+                          <Icon
+                            className={clsx(
+                              "h-6 w-6",
+                              hasError ? "text-danger-300" : "text-brand-300"
+                            )}
+                          />
                         ) : (
                           <div className="ml-[2.5px] h-5 w-5 rounded-full border-2 border-gray-400" />
                         )}
