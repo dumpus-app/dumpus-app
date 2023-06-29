@@ -4,8 +4,11 @@ import { resultAsList } from "~/utils/sql";
 import useSafeDB from "./use-safe-db";
 import { createLogger } from "~/utils/logger";
 import { concatTemplateStringArgs } from "~/utils";
+import CRC32 from "crc-32";
 
 const logger = createLogger({ tag: "SQL" });
+
+const queriesCache = new Map<number, any[]>();
 
 export default function useSQL() {
   const db = useSafeDB();
@@ -28,8 +31,23 @@ export default function useSQL() {
 
     try {
       const startDate = new Date();
-      const data = resultAsList<TRes>(db.exec(query)[0]);
-      logger.log(`Query\n${query}\ntook ${+new Date() - +startDate}ms`);
+
+      const cacheKey = CRC32.str(query);
+      let data: TRes[];
+      const cachedData = queriesCache.get(cacheKey);
+
+      if (cachedData) {
+        data = cachedData;
+      } else {
+        data = resultAsList<TRes>(db.exec(query)[0]);
+        queriesCache.set(cacheKey, data);
+      }
+
+      logger.log(
+        `Query\n${query}\ntook ${+new Date() - +startDate}ms${
+          cachedData ? " (from cache)" : ""
+        }`
+      );
 
       return {
         data,
