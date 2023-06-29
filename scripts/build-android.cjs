@@ -7,12 +7,14 @@ config();
 const ANDROID_KEYSTORE_PATH = process.env.ANDROID_KEYSTORE_PATH;
 const ANDROID_KEYSTORE_PASSWORD = process.env.ANDROID_KEYSTORE_PASSWORD;
 
+const ANDROID_HOME_PATH = process.env.ANDROID_HOME_PATH;
+
 const keystoreAlias = process.env.ANDROID_KEYSTORE_ALIAS || "upload";
 const androidReleaseType = process.env.ANDROID_RELEASE_TYPE || "AAB";
 
 console.log("Run pnpm build:mobile first");
 
-const command = `cross-env-shell NODE_ENV=production "pnpm cap build android --keystorepath ${ANDROID_KEYSTORE_PATH} --keystorepass '${ANDROID_KEYSTORE_PASSWORD}' --keystorealias ${keystoreAlias} --keystorealiaspass '${ANDROID_KEYSTORE_PASSWORD}' --androidreleasetype ${androidReleaseType}"`;
+const command = `cross-env-shell ${ANDROID_HOME_PATH ? `ANDROID_HOME_PATH="${ANDROID_HOME_PATH}"` : ''} NODE_ENV=production pnpm cap build android --keystorepath ${ANDROID_KEYSTORE_PATH} --keystorepass '${ANDROID_KEYSTORE_PASSWORD}' --keystorealias ${keystoreAlias} --keystorealiaspass '${ANDROID_KEYSTORE_PASSWORD}' --androidreleasetype ${androidReleaseType}`;
 
 // Execute the npm script
 const npmProcess = exec(command);
