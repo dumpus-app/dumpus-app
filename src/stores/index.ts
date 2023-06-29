@@ -2,18 +2,9 @@ import { atom } from "jotai";
 import { PackageAPIUserResponse } from "~/types/package-api";
 import type { PackageData } from "~/types/sql";
 import { atomWithLocalStorage } from "~/utils/jotai";
+import type { TimeRange } from "./db";
 
-export const initAtom = atom(false);
-
-export const CONFIG_ATOM_INITIAL_VALUE = {
-  db: {
-    packages: [],
-    selectedId: null,
-  },
-  goToOnboardingAccess: false,
-};
-
-export const configAtom = atomWithLocalStorage<{
+type Config = {
   db: {
     packages: ({
       id: string;
@@ -25,7 +16,22 @@ export const configAtom = atomWithLocalStorage<{
     selectedId: null | string;
   };
   goToOnboardingAccess: boolean;
-}>("config", CONFIG_ATOM_INITIAL_VALUE);
+  timeRange: TimeRange;
+};
+
+export const CONFIG_ATOM_INITIAL_VALUE = {
+  db: {
+    packages: [],
+    selectedId: null,
+  },
+  goToOnboardingAccess: false,
+  timeRange: "Lifetime",
+} satisfies Config;
+
+export const configAtom = atomWithLocalStorage<Config>(
+  "config",
+  CONFIG_ATOM_INITIAL_VALUE
+);
 
 export const selectedPackageAtom = atom((get) => {
   const {

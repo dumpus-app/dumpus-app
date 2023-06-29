@@ -28,9 +28,21 @@ export const dbExtremityDatesAtom = atom((get) => {
 
 export const timeRanges = ["4 weeks", "6 months", "Year", "Lifetime"] as const;
 
-export const timeRangeAtom = atomWithLocalStorage<(typeof timeRanges)[number]>(
-  "time-range",
-  "Lifetime"
+export type TimeRange = (typeof timeRanges)[number];
+
+export const timeRangeAtom = atom<TimeRange, [TimeRange], void>(
+  (get) => {
+    const config = get(configAtom);
+    return config.timeRange;
+  },
+  (get, set, newTimeRange) => {
+    const config = get(configAtom);
+
+    const newConfig = structuredClone(config);
+    newConfig.timeRange = newTimeRange;
+
+    set(configAtom, newConfig);
+  }
 );
 
 export const timeRangeDates = atom((get) => {
