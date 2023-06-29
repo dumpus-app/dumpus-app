@@ -68,12 +68,12 @@ export default function Page() {
                     {i + 1}
                   </div>
                   <div className="text-lg font-bold text-white">{name}</div>
-                  <div className="h-auto max-w-full">
+                  <div className="relative aspect-video w-full">
                     <Image
                       src={image}
                       alt={name}
                       fill
-                      className="!static rounded-lg border-2 border-gray-700 bg-brand-950 object-cover object-center"
+                      className="rounded-lg border-2 border-gray-700 bg-brand-950 object-cover object-center"
                     />
                   </div>
                 </div>
