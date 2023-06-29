@@ -3,6 +3,7 @@ name: Build and Release
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -25,11 +26,20 @@ jobs:
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'temurin'  # AdoptOpenJDK
+
       - name: Install pnpm
         run: npm install -g pnpm
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Build Mobile App
+        run: pnpm run build:mobile
 
       - name: Build Android App (AAB)
         run: pnpm run script:build-android
