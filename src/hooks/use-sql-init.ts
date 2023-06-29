@@ -1,6 +1,5 @@
 "use client";
 
-import { defu } from "defu";
 import { useAtom, useSetAtom } from "jotai";
 import LZString from "lz-string";
 import pako from "pako";
@@ -49,6 +48,13 @@ export default function useSQLInit() {
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
 
+    const existingPackage = config.db.packages.find(
+      (pkg) => pkg.packageLink === initData?.packageLink
+    );
+    if (existingPackage) {
+      id = existingPackage.id;
+    }
+
     let data: Uint8Array;
     if (initData) {
       data = pako.inflate(initData.initialData);
@@ -66,27 +72,25 @@ export default function useSQLInit() {
       const packageData = resultAsList<PackageData>(
         _db.exec("SELECT * FROM package_data LIMIT 1;")[0]
       )[0];
-      setConfig(
-        defu(
-          {
-            db: {
-              packages: [
-                {
-                  id,
-                  packageLink: initData.packageLink,
-                  UPNKey: initData.UPNKey,
-                  dateAdded,
-                  backendURL: initData.backendURL,
-                  ...packageData,
-                },
-              ],
-              selectedId: id,
-            },
-            goToOnboardingAccess: config.goToOnboardingAccess,
-          } satisfies typeof config,
-          config
-        )
-      );
+      const newConfig = structuredClone(config);
+      newConfig.db.selectedId = id;
+      const newPackage = {
+        id,
+        packageLink: initData.packageLink,
+        UPNKey: initData.UPNKey,
+        dateAdded,
+        backendURL: initData.backendURL,
+        ...packageData,
+      };
+      if (existingPackage) {
+        const packageIndex = newConfig.db.packages.findIndex(
+          (pkg) => pkg.id === existingPackage.id
+        );
+        newConfig.db.packages[packageIndex] = newPackage;
+      } else {
+        newConfig.db.packages.push(newPackage);
+      }
+      setConfig(newConfig);
     }
     setDb(_db);
   }
