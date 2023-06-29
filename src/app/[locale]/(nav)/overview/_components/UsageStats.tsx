@@ -7,7 +7,7 @@ import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import { formatHour, formatNumber } from "~/utils/format";
 
 export default function UsageStats() {
-  const { messageCount, networkSize, joinedGuilds, topHour } =
+  const { messageCount, networkSize, joinedGuilds, topHour, appStarted } =
     useUsageStatsData();
 
   const data = [
@@ -24,8 +24,12 @@ export default function UsageStats() {
     { value: formatHour(topHour), label: "top hour" },
     {
       value: formatNumber(networkSize),
-      label: "network size",
+      label: "known users",
     },
+    {
+      value: formatNumber(appStarted),
+      label: "Discord app started"
+    }
   ];
 
   return (

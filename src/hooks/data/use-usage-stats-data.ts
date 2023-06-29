@@ -69,11 +69,23 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].message_count;
   }
 
+  function getAppStarted() {
+    const { data, hasError } = sql<{ app_started: number }>`
+      SELECT SUM(a.occurence_count) AS app_started
+      FROM activity a
+      WHERE a.event_name = 'app_opened'
+      AND a.day BETWEEN '${start}' AND '${end}';
+    `;
+
+    return hasError ? null : data[0].app_started;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
     topHour: getTopHour(),
     spentMoney: getSpentMoney(),
     messageCount: getMessageCount(),
+    appStarted: getAppStarted(),
   };
 }

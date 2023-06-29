@@ -65,8 +65,18 @@ export default function useGuildData({ guildID }: { guildID: string }) {
   }
 
   function getTopChatHour() {
-    // TODO: implement query
-    const { data, hasError } = sql<{ hour: number }>``;
+    const { data, hasError } = sql<{ hour: number }>`
+      SELECT
+        hour,
+        SUM(occurence_count) AS message_count
+      FROM activity
+      WHERE event_name = 'message_sent'
+      AND associated_guild_id = '${guildID}'
+      AND day BETWEEN '${start}' AND '${end}'
+      GROUP BY hour
+      ORDER BY message_count DESC
+      LIMIT 1;
+    `;
 
     return hasError ? null : data[0].hour;
   }
