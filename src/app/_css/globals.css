@@ -1,3 +1,5 @@
+@import url("./rmiz.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +17,6 @@ html {
 }
 
 /* TODO: make this actually work */
-[id] {
+/* [id] {
   @apply scroll-mt-20;
-}
+} */

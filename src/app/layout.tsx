@@ -4,7 +4,7 @@ import i18next from "i18next";
 import { Rubik } from "next/font/google";
 import useCapacitor from "~/hooks/use-capacitor";
 import "~/i18n/client";
-import "./globals.css";
+import "./_css/globals.css";
 import Providers from "./providers";
 
 const font = Rubik({ subsets: ["latin"] });

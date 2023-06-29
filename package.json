@@ -56,6 +56,7 @@
     "react-hook-form": "^7.43.9",
     "react-i18next": "^12.2.2",
     "react-markdown": "^8.0.7",
+    "react-medium-image-zoom": "^5.1.6",
     "react-use": "^17.4.0",
     "recharts": "^2.6.2",
     "remark-gfm": "^3.0.1",
@@ -74,6 +75,7 @@
     "@types/sql.js": "^1.4.4",
     "cross-env": "^7.0.3",
     "node-fetch": "^3.3.1",
+    "postcss-import": "^15.1.0",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
     "serve": "^14.2.0"
