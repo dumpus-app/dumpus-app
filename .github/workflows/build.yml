@@ -1,4 +1,4 @@
-name: Renovate test
+name: Build
 
 on: [pull_request]
 
@@ -18,5 +18,5 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Build web project
+      - name: Build web
         run: pnpm run build
