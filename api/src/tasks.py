@@ -96,7 +96,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     analytics_line_count = 0
 
-    session_starts = []
+    session_logs = []
 
     user_data = {}
 
@@ -196,32 +196,30 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
                     })
 
-                if analytics_line_json['event_type'] == 'session_start':
-                    session_starts.append({
+                if event_type == 'session_start' or event_type == 'session_end':
+                    session_logs.append({
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                        #'device': analytics_line_json['device'] if 'device' in analytics_line_json else 'Unknown',
-                        # we can not trust device, it's often null, unknown or equal to the os
+                        'event_type': 'session_start' if event_type == 'session_start' else 'session_end',
                         'os': analytics_line_json['os']
                     })
-
                 
-                if analytics_line_json['event_type'] == 'guild_joined':
+                if event_type == 'guild_joined':
                     guild_joined.append({
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                         'guild_id': analytics_line_json['guild_id']
                     })
 
-                if analytics_line_json['event_type'] == 'bot_token_compromised':
+                if event_type == 'bot_token_compromised':
                     bot_token_compromised.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
-                if analytics_line_json['event_type'] == 'dev_portal_page_viewed':
+                if event_type == 'dev_portal_page_viewed':
                     if analytics_line_json['page_name'].startswith('/docs/'):
                         dev_portal_page_viewed.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
-                if analytics_line_json['event_type'] == 'application_created':
+                if event_type == 'application_created':
                     application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
-                if analytics_line_json['event_type'] == 'application_command_used':
+                if event_type == 'application_command_used':
                     if analytics_line_json['application_id'] == '-1' or 'guild_id' not in analytics_line_json:
                         continue
                     application_command_used.append({
@@ -230,7 +228,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'guild_id': analytics_line_json['guild_id']
                     })
 
-                if analytics_line_json['event_type'] == 'add_reaction':
+                if event_type == 'add_reaction':
                     add_reaction.append({
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                         'user_id': analytics_line_json['user_id'],
@@ -239,7 +237,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'is_custom_emoji': 'emoji_id' in analytics_line_json
                     })
 
-                if analytics_line_json['event_type'] == 'app_opened':
+                if event_type == 'app_opened':
                     app_opened.append({
                         'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
                         'os': analytics_line_json['os']
@@ -412,6 +410,38 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'started_date': join['timestamp'],
                         'ended_date': next_leave['timestamp'] if next_leave else None
                     })
+    
+    ongoing_sessions = []
+    session_logs_duration = []
+
+    for event in session_logs:
+        if event['event_type'] == 'session_start':
+            ongoing_sessions.append(event)
+        else: # session_end
+            while ongoing_sessions:
+                start_event = ongoing_sessions.pop(0)
+                
+                duration = event['timestamp'] - start_event['timestamp']
+                if duration > 24 * 60 * 60:
+                    continue
+                if duration < 0:
+                    ongoing_sessions.insert(0, start_event) # Put back the event, it belongs to a future session_end
+                    break
+                
+                # At this point, we have a valid session duration
+                # We need to check if it is included in any existing session duration
+                start_is_included_in_duration = any(
+                    start_event['timestamp'] >= e['started_date'] # this join happened after the start of another event
+                    and start_event['timestamp'] <= e['ended_date'] # this same event ended after this join
+                    for e in session_logs_duration)
+                
+                if not start_is_included_in_duration:
+                    session_logs_duration.append({
+                        'duration_mins': duration // 60,
+                        'started_date': start_event['timestamp'],
+                        'ended_date': event['timestamp'],
+                        'os': start_event['os'],
+                    })
 
     print(f'Finish processing: {time.time() - start}')
 
@@ -425,6 +455,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
     dm_user_data = []
     payments_data = []
     voice_session_data = []
+    session_data = []
 
     for channel in [*dms_channels_data, *guild_channels_data]:
 
@@ -453,6 +484,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     for voice_session in voice_channel_logs_duration:
         voice_session_data.append((voice_session['channel_id'], voice_session['guild_id'], voice_session['duration_mins'], voice_session['started_date'], voice_session['ended_date']))
+
+    for session in session_logs_duration:
+        session_data.append((session['duration_mins'], session['started_date'], session['ended_date'], session['os']))
 
     # regroup guild joined per guild, then regroup each guild's entries per hour
     guild_joined_per_guild_id = defaultdict(list)
@@ -532,12 +566,19 @@ def read_analytics_file(package_status_id, package_id, link, session):
         VALUES (?, ?, ?, ?, ?);
     '''
 
+    session_query = '''
+        INSERT INTO sessions
+        (started_date, ended_date, duration_mins, device_os)
+        VALUES (?, ?, ?, ?);
+    '''
+
     cur.executemany(dm_user_query, dm_user_data)
     cur.executemany(guild_channel_query, guild_channel_data)
     cur.executemany(activity_query, activity_data)
     cur.executemany(guild_query, guild_data)
     cur.executemany(payment_query, payments_data)
     cur.executemany(voice_session_query, voice_session_data)
+    cur.executemany(session_query, sessions_data)
 
     cur.execute('''
         INSERT INTO package_data

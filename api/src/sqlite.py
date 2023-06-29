@@ -102,6 +102,15 @@ def create_new_empty_database():
     ''')
 
     cur.execute('''
+        CREATE TABLE sessions (
+            started_date TEXT NOT NULL,
+            ended_date TEXT NOT NULL,
+            duration_mins INTEGER NOT NULL,
+            device_os TEXT NOT NULL
+        )
+    ''')
+
+    cur.execute('''
         CREATE TABLE package_data (
             package_id TEXT NOT NULL,
             package_version TEXT NOT NULL,
