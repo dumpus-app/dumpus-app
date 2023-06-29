@@ -18,8 +18,8 @@ const command = `cross-env-shell ${ANDROID_HOME_PATH ? `ANDROID_HOME_PATH="${AND
 
 const outputPath = `./android/app/build/outputs/apk/release`;
 
-const outputUnsignedFilePath = path.join(outputPath, `app-release-unsigned.${androidReleaseType.toLowerCase()}`);
-const outputApkSignedFilePath = path.join(outputPath, `app-release-apksigner-signed.${androidReleaseType.toLowerCase()}`);
+const outputUnsignedFilePath = path.join(outputPath, `app-release-unsigned.apk`);
+const outputApkSignedFilePath = path.join(outputPath, `app-release-apksigner-signed.apk`);
 
 const signCommand = `cp ${outputUnsignedFilePath} ${outputApkSignedFilePath} && apksigner sign --ks ${ANDROID_KEYSTORE_PATH} --ks-key-alias ${keystoreAlias} --ks-pass pass:${ANDROID_KEYSTORE_PASSWORD} --key-pass pass:${ANDROID_KEYSTORE_PASSWORD} ${outputApkSignedFilePath}`;
 
@@ -40,7 +40,7 @@ npmProcess.stderr.on("data", (data) => {
 npmProcess.on("close", (code) => {
   console.log(`child process exited with code ${code}`);
 
-  if (code === 0) {
+  if (code === 0 && androidReleaseType === "APK") {
     const signProcess = exec(signCommand);
     signProcess.stdout.on("data", (data) => {
       console.log(`stdout: ${data}`);
