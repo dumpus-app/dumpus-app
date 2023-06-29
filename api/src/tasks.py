@@ -485,8 +485,8 @@ def read_analytics_file(package_status_id, package_id, link, session):
     for voice_session in voice_channel_logs_duration:
         voice_session_data.append((voice_session['channel_id'], voice_session['guild_id'], voice_session['duration_mins'], voice_session['started_date'], voice_session['ended_date']))
 
-    for session in session_logs_duration:
-        session_data.append((session['duration_mins'], session['started_date'], session['ended_date'], session['os']))
+    for l_session in session_logs_duration:
+        session_data.append((l_session['duration_mins'], l_session['started_date'], l_session['ended_date'], l_session['os']))
 
     # regroup guild joined per guild, then regroup each guild's entries per hour
     guild_joined_per_guild_id = defaultdict(list)
