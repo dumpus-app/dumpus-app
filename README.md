@@ -51,3 +51,9 @@ Cross-platform app powered by:
 **Play Store**
 
 1. ???
+
+### Setup Auto
+
+#### Android
+
+* Generate keystore to base64 `base64 -w 0 yourkeystore.jks > keystore_base64.txt`. Store this in the secret.
