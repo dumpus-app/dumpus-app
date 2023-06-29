@@ -23,7 +23,7 @@ function Chart() {
 
 function Stats() {
   const {
-    statsData: { avgMessagesSentPerDay },
+    statsData: { avgMessagesSentPerDay, avgOpeningCountPerDay },
   } = useSendingTimesData();
 
   const data = [
@@ -32,7 +32,7 @@ function Stats() {
       label: "average messages sent per day",
     },
     {
-      value: "N/A",
+      value: formatNumber(avgOpeningCountPerDay),
       label: "Discord app openings per day",
     },
   ];
