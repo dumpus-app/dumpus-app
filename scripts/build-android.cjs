@@ -1,8 +1,7 @@
 const { exec } = require("node:child_process");
 const path = require("path");
 
-const { config } = require("dotenv");
-config();
+require("dotenv").config();
 
 const ANDROID_KEYSTORE_PATH = process.env.ANDROID_KEYSTORE_PATH;
 const ANDROID_KEYSTORE_PASSWORD = process.env.ANDROID_KEYSTORE_PASSWORD;
