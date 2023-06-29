@@ -18,6 +18,7 @@
     "android:dev": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",
     "android:dev:static": "cross-env-shell NODE_ENV=production \"echo 'Run `pnpm build:mobile first` && cap sync && cap run android\"",
     "script:list-locales": "node ./scripts/list-locales.cjs",
+    "script:build-android": "node ./scripts/build-android.cjs",
     "trapeze:run": "node ./trapeze.config.mjs"
   },
   "dependencies": {
@@ -78,6 +79,7 @@
     "@types/pako": "^2.0.0",
     "@types/sql.js": "^1.4.4",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
     "node-fetch": "^3.3.1",
     "postcss-import": "^15.1.0",
     "prettier": "^2.8.8",
