@@ -3,13 +3,21 @@ import i18next from "i18next";
 
 const { language: locale } = i18next;
 
-export function formatNumber(n: number) {
+// TODO: load from i18n. Some locales may have
+// different texts for fallbacks
+const fallback = "N/A";
+
+export function formatNumber(n?: number | null) {
+  if (!n) return fallback;
+
   return Intl.NumberFormat(locale, {
     notation: "compact",
   }).format(n);
 }
 
-export function formatMoney(n: number) {
+export function formatMoney(n?: number | null) {
+  if (!n) return fallback;
+
   return Intl.NumberFormat(locale, {
     style: "currency",
     currency: "USD",
@@ -18,7 +26,9 @@ export function formatMoney(n: number) {
   }).format(n);
 }
 
-export function formatHour(hour: number) {
+export function formatHour(hour?: number | null) {
+  if (!hour) return fallback;
+
   const date = new Date();
   date.setHours(hour);
 
@@ -28,7 +38,7 @@ export function formatHour(hour: number) {
 }
 
 export function formatDate(
-  date: Date | string,
+  date?: Date | string | null,
   {
     year = "numeric",
     month = true,
@@ -43,6 +53,8 @@ export function formatDate(
     minute?: boolean;
   } = {}
 ) {
+  if (!date) return fallback;
+
   return new Intl.DateTimeFormat(locale, {
     year: year === false ? undefined : year,
     month: month ? "2-digit" : undefined,
