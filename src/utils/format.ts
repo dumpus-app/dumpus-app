@@ -7,11 +7,14 @@ const { language: locale } = i18next;
 // different texts for fallbacks
 const fallback = "N/A";
 
-export function formatNumber(n?: number | null) {
+export function formatNumber(
+  n?: number | null,
+  { notation = "compact" }: { notation?: "standard" | "compact" } = {}
+) {
   if (!n) return fallback;
 
   return Intl.NumberFormat(locale, {
-    notation: "compact",
+    notation,
   }).format(n);
 }
 
