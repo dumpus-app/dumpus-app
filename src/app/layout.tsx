@@ -6,6 +6,7 @@ import useCapacitor from "~/hooks/use-capacitor";
 import "~/i18n/client";
 import "./_css/globals.css";
 import Providers from "./providers";
+import ConnectivityHandler from "./_components/ConnectivityHandler";
 
 const font = Rubik({ subsets: ["latin"] });
 
@@ -24,7 +25,9 @@ export default function RootLayout({
         dir={dir(locale)}
         className={`${font.className} h-full bg-gray-950 text-gray-400`}
       >
-        <body className="flex min-h-full flex-col">{children}</body>
+        <body className="flex min-h-full flex-col">
+          <ConnectivityHandler>{children}</ConnectivityHandler>
+        </body>
       </html>
     </Providers>
   );
