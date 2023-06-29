@@ -92,6 +92,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
     update_step(package_status_id, package_id, 'ANALYZING', session)
     update_progress(package_status_id, package_id, 0, session)
 
+    # trigger error
+    raise Exception('SOMETHING_WENT_WRONG')
+
     start = time.time()
 
     analytics_line_count = 0
