@@ -578,7 +578,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
     cur.executemany(guild_query, guild_data)
     cur.executemany(payment_query, payments_data)
     cur.executemany(voice_session_query, voice_session_data)
-    cur.executemany(session_query, sessions_data)
+    cur.executemany(session_query, session_data)
 
     cur.execute('''
         INSERT INTO package_data
