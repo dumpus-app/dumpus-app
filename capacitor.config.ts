@@ -1,26 +1,35 @@
 import { CapacitorConfig } from "@capacitor/cli";
-import { networkInterfaces } from "os";
+import os, { NetworkInterfaceInfo } from "node:os";
 
-const isDev = process.env.NODE_ENV === "development" || false;
-const networks = networkInterfaces();
+function localIpAddress() {
+  const interfaces = Object.values(os.networkInterfaces()).filter(
+    (iface) => iface !== undefined
+  ) as NetworkInterfaceInfo[][];
+  const aliases = interfaces
+    .filter((iface) =>
+      iface.some((alias) => alias.family === "IPv4" && !alias.internal)
+    )
+    .map((iface) => {
+      iface = iface.filter(
+        (alias) => alias.family === "IPv4" && !alias.internal
+      );
+      return iface;
+    })
+    .flat();
+  const ipAddress = aliases.find(
+    (alias) => !alias.address.startsWith("172")
+  )?.address;
 
-let ipAddress;
-
-for (let network of Object.values(networks)) {
-  for (let netInfo of network!) {
-    if (netInfo.family === "IPv4" && !netInfo.internal) {
-      ipAddress = netInfo.address;
-      break;
-    }
+  if (!ipAddress) {
+    throw new Error("No suitable network interface found.");
   }
 
-  if (ipAddress) {
-    break;
-  }
+  return ipAddress;
 }
 
-if (!ipAddress) {
-  throw new Error("No suitable network interface found.");
+const isDev = process.env.NODE_ENV === "development" || false;
+if (isDev) {
+  console.log(localIpAddress());
 }
 
 export default {
@@ -29,7 +38,7 @@ export default {
   ...(isDev
     ? {
         server: {
-          url: `http://${ipAddress}:3000`,
+          url: `http://${localIpAddress()}:3000`,
           cleartext: true,
         },
       }
