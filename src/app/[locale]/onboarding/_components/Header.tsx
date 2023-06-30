@@ -18,7 +18,10 @@ export default function Header({ progress, href }: Props) {
   return (
     <div className="flex h-12 w-full items-center justify-between px-2 sm:mx-auto sm:max-w-sm">
       {href ? (
-        <Link href={href} className="text-brand-300 hover:underline">
+        <Link
+          href={href}
+          className="inline-flex h-full items-center text-brand-300 hover:underline"
+        >
           {t("onboarding.shared.previous")}
         </Link>
       ) : (
