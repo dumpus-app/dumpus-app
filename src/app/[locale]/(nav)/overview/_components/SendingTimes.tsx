@@ -15,7 +15,7 @@ function Chart() {
         value,
         label: formatHour(label),
       }))}
-      className="flex-1 px-2"
+      className="px-2 sm:flex-1"
       legend="Messages sent"
     />
   );
