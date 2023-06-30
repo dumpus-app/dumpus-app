@@ -25,7 +25,7 @@ export default function Page() {
 
   if (!channel || !guild) return <NotFoundState />;
 
-  const discordLink = `discord://discord.com/channels/${guild.guild_id}/${channel.channel_id}`;
+  const discordLink = `https://discord.com/channels/${guild.guild_id}/${channel.channel_id}`;
 
   return (
     <>

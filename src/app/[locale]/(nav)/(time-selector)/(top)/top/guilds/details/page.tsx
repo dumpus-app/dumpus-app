@@ -24,7 +24,7 @@ export default function Page() {
 
   if (!guild) return <NotFoundState />;
 
-  const discordLink = `discord://discord.com/guilds/${guild.guild_id}`;
+  const discordLink = `https://discord.com/guilds/${guild.guild_id}`;
 
   return (
     <>

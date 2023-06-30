@@ -48,7 +48,7 @@ export default function Page() {
   const displayName = data?.display_name || username;
   const avatarURL = data?.avatar_url || user.user_avatar_url;
 
-  const discordLink = `discord://discord.com/users/${user.dm_user_id}`;
+  const discordLink = `https://discord.com/users/${user.dm_user_id}`;
 
   return (
     <>
