@@ -55,7 +55,7 @@ export default function Header({
           className
         )}
       >
-        {leftSlot && <div className="absolute left-2">{leftSlot}</div>}
+        {leftSlot && <div className="absolute left-0">{leftSlot}</div>}
         {title && (
           <div
             className={clsx(
@@ -66,7 +66,7 @@ export default function Header({
             {title}
           </div>
         )}
-        {rightSlot && <div className="absolute right-2">{rightSlot}</div>}
+        {rightSlot && <div className="absolute right-0">{rightSlot}</div>}
       </header>
       {children}
     </div>
@@ -84,7 +84,7 @@ function HeaderIcon({ icon: Icon, className, ...rest }: HeaderIconProps) {
   return (
     <Link
       className={clsx(
-        "text-gray-400 transition-colors hover:text-gray-300",
+        "block p-2 text-gray-400 transition-colors hover:text-gray-300",
         className
       )}
       {...rest}
