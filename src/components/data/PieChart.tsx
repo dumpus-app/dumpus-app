@@ -55,7 +55,7 @@ export default function SimplePieChart({ data, className, legend }: Props) {
             {data.map((entry, i) => {
               const colorObject = COLORS[Math.abs(i) % COLORS_LENGTH];
               const active = i === focusedIndex;
-              const shade = active ? 300 : 300;
+              const shade = 300;
               const opacity =
                 focusedIndex !== undefined ? (active ? "" : "75") : "";
               const color = colorObject[shade] + opacity;
