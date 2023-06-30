@@ -24,6 +24,8 @@ jobs:
           api-level: 32
           script: |
             sdkmanager "build-tools;32.0.0"
+            echo "Build Tools installed"
+            export PATH=$PATH:$ANDROID_HOME/build-tools/32.0.0/
 
       - name: Decode and set up Android Keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/keystore.jks
