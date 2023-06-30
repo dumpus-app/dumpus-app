@@ -11,7 +11,7 @@ export function formatNumber(
   n?: number | null,
   { notation = "compact" }: { notation?: "standard" | "compact" } = {}
 ) {
-  if (!n) return fallback;
+  if (n === undefined || n === null) return fallback;
 
   return Intl.NumberFormat(locale, {
     notation,
@@ -19,7 +19,7 @@ export function formatNumber(
 }
 
 export function formatMoney(n?: number | null) {
-  if (!n) return fallback;
+  if (n === undefined || n === null) return fallback;
 
   return Intl.NumberFormat(locale, {
     style: "currency",
@@ -30,7 +30,7 @@ export function formatMoney(n?: number | null) {
 }
 
 export function formatHour(hour?: number | null) {
-  if (!hour) return fallback;
+  if (hour === undefined || hour === null) return fallback;
 
   const date = new Date();
   date.setHours(hour);
