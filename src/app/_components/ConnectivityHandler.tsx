@@ -13,7 +13,6 @@ export default function ConnectivityHandler({
   if (!connected) {
     return (
       <div className="my-auto flex flex-col items-center space-y-4">
-        {/* <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span> */}
         <WifiIcon className="mx-auto h-16 w-16 text-gray-400" />
         <div className="max-w-xs text-center">
           <h1 className="text-xl font-bold text-white">
