@@ -15,7 +15,7 @@ export default function Section({ title, href, children, id }: Props) {
         {href ? (
           <Link
             href={href}
-            className="text-brand-300 hover:underline sm:text-lg"
+            className="-mr-2 px-2 text-brand-300 hover:underline sm:text-lg"
           >
             More
           </Link>
