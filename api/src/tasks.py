@@ -445,6 +445,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     print(f'Finish processing: {time.time() - start}')
 
+    # todo remove this log
+    print(f'Found: {len(voice_channel_logs_duration)} voice channel logs, {len(session_logs_duration)} session logs')
+
     # auto-generated SQLite documentation starts here
 
     (conn, cur) = create_new_empty_database()
