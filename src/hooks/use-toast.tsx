@@ -1,10 +1,26 @@
 "use client";
 
 import { Transition } from "@headlessui/react";
-import { CheckCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import { type VariantProps, cva } from "class-variance-authority";
+import clsx from "clsx";
 import { Fragment } from "react";
 import { toast } from "react-hot-toast";
 import { Icon } from "~/types";
+
+const toastVariants = cva("", {
+  variants: {
+    variant: {
+      brand: "text-brand-300",
+      danger: "text-danger-300",
+    },
+  },
+  defaultVariants: {
+    variant: "brand",
+  },
+});
+
+type ToastVariants = VariantProps<typeof toastVariants>;
 
 export default function useToast() {
   function toastFn({
@@ -12,12 +28,13 @@ export default function useToast() {
     description,
     icon: Icon,
     automaticallyDismiss = true,
+    variant,
   }: {
     title: string;
     description: string;
     icon: Icon;
     automaticallyDismiss?: boolean;
-  }) {
+  } & ToastVariants) {
     toast(
       ({ visible, id }) => (
         <Transition
@@ -35,11 +52,18 @@ export default function useToast() {
             <div className="p-4">
               <div className="flex items-start">
                 <div className="mt-0.5 flex-shrink-0">
-                  <Icon className="h-6 w-6 text-brand-300" aria-hidden="true" />
+                  <Icon
+                    className={clsx("h-6 w-6", toastVariants({ variant }))}
+                    aria-hidden="true"
+                  />
                 </div>
                 <div className="ml-3 w-0 flex-1">
-                  <p className="text-lg font-bold text-white">{title}</p>
-                  <p className="text-base text-gray-400">{description}</p>
+                  <p className="break-all text-lg font-bold text-white">
+                    {title}
+                  </p>
+                  <p className="break-all text-base text-gray-400">
+                    {description}
+                  </p>
                 </div>
                 <div className="ml-4 flex flex-shrink-0">
                   <button
