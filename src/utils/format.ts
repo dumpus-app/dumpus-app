@@ -66,3 +66,26 @@ export function formatDate(
     minute: minute ? "2-digit" : undefined,
   }).format(typeof date === "string" ? new Date(date) : date);
 }
+
+export function formatDuration(n?: number | undefined) {
+  if (!n) return fallback;
+
+  if (n < 1000) {
+    return `${n}ms`;
+  }
+
+  if (n < 60000) {
+    const seconds = Math.floor(n / 1000);
+    return `${seconds}s`;
+  }
+
+  if (n < 3600000) {
+    const minutes = Math.floor(n / 60000);
+    const seconds = Math.floor((n % 60000) / 1000);
+    return `${minutes}m ${seconds}s`;
+  }
+
+  const hours = Math.floor(n / 3600000);
+  const minutes = Math.floor((n % 3600000) / 60000);
+  return `${hours}h ${minutes}m`;
+}
