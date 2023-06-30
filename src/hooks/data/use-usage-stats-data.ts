@@ -19,7 +19,7 @@ export default function useUsageStatsData() {
   function getJoinedGuilds() {
     const { data, hasError } = sql<{ join_count: number }>`
       SELECT
-        SUM(a.occurence_count) as join_count
+        COUNT(DISTINCT(a.associated_guild_id)) as join_count
       FROM activity a
       WHERE a.event_name = 'guild_joined'
       AND a.day BETWEEN '${start}' AND '${end}';
@@ -69,6 +69,26 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].message_count;
   }
 
+  function getAvgMessageCountPerDay() {
+    const { data, hasError } = sql<{ average_daily_occurences: number }>`
+      SELECT
+        ROUND(AVG(daily_occurences)) AS average_daily_occurences
+      FROM (
+        SELECT
+            day,
+            SUM(occurence_count) AS daily_occurences
+        FROM 
+            activity
+        WHERE event_name = 'message_sent' 
+        AND day BETWEEN '${start}' AND '${end}'
+        GROUP BY 
+            day
+      ) AS daily_summary;
+    `;
+
+    return hasError ? null : data[0].average_daily_occurences;
+  }
+
   function getAppStarted() {
     const { data, hasError } = sql<{ app_started: number }>`
       SELECT SUM(a.occurence_count) AS app_started
@@ -80,12 +100,28 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].app_started;
   }
 
+  function getAvgAppStartedPerDay() {
+    const { data, hasError } = sql<{ average_daily_occurences: number }>`
+      SELECT ROUND(AVG(total_occurence)) as average_daily_occurences
+      FROM (
+        SELECT day, SUM(occurence_count) as total_occurence 
+        FROM activity
+        WHERE event_name = 'app_opened'
+        GROUP BY day
+      ) daily_counts;
+    `;
+
+    return hasError ? null : data[0].average_daily_occurences;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
     topHour: getTopHour(),
     spentMoney: getSpentMoney(),
     messageCount: getMessageCount(),
+    avgMessageCountPerDay: getAvgMessageCountPerDay(),
     appStarted: getAppStarted(),
+    avgAppStartedPerDay: getAvgAppStartedPerDay(),
   };
 }

@@ -1,5 +1,7 @@
 "use client";
 
+// https://heroicons.com/
+
 import {
   ArrowLeftOnRectangleIcon,
   BanknotesIcon,
@@ -7,6 +9,8 @@ import {
   ClockIcon,
   PhoneArrowDownLeftIcon,
   UsersIcon,
+  ChatBubbleBottomCenterTextIcon,
+  CursorArrowRippleIcon
 } from "@heroicons/react/24/solid";
 import DetailCard from "~/components/data/DetailCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
@@ -14,7 +18,7 @@ import type { Icon } from "~/types";
 import { formatHour, formatMoney, formatNumber } from "~/utils/format";
 
 export default function Stats() {
-  const { networkSize, joinedGuilds, topHour, spentMoney } =
+  const { networkSize, joinedGuilds, topHour, spentMoney, appStarted, avgAppStartedPerDay, messageCount, avgMessageCountPerDay } =
     useUsageStatsData();
 
   const data: {
@@ -24,9 +28,15 @@ export default function Stats() {
     icon: Icon;
   }[] = [
     {
+      value: formatNumber(messageCount, { notation: "standard" }),
+      title: "messages sent",
+      description: `That's about ${avgMessageCountPerDay} messages per day!`,
+      icon: ChatBubbleBottomCenterTextIcon
+    },
+    {
       value: formatNumber(joinedGuilds),
-      title: "server joined",
-      description: "lorem ipsum",
+      title: "distinct server joined",
+      description: `You went on ~${((joinedGuilds || 0)*100/19_000_000).toFixed(4)}% of all the servers!`,
       icon: ArrowLeftOnRectangleIcon,
     },
     {
@@ -44,20 +54,27 @@ export default function Stats() {
     {
       value: formatHour(topHour),
       title: "top hour",
-      description: "lorem ipsum",
+      description: "You're a night owl!",
       icon: ClockIcon,
     },
     {
       value: formatNumber(networkSize),
-      title: "network size",
-      description: "lorem ipsum",
+      title: "known disctinct users",
+      description: "Well, you know a lot of people!",
       icon: UsersIcon,
     },
     {
       value: formatMoney(spentMoney || 0),
       title: "spent",
-      description: "lorem ipsum",
+      description: "That's a lot of cash...!",
       icon: BanknotesIcon,
+    },
+
+    {
+      value: formatNumber(appStarted, { notation: "standard" }),
+      title: "app starts",
+      description: `You open Discord about ${avgAppStartedPerDay} times per day!`,
+      icon: CursorArrowRippleIcon,
     },
   ];
 
