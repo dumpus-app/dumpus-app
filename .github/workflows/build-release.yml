@@ -27,6 +27,11 @@ jobs:
             echo "Build Tools installed"
             export PATH=$PATH:$ANDROID_HOME/build-tools/32.0.0/
 
+      - name: Debugging paths
+        run: |
+          echo $ANDROID_HOME
+          ls $ANDROID_HOME/build-tools/
+
       - name: Decode and set up Android Keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/keystore.jks
         env:
