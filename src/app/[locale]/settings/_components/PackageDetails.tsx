@@ -28,27 +28,21 @@ export default function PackageDetails() {
     <Section title="Package details">
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <DetailCard
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            copyToClipboard(selectedPackage.UPNKey);
-          }}
+          onClick={() => copyToClipboard(selectedPackage.UPNKey)}
           title={selectedPackage.UPNKey}
           description="UPN Key"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
+          onClick={() =>
             copyToClipboard(
               formatDate(selectedPackage.dateAdded, {
                 hour: false,
                 minute: false,
               })
-            );
-          }}
+            )
+          }
           title={formatDate(selectedPackage.dateAdded, {
             hour: false,
             minute: false,
@@ -58,33 +52,21 @@ export default function PackageDetails() {
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            copyToClipboard(selectedPackage.package_id);
-          }}
+          onClick={() => copyToClipboard(selectedPackage.package_id)}
           title={selectedPackage.package_id}
           description="Package ID"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            copyToClipboard(selectedPackage.package_owner_name);
-          }}
+          onClick={() => copyToClipboard(selectedPackage.package_owner_name)}
           title={selectedPackage.package_owner_name}
           description="Discord user"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            copyToClipboard(selectedPackage.backendURL);
-          }}
+          onClick={() => copyToClipboard(selectedPackage.backendURL)}
           title={selectedPackage.backendURL}
           description="Backend URL"
           reverseTexts

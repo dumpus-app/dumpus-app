@@ -31,9 +31,7 @@ export default function PackageSwitch() {
                 minute: false,
               })}`}
               reverseTexts
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
+              onClick={() => {
                 setConfig(defu({ db: { selectedId: id } }, config));
                 location.href = "/";
               }}

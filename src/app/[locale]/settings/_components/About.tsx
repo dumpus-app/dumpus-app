@@ -22,8 +22,6 @@ export default function About() {
     <Section title="About">
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <DetailCard
-          href="#"
-          onClick={(e) => e.preventDefault()}
           title={`v${version}`}
           description="Version"
           reverseTexts

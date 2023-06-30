@@ -137,11 +137,7 @@ export default function Languages() {
       <Section title="Languages">
         <div className="px-2">
           <DetailCard
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              setOpen(true);
-            }}
+            onClick={() => setOpen(true)}
             title={t("localeDisplay")}
             description={`${locales.length} available`}
             reverseTexts

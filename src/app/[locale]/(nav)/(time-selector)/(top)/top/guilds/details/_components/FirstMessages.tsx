@@ -26,9 +26,7 @@ export default function FirstMessages() {
         {DATA.map((msg) => (
           <DetailCard.WithRank
             key={msg.rank}
-            href="#"
             onClick={(e) => {
-              e.preventDefault();
               // TODO: bottom sheet
               alert(msg.message);
             }}
