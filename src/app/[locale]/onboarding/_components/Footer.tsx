@@ -94,7 +94,7 @@ export default function Footer({ href, label }: Props) {
         <button
           type="button"
           onClick={(e) => setOpen(true)}
-          className="w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
+          className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
         >
           {t("onboarding.shared.trust")}
         </button>
