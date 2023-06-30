@@ -31,7 +31,7 @@ export default function TopChannelsList() {
         {data.map((channel) => (
           <DetailCard.WithRank
             key={channel.rank}
-            href={`/top/channels/details?guild_id=${channel.guild_id}&channel_id=${channel.channel_id}`}
+            href={`/top/channels/details?channel_id=${channel.channel_id}`}
             rank={channel.rank}
             title={"#" + channel.channel_name}
             description={`${channel.guild_name} · ${formatNumber(

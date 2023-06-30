@@ -17,12 +17,10 @@ import { firstCharFromUnicode } from "~/utils";
 
 export default function Page() {
   const params = useSearchParams()!;
-  const guildId = params.get("guild_id")!;
-  const channelId = params.get("channel_id")!;
+  const channelID = params.get("channel_id")!;
 
   const { hasData, channel, guild, stats, dailySentMessages } = useChannelData({
-    guildId,
-    channelId,
+    channelID,
   });
 
   if (!channel || !guild) return <NotFoundState />;

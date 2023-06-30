@@ -20,7 +20,7 @@ export default function TopChannels() {
               name={"#" + channel.channel_name}
               messages={channel.message_count}
               rank={channel.rank}
-              href={`/top/channels/details?guild_id=${channel.guild_id}&channel_id=${channel.channel_id}`}
+              href={`/top/channels/details?channel_id=${channel.channel_id}`}
               image={
                 <div
                   className="relative flex aspect-square w-full items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950"
