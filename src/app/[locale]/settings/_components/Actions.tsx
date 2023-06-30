@@ -1,5 +1,6 @@
 "use client";
 
+import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useAtom, useAtomValue } from "jotai";
 import { useState } from "react";
 import Button from "~/components/Button";
@@ -7,6 +8,7 @@ import Link from "~/components/Link";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
 import { getStorageKey } from "~/hooks/use-sql-init";
+import useToast from "~/hooks/use-toast";
 import {
   CONFIG_ATOM_INITIAL_VALUE,
   configAtom,
@@ -51,6 +53,8 @@ export default function Actions() {
     }
   }
 
+  const toast = useToast();
+
   // During reset
   if (!selectedPackage) return null;
 
@@ -59,12 +63,17 @@ export default function Actions() {
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <Button
           asChild
-          variant="primary"
+          variant="brand"
           onClick={(e) => {
             const size = getLocalStorageSize();
             if (size >= LOCALSTORAGE_MAX_CAPACITY) {
               e.preventDefault();
-              alert("Not enough storage in app");
+              toast({
+                variant: "danger",
+                title: "Can't add new package",
+                description: "Not enough storage in app",
+                icon: XCircleIcon,
+              });
             }
           }}
         >

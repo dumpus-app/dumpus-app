@@ -1,25 +1,44 @@
 "use client";
 
-import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
+import {
+  CheckCircleIcon,
+  ClipboardDocumentIcon,
+  XCircleIcon,
+} from "@heroicons/react/24/solid";
 import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { useCopyToClipboard } from "react-use";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
+import useToast from "~/hooks/use-toast";
 import { selectedPackageAtom } from "~/stores";
 import { formatDate } from "~/utils/format";
 
 export default function PackageDetails() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
   const [state, copyToClipboard] = useCopyToClipboard();
+  const toast = useToast();
 
   useEffect(() => {
     if (state.error) {
-      alert(`Unable to copy value: ${state.error.message}`);
+      toast({
+        variant: "danger",
+        title: "Can't copy to clipboard",
+        description: state.error.message,
+        icon: XCircleIcon,
+      });
     } else if (state.value) {
-      alert("Copied to clipboard!");
+      let sliced = state.value.slice(0, 40);
+      if (sliced.length !== state.value.length) {
+        sliced += "...";
+      }
+      toast({
+        title: "Copied to clipboard!",
+        description: sliced,
+        icon: CheckCircleIcon,
+      });
     }
-  }, [state]);
+  }, [state, toast]);
 
   // During reset
   if (!selectedPackage) return null;

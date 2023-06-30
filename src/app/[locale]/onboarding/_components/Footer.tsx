@@ -66,7 +66,7 @@ function TrustDialog({
                 </div>
                 <div className="sticky bottom-0 mt-2 bg-gray-900 p-4">
                   <Button
-                    variant="primary"
+                    variant="brand"
                     className="w-full"
                     onClick={() => setOpen(false)}
                   >

@@ -8,7 +8,7 @@ export default function Share() {
       <Button
         type="button"
         onClick={() => {
-          alert("share");
+          // TODO: share. Extract to utility like useShare
         }}
         className="w-full"
       >
