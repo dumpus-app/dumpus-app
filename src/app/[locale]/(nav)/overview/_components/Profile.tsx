@@ -1,10 +1,12 @@
 "use client";
 
+import { ShareIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { useNetworkState } from "react-use";
 import Button from "~/components/Button";
 import ProfileHeader from "~/components/ProfileHeader";
 import useUserData from "~/hooks/data/use-user-data";
+import useToast from "~/hooks/use-toast";
 
 export default function Profile() {
   const userData = useUserData();
@@ -15,6 +17,7 @@ export default function Profile() {
   } = userData;
 
   const networkState = useNetworkState();
+  const toast = useToast();
 
   const size = (() => {
     switch (networkState.effectiveType) {
@@ -45,7 +48,19 @@ export default function Profile() {
         </div>
       }
     >
-      <Button className="absolute right-2 hidden sm:block">Share</Button>
+      <Button
+        className="absolute right-2 hidden sm:block"
+        onClick={() =>
+          toast({
+            title: "Sharing in progres",
+            description: "Please wait...",
+            icon: ShareIcon,
+            automaticallyDismiss: false,
+          })
+        }
+      >
+        Share
+      </Button>
     </ProfileHeader>
   );
 }

@@ -5,13 +5,21 @@ import Link from "~/components/Link";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useMeasure } from "react-use";
+import { useEffect } from "react";
+import { useSetAtom } from "jotai";
+import { bottomNavHeightAtom } from "~/stores/ui";
 export type Props = {
   children?: React.ReactNode;
 };
 
 export default function BottomNav({ children }: Props) {
   const pathname = useI18nPathname();
+  const setHeight = useSetAtom(bottomNavHeightAtom);
   const [ref, { height }] = useMeasure<HTMLDivElement>();
+
+  useEffect(() => {
+    setHeight(height);
+  }, [height, setHeight]);
 
   return (
     <div className="contents sm:hidden">

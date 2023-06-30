@@ -3,6 +3,7 @@
 import i18next from "i18next";
 import { Rubik, JetBrains_Mono } from "next/font/google";
 import { CSSProperties } from "react";
+import Toaster from "~/components/Toaster";
 
 const sansFont = Rubik({ subsets: ["latin"] });
 const monoFont = JetBrains_Mono({ subsets: ["latin"] });
@@ -25,7 +26,12 @@ export default function PageStructure({
         } as CSSProperties
       }
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <>
+          {children}
+          <Toaster />
+        </>
+      </body>
     </html>
   );
 }
