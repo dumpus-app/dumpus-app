@@ -1,79 +1,79 @@
 Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.
 
 
-**Table: activity**
-|Column|Description|
-|--|--|
-|event_name|Contains the type of the events occurred like message_sent, guild_joined, application_command_used, add_reaction, app_opened.|
-|day|The date on which the activity occurred in the format 'YYYY-MM-DD'.|
-|hour|The hour of the day (in 24-hour format) during which the activity occurred.|
-|occurrence_count|The number of times that the specific event occurred.|
-|associated_channel_id|The ID of the channel with which the activity is associated.|
-|associated_guild_id|The ID of the guild with which the activity is associated.|
-|associated_user_id|The ID of the user with which the activity is associated.|
-|extra_field_1|An additional field for storing extra data related to the event, such as emoji name, operating system, etc. depending on the event type.|
-|extra_field_2|Another additional field for storing extra data related to the event like whether emoji is custom or not.|
+**1. activity Table**
+|Column|Description
+|------|-----------|
+|event_name|The type of event occurring. The event could be ('message_sent', 'guild_joined', 'application_command_used', 'add_reaction', 'app_opened').|
+|day|The day of the activity event in 'Year-Month-Day' format.|
+|hour|The hour of the activity event.|
+|occurrence_count|The number of occurrences of the particular event.|
+|associated_channel_id|Associated discord channel_id, only applies to the 'message_sent' and 'add_reaction' events. For others, it is None.|
+|associated_guild_id| Associated discord guild_id, only applies to the 'guild_joined' and 'application_command_used' events. For others, it is None.|
+|associated_user_id| ID of the user associated with the event, value is always None in this code.|
+|extra_field_1| Extra field that holds application_id, emoji_name, os, based on the 'event_name'.|
+|extra_field_2| Extra field that depicts if an emoji is_custom_emoji for 'add_reaction' event, else None.|
 
-**Table: dm_channels_data**
+**2. dm_channels_data Table**
 |Column|Description|
-|--|--|
-|channel_id|Unique identifier of the direct message (DM) channel.|
-|dm_user_id|Unique identifier of the user involved in the direct message conversation.|
-|user_name|The original discord username of the user.|
-|display_name|The display name of the user. (It can be changed per server).|
-|user_avatar_url|The URL of the avatar of the user.|
-|total_message_count|The total number of messages in the direct message conversation.|
-|total_voice_channel_duration|The total time spent by the user in voice channels associated with the conversation.|
-|sentiment_score|The sentiment score for the messages in the conversation.|
+|------|-----------|
+|channel_id|The ID of the direct message channel.|
+|dm_user_id|The ID of the user exchanging direct messages.|
+|user_name|The username of the dm_user_id.|
+|display_name|The display name of the dm_user_id.|
+|user_avatar_url|The avatar URL of the dm_user_id.|
+|total_message_count|The overall total message count of the direct message exchange.|
+|total_voice_channel_duration|The total duration of voice channel, value is always 0.|
+|sentiment_score|The score calculating the sentiment of the message exchange.|
 
-**Table: guild_channels_data**
+**3. guild_channels_data Table**
 |Column|Description|
-|--|--|
-|channel_id|Unique identifier of the guild channel.|
-|guild_id|Unique identifier of the guild.|
-|channel_name|The name of the guild channel.|
-|total_message_count|The total number of messages in the guild channel.|
-|total_voice_channel_duration|The total time spent by users in the voice channels of the guild channel.|
+|------|-----------|
+|channel_id|The ID of the guild's channel.|
+|guild_id|The ID of the guild.|
+|channel_name|The name of the channel within the guild.|
+|total_message_count|The total number of messages exchanged in the guild's channel.|
+|total_voice_channel_duration|The total duration of voice channel, value is always 0.|
 
-**Table: guilds**
+**4. guilds Table**
 |Column|Description|
-|--|--|
-|guild_id|Unique identifier of the guild.|
+|------|-----------|
+|guild_id|The ID of the guild.|
 |guild_name|The name of the guild.|
-|total_message_count|The total number of messages exchanged in the guild.|
+|total_message_count|The total number of messages sent across all channels in the guild.|
 
-**Table: payments**
+**5. payments Table**
 |Column|Description|
-|--|--|
-|payment_id|Unique identifier of the payment.|
-|payment_date|The date when the payment was made in the format 'YYYY-MM-DD'.|
+|------|-----------|
+|payment_id|The ID of the payment|
+|payment_date|The date of the payment in 'Year-Month-Day' format.|
 |payment_amount|The amount of the payment.|
 |payment_currency|The currency in which the payment was made.|
-|payment_description|The description of the payment.|
+|payment_description|The brief description or the purpose of the payment.|
 
-**Table: voice_sessions**
+**6. voice_sessions Table**
 |Column|Description|
-|--|--|
-|channel_id|Unique ID identifier of the voice channel.|
-|guild_id|Unique identifier of the guild.|
-|duration_mins|The duration (in minutes) of the voice session.|
-|started_date|The date and time when the voice session started.|
-|ended_date|The date and time when the voice session ended.|
+|------|-----------|
+|channel_id|The ID of the voice channel.|
+|guild_id|The ID of the guild.|
+|duration_mins|Duration of the voice session measured in minutes. |
+|started_date|The date (YYYY-mm-dd) when the voice session started.|
+|ended_date|The date (YYYY-mm-dd) when the voice session ended.|
 
-**Table: sessions**
+**7. sessions Table**
 |Column|Description|
-|--|--|
-|started_date|The date and time when the session started.|
-|ended_date|The date and time when the session ended.|
-|duration_mins|The duration (in minutes) of the session.|
-|device_os|The operating system of the device where the session was initiated.|
+|------|-----------|
+|started_date|The date (YYYY-mm-dd) when the session started.|
+|ended_date|The date (YYYY-mm-dd) when the session ended.|
+|duration_mins| Duration of the session measured in minutes.|
+|device_os| Operating system of the device where the session ran.|
 
-**Table: package_data**
+**8. package_data Table**
 |Column|Description|
-|--|--|
-|package_id|Unique identifier of the package.|
-|package_version|The version of the package.|
-|package_owner_id|Unique identifier of the owner of the package.|
-|package_owner_name|Username of the owner of the package.|
-|package_owner_display_name|Display name of the owner of the package.|
-|package_owner_avatar_url|The URL of the avatar of the owner of the package.|
+|------|-----------|
+|package_id|The ID of the data package.|
+|package_version|The version of the data package.|
+|package_owner_id|The ID of the user who owns the package.|
+|package_owner_name|The username of the package owner.|
+|package_owner_display_name|The display-name of the package owner.|
+|package_owner_avatar_url|The URL of the avatar of the package owner.|
