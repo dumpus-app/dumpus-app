@@ -18,7 +18,6 @@ export default function DailySentMessages({
         data={data}
         className="px-2"
         legend="Messages sent"
-        showSmallDots={data.length > 12}
       />
     </Section>
   );
