@@ -146,5 +146,12 @@
     "appStartsPerDay": "You open Discord about {{value}} times per day!",
     "totalTimeSpent": "spent on Discord",
     "avgSessionTime": "{{value}} avg. session time"
-  }
+  },
+  "sheerNumbers": "Sheer numbers",
+  "mostActiveDMs": "Most active DMs",
+  "mostActiveServers": "Most active servers",
+  "mostActiveChannels": "Most active channels",
+  "discordHours": "Your Discord hours",
+  "activityTime": "Activity over time",
+  "messageSentCount": "Message sent count"
 }

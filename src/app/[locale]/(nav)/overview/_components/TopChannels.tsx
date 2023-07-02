@@ -4,14 +4,16 @@ import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
+import { useTranslation } from "~/i18n/client";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 
 export default function TopChannels() {
+  const { t } = useTranslation();
   const data = useTopChannelsData().getData({});
 
   return (
-    <Section title="Top channels" href="/top/channels">
+    <Section title={t('mostActiveChannels')} href="/top/channels">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((channel) => (

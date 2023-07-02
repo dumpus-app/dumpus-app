@@ -9,6 +9,7 @@ import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
+import { useTranslation } from "~/i18n/client";
 
 function GuildCard({
   guild,
@@ -57,10 +58,11 @@ function GuildCard({
 }
 
 export default function TopGuilds() {
+  const { t } = useTranslation();
   const data = useTopGuildsData().getData({});
 
   return (
-    <Section title="Top guilds" href="/top/guilds">
+    <Section title={t('mostActiveServers')} href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((guild) => (

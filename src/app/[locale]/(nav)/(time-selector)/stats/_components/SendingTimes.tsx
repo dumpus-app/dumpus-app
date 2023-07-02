@@ -2,6 +2,7 @@
 
 import Section from "~/components/Section";
 import SimpleBarChart from "~/components/data/SimpleBarChart";
+import SimpleLineChart from "~/components/data/SimpleLineChart";
 import StatCard from "~/components/data/StatCard";
 import useSendingTimesData from "~/hooks/data/use-sending-times-data";
 import { formatHour, formatNumber } from "~/utils/format";
@@ -10,7 +11,7 @@ function Chart() {
   const { chartData } = useSendingTimesData();
 
   return (
-    <SimpleBarChart
+    <SimpleLineChart
       data={(chartData || []).map(({ value, label }) => ({
         value,
         label: formatHour(label),

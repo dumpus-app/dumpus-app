@@ -1,6 +1,7 @@
 "use client";
 
 import Section from "~/components/Section";
+import SimpleBarChart from "~/components/data/SimpleBarChart";
 import SimpleLineChart from "~/components/data/SimpleLineChart";
 
 export default function DailySentMessages({
@@ -13,11 +14,10 @@ export default function DailySentMessages({
 }) {
   return (
     <Section title="Daily sent messages">
-      <SimpleLineChart
+      <SimpleBarChart
         data={data}
         className="px-2"
         legend="Messages sent"
-        showSmallDots={data.length > 12}
       />
     </Section>
   );

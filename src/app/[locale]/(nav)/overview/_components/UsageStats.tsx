@@ -5,10 +5,12 @@ import ScrollArea from "~/components/ScrollArea";
 import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import { formatHour, formatNumber } from "~/utils/format";
+import { useTranslation } from "~/i18n/client";
 
 export default function UsageStats() {
   const { messageCount, networkSize, joinedGuilds, topHour, appStarted } =
     useUsageStatsData();
+  const { t } = useTranslation();
 
   const data = [
     {
@@ -33,7 +35,7 @@ export default function UsageStats() {
   ];
 
   return (
-    <Section title="Usage stats" href="/stats">
+    <Section title={t('sheerNumbers')} href="/stats">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {data.map((stat, i) => (

@@ -8,6 +8,7 @@ import AvatarCard from "~/components/data/AvatarCard";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import useUserDetails from "~/hooks/use-user-details";
 import { avatarURLFallback } from "~/utils/discord";
+import { useTranslation } from "~/i18n/client";
 
 function DMCard({
   dm,
@@ -43,6 +44,9 @@ function DMCard({
 }
 
 export default function TopDMs() {
+  
+  const { t } = useTranslation();
+
   const data = useTopDMsData().getData({});
   const networkState = useNetworkState();
 
@@ -60,7 +64,7 @@ export default function TopDMs() {
   })();
 
   return (
-    <Section title="Top DMs" href="/top/dms">
+    <Section title={t('mostActiveDMs')} href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((dm) => (
