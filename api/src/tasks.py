@@ -411,7 +411,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         'started_date': join['timestamp'],
                         'ended_date': next_leave['timestamp'] if next_leave else None
                     })
-    
+
+    session_logs_duration = []
+
+    session_logs = sorted(session_logs, key=lambda x: x['timestamp'])
+
     ongoing_sessions = []
     session_logs_duration = []
 
