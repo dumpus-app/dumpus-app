@@ -576,7 +576,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     session_query = '''
         INSERT INTO sessions
-        (started_date, ended_date, duration_mins, device_os)
+        (duration_mins, started_date, ended_date, device_os)
         VALUES (?, ?, ?, ?);
     '''
 
