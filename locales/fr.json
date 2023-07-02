@@ -34,7 +34,7 @@
       "step": "Etape {{n}}",
       "steps": [
         "Briefing",
-        "Demander vos données",
+        "Demandez vos données",
         "Démarrez l'analyse"
       ]
     },
