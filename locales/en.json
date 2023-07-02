@@ -131,5 +131,20 @@
         }
       }
     }
+  },
+  "stats": {
+    "messagesSent": "messages sent",
+    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "joinedServers": "joined servers",
+    "joinedServersDesc": "We've got a real Discord server explorer!",
+    "knownUsers": "known users",
+    "knownUsersDesc": "Well, you know a lot of people!",
+    "spentMoney": "spent",
+    "spentMoneyDesc_positive": "That's a lot of cash...!",
+    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "appStarts": "app starts",
+    "appStartsPerDay": "You open Discord about {{value}} times per day!",
+    "totalTimeSpent": "spent on Discord",
+    "avgSessionTime": "{{value}} avg. session time"
   }
 }

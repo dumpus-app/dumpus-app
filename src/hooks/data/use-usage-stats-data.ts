@@ -114,6 +114,18 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].average_daily_occurences;
   }
 
+  function getAvgSessionDuration() {
+    console.log(`${(new Date(start).getTime() / 1000)} keyww ${(new Date(end).getTime() / 1000)};`)
+    const { data, hasError } = sql<{ average_session_duration: number }>`
+      SELECT COUNT(*)
+      FROM sessions
+    `;
+
+    console.log(data);
+
+    return hasError ? null : data[0].average_session_duration;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
@@ -123,5 +135,6 @@ export default function useUsageStatsData() {
     avgMessageCountPerDay: getAvgMessageCountPerDay(),
     appStarted: getAppStarted(),
     avgAppStartedPerDay: getAvgAppStartedPerDay(),
+    avgSessionDuration: getAvgSessionDuration(),
   };
 }

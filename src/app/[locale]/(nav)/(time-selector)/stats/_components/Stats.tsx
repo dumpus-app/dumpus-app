@@ -13,13 +13,16 @@ import {
   CursorArrowRippleIcon
 } from "@heroicons/react/24/solid";
 import DetailCard from "~/components/data/DetailCard";
+import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
+import { useTranslation } from "~/i18n/client";
 import type { Icon } from "~/types";
-import { formatHour, formatMoney, formatNumber } from "~/utils/format";
+import { formatHour, formatMoney, formatNumber, formatDuration } from "~/utils/format";
 
 export default function Stats() {
-  const { networkSize, joinedGuilds, topHour, spentMoney, appStarted, avgAppStartedPerDay, messageCount, avgMessageCountPerDay } =
+  const { networkSize, joinedGuilds, topHour, spentMoney, appStarted, avgAppStartedPerDay, messageCount, avgMessageCountPerDay, avgSessionDuration } =
     useUsageStatsData();
+  const { t } = useTranslation();
 
   const data: {
     value: string;
@@ -29,16 +32,16 @@ export default function Stats() {
   }[] = [
     {
       value: formatNumber(messageCount, { notation: "standard" }),
-      title: "messages sent",
-      description: `That's about ${avgMessageCountPerDay} messages per day!`,
+      title: t("stats.messagesSent"),
+      description: t("stats.messagesSentPerDay", { value: avgMessageCountPerDay }),
       icon: ChatBubbleBottomCenterTextIcon
     },
     {
       value: formatNumber(joinedGuilds),
-      title: "distinct server joined",
-      description: `You went on ~${((joinedGuilds || 0)*100/19_000_000).toFixed(4)}% of all the servers!`,
+      title: t("stats.joinedServers"),
+      description: t("stats.joinedServersDesc"),
       icon: ArrowLeftOnRectangleIcon,
-    },
+    },/*
     {
       value: "N/A",
       title: "received calls",
@@ -54,28 +57,33 @@ export default function Stats() {
     {
       value: formatHour(topHour),
       title: "top hour",
-      description: "You're a night owl!",
+      description: "lorem ipsum",
       icon: ClockIcon,
-    },
+    },*/
     {
       value: formatNumber(networkSize),
-      title: "known disctinct users",
-      description: "Well, you know a lot of people!",
+      title: t("stats.knownUsers"),
+      description: t("stats.knownUsersDesc"),
       icon: UsersIcon,
     },
     {
       value: formatMoney(spentMoney || 0),
-      title: "spent",
-      description: "That's a lot of cash...!",
+      title: t("stats.spentMoney"),
+      description: t("stats.spentMoneyDesc", { context: (spentMoney || 0) > 0 ? 'positive' : 'empty' }),
       icon: BanknotesIcon,
     },
-
     {
       value: formatNumber(appStarted, { notation: "standard" }),
-      title: "app starts",
-      description: `You open Discord about ${avgAppStartedPerDay} times per day!`,
+      title: t("stats.appStarts"),
+      description: t("stats.appStartsPerDay", { value: avgAppStartedPerDay }),
       icon: CursorArrowRippleIcon,
     },
+    {
+      value: formatDuration((avgSessionDuration || 0) * 60_000),
+      title: t("stats.totalTimeSpent"),
+      description: t("stats.avgSessionTime", { value: formatDuration(12) }),
+      icon: CursorArrowRippleIcon,
+    }
   ];
 
   return (
