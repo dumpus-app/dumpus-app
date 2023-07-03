@@ -115,6 +115,18 @@ def read_analytics_file(package_status_id, package_id, link, session):
     guild_joined = []
     add_reaction = []
     app_opened = []
+    email_opened = []
+    login_successful = []
+    app_crashed = []
+    user_avatar_updated = []
+    oauth2_authorize_accepted = []
+    remote_auth_login = []
+    notification_clicked = []
+    captcha_served = []
+    voice_message_recorded = []
+    message_reported = []
+    message_edited = []
+    premium_upsell_viewed = []
 
     # dev
     bot_token_compromised = []
@@ -218,6 +230,66 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
                 if event_type == 'application_created':
                     application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                if event_type == 'email_opened':
+                    email_opened.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                    })
+
+                if event_type == 'login_successful':
+                    login_successful.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'user_avatar_updated':
+                    user_avatar_updated.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+                
+                if event_type == 'app_crashed' or event_type == 'app_native_crash':
+                    app_crashed.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'oauth2_authorize_accepted':
+                    oauth2_authorize_accepted.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'remote_auth_login':
+                    remote_auth_login.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'notification_clicked':
+                    notification_clicked.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'captcha_served':
+                    captcha_served.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'voice_message_recorded':
+                    voice_message_recorded.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'message_reported':
+                    message_reported.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'message_edited':
+                    message_edited.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
+
+                if event_type == 'premium_upsell_viewed':
+                    premium_upsell_viewed.append({
+                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                    })
 
                 if event_type == 'application_command_used':
                     if analytics_line_json['application_id'] == '-1' or 'guild_id' not in analytics_line_json:
@@ -537,6 +609,78 @@ def read_analytics_file(package_status_id, package_id, link, session):
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
             activity_data.append(('app_opened', day, hour, count, None, None, None, os, None))
+
+    email_opened_entries = count_dates_day(map(lambda ev: ev['timestamp'], email_opened))
+    for timestamp, count in email_opened_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('email_opened', day, hour, count, None, None, None, None, None))
+
+    login_successful_entries = count_dates_day(map(lambda ev: ev['timestamp'], login_successful))
+    for timestamp, count in login_successful_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('login_successful', day, hour, count, None, None, None, None, None))
+
+    app_crashed_entries = count_dates_day(map(lambda ev: ev['timestamp'], app_crashed))
+    for timestamp, count in app_crashed_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('app_crashed', day, hour, count, None, None, None, None, None))
+
+    user_avatar_updated_entries = count_dates_day(map(lambda ev: ev['timestamp'], user_avatar_updated))
+    for timestamp, count in user_avatar_updated_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('user_avatar_updated', day, hour, count, None, None, None, None, None))
+
+    oauth2_authorize_accepted_entries = count_dates_day(map(lambda ev: ev['timestamp'], oauth2_authorize_accepted))
+    for timestamp, count in oauth2_authorize_accepted_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('oauth2_authorize_accepted', day, hour, count, None, None, None, None, None))
+
+    remote_auth_login_entries = count_dates_day(map(lambda ev: ev['timestamp'], remote_auth_login))
+    for timestamp, count in remote_auth_login_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('remote_auth_login', day, hour, count, None, None, None, None, None))
+
+    notification_clicked_entries = count_dates_day(map(lambda ev: ev['timestamp'], notification_clicked))
+    for timestamp, count in notification_clicked_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('notification_clicked', day, hour, count, None, None, None, None, None))
+
+    captcha_served_entries = count_dates_day(map(lambda ev: ev['timestamp'], captcha_served))
+    for timestamp, count in captcha_served_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('captcha_served', day, hour, count, None, None, None, None, None))
+
+    voice_message_recorded_entries = count_dates_day(map(lambda ev: ev['timestamp'], voice_message_recorded))
+    for timestamp, count in voice_message_recorded_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('voice_message_recorded', day, hour, count, None, None, None, None, None))
+
+    message_reported_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_reported))
+    for timestamp, count in message_reported_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('message_reported', day, hour, count, None, None, None, None, None))
+
+    message_edited_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_edited))
+    for timestamp, count in message_edited_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('message_edited', day, hour, count, None, None, None, None, None))
+
+    premium_upsell_viewed_entries = count_dates_day(map(lambda ev: ev['timestamp'], premium_upsell_viewed))
+    for timestamp, count in premium_upsell_viewed_entries.items():
+        day = timestamp.strftime('%Y-%m-%d')
+        hour = int(timestamp.strftime('%H'))
+        activity_data.append(('premium_upsell_viewed', day, hour, count, None, None, None, None, None))
 
     activity_query = '''
         INSERT INTO activity
