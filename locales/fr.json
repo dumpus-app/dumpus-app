@@ -26,7 +26,8 @@
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
       ],
-      "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !"
+      "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !",
+      "getData": "How to get my data?"
     },
     "/": {
       "welcome": "Bienvenue sur Dumpus",
@@ -133,6 +134,20 @@
         "demo": {
           "title": "Démo"
         }
+      }
+    },
+    "loading": {
+      "queue": {
+        "title": "You're in the queue!",
+        "why": "Why is there a queue?",
+        "whyContent": [
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+        ],
+        "position": "position",
+        "waitingTime": "Estimated waiting time is",
+        "useBackend": "Use my own backend"
       }
     }
   },
