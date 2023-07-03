@@ -47,9 +47,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Update version
-        run: pnpm run trapeze:run
-
       - name: Build Mobile App
         run: pnpm run build:mobile
 
