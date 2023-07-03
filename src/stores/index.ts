@@ -20,7 +20,7 @@ type Config = {
   premium: boolean;
 };
 
-export const CONFIG_ATOM_INITIAL_VALUE = {
+export const CONFIG_ATOM_INITIAL_VALUE: Config = {
   db: {
     packages: [],
     selectedId: null,
@@ -28,7 +28,7 @@ export const CONFIG_ATOM_INITIAL_VALUE = {
   goToOnboardingAccess: false,
   timeRange: "Lifetime",
   premium: false,
-} satisfies Config;
+};
 
 export const configAtom = atomWithLocalStorage<Config>(
   "config",
