@@ -10,6 +10,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { SimpleIconsDiscord, SimpleIconsGithub } from "~/components/icons";
+import { BASE_URL } from "~/constants";
 
 const version = packageJson.version;
 
@@ -28,10 +29,10 @@ export default function About() {
           leftSlot={<LeftIcon icon={InformationCircleIcon} />}
         />
         <DetailCard
-          href="https://dumpus.app"
+          href={BASE_URL}
           noI18n
           target="_blank"
-          title="dumpus.app"
+          title={new URL(BASE_URL).hostname}
           description="Web application"
           reverseTexts
           leftSlot={<LeftIcon icon={GlobeAltIcon} />}

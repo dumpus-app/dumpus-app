@@ -34,7 +34,7 @@ export const DEFAULT_WIDGET_API_URL = "https://widget.dumpus.app";
 
 export const SQL_DEFAULT_LIMIT = 20;
 
-export const BASE_URL = "https://dumpus.app";
+export const BASE_URL = "https://web.dumpus.app";
 
 export const SITE_NAME = "Dumpus";
 
