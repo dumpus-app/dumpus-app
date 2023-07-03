@@ -156,17 +156,17 @@ export default function useUsageStatsData() {
   }
 
   return {
-    networkSize: getNetworkSize(),
-    joinedGuilds: getJoinedGuilds(),
-    topHour: getTopHour(),
-    spentMoney: getSpentMoney(),
-    messageCount: getMessageCount(),
-    avgMessageCountPerDay: getAvgMessageCountPerDay(),
-    appStarted: getAppStarted(),
-    avgAppStartedPerDay: getAvgAppStartedPerDay(),
-    avgSessionDuration: getAvgSessionDuration(),
-    totalSessionDuration: getTotalSessionDuration(),
-    receivedCalls: getReceivedCalls(),
-    usePerOs: getUsePerOS()
+    networkSize: () => getNetworkSize(),
+    joinedGuilds: () =>getJoinedGuilds(),
+    topHour: () => getTopHour(),
+    spentMoney: () => getSpentMoney(),
+    messageCount: () => getMessageCount(),
+    avgMessageCountPerDay: () => getAvgMessageCountPerDay(),
+    appStarted: () => getAppStarted(),
+    avgAppStartedPerDay: () => getAvgAppStartedPerDay(),
+    avgSessionDuration: () => getAvgSessionDuration(),
+    totalSessionDuration: () => getTotalSessionDuration(),
+    receivedCalls: () => getReceivedCalls(),
+    usePerOs: () => getUsePerOS()
   };
 }

@@ -14,21 +14,21 @@ export default function UsageStats() {
 
   const data = [
     {
-      value: formatNumber(messageCount, { notation: 'standard' }),
+      value: formatNumber(messageCount(), { notation: 'standard' }),
       label: "messages sent",
     },
     {
-      value: formatNumber(joinedGuilds, { notation: 'standard' }),
+      value: formatNumber(joinedGuilds(), { notation: 'standard' }),
       label: "server joined",
     },
-    { value: formatNumber(receivedCalls, { notation: 'standard' }), label: "received calls" },
-    { value: formatHour(topHour), label: "top hour" },
+    { value: formatNumber(receivedCalls(), { notation: 'standard' }), label: "received calls" },
+    { value: formatHour(topHour()), label: "top hour" },
     {
-      value: formatNumber(networkSize, { notation: 'standard' }),
+      value: formatNumber(networkSize(), { notation: 'standard' }),
       label: "known users",
     },
     {
-      value: formatNumber(appStarted, { notation: 'standard' }),
+      value: formatNumber(appStarted(), { notation: 'standard' }),
       label: "Discord app started"
     }
   ];

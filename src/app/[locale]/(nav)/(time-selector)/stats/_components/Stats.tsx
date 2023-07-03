@@ -31,13 +31,13 @@ export default function Stats() {
     icon: Icon;
   }[] = [
     {
-      value: formatNumber(messageCount, { notation: "standard" }),
+      value: formatNumber(messageCount(), { notation: "standard" }),
       title: t("stats.messagesSent"),
       description: t("stats.messagesSentPerDay", { value: avgMessageCountPerDay }),
       icon: ChatBubbleBottomCenterTextIcon
     },
     {
-      value: formatNumber(joinedGuilds),
+      value: formatNumber(joinedGuilds()),
       title: t("stats.joinedServers"),
       description: t("stats.joinedServersDesc"),
       icon: ArrowLeftOnRectangleIcon,
@@ -61,13 +61,13 @@ export default function Stats() {
       icon: ClockIcon,
     },*/
     {
-      value: formatNumber(networkSize),
+      value: formatNumber(networkSize()),
       title: t("stats.knownUsers"),
       description: t("stats.knownUsersDesc"),
       icon: UsersIcon,
     },
     {
-      value: formatMoney(spentMoney || 0),
+      value: formatMoney(spentMoney() || 0),
       title: t("stats.spentMoney"),
       // TODO: fix this more properly (context is not working because of keyof)
       // @ts-ignore
@@ -75,15 +75,15 @@ export default function Stats() {
       icon: BanknotesIcon,
     },
     {
-      value: formatNumber(appStarted, { notation: "standard" }),
+      value: formatNumber(appStarted(), { notation: "standard" }),
       title: t("stats.appStarts"),
       description: t("stats.appStartsPerDay", { value: avgAppStartedPerDay }),
       icon: CursorArrowRippleIcon,
     },
     {
-      value: formatDuration((avgSessionDuration || 0) * 60_000),
+      value: formatDuration((avgSessionDuration() || 0) * 60_000),
       title: t("stats.avgSessionTime"),
-      description: t("stats.totalTimeSpent", { value: formatDuration((totalSessionDuration || 0) * 60_000, true) }),
+      description: t("stats.totalTimeSpent", { value: formatDuration((totalSessionDuration() || 0) * 60_000, true) }),
       icon: ClockIcon,
     }
   ];

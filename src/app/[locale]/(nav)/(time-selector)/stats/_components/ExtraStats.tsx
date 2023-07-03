@@ -25,11 +25,11 @@ export default function Stats() {
     useUsageStatsData();
   const { t } = useTranslation();
 
-  console.log((usePerOs || []).map((os, i) => ({ value: os.count, label: os.os })))
+  console.log((usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os })))
 
   return (
     <div className="grid grid-cols-1 gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8 md:grid-cols-3">
-        <SimplePieChart data={(usePerOs || []).map((os, i) => ({ value: os.count, label: os.os }))} legend="Hour spent on each O.S." />
+        <SimplePieChart data={(usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os }))} legend="Hour spent on each O.S." />
     </div>
   );
 }
