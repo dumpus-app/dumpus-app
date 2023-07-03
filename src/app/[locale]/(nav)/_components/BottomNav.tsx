@@ -4,7 +4,7 @@ import { links } from "~/constants";
 import Link from "~/components/Link";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
-import { useMeasure } from "react-use";
+import { useMeasure, useUnmount } from "react-use";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
 import { bottomNavHeightAtom } from "~/stores/ui";
@@ -20,6 +20,8 @@ export default function BottomNav({ children }: Props) {
   useEffect(() => {
     setHeight(height);
   }, [height, setHeight]);
+
+  useUnmount(() => setHeight(0));
 
   return (
     <div className="contents sm:hidden">
