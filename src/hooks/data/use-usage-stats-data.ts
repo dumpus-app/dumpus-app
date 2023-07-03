@@ -134,6 +134,16 @@ export default function useUsageStatsData() {
     return hasError ? null : (data[0].total_session_duration || 0);
   }
 
+  function getReceivedCalls() {
+    const { data, hasError } = sql<{ received_calls: number }>`
+      SELECT count(*) as received_calls
+      FROM voice_sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}';
+    `;
+
+    return hasError ? null : data[0].received_calls;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
@@ -145,5 +155,6 @@ export default function useUsageStatsData() {
     avgAppStartedPerDay: getAvgAppStartedPerDay(),
     avgSessionDuration: getAvgSessionDuration(),
     totalSessionDuration: getTotalSessionDuration(),
+    receivedCalls: getReceivedCalls(),
   };
 }

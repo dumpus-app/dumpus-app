@@ -8,28 +8,27 @@ import { formatHour, formatNumber } from "~/utils/format";
 import { useTranslation } from "~/i18n/client";
 
 export default function UsageStats() {
-  const { messageCount, networkSize, joinedGuilds, topHour, appStarted } =
+  const { messageCount, networkSize, joinedGuilds, topHour, appStarted, receivedCalls } =
     useUsageStatsData();
   const { t } = useTranslation();
 
   const data = [
     {
-      value: formatNumber(messageCount),
+      value: formatNumber(messageCount, { notation: 'standard' }),
       label: "messages sent",
     },
     {
-      value: formatNumber(joinedGuilds),
+      value: formatNumber(joinedGuilds, { notation: 'standard' }),
       label: "server joined",
     },
-    { value: "N/A", label: "received calls" },
-    { value: "N/A", label: "opened notifs." },
+    { value: formatNumber(receivedCalls, { notation: 'standard' }), label: "received calls" },
     { value: formatHour(topHour), label: "top hour" },
     {
-      value: formatNumber(networkSize),
+      value: formatNumber(networkSize, { notation: 'standard' }),
       label: "known users",
     },
     {
-      value: formatNumber(appStarted),
+      value: formatNumber(appStarted, { notation: 'standard' }),
       label: "Discord app started"
     }
   ];
