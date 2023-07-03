@@ -12,6 +12,7 @@ import { iconColor } from "~/utils/discord";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import { formatNumber } from "~/utils/format";
 import { firstCharFromUnicode } from "~/utils";
+import LoadMore from "../../_components/LoadMore";
 
 function GuildCard({
   guild,
@@ -81,17 +82,7 @@ export default function TopGuildsList() {
           <GuildCard key={guild.rank} guild={guild} />
         ))}
       </div>
-      {data.length < count && (
-        <div className="mt-8 flex justify-center">
-          <button
-            type="button"
-            onClick={() => fetchNextPage()}
-            className="text-brand-300 hover:underline"
-          >
-            Load more
-          </button>
-        </div>
-      )}
+      {data.length < count && <LoadMore loadMore={fetchNextPage} />}
     </div>
   );
 }

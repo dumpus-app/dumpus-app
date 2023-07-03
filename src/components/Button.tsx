@@ -15,6 +15,7 @@ const buttonVariants = cva(
         brand: "bg-brand-300 hover:bg-brand-400 text-gray-950",
         danger: "bg-danger-300 hover:bg-danger-400 text-gray-950",
         gray: "bg-gray-700 hover:bg-gray-600 text-gray-200",
+        premium: "bg-[#B8A383] hover:bg-[#978365] text-[#3B352B]",
       },
       size: {
         sm: "px-4 py-2 text-base",

@@ -11,6 +11,7 @@ import { timeRangeAtom } from "~/stores/db";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import { formatNumber } from "~/utils/format";
 import useUserDetails from "~/hooks/use-user-details";
+import LoadMore from "../../_components/LoadMore";
 
 function DMCard({
   dm,
@@ -66,17 +67,7 @@ export default function TopDMsList() {
           <DMCard key={dm.rank} dm={dm} />
         ))}
       </div>
-      {data.length < count && (
-        <div className="mt-8 flex justify-center">
-          <button
-            type="button"
-            onClick={() => fetchNextPage()}
-            className="text-brand-300 hover:underline"
-          >
-            Load more
-          </button>
-        </div>
-      )}
+      {data.length < count && <LoadMore loadMore={fetchNextPage} />}
     </div>
   );
 }

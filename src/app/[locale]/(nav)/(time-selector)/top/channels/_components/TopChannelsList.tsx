@@ -10,6 +10,7 @@ import { timeRangeAtom } from "~/stores/db";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
+import LoadMore from "../../_components/LoadMore";
 
 export default function TopChannelsList() {
   const { getData, count } = useTopChannelsData();
@@ -53,17 +54,7 @@ export default function TopChannelsList() {
           />
         ))}
       </div>
-      {data.length < count && (
-        <div className="mt-8 flex justify-center">
-          <button
-            type="button"
-            onClick={() => fetchNextPage()}
-            className="text-brand-300 hover:underline"
-          >
-            Load more
-          </button>
-        </div>
-      )}
+      {data.length < count && <LoadMore loadMore={fetchNextPage} />}
     </div>
   );
 }
