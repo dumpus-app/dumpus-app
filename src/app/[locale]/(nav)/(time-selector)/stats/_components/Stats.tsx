@@ -20,7 +20,7 @@ import type { Icon } from "~/types";
 import { formatHour, formatMoney, formatNumber, formatDuration } from "~/utils/format";
 
 export default function Stats() {
-  const { networkSize, joinedGuilds, topHour, spentMoney, appStarted, avgAppStartedPerDay, messageCount, avgMessageCountPerDay, avgSessionDuration } =
+  const { networkSize, joinedGuilds, topHour, spentMoney, appStarted, avgAppStartedPerDay, messageCount, avgMessageCountPerDay, avgSessionDuration, totalSessionDuration } =
     useUsageStatsData();
   const { t } = useTranslation();
 
@@ -82,9 +82,9 @@ export default function Stats() {
     },
     {
       value: formatDuration((avgSessionDuration || 0) * 60_000),
-      title: t("stats.totalTimeSpent"),
-      description: t("stats.avgSessionTime", { value: formatDuration(12) }),
-      icon: CursorArrowRippleIcon,
+      title: t("stats.avgSessionTime"),
+      description: t("stats.totalTimeSpent", { value: formatDuration((totalSessionDuration || 0) * 60_000, true) }),
+      icon: ClockIcon,
     }
   ];
 

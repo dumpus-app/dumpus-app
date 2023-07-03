@@ -115,15 +115,21 @@ export default function useUsageStatsData() {
   }
 
   function getAvgSessionDuration() {
-    console.log(`${(new Date(start).getTime() / 1000)} keyww ${(new Date(end).getTime() / 1000)};`)
     const { data, hasError } = sql<{ average_session_duration: number }>`
-      SELECT COUNT(*)
+      SELECT AVG(duration_mins) as average_session_duration
       FROM sessions
     `;
 
-    console.log(data);
+    return hasError ? null : (data[0].average_session_duration || 0);
+  }
 
-    return hasError ? null : data[0].average_session_duration;
+  function getTotalSessionDuration() {
+    const { data, hasError } = sql<{ total_session_duration: number }>`
+      SELECT SUM(duration_mins) as total_session_duration
+      FROM sessions
+    `;
+
+    return hasError ? null : (data[0].total_session_duration || 0);
   }
 
   return {
@@ -136,5 +142,6 @@ export default function useUsageStatsData() {
     appStarted: getAppStarted(),
     avgAppStartedPerDay: getAvgAppStartedPerDay(),
     avgSessionDuration: getAvgSessionDuration(),
+    totalSessionDuration: getTotalSessionDuration(),
   };
 }
