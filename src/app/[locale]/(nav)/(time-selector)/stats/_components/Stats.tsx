@@ -33,7 +33,7 @@ export default function Stats() {
     {
       value: formatNumber(messageCount(), { notation: "standard" }),
       title: t("stats.messagesSent"),
-      description: t("stats.messagesSentPerDay", { value: avgMessageCountPerDay }),
+      description: t("stats.messagesSentPerDay", { value: avgMessageCountPerDay() }),
       icon: ChatBubbleBottomCenterTextIcon
     },
     {
@@ -71,13 +71,13 @@ export default function Stats() {
       title: t("stats.spentMoney"),
       // TODO: fix this more properly (context is not working because of keyof)
       // @ts-ignore
-      description: t("stats.spentMoneyDesc", { context: (spentMoney || 0) > 0 ? 'positive' : 'empty' }),
+      description: t("stats.spentMoneyDesc", { context: (spentMoney() || 0) > 0 ? 'positive' : 'empty' }),
       icon: BanknotesIcon,
     },
     {
       value: formatNumber(appStarted(), { notation: "standard" }),
       title: t("stats.appStarts"),
-      description: t("stats.appStartsPerDay", { value: avgAppStartedPerDay }),
+      description: t("stats.appStartsPerDay", { value: avgAppStartedPerDay() }),
       icon: CursorArrowRippleIcon,
     },
     {
