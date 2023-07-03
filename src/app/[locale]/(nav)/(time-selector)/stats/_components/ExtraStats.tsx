@@ -28,7 +28,7 @@ export default function Stats() {
   console.log((usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os })))
 
   return (
-    <div className="grid grid-cols-1 gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8 md:grid-cols-3">
+    <div className="grid grid-cols-2 gap-2 px-2 py-4 desktop-container sm:grid-cols-3 sm:py-8 md:grid-cols-4">
         <StatCard value={formatNumber(notificationClicked(), { notation: 'standard' })} label="notifications clicked" />
         <StatCard value={formatNumber(captchaServed(), { notation: 'standard' })} label="captcha completed" />
         <StatCard value={formatNumber(emailReceived(), { notation: 'standard' })} label="emails received" />
