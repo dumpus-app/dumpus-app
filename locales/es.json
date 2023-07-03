@@ -148,8 +148,8 @@
     "spentMoneyDesc_empty": "You're a thrifty person!",
     "appStarts": "app starts",
     "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "spent on Discord",
-    "avgSessionTime": "{{value}} avg. session time"
+    "totalTimeSpent": "You spent about {{value}} on Discord",
+    "avgSessionTime": "avg. session time"
   },
   "sheerNumbers": "Sheer numbers",
   "mostActiveDMs": "Most active DMs",
