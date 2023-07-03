@@ -6,6 +6,20 @@ import { useTranslation } from "~/i18n/client";
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import RenderMarkdown from "~/components/RenderMarkdown";
+import { useI18nPathname } from "~/hooks/use-i18n";
+
+const GET_DATA_LINK_PATHNAMES = [
+  "/access",
+  "/access/link",
+  "/access/email",
+].map((v) => `/onboarding${v}`);
+
+function normalizePathname(pathname: string) {
+  if (pathname !== "/onboarding/") {
+    pathname = pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  }
+  return pathname;
+}
 
 function TrustDialog({
   open,
@@ -87,10 +101,22 @@ export type Props = { href: string | null; label: string | null };
 export default function Footer({ href, label }: Props) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const pathname = useI18nPathname();
+  const showGetDataLink = GET_DATA_LINK_PATHNAMES.includes(
+    normalizePathname(pathname)
+  );
 
   return (
     <>
       <div className="w-full space-y-2 p-4 text-center sm:mx-auto sm:max-w-sm">
+        {showGetDataLink && (
+          <Link
+            href="/onboarding/intro/1"
+            className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+          >
+            {t("onboarding.shared.getData")}
+          </Link>
+        )}
         <button
           type="button"
           onClick={(e) => setOpen(true)}

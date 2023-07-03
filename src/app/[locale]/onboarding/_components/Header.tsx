@@ -1,4 +1,3 @@
-import { CSSProperties } from "react";
 import Link from "~/components/Link";
 import { useTranslation } from "~/i18n/client";
 
@@ -27,7 +26,9 @@ export default function Header({ progress, href }: Props) {
       ) : (
         <div />
       )}
-      <div className="flex items-center">
+      <div />
+      {/* TODO: delete? */}
+      {/* <div className="flex items-center">
         <div
           className="bg-gradient-to-t [clip-path:url(#header-check-1)]"
           style={
@@ -124,7 +125,7 @@ export default function Header({ progress, href }: Props) {
             </defs>
           </svg>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

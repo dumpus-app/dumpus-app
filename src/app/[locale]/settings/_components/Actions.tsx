@@ -77,7 +77,7 @@ export default function Actions() {
             }
           }}
         >
-          <Link href="/onboarding">Add a new package</Link>
+          <Link href="/onboarding/access">Add a new package</Link>
         </Button>
         <Button asChild variant="danger">
           <button
