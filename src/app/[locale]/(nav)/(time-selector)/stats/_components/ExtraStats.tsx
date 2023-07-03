@@ -21,7 +21,7 @@ import type { Icon } from "~/types";
 import { formatHour, formatMoney, formatNumber, formatDuration } from "~/utils/format";
 
 export default function Stats() {
-  const { usePerOs } =
+  const { usePerOs, notificationClicked, captchaServed, emailReceived, loginSuccessful, userAvatarUpdated, appCrashed, oauth2Authorized, voiceMessageRecorded, messageReported, messageEdited, nitroAds } =
     useUsageStatsData();
   const { t } = useTranslation();
 
@@ -29,11 +29,17 @@ export default function Stats() {
 
   return (
     <div className="grid grid-cols-1 gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8 md:grid-cols-3">
-        <SimplePieChart data={(usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os }))} legend="Hour spent on each O.S." />
-        <div className="grid grid-cols-1 gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8 md:grid-cols-3">
-          <StatCard value="100" label="app starts" />
-          <StatCard value="100" label="app starts" />
-        </div>
+        <StatCard value={formatNumber(notificationClicked(), { notation: 'standard' })} label="notifications clicked" />
+        <StatCard value={formatNumber(captchaServed(), { notation: 'standard' })} label="captcha completed" />
+        <StatCard value={formatNumber(emailReceived(), { notation: 'standard' })} label="emails received" />
+        <StatCard value={formatNumber(loginSuccessful(), { notation: 'standard' })} label="logins successful" />
+        <StatCard value={formatNumber(userAvatarUpdated(), { notation: 'standard' })} label="avatar updates" />
+        <StatCard value={formatNumber(appCrashed(), { notation: 'standard' })} label="crashes" />
+        <StatCard value={formatNumber(oauth2Authorized(), { notation: 'standard' })} label="oauth2 authorized" />
+        <StatCard value={formatNumber(voiceMessageRecorded(), { notation: 'standard' })} label="voice messages recorded" />
+        <StatCard value={formatNumber(messageReported(), { notation: 'standard' })} label="messages reported" />
+        <StatCard value={formatNumber(messageEdited(), { notation: 'standard' })} label="messages edited" />
+        <StatCard value={formatNumber(nitroAds(), { notation: 'standard' })} label="seen nitro ads" />
     </div>
   );
 }
