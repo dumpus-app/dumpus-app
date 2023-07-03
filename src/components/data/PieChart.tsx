@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import { useState } from "react";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { shuffleArray, tailwindColors } from "~/utils";
 
 export type Props = {
@@ -43,6 +43,7 @@ export default function SimplePieChart({ data, className, legend }: Props) {
         >
           {/* <Legend /> */}
           <Pie
+            name={legend}
             data={data}
             // name={legend}
             // nameKey="label"

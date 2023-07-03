@@ -144,6 +144,17 @@ export default function useUsageStatsData() {
     return hasError ? null : data[0].received_calls;
   }
 
+  function getUsePerOS() {
+    const { data, hasError } = sql<{ os: string; count: number }>`
+      SELECT SUM(duration_mins) / 60 as count, device_os as os
+      FROM sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}'
+      GROUP BY device_os;
+    `;
+
+    return hasError ? null : data;
+  }
+
   return {
     networkSize: getNetworkSize(),
     joinedGuilds: getJoinedGuilds(),
@@ -156,5 +167,6 @@ export default function useUsageStatsData() {
     avgSessionDuration: getAvgSessionDuration(),
     totalSessionDuration: getTotalSessionDuration(),
     receivedCalls: getReceivedCalls(),
+    usePerOs: getUsePerOS()
   };
 }
