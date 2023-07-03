@@ -118,6 +118,7 @@ export default function useUsageStatsData() {
     const { data, hasError } = sql<{ average_session_duration: number }>`
       SELECT AVG(duration_mins) as average_session_duration
       FROM sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}'
     `;
 
     return hasError ? null : (data[0].average_session_duration || 0);
@@ -127,6 +128,7 @@ export default function useUsageStatsData() {
     const { data, hasError } = sql<{ total_session_duration: number }>`
       SELECT SUM(duration_mins) as total_session_duration
       FROM sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}'
     `;
 
     return hasError ? null : (data[0].total_session_duration || 0);
