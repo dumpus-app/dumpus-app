@@ -5,10 +5,12 @@ import SimpleBarChart from "~/components/data/SimpleBarChart";
 import SimpleLineChart from "~/components/data/SimpleLineChart";
 import StatCard from "~/components/data/StatCard";
 import useSendingTimesData from "~/hooks/data/use-sending-times-data";
+import { useTranslation } from "~/i18n/client";
 import { formatHour, formatNumber } from "~/utils/format";
 
 function Chart() {
   const { chartData } = useSendingTimesData();
+  const { t } = useTranslation();
 
   return (
     <SimpleLineChart
@@ -17,14 +19,14 @@ function Chart() {
         label: formatHour(label),
       }))}
       className="px-2 sm:flex-1"
-      legend="Messages sent"
+      legend={t('messageSentCount')}
     />
   );
 }
 
 function Stats() {
   const {
-    statsData: { avgMessagesSentPerDay },
+    statsData: { avgMessagesSentPerDay, avgOpeningCountPerDay },
   } = useSendingTimesData();
 
   const data = [
@@ -33,7 +35,7 @@ function Stats() {
       label: "average messages sent per day",
     },
     {
-      value: "N/A",
+      value: formatNumber(avgOpeningCountPerDay),
       label: "Discord app openings per day",
     },
   ];
@@ -50,8 +52,10 @@ function Stats() {
 }
 
 export default function SendingTimes() {
+  const { t } = useTranslation();
+
   return (
-    <Section title="Sending times">
+    <Section title={t('discordHours')}>
       <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0">
         <Chart />
         <Stats />

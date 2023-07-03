@@ -18,10 +18,10 @@ export default function Stats({
       value: messagesCount,
       label: "total messages sent",
     },
-    {
+    /*{
       value: invitesCount,
       label: "invites created",
-    },
+    },*/
     {
       value: joinsCount,
       label: "guild joins",

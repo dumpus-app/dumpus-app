@@ -18,10 +18,10 @@ export default function Stats({
       value: messagesCount,
       label: "total messages sent",
     },
-    {
+    /*{
       value: invitesCount,
       label: "invites created",
-    },
+    },*/
     {
       value: topChatHour,
       label: "top chat hour",
