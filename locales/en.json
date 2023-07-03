@@ -130,6 +130,20 @@
           "title": "Demo"
         }
       }
+    },
+    "loading": {
+      "queue": {
+        "title": "You're in the queue!",
+        "why": "Why is there a queue?",
+        "whyContent": [
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+        ],
+        "position": "position",
+        "waitingTime": "Estimated waiting time is",
+        "useBackend": "Use my own backend"
+      }
     }
   },
   "stats": {

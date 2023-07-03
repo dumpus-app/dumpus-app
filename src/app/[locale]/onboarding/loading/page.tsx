@@ -16,6 +16,7 @@ import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
 import { nextDbIdAtom } from "~/stores/db";
 import { PackageAPIProcessResponse } from "~/types/package-api";
+import QueueDisplay from "./_components/QueueDisplay";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -109,13 +110,9 @@ export default function Page() {
       {processData && statusQuery.isSuccess && statusQuery.data ? (
         <>
           {statusQuery.data.processingStep === "LOCKED" ? (
-            <div className="max-w-xs text-center">
-              <h1 className="text-xl font-bold text-white">Almost there!</h1>
-              <h2 className="mt-4 text-7xl font-bold text-brand-300">
-                {statusQuery.data.processingQueuePosition.user}
-              </h2>
-              <p className="text-gray-400">people before you</p>
-            </div>
+            <QueueDisplay
+              position={statusQuery.data.processingQueuePosition.user}
+            />
           ) : (
             (function () {
               /**

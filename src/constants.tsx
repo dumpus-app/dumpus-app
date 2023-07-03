@@ -37,3 +37,5 @@ export const SQL_DEFAULT_LIMIT = 20;
 export const BASE_URL = "https://dumpus.app";
 
 export const SITE_NAME = "Dumpus";
+
+export const ESTIMATED_QUEUE_DURATION = 60 * 2 * 1000; // 2m in ms
