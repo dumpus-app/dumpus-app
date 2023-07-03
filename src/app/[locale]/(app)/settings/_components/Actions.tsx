@@ -39,7 +39,7 @@ export default function Actions() {
       });
     }
 
-    const newConfig = { ...config };
+    const newConfig = structuredClone(config);
     const packageIndex = newConfig.db.packages.findIndex((p) => p.id === id)!;
     newConfig.db.packages.splice(packageIndex, 1);
 

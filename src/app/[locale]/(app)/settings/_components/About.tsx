@@ -2,7 +2,7 @@
 
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
-import packageJson from "../../../../../package.json";
+import packageJson from "../../../../../../package.json";
 import { Icon } from "~/types";
 import {
   ArrowTopRightOnSquareIcon,
