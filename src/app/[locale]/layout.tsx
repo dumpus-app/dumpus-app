@@ -4,6 +4,7 @@ import { locales } from "~/i18n/settings";
 import { PageProps } from "~/types";
 import LoadingScreen from "./_components/LoadingScreen";
 import { generateSEO } from "~/utils/seo";
+import InAppPurchasesDialog from "~/components/InAppPurchasesDialog";
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -41,6 +42,7 @@ export default async function RootLayout({
       }}
     >
       {children}
+      <InAppPurchasesDialog />
     </LoadingScreen>
   );
 }

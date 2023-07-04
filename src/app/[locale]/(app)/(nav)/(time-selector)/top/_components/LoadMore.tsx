@@ -1,12 +1,14 @@
 "use client";
 
 import clsx from "clsx";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import Button from "~/components/Button";
 import { configAtom } from "~/stores";
+import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 
 export default function LoadMore({ loadMore }: { loadMore: () => void }) {
   const { premium } = useAtomValue(configAtom);
+  const setOpen = useSetAtom(showInAppPurchasesDialogAtom);
 
   return (
     <>
@@ -27,6 +29,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
         </button>
         <Button
           variant="premium"
+          onClick={() => setOpen(true)}
           className={clsx(premium ? "hidden" : "block sm:hidden")}
         >
           Unlock to view more!
