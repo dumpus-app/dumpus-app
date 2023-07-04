@@ -1,4 +1,24 @@
-# DUMPUS APP
+# [👨‍💻 Dumpus App](https://play.google.com/store/apps/details?id=app.dumpus.app)
+
+Dumpus is a cross-platform app that gives you advanced statistics on your Discord account. The application analyzes your "Discord Data Package", which you can request in the Discord application settings.
+
+## Download
+
+<a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./.github/assets/playstore.png" hspace="10" height="100px" /></a>
+<a href="#"><img src="./.github/assets/appstore.png" height="100px" /></a>
+
+## What's new?
+
+This app is the v2 the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr).
+
+
+| Feature | Dumpus | DDPE |
+| --- | --- | --- |
+| **100% open source** | ✅ | ✅ |
+| **Easy to understand (user-friendly)** | ✅ | 🟠 (quite confusing interface) |
+| **Cross-platform** | ✅ | ❌ (web only) |
+| **Server-side processing** | ✅ | ❌ (only work on really powerful devices) |
+| **Advanced statistics** | ✅ | ❌ (only basic analysis) |
 
 ## Tech stack
 
