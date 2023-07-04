@@ -26,7 +26,8 @@
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!"
+      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
+      "getData": "How to get my data?"
     },
     "/": {
       "welcome": "Welcome to Dumpus",
@@ -60,12 +61,16 @@
           "display": "Android",
           "steps": [
             {
-              "name": "Open your settings android",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/android/step1.jpg"
             },
             {
-              "name": "Open your settings android",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/android/step2.jpg"
+            },
+            {
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/android/step3.jpg"
             }
           ]
         },
@@ -82,16 +87,16 @@
           "display": "Desktop",
           "steps": [
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Open your settings desktop",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
         }
@@ -130,6 +135,42 @@
           "title": "Demo"
         }
       }
+    },
+    "loading": {
+      "queue": {
+        "title": "You're in the queue!",
+        "why": "Why is there a queue?",
+        "whyContent": [
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+        ],
+        "position": "position",
+        "waitingTime": "Estimated waiting time is",
+        "useBackend": "Use my own backend"
+      }
     }
-  }
+  },
+  "stats": {
+    "messagesSent": "messages sent",
+    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "joinedServers": "joined servers",
+    "joinedServersDesc": "We've got a real Discord server explorer!",
+    "knownUsers": "known users",
+    "knownUsersDesc": "Well, you know a lot of people!",
+    "spentMoney": "spent",
+    "spentMoneyDesc_positive": "That's a lot of cash...!",
+    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "appStarts": "app starts",
+    "appStartsPerDay": "You open Discord about {{value}} times per day!",
+    "totalTimeSpent": "You spent about {{value}} on Discord",
+    "avgSessionTime": "avg. session time"
+  },
+  "sheerNumbers": "Sheer numbers",
+  "mostActiveDMs": "Most active DMs",
+  "mostActiveServers": "Most active servers",
+  "mostActiveChannels": "Most active channels",
+  "discordHours": "Your Discord hours",
+  "activityTime": "Activity over time",
+  "messageSentCount": "Message sent count"
 }

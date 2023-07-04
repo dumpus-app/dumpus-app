@@ -26,7 +26,8 @@
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
       ],
-      "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !"
+      "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !",
+      "getData": "How to get my data?"
     },
     "/": {
       "welcome": "Bienvenue sur Dumpus",
@@ -34,7 +35,7 @@
       "step": "Etape {{n}}",
       "steps": [
         "Briefing",
-        "Demander vos données",
+        "Demandez vos données",
         "Démarrez l'analyse"
       ]
     },
@@ -60,16 +61,16 @@
           "display": "Android",
           "steps": [
             {
-              "name": "Ouvrez vos paramètres Discord",
-              "image": "/assets/onboarding/fr/android/step1.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/android/step1.jpg"
             },
             {
-              "name": "Ouvrez l'onglet \"Confidentialité\"",
-              "image": "/assets/onboarding/fr/android/step2.jpg"
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/android/step2.jpg"
             },
             {
-              "name": "Appuyez sur \"Demande de données\"",
-              "image": "/assets/onboarding/fr/android/step3.jpg"
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/android/step3.jpg"
             }
           ]
         },
@@ -86,16 +87,16 @@
           "display": "PC/Mac",
           "steps": [
             {
-              "name": "Ouvrez vos paramètres Discord",
-              "image": "/assets/onboarding/fr/desktop/step1.png"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Ouvrez l'onglet \"Confidentialité\"",
-              "image": "/assets/onboarding/fr/desktop/step2.png"
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Appuyez sur \"Demande de données\"",
-              "image": "/assets/onboarding/fr/desktop/step3.png"
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
         }
@@ -134,6 +135,42 @@
           "title": "Démo"
         }
       }
+    },
+    "loading": {
+      "queue": {
+        "title": "You're in the queue!",
+        "why": "Why is there a queue?",
+        "whyContent": [
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+        ],
+        "position": "position",
+        "waitingTime": "Estimated waiting time is",
+        "useBackend": "Use my own backend"
+      }
     }
-  }
+  },
+  "stats": {
+    "messagesSent": "messages sent",
+    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "joinedServers": "joined servers",
+    "joinedServersDesc": "We've got a real Discord server explorer!",
+    "knownUsers": "known users",
+    "knownUsersDesc": "Well, you know a lot of people!",
+    "spentMoney": "spent",
+    "spentMoneyDesc_positive": "That's a lot of cash...!",
+    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "appStarts": "app starts",
+    "appStartsPerDay": "You open Discord about {{value}} times per day!",
+    "totalTimeSpent": "You spent about {{value}} on Discord",
+    "avgSessionTime": "avg. session time"
+  },
+  "sheerNumbers": "Sheer numbers",
+  "mostActiveDMs": "Most active DMs",
+  "mostActiveServers": "Most active servers",
+  "mostActiveChannels": "Most active channels",
+  "discordHours": "Your Discord hours",
+  "activityTime": "Activity over time",
+  "messageSentCount": "Message sent count"
 }
