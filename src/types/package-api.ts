@@ -11,10 +11,12 @@ export type PackageAPIStatusResponse = Prettify<
   {
     isUpgraded: boolean;
     processingQueuePosition: {
-      user: number;
-      total: number;
-      userWhenStarted: number;
-      totalWhenStarted: number;
+      premiumQueueTotal: number;
+      standardQueueTotal: number;
+      premiumQueueUser: number;
+      standardQueueUser: number;
+      standardWhenJoined: number;
+      premiumWhenJoined: number;
     };
   } & (
     | { isErrored: false; errorMessageCode: null }

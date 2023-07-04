@@ -111,7 +111,7 @@ export default function Page() {
         <>
           {statusQuery.data.processingStep === "LOCKED" ? (
             <QueueDisplay
-              position={statusQuery.data.processingQueuePosition.user}
+              position={statusQuery.data.processingQueuePosition.standardQueueUser}
             />
           ) : (
             (function () {
