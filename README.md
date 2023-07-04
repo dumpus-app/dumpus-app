@@ -9,7 +9,7 @@ Dumpus is a cross-platform app that gives you advanced statistics on your Discor
 
 ## What's new?
 
-This app is the v2 the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr).
+This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr). You can see the improvements below:
 
 
 | Feature | Dumpus | DDPE |
@@ -19,6 +19,12 @@ This app is the v2 the existing [Discord Data Package Explorer](https://ddpe.and
 | **Cross-platform** | ✅ | ❌ (web only) |
 | **Server-side processing** | ✅ | ❌ (only work on really powerful devices) |
 | **Advanced statistics** | ✅ | ❌ (only basic analysis) |
+
+## Screenshots
+
+| | | |
+| --- | --- | --- |
+| <img src="./.github/assets/screenshot1.png" height="400px" /> | <img src="./.github/assets/screenshot2.png" height="400px" /> | <img src="./.github/assets/screenshot3.png" height="400px" /> |
 
 ## Tech stack
 
