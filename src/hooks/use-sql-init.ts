@@ -1,31 +1,17 @@
 "use client";
 
 import { useAtom, useSetAtom } from "jotai";
-import LZString from "lz-string";
 import pako from "pako";
 import { useRef } from "react";
 import initSqlJs from "sql.js";
 import { configAtom } from "~/stores";
 import { dbAtom } from "~/stores/db";
 import type { PackageData } from "~/types/sql";
+import { retrieveUint8Array, storeUint8Array } from "~/utils/localstorage";
 import { resultAsList } from "~/utils/sql";
 
 const STORAGE_KEY = "db";
 export const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
-
-function store(id: string, value: Uint8Array) {
-  localStorage.setItem(
-    getStorageKey(id),
-    LZString.compressToUTF16(JSON.stringify(Array.from(value)))
-  );
-}
-function retrieve(id: string) {
-  let data = localStorage.getItem(getStorageKey(id));
-  if (data) {
-    return new Uint8Array(JSON.parse(LZString.decompressFromUTF16(data)));
-  }
-  return null;
-}
 
 export default function useSQLInit() {
   const setDb = useSetAtom(dbAtom);
@@ -58,9 +44,9 @@ export default function useSQLInit() {
     let data: Uint8Array;
     if (initData) {
       data = pako.inflate(initData.initialData);
-      store(id, data);
+      storeUint8Array(getStorageKey(id), data);
     } else {
-      data = retrieve(id)!;
+      data = retrieveUint8Array(getStorageKey(id))!;
     }
 
     const { Database } = await initSqlJs({
