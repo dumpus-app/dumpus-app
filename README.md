@@ -7,6 +7,19 @@ Dumpus is a cross-platform app that gives you advanced statistics on your Discor
 <a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./.github/assets/playstore.png" hspace="10" height="100px" /></a>
 <a href="#"><img src="./.github/assets/appstore.png" height="100px" /></a>
 
+## Screenshots
+
+| | | |
+| --- | --- | --- |
+| <img src="./.github/assets/screenshot1.jpg" height="400px" /> | <img src="./.github/assets/screenshot2.jpg" height="400px" /> | <img src="./.github/assets/screenshot3.jpg" height="400px" /> |
+
+## Made with
+
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></code> **React** (front-end)  
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code> **Python** (back-end)  
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/postgresql/postgresql.png"></code> **PostgreSQL** (database)  
+<code><img height="20" src="https://3776657.fs1.hubspotusercontent-na1.net/hub/3776657/hubfs/capacitor-icon.png"></code> **Capacitor** (cross-platform support)  
+
 ## What's new?
 
 This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr), a.k.a **DDPE**. You can see the improvements below:
@@ -21,19 +34,6 @@ This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.
 | **Advanced statistics** | ✅ | ✅ | ❌ (only basic analysis) |
 | **Top DMs/servers/channels** | Unlimited | Up to 20 | Up to 10 |
 | **Help funding this open source project** | ✅ | 🟠 | 🟠 |
-
-## Screenshots
-
-| | | |
-| --- | --- | --- |
-| <img src="./.github/assets/screenshot1.jpg" height="400px" /> | <img src="./.github/assets/screenshot2.jpg" height="400px" /> | <img src="./.github/assets/screenshot3.jpg" height="400px" /> |
-
-## Made with
-
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></code> **React** (front-end)  
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code> **Python** (back-end)  
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/postgresql/postgresql.png"></code> **PostgreSQL** (database)  
-<code><img height="20" src="https://3776657.fs1.hubspotusercontent-na1.net/hub/3776657/hubfs/capacitor-icon.png"></code> **Capacitor** (cross-platform support)  
 
 ## Self-hosting
 
