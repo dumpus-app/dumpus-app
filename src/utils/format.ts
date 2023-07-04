@@ -3,13 +3,24 @@ import i18next from "i18next";
 
 const { language: locale } = i18next;
 
-export function formatNumber(n: number) {
+// TODO: load from i18n. Some locales may have
+// different texts for fallbacks
+const fallback = "N/A";
+
+export function formatNumber(
+  n?: number | null,
+  { notation = "compact" }: { notation?: "standard" | "compact" } = {}
+) {
+  if (n === undefined || n === null) return fallback;
+
   return Intl.NumberFormat(locale, {
-    notation: "compact",
+    notation,
   }).format(n);
 }
 
-export function formatMoney(n: number) {
+export function formatMoney(n?: number | null) {
+  if (n === undefined || n === null) return fallback;
+
   return Intl.NumberFormat(locale, {
     style: "currency",
     currency: "USD",
@@ -18,7 +29,9 @@ export function formatMoney(n: number) {
   }).format(n);
 }
 
-export function formatHour(hour: number) {
+export function formatHour(hour?: number | null) {
+  if (hour === undefined || hour === null) return fallback;
+
   const date = new Date();
   date.setHours(hour);
 
@@ -28,7 +41,7 @@ export function formatHour(hour: number) {
 }
 
 export function formatDate(
-  date: Date | string,
+  date?: Date | string | null,
   {
     year = "numeric",
     month = true,
@@ -43,6 +56,8 @@ export function formatDate(
     minute?: boolean;
   } = {}
 ) {
+  if (!date) return fallback;
+
   return new Intl.DateTimeFormat(locale, {
     year: year === false ? undefined : year,
     month: month ? "2-digit" : undefined,
@@ -50,4 +65,27 @@ export function formatDate(
     hour: hour ? "2-digit" : undefined,
     minute: minute ? "2-digit" : undefined,
   }).format(typeof date === "string" ? new Date(date) : date);
+}
+
+export function formatDuration(n?: number | undefined, short?: boolean) {
+  if (!n) return fallback;
+
+  if (n < 1000) {
+    return `${n}ms`;
+  }
+
+  if (n < 60000) {
+    const seconds = Math.floor(n / 1000);
+    return `${seconds}s`;
+  }
+
+  if (n < 3600000) {
+    const minutes = Math.floor(n / 60000);
+    const seconds = Math.floor((n % 60000) / 1000);
+    return short ? `${minutes}m` : `${minutes}m ${seconds}s`;
+  }
+
+  const hours = Math.floor(n / 3600000);
+  const minutes = Math.floor((n % 3600000) / 60000);
+  return short ? `${hours}h` : `${hours}h ${minutes}m`;
 }

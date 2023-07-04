@@ -4,43 +4,38 @@ import { useDataSources } from "~/hooks/data/_shared";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import type { Guild, GuildChannelsData } from "~/types/sql";
 
-export default function useChannelData({
-  guildId,
-  channelId,
-}: {
-  guildId: string;
-  channelId: string;
-}) {
+export default function useChannelData({ channelID }: { channelID: string }) {
   const { sql, start, end } = useDataSources();
   const topChannelsData = useTopChannelsData().getData({ offset: false });
 
   const hasData = !!topChannelsData?.find(
-    (channel) => channel.channel_id === channelId
+    (channel) => channel.channel_id === channelID
   );
 
   function getChannel() {
     const { data, hasError } = sql<
-      Pick<GuildChannelsData, "channel_name" | "channel_id">
+      Pick<GuildChannelsData, "channel_name" | "channel_id" | "guild_id">
     >`
       SELECT
         channel_name,
-        channel_id 
+        channel_id,
+        guild_id
       FROM guild_channels_data
-      WHERE channel_id = '${channelId}'
+      WHERE channel_id = '${channelID}'
       LIMIT 1;
     `;
 
     return hasError ? null : data[0];
   }
 
-  function getGuild() {
+  function getGuild(guildID: string) {
     const { data, hasError } = sql<Guild>`
       SELECT
         guild_name,
         guild_id,
         total_message_count
       FROM guilds
-      WHERE guild_id = '${guildId}'
+      WHERE guild_id = '${guildID}'
       LIMIT 1;
     `;
 
@@ -57,7 +52,7 @@ export default function useChannelData({
       JOIN activity a
         ON a.associated_channel_id = c.channel_id
       WHERE a.event_name = 'message_sent'
-      AND c.channel_id = '${channelId}'
+      AND c.channel_id = '${channelID}'
       AND a.day BETWEEN '${start}' AND '${end}'
       GROUP BY channel_id
       LIMIT 1;
@@ -86,7 +81,7 @@ export default function useChannelData({
           activity a
       WHERE event_name = 'message_sent' 
       AND day BETWEEN '${start}' AND '${end}'
-      AND associated_channel_id = '${channelId}'
+      AND associated_channel_id = '${channelID}'
       GROUP BY hour
       ORDER BY occurence_count DESC
       LIMIT 1;
@@ -104,7 +99,7 @@ export default function useChannelData({
       SELECT SUM(a.occurence_count) AS reaction_count
       FROM activity a
       WHERE a.event_name = 'add_reaction'
-      AND a.associated_channel_id = '${channelId}'
+      AND a.associated_channel_id = '${channelID}'
       AND a.day BETWEEN '${start}' AND '${end}';
     `;
 
@@ -145,7 +140,7 @@ export default function useChannelData({
       LEFT JOIN 
         (SELECT a.day, a.occurence_count
         FROM activity a
-        WHERE a.event_name = 'message_sent' AND a.associated_channel_id = '${channelId}'
+        WHERE a.event_name = 'message_sent' AND a.associated_channel_id = '${channelID}'
         ) AS joined_data
         ON dates.day = joined_data.day 
       GROUP BY 
@@ -164,10 +159,12 @@ export default function useChannelData({
     }));
   }
 
+  const channel = getChannel();
+
   return {
     hasData,
-    channel: getChannel(),
-    guild: getGuild(),
+    channel,
+    guild: getGuild(channel?.guild_id || ""),
     stats: {
       messagesCount: getMessagesCount(),
       invitesCount: getInvitesCount(),

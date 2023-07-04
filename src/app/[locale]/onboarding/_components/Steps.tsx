@@ -11,8 +11,6 @@ export default function Steps() {
       {t("onboarding./.steps", { returnObjects: true }).map((step, i) => (
         <DetailCard
           key={i}
-          href="#"
-          onClick={(e) => e.preventDefault()}
           title={step}
           description={t("onboarding./.step", { n: i + 1 })}
           reverseTexts

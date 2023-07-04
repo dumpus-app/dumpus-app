@@ -1,6 +1,6 @@
 import CRC32 from "crc-32";
 import type { Range } from "~/types";
-import tailwindColors from "tailwindcss/colors";
+import { tailwindColors } from ".";
 
 const fallbackAvatarURLsMap = new Map<string, string>();
 
@@ -34,47 +34,7 @@ export function iconColor(id: string) {
     return (Math.abs(hash) % 17) as any; // Modulo 17 to get a number between 0-16
   }
 
-  const {
-    red,
-    orange,
-    amber,
-    yellow,
-    lime,
-    green,
-    emerald,
-    teal,
-    cyan,
-    sky,
-    blue,
-    indigo,
-    violet,
-    purple,
-    fuchsia,
-    pink,
-    rose,
-  } = tailwindColors;
-
-  const colors = [
-    red,
-    orange,
-    amber,
-    yellow,
-    lime,
-    green,
-    emerald,
-    teal,
-    cyan,
-    sky,
-    blue,
-    indigo,
-    violet,
-    purple,
-    fuchsia,
-    pink,
-    rose,
-  ];
-
-  const shades300 = colors.map((color) => color[300]);
+  const shades300 = tailwindColors.map((color) => color[300]);
 
   storedColor = shades300[getNumber(id)];
   iconsColorsMap.set(id, storedColor);

@@ -4,12 +4,16 @@ import clsx from "clsx";
 import Link from "../Link";
 import { Icon } from "~/types";
 
-export type Props = Omit<React.ComponentProps<typeof Link>, "children"> & {
+export type Props = Omit<
+  React.ComponentProps<typeof Link>,
+  "children" | "title" | "href"
+> & {
   leftSlot?: React.ReactNode;
   rightIcon?: Icon;
-  title: string;
+  title: string | JSX.Element;
   description: string;
   reverseTexts?: boolean;
+  href?: URL | string;
 };
 
 export default function DetailCard({
@@ -19,13 +23,27 @@ export default function DetailCard({
   description,
   className,
   reverseTexts = false,
+  href = "#",
+  onClick,
   ...rest
 }: Props) {
+  const hasHref = href !== "#";
+  const interactive = hasHref || onClick !== undefined;
   return (
     <Link
+      href={href}
+      onClick={(e) => {
+        if (!hasHref) {
+          e.preventDefault();
+        }
+        onClick?.(e);
+      }}
       {...rest}
       className={clsx(
-        "flex items-center space-x-2 rounded-lg bg-gray-900 p-2 text-gray-400 transition-colors hover:bg-gray-800 hover:text-gray-300",
+        "flex items-center space-x-2 rounded-lg bg-gray-900 p-2 text-gray-400 transition-colors",
+        interactive
+          ? "cursor-pointer hover:bg-gray-800 hover:text-gray-300"
+          : "cursor-default",
         className
       )}
     >

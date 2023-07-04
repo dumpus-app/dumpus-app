@@ -1,0 +1,34 @@
+PODS:
+  - Capacitor (5.0.3):
+    - CapacitorCordova
+  - CapacitorApp (5.0.3):
+    - Capacitor
+  - CapacitorCordova (5.0.3)
+  - CapacitorNetwork (5.0.4):
+    - Capacitor
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/.pnpm/@capacitor+app@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/app`)"
+  - "CapacitorCordova (from `../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios`)"
+  - "CapacitorNetwork (from `../../node_modules/.pnpm/@capacitor+network@5.0.4_@capacitor+core@5.0.3/node_modules/@capacitor/network`)"
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/.pnpm/@capacitor+app@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/app"
+  CapacitorCordova:
+    :path: "../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios"
+  CapacitorNetwork:
+    :path: "../../node_modules/.pnpm/@capacitor+network@5.0.4_@capacitor+core@5.0.3/node_modules/@capacitor/network"
+
+SPEC CHECKSUMS:
+  Capacitor: 304a960e431f9e6f78556554ca71c41c1b2b9680
+  CapacitorApp: 7a5dec8b33573707164b293475d5c89ba684364a
+  CapacitorCordova: def732a63679698df6fb392bbe6d269a0b61e937
+  CapacitorNetwork: e2bd0bf1614aca34bb976f125a756a8a3df1c81a
+
+PODFILE CHECKSUM: b5d68913f23e37e64256f629a72752523a722827
+
+COCOAPODS: 1.11.2

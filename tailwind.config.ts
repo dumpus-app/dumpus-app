@@ -1,23 +1,29 @@
 import { type Config } from "tailwindcss";
-import colors from "tailwindcss/colors";
+import { type ThemeConfig } from "tailwindcss/types/config";
+import twColors from "tailwindcss/colors";
 import plugin from "tailwindcss/plugin";
+
+export const colors = {
+  brand: twColors.sky,
+  gray: twColors.slate,
+  danger: twColors.rose,
+  success: twColors.emerald,
+  white: "#fff",
+  transparent: "transparent",
+  inherit: "inherit",
+  currentColor: "currentColor",
+} satisfies ThemeConfig["colors"];
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
-    colors: {
-      brand: colors.sky,
-      gray: colors.slate,
-      danger: colors.rose,
-      success: colors.emerald,
-      white: "#fff",
-      transparent: "transparent",
-      inherit: "inherit",
-      currentColor: "currentColor",
-    },
+    colors,
     extend: {
       animation: {
         "spin-slow": "spin 3s linear infinite",
+      },
+      fontFamily: {
+        mono: ["var(--font-mono)"],
       },
     },
   },

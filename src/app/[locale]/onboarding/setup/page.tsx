@@ -8,6 +8,7 @@ import { Tab } from "@headlessui/react";
 import Image from "next/image";
 import { SimpleIconsAndroid, SimpleIconsIos } from "~/components/icons";
 import { useTranslation } from "~/i18n/client";
+import ImageZoom from "~/components/ImageZoom";
 
 const icons: Record<OS, Icon> = {
   android: SimpleIconsAndroid,
@@ -69,12 +70,14 @@ export default function Page() {
                   </div>
                   <div className="text-lg font-bold text-white">{name}</div>
                   <div className="relative aspect-video w-full">
-                    <Image
-                      src={image}
-                      alt={name}
-                      fill
-                      className="rounded-lg border-2 border-gray-700 bg-brand-950 object-cover object-center"
-                    />
+                    <ImageZoom>
+                      <Image
+                        src={image}
+                        alt={name}
+                        fill
+                        className="rounded-lg border-2 border-gray-700 bg-brand-950 object-cover object-center"
+                      />
+                    </ImageZoom>
                   </div>
                 </div>
               ))}

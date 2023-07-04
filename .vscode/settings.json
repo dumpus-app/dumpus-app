@@ -3,5 +3,6 @@
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", "tw"],
   "java.configuration.updateBuildConfiguration": "interactive"
 }

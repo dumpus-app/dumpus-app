@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useTranslation } from "~/i18n";
 import { PageProps } from "~/types";
-import Steps from "./_components/Steps";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
@@ -23,7 +22,8 @@ export default async function Page({ params: { locale } }: PageProps) {
         </h1>
         <p className="mt-2 text-gray-400">{t("onboarding./.description")}</p>
       </div>
-      <Steps />
+      {/* TODO: delete? */}
+      {/* <Steps /> */}
     </div>
   );
 }

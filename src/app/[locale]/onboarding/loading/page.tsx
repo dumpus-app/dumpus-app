@@ -1,18 +1,22 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { Transition } from "@headlessui/react";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import i18next from "i18next";
 import { useAtomValue } from "jotai";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import Button from "~/components/Button";
+import Link from "~/components/Link";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
 import { nextDbIdAtom } from "~/stores/db";
 import { PackageAPIProcessResponse } from "~/types/package-api";
+import QueueDisplay from "./_components/QueueDisplay";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -106,13 +110,9 @@ export default function Page() {
       {processData && statusQuery.isSuccess && statusQuery.data ? (
         <>
           {statusQuery.data.processingStep === "LOCKED" ? (
-            <div className="max-w-xs text-center">
-              <h1 className="text-xl font-bold text-white">Almost there!</h1>
-              <h2 className="mt-4 text-7xl font-bold text-brand-300">
-                {statusQuery.data.processingQueuePosition.user}
-              </h2>
-              <p className="text-gray-400">people before you</p>
-            </div>
+            <QueueDisplay
+              position={statusQuery.data.processingQueuePosition.standardQueueUser}
+            />
           ) : (
             (function () {
               /**
@@ -131,32 +131,55 @@ export default function Page() {
                 }
               })();
 
+              const errorStep = statusQuery.data.isErrored ? currentStep : null;
+
               const steps = ["Downloading", "Analyzing", "Processed"];
 
               return (
-                <div className="space-y-2">
-                  {steps.map((step, i) => {
-                    const valid = currentStep >= i;
-
-                    return (
-                      <div key={i} className="flex items-center space-x-2">
-                        {valid ? (
-                          <CheckCircleIcon className="h-6 w-6 text-brand-300" />
-                        ) : (
-                          <div className="ml-[2.5px] h-5 w-5 rounded-full border-2 border-gray-400" />
-                        )}
-                        <div
-                          className={clsx(
-                            "text-lg",
-                            valid ? "font-medium text-white" : "text-gray-400"
+                <>
+                  <div className="space-y-2">
+                    {steps.map((step, i) => {
+                      const valid = currentStep >= i;
+                      const hasError = i === errorStep;
+                      const Icon = hasError ? XCircleIcon : CheckCircleIcon;
+                      return (
+                        <div key={i} className="flex items-center space-x-2">
+                          {valid ? (
+                            <Icon
+                              className={clsx(
+                                "h-6 w-6",
+                                hasError ? "text-danger-300" : "text-brand-300"
+                              )}
+                            />
+                          ) : (
+                            <div className="ml-[2.5px] h-5 w-5 rounded-full border-2 border-gray-400" />
                           )}
-                        >
-                          {step}
+                          <div
+                            className={clsx(
+                              "text-lg",
+                              valid ? "font-medium text-white" : "text-gray-400"
+                            )}
+                          >
+                            {step}
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                  <Transition
+                    show={errorStep !== null}
+                    enter="transition duration-100 ease-out"
+                    enterFrom="transform scale-95 opacity-0"
+                    enterTo="transform scale-100 opacity-100"
+                    leave="transition duration-75 ease-out"
+                    leaveFrom="transform scale-100 opacity-100"
+                    leaveTo="transform scale-95 opacity-0"
+                  >
+                    <Button asChild>
+                      <Link href="/onboarding/access/link/">Retry</Link>
+                    </Button>
+                  </Transition>
+                </>
               );
             })()
           )}

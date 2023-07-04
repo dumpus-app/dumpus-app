@@ -7,7 +7,9 @@ import useUserDetails from "../use-user-details";
 export default function useUserData() {
   const selectedPackage = useAtomValue(selectedPackageAtom);
 
-  const data = useUserDetails({ userID: selectedPackage.package_owner_id });
+  const data = useUserDetails({
+    userID: selectedPackage?.package_owner_id || "",
+  });
 
   return {
     ...selectedPackage,

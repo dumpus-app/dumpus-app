@@ -1,53 +1,46 @@
-# DUMPUS APP
+# [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
-## Tech stack
+Dumpus is a cross-platform app that gives you advanced statistics on your Discord account. The application analyzes your "Discord Data Package", which you can request in the Discord application settings.
 
-Cross-platform app powered by:
+## Download
 
-### Web
+<a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./.github/assets/playstore.png" hspace="10" height="100px" /></a>
+<a href="#"><img src="./.github/assets/appstore.png" height="100px" /></a>
 
-- React and Next.js
-- Tailwind CSS
-- Typescript
+## Screenshots
 
-### Mobile
+| | | |
+| --- | --- | --- |
+| <img src="./.github/assets/screenshot1.jpg" height="400px" /> | <img src="./.github/assets/screenshot2.jpg" height="400px" /> | <img src="./.github/assets/screenshot3.jpg" height="400px" /> |
 
-- Capacitor
-- Java (Android)
-- Fastlane (Ruby) for CI/CD
+## Made with
 
-### Desktop
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></code> **React** (front-end)  
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code> **Python** (back-end)  
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/postgresql/postgresql.png"></code> **PostgreSQL** (database)  
+<code><img height="20" src="https://3776657.fs1.hubspotusercontent-na1.net/hub/3776657/hubfs/capacitor-icon.png"></code> **Capacitor** (cross-platform support)  
 
-- Tauri (Rust)
+## What's new?
 
-## Commands
+This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr), a.k.a **DDPE**. You can see the improvements below:
 
-- `cd android && bundle exec fastlane [lane]`
 
-## Deployments
+| Feature | Dumpus (Supporter version) | Dumpus (Free version) | DDPE |
+| --- | --- | --- | --- |
+| **100% open source** | ✅ | ✅ | ✅ |
+| **Easy, free distribution** | 🟠 (€1.29, free if [self-hosted](./.github/SELF_HOSTING.md)) | ✅ | ✅ |
+| **Cross-platform** | ✅ | ✅ | ❌ (web only) |
+| **Server-side processing** | ✅ | ✅ | ❌ (only work on really powerful devices) |
+| **Advanced statistics** | ✅ | ✅ | ❌ (only basic analysis) |
+| **More than 10 top DMs/servers/channels** | ✅ (unlimited) | ✅ (up to 20) | ❌ (10 max) |
+| **Shareable stats card** | ✅ | ✅ | ❌ |
+| **Multi-packages handling** | ✅ | ✅ | ❌ |
 
-### Manual
+## Self-hosting
 
-#### Android
+You can self-host **everything** in the project, for free. You can build the app for all the environments (mobile, web, desktop...), host your own instance of the API, the database, to keep **complete control on your data**.
+[Here is a guide to self-host the app](./.github/SELF_HOSTING.md).
 
-**Building**
+## Need help?
 
-1. Build project: `pnpm build`
-2. Sync project: `pnpm cap sync`
-3. Update `package.json` version
-4. Update `android/app/build.gradle`
-   1. Increase `android.defaultConfig.versionCode` by 1
-   2. Set `android.defaultConfig.versionName` to the value of the `package.json`
-5. Open Android studio: `pnpm cap open android`
-6. Build AAB: `Build` > `Generate Signed Bundle or APK`
-   1. Select `Android App Bundle`
-   2. Set `Key Store path`, `Key Store password` and `Key password` according to data available in `dumpus-app/android-certificates`
-   3. Set `Key alias` to `upload`
-   4. Uncheck `Export encrypted key ...`
-   5. Click on `Next`
-7. Select `release` and click on `Create`
-8. Get the file at `android/app/release/app-release.aab`
-
-**Play Store**
-
-1. ???
+If you need help, you can join the [Discord server](https://androz2091.fr/discord) or open an issue.
