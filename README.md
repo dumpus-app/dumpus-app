@@ -24,7 +24,7 @@ This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.
 
 | | | |
 | --- | --- | --- |
-| <img src="./.github/assets/screenshot1.png" height="400px" /> | <img src="./.github/assets/screenshot2.png" height="400px" /> | <img src="./.github/assets/screenshot3.png" height="400px" /> |
+| <img src="./.github/assets/screenshot1.jpg" height="400px" /> | <img src="./.github/assets/screenshot2.jpg" height="400px" /> | <img src="./.github/assets/screenshot3.jpg" height="400px" /> |
 
 ## Tech stack
 
