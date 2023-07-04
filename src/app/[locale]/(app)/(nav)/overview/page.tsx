@@ -8,6 +8,7 @@ import TopDMs from "./_components/TopDMs";
 import TopGuilds from "./_components/TopGuilds";
 import UsageStats from "./_components/UsageStats";
 import Profile from "./_components/Profile";
+import Test from "./_components/Test";
 
 export default async function Page({ params: { locale } }: PageProps) {
   const { t } = await useTranslation(locale);
@@ -16,6 +17,7 @@ export default async function Page({ params: { locale } }: PageProps) {
     <>
       <PageHeader />
       <Profile />
+      <Test />
       <UsageStats />
       <TopDMs />
       <TopGuilds />
