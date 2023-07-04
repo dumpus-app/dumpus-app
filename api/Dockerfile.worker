@@ -32,4 +32,4 @@ ENV CELERY_HOSTNAME regular_process
 ENV CELERY_QUEUE regular_process
 
 # Start the Celery worker
-CMD celery --app tasks worker --loglevel=info --queues=$CELERY_QUEUE --hostname=$CELERY_HOSTNAME@%h
+CMD celery --app tasks worker --loglevel=info --queues=$CELERY_QUEUE --hostname=$CELERY_HOSTNAME@%h --concurrency=1
