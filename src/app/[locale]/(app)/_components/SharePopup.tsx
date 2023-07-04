@@ -80,6 +80,8 @@ export default function SharePopup() {
     setGeneratingShareImage,
   ]);
 
+  const canShare = !!navigator.share;
+
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-30" onClose={setOpen}>
@@ -148,7 +150,12 @@ export default function SharePopup() {
                         url: BASE_URL,
                         files: [file!],
                       });
-                    } catch (err) {
+                    } catch (err: DOMException | any) {
+                      if (err.name === "AbortError") {
+                        // user aborted share intentionnally
+                        return; 
+                      }
+                      console.error(err);
                       const a = document.createElement("a");
                       document.body.appendChild(a);
                       a.setAttribute("style", "display: none");
@@ -161,7 +168,7 @@ export default function SharePopup() {
                   }}
                   disabled={generatingShareImage}
                 >
-                  {generatingShareImage ? "Generating..." : "Share!"}
+                  {generatingShareImage ? "Generating..." : (canShare ? "Share!" : "Download!")}
                 </Button>
               </Dialog.Panel>
             </Transition.Child>
