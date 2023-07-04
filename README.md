@@ -36,6 +36,11 @@ This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/postgresql/postgresql.png"></code> **PostgreSQL** (database)  
 <code><img height="20" src="https://3776657.fs1.hubspotusercontent-na1.net/hub/3776657/hubfs/capacitor-icon.png"></code> **Capacitor** (cross-platform support)  
 
-## Android
+## Self-hosting
 
-* Generate keystore to base64 `base64 -w 0 yourkeystore.jks > keystore_base64.txt`. Store this in the secret.
+You can self-host **everything** in the project, for free. You can build the app for all the environments (mobile, web, desktop...), host your own instance of the API, the database, to keep **complete control on your data**.
+[Here is a guide to self-host the app](./.github/SELF_HOSTING.md).
+
+## Need help?
+
+If you need help, you can join the [Discord server](https://androz2091.fr/discord) or open an issue.
