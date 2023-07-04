@@ -4,6 +4,16 @@ import satori, { init as initSatori } from "satori/wasm";
 import initYoga from "yoga-wasm-web";
 import * as resvg from "@resvg/resvg-wasm";
 import { useState } from "react";
+import StaticShareImage, {
+  type Props as StaticShareImageProps,
+} from "~/components/StaticShareImage";
+import { colors } from "../../tailwind.config";
+
+async function getFontData(weight: number) {
+  return await fetch(
+    `https://cdn.jsdelivr.net/npm/@fontsource/rubik/files/rubik-latin-${weight}-normal.woff`
+  ).then((res) => res.arrayBuffer());
+}
 
 export default function useGenerateImg() {
   const [initialized, setInitialized] = useState(false);
@@ -19,49 +29,27 @@ export default function useGenerateImg() {
     await resvg.initWasm(fetch("/wasm/resvg.wasm"));
   }
 
-  async function generate() {
-    const html = (
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "#fff",
-          fontSize: 32,
-          fontWeight: 600,
-        }}
-      >
-        <svg
-          width="75"
-          viewBox="0 0 75 65"
-          fill="#000"
-          style={{ margin: "0 75px" }}
-        >
-          <path d="M37.59.25l36.95 64H.64l36.95-64z"></path>
-        </svg>
-        <div style={{ marginTop: 40 }}>Hello, World</div>
-      </div>
-    );
-
-    const fontFile = await fetch(
-      "https://og-playground.vercel.app/inter-latin-ext-700-normal.woff"
-    );
-    const fontData: ArrayBuffer = await fontFile.arrayBuffer();
+  async function generate(props: StaticShareImageProps) {
+    // TODO: cache result in localstorage and return if exists
+    const fonts = (await Promise.all(
+      [400, 500, 600, 700].map(async (weight) => ({
+        name: "Rubik Latin",
+        data: await getFontData(weight),
+        weight: 700,
+        style: "normal",
+      }))
+    )) as any[];
 
     const width = 1200;
-    const svg = await satori(html, {
+    const svg = await satori(<StaticShareImage {...props} />, {
       width,
       height: 627,
-      fonts: [
-        {
-          name: "Inter Latin",
-          data: fontData,
-          style: "normal",
+      fonts,
+      tailwindConfig: {
+        theme: {
+          colors,
         },
-      ],
+      },
     });
 
     const resvgJS = new resvg.Resvg(svg, {

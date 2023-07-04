@@ -13,7 +13,7 @@ export default function Test() {
   useMount(() => init());
 
   async function gen() {
-    const { svgURL, file } = await generate();
+    const { svgURL, file } = await generate({ title: "Hi there!" });
     setUrl(svgURL);
     setFile(file);
   }
@@ -24,7 +24,7 @@ export default function Test() {
       <button onClick={() => gen()}>
         {initialized ? "Generate" : "Initializing..."}
       </button>
-      <div className="relative aspect-[1200/627] h-48">
+      <div className="relative aspect-[1200/627] h-[80vh] border border-[red]">
         <Image
           src={url || ""}
           alt={``}
