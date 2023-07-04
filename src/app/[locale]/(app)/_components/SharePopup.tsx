@@ -134,14 +134,15 @@ export default function SharePopup() {
                   variant="brand"
                   className="mt-4 w-full"
                   onClick={async () => {
-                    if (navigator.canShare()) {
+                    try {
                       await navigator.share({
                         title: "Here is my Discord recap!",
                         text: "Generated on https://dumpus.app, try it yourself!",
                         url: BASE_URL,
                         files: [file!],
                       });
-                    } else {
+                    } catch (err) {
+                      // TODO: download instead
                       toast({
                         variant: "danger",
                         title: "Can't share",
