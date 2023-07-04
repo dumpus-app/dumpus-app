@@ -14,12 +14,16 @@ import { formatNumber } from "~/utils/format";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import { avatarURLFallback } from "~/utils/discord";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
+import useToast from "~/hooks/use-toast";
+import { XCircleIcon } from "@heroicons/react/24/solid";
+import { BASE_URL } from "~/constants";
 
 export default function SharePopup() {
   const [open, setOpen] = useAtom(showSharePopupAtom);
   const [generatingShareImage, setGeneratingShareImage] = useAtom(
     generatingShareImageAtom
   );
+  const toast = useToast();
 
   const { init, generate } = useGenerateImg();
   const [url, setUrl] = useState<string>();
@@ -107,7 +111,7 @@ export default function SharePopup() {
                         className="rounded-lg object-cover object-center"
                       />
                     ) : (
-                      <div className="bg-gray-80 h-full w-full rounded-lg"></div>
+                      <div className="h-full w-full rounded-lg bg-gray-800"></div>
                     )}
                   </div>
                   <div className="mt-2 text-center">
@@ -130,12 +134,21 @@ export default function SharePopup() {
                   variant="brand"
                   className="mt-4 w-full"
                   onClick={async () => {
-                    await navigator.share({
-                      text: "This is a test!",
-                      title: "Dumpus",
-                      url: window.location.href,
-                      files: [file!],
-                    });
+                    if (navigator.canShare()) {
+                      await navigator.share({
+                        title: "Here is my Discord recap!",
+                        text: "Generated on https://dumpus.app, try it yourself!",
+                        url: BASE_URL,
+                        files: [file!],
+                      });
+                    } else {
+                      toast({
+                        variant: "danger",
+                        title: "Can't share",
+                        description: "Open an issue on GitHub if you need help",
+                        icon: XCircleIcon,
+                      });
+                    }
                     setOpen(false);
                   }}
                   disabled={generatingShareImage}
