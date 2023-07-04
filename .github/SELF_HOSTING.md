@@ -32,3 +32,7 @@ N/A.
 * Run `pnpm install` to install the dependencies.
 * Run `pnpm run build:web` to build the app for a web environment.
 * Run `pnpm run start` to serve the app.
+
+## Self-host the API (back)
+
+(coming soon)
