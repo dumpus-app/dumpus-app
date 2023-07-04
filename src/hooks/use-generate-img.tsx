@@ -1,6 +1,6 @@
 "use client";
 
-import satori, { init as initSatori } from "satori/wasm";
+import satori, { Font, init as initSatori } from "satori/wasm";
 import initYoga from "yoga-wasm-web";
 import * as resvg from "@resvg/resvg-wasm";
 import { useState } from "react";
@@ -30,15 +30,15 @@ export default function useGenerateImg() {
   }
 
   async function generate(props: StaticShareImageProps) {
-    // TODO: cache result in localstorage and return if exists
+    // TODO: cache result in localstorage and return if exists. Store pngData
     const fonts = (await Promise.all(
       [400, 500, 600, 700].map(async (weight) => ({
         name: "Rubik Latin",
         data: await getFontData(weight),
-        weight: 700,
+        weight,
         style: "normal",
       }))
-    )) as any[];
+    )) as Font[];
 
     const width = 1200;
     const svg = await satori(<StaticShareImage {...props} />, {
@@ -57,6 +57,10 @@ export default function useGenerateImg() {
         mode: "width",
         value: width,
       },
+      dpi: 2,
+      shapeRendering: 2,
+      textRendering: 2,
+      imageRendering: 1,
     });
     const pngData = resvgJS.render(); // Output PNG data, Uint8Array
     const pngBuffer = pngData.asPng();
