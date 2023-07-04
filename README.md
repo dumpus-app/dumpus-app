@@ -9,19 +9,19 @@ Dumpus is a cross-platform app that gives you advanced statistics on your Discor
 
 ## What's new?
 
-This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr). You can see the improvements below:
+This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr), a.k.a **DDPE**. You can see the improvements below:
 
 
-| Feature | Dumpus (Free version) | Dumpus (Supporter version) | DDPE |
+| Feature | Dumpus (Supporter version) | Dumpus (Free version) | DDPE |
 | --- | --- | --- | --- |
-| **Free** | ✅ | 🟠 (€1.29, free if [self-hosted](./.github/SELF_HOSTING.md)) | ✅ |
+| **Free** | 🟠 (€1.29, free if [self-hosted](./.github/SELF_HOSTING.md)) | ✅ | ✅ |
 | **100% open source** | ✅ | ✅ | ✅ |
 | **Easy to understand (user-friendly)** | ✅ | ✅ | 🟠 (quite confusing interface) |
 | **Cross-platform** | ✅ | ✅ | ❌ (web only) |
 | **Server-side processing** | ✅ | ✅ | ❌ (only work on really powerful devices) |
 | **Advanced statistics** | ✅ | ✅ | ❌ (only basic analysis) |
-| **Top DMs/servers/channels** | Up to 20 | Unlimited | Up to 10 |
-| **Help funding this open source project** | 🟠 | ✅ | 🟠 |
+| **Top DMs/servers/channels** | Unlimited | Up to 20 | Up to 10 |
+| **Help funding this open source project** | ✅ | 🟠 | 🟠 |
 
 ## Screenshots
 
