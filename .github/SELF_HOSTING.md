@@ -1,6 +1,6 @@
 ## Self-host the app (front)
 
-## Android 
+## <img height="25px" src="https://raw.githubusercontent.com/github/explore/8baf984947f4d9c32006bd03fa4c51ff91aadf8d/topics/android/android.png" /> Android 
 
 ### Requirements
 
