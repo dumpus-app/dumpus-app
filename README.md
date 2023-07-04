@@ -1,4 +1,4 @@
-# [👨‍💻 Dumpus App](https://play.google.com/store/apps/details?id=app.dumpus.app)
+# [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
 Dumpus is a cross-platform app that gives you advanced statistics on your Discord account. The application analyzes your "Discord Data Package", which you can request in the Discord application settings.
 
