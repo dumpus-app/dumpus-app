@@ -64,7 +64,7 @@ export default function useSQLInit() {
     }
 
     const { Database } = await initSqlJs({
-      locateFile: (file) => `/sqljs/${file}`,
+      locateFile: (file) => `/wasm/${file}`,
     });
     const _db = new Database(data);
     if (initData) {
