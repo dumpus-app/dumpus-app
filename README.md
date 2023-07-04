@@ -14,7 +14,7 @@ This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.
 
 | Feature | Dumpus (Free version) | Dumpus (Supporter version) | DDPE |
 | --- | --- | --- | --- |
-| **Free** | ✅ | 🟠 (€1.29, free if self-hosted) | ✅ |
+| **Free** | ✅ | 🟠 (€1.29, free if [self-hosted](./.github/SELF_HOSTING.md)) | ✅ |
 | **100% open source** | ✅ | ✅ | ✅ |
 | **Easy to understand (user-friendly)** | ✅ | ✅ | 🟠 (quite confusing interface) |
 | **Cross-platform** | ✅ | ✅ | ❌ (web only) |
