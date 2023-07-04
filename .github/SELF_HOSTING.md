@@ -16,11 +16,11 @@
 * Run `pnpm run script:build-android` to build the app for Android.
 * Install the APK located at `./android/app/build/outputs/apk/release/app-release-unsigned.apk` on your device.
 
-## iOS
+## <img height="25px" src="https://raw.githubusercontent.com/github/explore/8baf984947f4d9c32006bd03fa4c51ff91aadf8d/topics/apple/apple.png" /> iOS 
 
 N/A.
 
-## Web
+## <img height="25px" src="https://raw.githubusercontent.com/github/explore/8baf984947f4d9c32006bd03fa4c51ff91aadf8d/topics/chrome/chrome.png" /> Web 
 
 ### Requirements
 
