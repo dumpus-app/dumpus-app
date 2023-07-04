@@ -130,7 +130,6 @@ export default function SharePopup() {
                   variant="brand"
                   className="mt-4 w-full"
                   onClick={async () => {
-                    // TODO: use capacitor share
                     await navigator.share({
                       text: "This is a test!",
                       title: "Dumpus",
