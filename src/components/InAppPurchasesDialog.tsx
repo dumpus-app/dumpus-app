@@ -1,14 +1,16 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
 import { Fragment, useState } from "react";
 import { useMount } from "react-use";
 import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
+import useToast from "~/hooks/use-toast";
 import { configAtom } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
+import { formatMoney } from "~/utils/format";
 
 // TODO: extract to i18n
 const content = [
@@ -23,6 +25,7 @@ export default function InAppPurchasesDialog() {
   const [product, setProduct] =
     useState<ReturnType<typeof purchases.getProduct>>();
   const [config, setConfig] = useAtom(configAtom);
+  const toast = useToast();
 
   useMount(async () => {
     const supported = purchases.initialized;
@@ -33,6 +36,12 @@ export default function InAppPurchasesDialog() {
         const newConfig = structuredClone(config);
         newConfig.premium = true;
         setConfig(newConfig);
+        toast({
+          title: "You're an Early Supporter",
+          description: "Thanks for supporting us!",
+          icon: CheckBadgeIcon,
+        });
+        setOpen(false);
       };
       setProduct(purchases.getProduct());
     }
@@ -95,9 +104,11 @@ export default function InAppPurchasesDialog() {
                         </div>
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
-                            {/* {product.pricing!.price} */}
+                            {formatMoney(
+                              product.pricing!.priceMicros / 1_000_000,
+                              { currency: product.pricing!.currency }
+                            )}
                           </div>
-                          <pre>{JSON.stringify(product, null, 2)}</pre>
                           <div className="text-gray-400">one-time</div>
                         </div>
                       </div>
