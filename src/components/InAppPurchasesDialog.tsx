@@ -82,7 +82,7 @@ export default function InAppPurchasesDialog() {
                       ))}
                     </div>
                   </div>
-                  {supported ? (
+                  {supported && product ? (
                     <div className="mt-4 grid grid-cols-1 gap-2">
                       <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
                         <div className="flex items-center justify-between">
@@ -95,8 +95,9 @@ export default function InAppPurchasesDialog() {
                         </div>
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
-                            {product!.pricing!.price}
+                            {/* {product.pricing!.price} */}
                           </div>
+                          <pre>{JSON.stringify(product, null, 2)}</pre>
                           <div className="text-gray-400">one-time</div>
                         </div>
                       </div>
