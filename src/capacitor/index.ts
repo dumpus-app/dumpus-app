@@ -7,6 +7,10 @@ export async function initCapacitor() {
   if (typeof document === "undefined") return;
 
   const { App } = await import("@capacitor/app");
+  const { StatusBar, Style } = await import("@capacitor/status-bar");
+  const { NavigationBar } = await import(
+    "@hugotomazi/capacitor-navigation-bar"
+  );
 
   App.addListener("backButton", ({ canGoBack }) => {
     if (canGoBack) {
@@ -16,11 +20,13 @@ export async function initCapacitor() {
     }
   });
 
-  const { StatusBar, Style } = await import("@capacitor/status-bar");
+  const color = colors.gray[950];
 
   await StatusBar.setOverlaysWebView({ overlay: false });
-  await StatusBar.setBackgroundColor({ color: colors.gray[950] });
+  await StatusBar.setBackgroundColor({ color });
   await StatusBar.setStyle({ style: Style.Dark });
+
+  await NavigationBar.setColor({ color });
 }
 
 initCapacitor();
