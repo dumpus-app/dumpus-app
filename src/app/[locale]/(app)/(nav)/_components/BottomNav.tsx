@@ -47,6 +47,7 @@ export default function BottomNav({ children }: Props) {
             ))}
           </div>
         </div>
+        <div className="h-[env(safe-area-inset-bottom)] bg-gray-950" />
       </div>
     </div>
   );

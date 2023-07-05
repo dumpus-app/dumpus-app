@@ -26,12 +26,8 @@ export default function PageStructure({
         } as CSSProperties
       }
     >
-      <body className="flex min-h-full flex-col">
-        <>
-          {children}
-          <Toaster />
-        </>
-      </body>
+      <div className="h-[env(safe-area-inset-top)] bg-gray-950" />
+      <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
 }
