@@ -65,6 +65,9 @@ dependencies:
   consola:
     specifier: ^3.1.0
     version: 3.1.0
+  cordova-plugin-purchase:
+    specifier: ^13.6.0
+    version: 13.6.0
   crc-32:
     specifier: ^1.2.2
     version: 1.2.2
@@ -2133,6 +2136,10 @@ packages:
     resolution: {integrity: sha512-2KV8NhB5JqC3ky0r9PMCAZKbUHSwtEo4CwCs0KXgruG43gX5PMqDEBbVU4OUzw2MuAWUfsuFmWvEKG5QRfSnJA==}
     dependencies:
       toggle-selection: 1.0.6
+    dev: false
+
+  /cordova-plugin-purchase@13.6.0:
+    resolution: {integrity: sha512-Af68kbpC2e+ArbASqlvy3TirI2zlOEtYac2GBNJ5dhrn8oSureY+9O6tUOWqA+QkT5xyMjZHdf6XncJH/V97ow==}
     dev: false
 
   /core-util-is@1.0.3:

@@ -11,7 +11,7 @@ apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
     implementation project(':capacitor-app')
     implementation project(':capacitor-network')
-
+    implementation "com.android.billingclient:billing:5.0.0"
 }
 
 
