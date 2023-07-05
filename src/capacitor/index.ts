@@ -1,5 +1,7 @@
 "use client";
 
+import { colors } from "../../tailwind.config";
+
 export async function initCapacitor() {
   if (process.env.NEXT_PUBLIC_DEPLOY_ENV !== "mobile") return;
   if (typeof document === "undefined") return;
@@ -13,6 +15,12 @@ export async function initCapacitor() {
       App.exitApp();
     }
   });
+
+  const { StatusBar, Style } = await import("@capacitor/status-bar");
+
+  await StatusBar.setOverlaysWebView({ overlay: false });
+  await StatusBar.setBackgroundColor({ color: colors.gray[950] });
+  await StatusBar.setStyle({ style: Style.Dark });
 }
 
 initCapacitor();

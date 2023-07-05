@@ -14,6 +14,8 @@ html {
   @apply scroll-smooth;
   @apply select-none selection:bg-brand-950 selection:text-brand-400 sm:select-auto;
   @apply overflow-y-scroll;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 /* TODO: make this actually work */

@@ -20,6 +20,9 @@ dependencies:
   '@capacitor/network':
     specifier: ^5.0.4
     version: 5.0.4(@capacitor/core@5.0.3)
+  '@capacitor/status-bar':
+    specifier: ^5.0.5
+    version: 5.0.5(@capacitor/core@5.0.3)
   '@headlessui/react':
     specifier: ^1.7.14
     version: 1.7.14(react-dom@18.2.0)(react@18.2.0)
@@ -307,6 +310,14 @@ packages:
 
   /@capacitor/network@5.0.4(@capacitor/core@5.0.3):
     resolution: {integrity: sha512-ELYVp5s4KzhFomjh/m/vxtH6h2xrrxZKHfkKxEPPH+IhW3Xn4L4bLjyKwipdsugyhJp31h2DjxcfYXY3aq/UzQ==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 5.0.3
+    dev: false
+
+  /@capacitor/status-bar@5.0.5(@capacitor/core@5.0.3):
+    resolution: {integrity: sha512-8ykkIbndeAaATrAYcr4CLSplTeR6CU15h8trXV3DgLXlFQAC6E/WJnoMy1QL61n5rHh725nixqwCTepcgGx/rw==}
     peerDependencies:
       '@capacitor/core': ^5.0.0
     dependencies:
