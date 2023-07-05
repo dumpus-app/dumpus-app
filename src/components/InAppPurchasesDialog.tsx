@@ -3,8 +3,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { useMount } from "react-use";
+import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
+import { configAtom } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 
 // TODO: extract to i18n
@@ -16,6 +19,24 @@ const content = [
 
 export default function InAppPurchasesDialog() {
   const [open, setOpen] = useAtom(showInAppPurchasesDialogAtom);
+  const [supported, setSupported] = useState(false);
+  const [product, setProduct] =
+    useState<ReturnType<typeof purchases.getProduct>>();
+  const [config, setConfig] = useAtom(configAtom);
+
+  useMount(async () => {
+    const supported = purchases.initialized;
+    setSupported(supported);
+
+    if (supported) {
+      purchases.onSupporterTestApproved = () => {
+        const newConfig = structuredClone(config);
+        newConfig.premium = true;
+        setConfig(newConfig);
+      };
+      setProduct(purchases.getProduct());
+    }
+  });
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -61,45 +82,54 @@ export default function InAppPurchasesDialog() {
                       ))}
                     </div>
                   </div>
-                  <div className="mt-4 grid grid-cols-1 gap-2">
-                    <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
-                      <div className="flex items-center justify-between">
-                        <div className="text-lg text-gray-50">
-                          Early supporter
+                  {supported ? (
+                    <div className="mt-4 grid grid-cols-1 gap-2">
+                      <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
+                        <div className="flex items-center justify-between">
+                          <div className="text-lg text-gray-50">
+                            Early supporter
+                          </div>
+                          <div className="rounded-full bg-success-400 px-2 py-0.5 text-sm text-gray-950">
+                            60% off
+                          </div>
                         </div>
-                        <div className="rounded-full bg-success-400 px-2 py-0.5 text-sm text-gray-950">
-                          60% off
+                        <div className="mt-1 flex items-end justify-between">
+                          <div className="text-3xl font-semibold text-white">
+                            {product!.pricing!.price}
+                          </div>
+                          <div className="text-gray-400">one-time</div>
                         </div>
                       </div>
-                      <div className="mt-1 flex items-end justify-between">
-                        <div className="text-3xl font-semibold text-white">
-                          1.29€
+                      <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
+                        <div className="flex items-center justify-between">
+                          <div className="text-lg text-gray-50">Supporter</div>
+                          <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
+                            Soon
+                          </div>
                         </div>
-                        <div className="text-gray-400">one-time</div>
+                        <div className="mt-1 flex items-end justify-between">
+                          <div className="text-3xl font-semibold text-white">
+                            3.29€
+                          </div>
+                          <div className="text-gray-400">one-time</div>
+                        </div>
                       </div>
                     </div>
-                    <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
-                      <div className="flex items-center justify-between">
-                        <div className="text-lg text-gray-50">Supporter</div>
-                        <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
-                          Soon
-                        </div>
-                      </div>
-                      <div className="mt-1 flex items-end justify-between">
-                        <div className="text-3xl font-semibold text-white">
-                          3.29€
-                        </div>
-                        <div className="text-gray-400">one-time</div>
-                      </div>
+                  ) : (
+                    <div className="mt-4 text-center font-mono text-danger-400">
+                      Payments not supported
                     </div>
-                  </div>
+                  )}
                 </div>
                 <Button
                   variant="brand"
                   className="mt-4 w-full"
-                  onClick={() => {}}
+                  onClick={() => {
+                    product!.getOffer()!.order();
+                  }}
+                  disabled={!supported}
                 >
-                  Proceed
+                  {supported ? "Proceed" : "Unavailable"}
                 </Button>
                 <button
                   type="button"
