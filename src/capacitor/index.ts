@@ -1,12 +1,13 @@
 "use client";
 
-import purchasesSingleton from "./purchases";
+import { purchasesSingleton } from "./purchases";
 import { isCapacitorSupported } from "./utils";
 
 export const purchases = purchasesSingleton;
 
 export async function initCapacitor() {
-  if (!isCapacitorSupported()) return;
+  const supported = isCapacitorSupported();
+  if (!supported) return;
 
   const { App } = await import("@capacitor/app");
 

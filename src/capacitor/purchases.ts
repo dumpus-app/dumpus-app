@@ -1,7 +1,5 @@
 "use client";
 
-import "cordova-plugin-purchase";
-
 class PurchasesModule {
   private PRODUCT_SUPPORTER_TEST_KEY = "supporter_test";
   // @ts-ignore
@@ -13,17 +11,14 @@ class PurchasesModule {
   constructor() {}
 
   public async init() {
-    if (!window.CdvPurchase) setTimeout(this.init, 100);
-    else {
-      this.CdvPurchase = window.CdvPurchase;
-      await this.CdvPurchase.store.initialize([
-        this.CdvPurchase.Platform.GOOGLE_PLAY,
-      ]);
-      await this.registerProducts();
-      await this.setupListeners();
+    // @ts-ignore
+    await import("cordova-plugin-purchase");
+    this.CdvPurchase = window.CdvPurchase;
+    await this.CdvPurchase.store.initialize();
+    await this.registerProducts();
+    await this.setupListeners();
 
-      this.initialized = true;
-    }
+    this.initialized = true;
   }
 
   private async registerProducts() {
@@ -58,5 +53,4 @@ class PurchasesModule {
   }
 }
 
-const purchases = new PurchasesModule();
-export default purchases;
+export const purchasesSingleton = new PurchasesModule();
