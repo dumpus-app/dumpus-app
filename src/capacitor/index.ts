@@ -5,7 +5,11 @@ import { isCapacitorSupported } from "./utils";
 
 export const purchases = purchasesSingleton;
 
-export async function initCapacitor() {
+export async function initCapacitor({
+  navigate,
+}: {
+  navigate: (url: string) => void;
+}) {
   const supported = isCapacitorSupported();
   if (!supported) return;
 
@@ -19,11 +23,17 @@ export async function initCapacitor() {
     }
   });
 
+  App.addListener("appUrlOpen", ({ url: _url }) => {
+    const url = new URL(_url);
+    const pathname = url.href.replace(url.origin, "");
+    if (pathname !== "/") {
+      navigate(pathname);
+    }
+  });
+
   await purchases.init();
 
   return () => {
     App.removeAllListeners();
   };
 }
-
-initCapacitor();
