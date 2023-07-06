@@ -1,55 +1,61 @@
 "use client";
 
-class PurchasesModule {
-  private PRODUCT_SUPPORTER_TEST_KEY = "supporter_test";
-  // @ts-ignore
-  private CdvPurchase: typeof CdvPurchase;
+import { emitter } from "~/utils/emitter";
 
+const PRODUCT_SUPPORTER_TEST_KEY = "supporter_test";
+export type ProductKey = typeof PRODUCT_SUPPORTER_TEST_KEY;
+
+let cdv: typeof CdvPurchase;
+
+class PurchasesModule {
   public initialized = false;
-  public onSupporterTestApproved = () => {};
+  public productsKeys = [PRODUCT_SUPPORTER_TEST_KEY] as const;
 
   constructor() {}
 
   public async init() {
+    if (this.initialized) return;
     // @ts-ignore
     await import("cordova-plugin-purchase");
-    this.CdvPurchase = window.CdvPurchase;
-    await this.CdvPurchase.store.initialize();
+    cdv = window.CdvPurchase;
+    await cdv.store.initialize();
     await this.registerProducts();
     await this.setupListeners();
 
     this.initialized = true;
+    emitter.emit("purchases:initialized", true);
   }
 
   private async registerProducts() {
-    this.CdvPurchase.store.register([
+    cdv.store.register([
       {
-        id: this.PRODUCT_SUPPORTER_TEST_KEY,
-        type: this.CdvPurchase.ProductType.NON_CONSUMABLE,
-        platform: this.CdvPurchase.Platform.GOOGLE_PLAY,
+        id: PRODUCT_SUPPORTER_TEST_KEY,
+        type: cdv.ProductType.NON_CONSUMABLE,
+        platform: cdv.Platform.GOOGLE_PLAY,
       },
     ]);
 
-    await this.CdvPurchase.store.update();
+    await cdv.store.update();
   }
 
   private async setupListeners() {
-    this.CdvPurchase.store
+    cdv.store
       .when()
       .approved((transaction) => {
         // Can only be one product bought for now
-        const productID = transaction.products[0].id;
+        const productID = transaction.products[0].id as ProductKey;
 
-        if (productID === this.PRODUCT_SUPPORTER_TEST_KEY) {
-          this.onSupporterTestApproved();
-        }
+        emitter.emit("purchases:transaction:approved", {
+          key: productID,
+          product: this.getProduct(productID)!,
+        });
         return transaction.verify();
       })
       .verified((receipt) => receipt.finish());
   }
 
-  public getProduct() {
-    return this.CdvPurchase.store.get(this.PRODUCT_SUPPORTER_TEST_KEY)!;
+  public getProduct(key: ProductKey) {
+    return cdv?.store.get(key);
   }
 }
 

@@ -20,6 +20,10 @@ export async function initCapacitor() {
   });
 
   await purchases.init();
+
+  return () => {
+    App.removeAllListeners();
+  };
 }
 
 initCapacitor();

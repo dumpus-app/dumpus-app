@@ -10,6 +10,7 @@ import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
 import { configAtom } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
+import { emitter } from "~/utils/emitter";
 import { formatMoney } from "~/utils/format";
 
 // TODO: extract to i18n
@@ -27,24 +28,25 @@ export default function InAppPurchasesDialog() {
   const [config, setConfig] = useAtom(configAtom);
   const toast = useToast();
 
-  useMount(async () => {
-    const supported = purchases.initialized;
-    setSupported(supported);
-
-    if (supported) {
-      purchases.onSupporterTestApproved = () => {
-        const newConfig = structuredClone(config);
-        newConfig.premium = true;
-        setConfig(newConfig);
-        toast({
-          title: "You're an Early Supporter",
-          description: "Thanks for supporting us!",
-          icon: CheckBadgeIcon,
-        });
-        setOpen(false);
-      };
-      setProduct(purchases.getProduct());
-    }
+  useMount(() => {
+    emitter.on("purchases:initialized", () => {
+      setSupported(true);
+      setProduct(purchases.getProduct("supporter_test"));
+      emitter.on("purchases:transaction:approved", ({ key, product }) => {
+        if (key === "supporter_test") {
+          const newConfig = structuredClone(config);
+          newConfig.premium = true;
+          setConfig(newConfig);
+          toast({
+            title: "You're an Early Supporter",
+            description: "Thanks for supporting us!",
+            icon: CheckBadgeIcon,
+            id: key,
+          });
+          setOpen(false);
+        }
+      });
+    });
   });
 
   return (
