@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useEffectOnce } from "react-use";
 import { initCapacitor } from "~/capacitor";
 
 export default function useCapacitor() {
-  useEffect(() => {
-    initCapacitor();
-  }, []);
+  const router = useRouter();
+  useEffectOnce(() => {
+    initCapacitor({ navigate: router.replace });
+  });
 }
