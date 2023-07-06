@@ -47,7 +47,6 @@ export async function initCapacitor({
   await SafeArea.addListener("safeAreaChanged", ({ insets }) =>
     handleInsets(insets)
   );
-}
 
   App.addListener("appUrlOpen", ({ url: _url }) => {
     const url = new URL(_url);
