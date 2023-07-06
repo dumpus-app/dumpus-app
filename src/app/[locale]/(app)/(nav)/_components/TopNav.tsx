@@ -27,7 +27,7 @@ export default function TopNav() {
 
   return (
     <div className="hidden sm:contents">
-      <div className="sticky top-0 z-20">
+      <div className="sticky top-[--safe-area-top-inset] z-20">
         <div className="flex h-16 items-center border-b border-gray-800 bg-gray-900">
           <div className="flex items-center justify-between px-2 desktop-container">
             <Link

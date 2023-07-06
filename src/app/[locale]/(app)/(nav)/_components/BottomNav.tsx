@@ -26,7 +26,10 @@ export default function BottomNav({ children }: Props) {
   return (
     <div className="contents sm:hidden">
       <div className="mt-auto" style={{ height: `${height}px` }} />
-      <div ref={ref} className="fixed bottom-0 left-0 right-0 z-20">
+      <div
+        ref={ref}
+        className="fixed bottom-[--safe-area-bottom-inset] left-0 right-0 z-20"
+      >
         {children}
         <div className="border-t border-gray-800 bg-gray-900">
           <div className="flex items-center space-x-1 px-1 py-1">
@@ -47,7 +50,6 @@ export default function BottomNav({ children }: Props) {
             ))}
           </div>
         </div>
-        <div className="h-[env(safe-area-inset-bottom)] bg-gray-950" />
       </div>
     </div>
   );

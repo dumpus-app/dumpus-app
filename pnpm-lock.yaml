@@ -62,6 +62,9 @@ dependencies:
   autoprefixer:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.24)
+  capacitor-plugin-safe-area:
+    specifier: ^2.0.5
+    version: 2.0.5(@capacitor/core@5.0.3)
   class-variance-authority:
     specifier: ^0.6.0
     version: 0.6.0(typescript@5.1.6)
@@ -1769,6 +1772,14 @@ packages:
 
   /caniuse-lite@1.0.30001487:
     resolution: {integrity: sha512-83564Z3yWGqXsh2vaH/mhXfEM0wX+NlBCm1jYHOb97TrTWJEmPTccZgeLTPBUUb0PNVo+oomb7wkimZBIERClA==}
+    dev: false
+
+  /capacitor-plugin-safe-area@2.0.5(@capacitor/core@5.0.3):
+    resolution: {integrity: sha512-Lg3P+/aW2/+C3gz2/xZFdfjgkOJ/ZSFTmZSxLaSY6lIudOTjwVpjoxhAyKUz1tc13Carjqdlq01yRrr++XOzAg==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 5.0.3
     dev: false
 
   /ccount@2.0.1:

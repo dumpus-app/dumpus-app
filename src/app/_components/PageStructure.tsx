@@ -26,8 +26,11 @@ export default function PageStructure({
         } as CSSProperties
       }
     >
-      <div className="h-[env(safe-area-inset-top)] bg-gray-950" />
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        <div className="sticky top-0 z-50 h-[--safe-area-top-inset] bg-gray-900" />
+        {children}
+        <div className="sticky bottom-0 z-50 h-[--safe-area-bottom-inset] bg-gray-900" />
+      </body>
     </html>
   );
 }
