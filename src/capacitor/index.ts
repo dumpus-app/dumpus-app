@@ -10,12 +10,16 @@ export async function initCapacitor({
   if (process.env.NEXT_PUBLIC_DEPLOY_ENV !== "mobile") return;
   if (typeof document === "undefined") return;
 
+  const { Capacitor } = await import("@capacitor/core")
   const { App } = await import("@capacitor/app");
   const { StatusBar, Style } = await import("@capacitor/status-bar");
   const { NavigationBar } = await import(
     "@hugotomazi/capacitor-navigation-bar"
   );
   const { SafeArea } = await import("capacitor-plugin-safe-area");
+
+  const isAndroid = Capacitor.getPlatform() === "android"
+  const isiOS = Capacitor.getPlatform() === "ios"
 
   App.addListener("backButton", ({ canGoBack }) => {
     if (canGoBack) {
@@ -41,7 +45,7 @@ export async function initCapacitor({
       );
       root.style.setProperty(
         `--safe-area-${key}`,
-        envValue === "" ? `${value}px` : envValue
+        isAndroid ? `${value}px` : envValue
       );
     }
   }
