@@ -12,6 +12,19 @@ export const colors = {
   transparent: "transparent",
   inherit: "inherit",
   currentColor: "currentColor",
+  gold: {
+    50: "#fcf2e5",
+    100: "#e5dbca",
+    200: "#d2c3ad",
+    300: "#beab8d",
+    400: "#aa936e",
+    500: "#927955",
+    600: "#725e41",
+    700: "#51432d",
+    800: "#322819",
+    900: "#241a0d",
+    950: "#150c00",
+  },
 } satisfies ThemeConfig["colors"];
 
 export default {
