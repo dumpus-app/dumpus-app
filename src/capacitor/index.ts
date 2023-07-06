@@ -30,11 +30,16 @@ export async function initCapacitor() {
   // await StatusBar.setBackgroundColor({ color });
   // await NavigationBar.setColor({ color });
 
+  const root = document.documentElement;
+
   function handleInsets(insets: SafeAreaInsets["insets"]) {
     for (const [key, value] of Object.entries(insets)) {
-      document.documentElement.style.setProperty(
+      const envValue = getComputedStyle(root).getPropertyValue(
+        `--env-safe-area-${key}-inset`
+      );
+      root.style.setProperty(
         `--safe-area-${key}`,
-        `${value}px`
+        envValue === "" ? `${value}px` : envValue
       );
     }
   }
