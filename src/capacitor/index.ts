@@ -33,6 +33,9 @@ export async function initCapacitor({
 
   function handleInsets(insets: SafeAreaInsets["insets"]) {
     for (const [key, value] of Object.entries(insets)) {
+      // TODO: find where the bug is
+      // On IOS, envValue should not be empty.
+      // Maybe add a timeout?
       const envValue = getComputedStyle(root).getPropertyValue(
         `--env-safe-area-${key}-inset`
       );
