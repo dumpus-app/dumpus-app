@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.dumpus.app",
+      "sha256_cert_fingerprints": [
+        "44:B2:7D:85:53:60:3E:42:68:2C:E8:8E:A1:17:7D:92:E1:CD:3C:98:C0:F9:1D:D9:23:9E:9B:5B:D4:B6:0F:64"
+      ]
+    }
+  }
+]
