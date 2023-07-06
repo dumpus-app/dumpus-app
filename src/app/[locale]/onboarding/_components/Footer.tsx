@@ -45,7 +45,7 @@ function TrustDialog({
           <div className="fixed inset-0 bg-gray-950 bg-opacity-80 transition-opacity" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="fixed inset-0 bottom-safe-area-bottom-inset z-10 overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}

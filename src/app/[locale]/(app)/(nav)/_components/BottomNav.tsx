@@ -28,7 +28,7 @@ export default function BottomNav({ children }: Props) {
       <div className="mt-auto" style={{ height: `${height}px` }} />
       <div
         ref={ref}
-        className="fixed bottom-[--safe-area-bottom-inset] left-0 right-0 z-20"
+        className="fixed bottom-safe-area-bottom-inset left-0 right-0 z-20"
       >
         {children}
         <div className="border-t border-gray-800 bg-gray-900">

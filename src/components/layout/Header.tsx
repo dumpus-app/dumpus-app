@@ -38,7 +38,7 @@ export default function Header({
   return (
     <div
       className={clsx(
-        "sticky top-[--safe-area-top-inset] z-20 block transition-colors sm:hidden",
+        "sticky top-safe-area-top-inset z-20 block transition-colors sm:hidden",
         transparent
           ? showBackground
             ? "bg-gray-900"

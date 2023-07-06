@@ -25,6 +25,12 @@ export default {
       fontFamily: {
         mono: ["var(--font-mono)"],
       },
+      spacing: {
+        "safe-area-top-inset": "var(--safe-area-top-inset)",
+        "safe-area-right-inset": "var(--safe-area-right-inset)",
+        "safe-area-bottom-inset": "var(--safe-area-bottom-inset)",
+        "safe-area-left-inset": "var(--safe-area-left-inset)",
+      },
     },
   },
   plugins: [
