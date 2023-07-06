@@ -4,6 +4,14 @@ import clsx from "clsx";
 import { Icon } from "~/types";
 import Link from "../Link";
 import { useScrolled } from "~/hooks/use-layout";
+import { useSetAtom } from "jotai";
+import {
+  DEFAULT_SAFE_AREA_INSET_COLOR,
+  safeAreaTopColorAtom,
+} from "~/stores/ui";
+import { useCallback, useEffect } from "react";
+import { colors } from "../../../tailwind.config";
+import { useMount, useUnmount } from "react-use";
 
 export type Props = {
   title?: string;
@@ -34,16 +42,33 @@ export default function Header({
   const showTitle = revealTitleOnScroll ? scrolled : true;
   const showBorder = revealBorderOnScroll ? scrolled : false;
   const showBackground = revealBackgroundOnScroll ? scrolled : false;
+  const setSafeAreaTopColor = useSetAtom(safeAreaTopColorAtom);
+
+  const showLightBackground = useCallback(() => {
+    return transparent ? (showBackground ? true : false) : true;
+  }, [showBackground, transparent]);
+
+  useMount(() => {
+    setSafeAreaTopColor(
+      showLightBackground() ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR
+    );
+  });
+
+  useEffect(() => {
+    setSafeAreaTopColor(
+      showLightBackground() ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR
+    );
+  }, [setSafeAreaTopColor, showLightBackground]);
+
+  useUnmount(() => {
+    setSafeAreaTopColor(DEFAULT_SAFE_AREA_INSET_COLOR);
+  });
 
   return (
     <div
       className={clsx(
         "sticky top-safe-area-top-inset z-20 block transition-colors sm:hidden",
-        transparent
-          ? showBackground
-            ? "bg-gray-900"
-            : "bg-gray-950"
-          : "bg-gray-900",
+        showLightBackground() ? "bg-gray-900" : "bg-gray-950",
         wrapperClassName
       )}
     >

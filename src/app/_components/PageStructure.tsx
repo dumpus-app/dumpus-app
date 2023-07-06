@@ -4,6 +4,7 @@ import i18next from "i18next";
 import { Rubik, JetBrains_Mono } from "next/font/google";
 import { CSSProperties } from "react";
 import Toaster from "~/components/Toaster";
+import SafeArea from "./SafeArea";
 
 const sansFont = Rubik({ subsets: ["latin"] });
 const monoFont = JetBrains_Mono({ subsets: ["latin"] });
@@ -27,10 +28,8 @@ export default function PageStructure({
       }
     >
       <body className="flex min-h-full flex-col">
-        <div className="sticky top-0 z-50 h-safe-area-top-inset bg-gray-900" />
-        {children}
+        <SafeArea>{children}</SafeArea>
         <Toaster />
-        <div className="sticky bottom-0 z-50 h-safe-area-bottom-inset bg-gray-900" />
       </body>
     </html>
   );

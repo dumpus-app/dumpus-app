@@ -5,6 +5,14 @@ import { Link as LinkType } from "~/types";
 import Link from "~/components/Link";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useScrolled } from "~/hooks/use-layout";
+import { useSetAtom } from "jotai";
+import {
+  DEFAULT_SAFE_AREA_INSET_COLOR,
+  safeAreaTopColorAtom,
+} from "~/stores/ui";
+import { useUnmount } from "react-use";
+import { useEffect } from "react";
+import { colors } from "../../../../../../../../tailwind.config";
 
 const links = [
   {
@@ -31,6 +39,17 @@ export default function TopSelector({
 }) {
   const pathname = useI18nPathname();
   const scrolled = useScrolled();
+  const setSafeAreaTopColor = useSetAtom(safeAreaTopColorAtom);
+
+  useEffect(() => {
+    setSafeAreaTopColor(
+      scrolled ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR
+    );
+  }, [scrolled, setSafeAreaTopColor]);
+
+  useUnmount(() => {
+    setSafeAreaTopColor(DEFAULT_SAFE_AREA_INSET_COLOR);
+  });
 
   return (
     <div

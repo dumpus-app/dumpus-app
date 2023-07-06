@@ -4,10 +4,15 @@ import { links } from "~/constants";
 import Link from "~/components/Link";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
-import { useMeasure, useUnmount } from "react-use";
+import { useMeasure, useMount, useUnmount } from "react-use";
 import { useEffect } from "react";
 import { useSetAtom } from "jotai";
-import { bottomNavHeightAtom } from "~/stores/ui";
+import {
+  DEFAULT_SAFE_AREA_INSET_COLOR,
+  bottomNavHeightAtom,
+  safeAreaBottomColorAtom,
+} from "~/stores/ui";
+import colors from "tailwindcss/colors";
 export type Props = {
   children?: React.ReactNode;
 };
@@ -16,12 +21,20 @@ export default function BottomNav({ children }: Props) {
   const pathname = useI18nPathname();
   const setHeight = useSetAtom(bottomNavHeightAtom);
   const [ref, { height }] = useMeasure<HTMLDivElement>();
+  const setSafeAreaBottomColor = useSetAtom(safeAreaBottomColorAtom);
 
   useEffect(() => {
     setHeight(height);
   }, [height, setHeight]);
 
-  useUnmount(() => setHeight(0));
+  useMount(() => {
+    setSafeAreaBottomColor(colors.gray[900]);
+  });
+
+  useUnmount(() => {
+    setHeight(0);
+    setSafeAreaBottomColor(DEFAULT_SAFE_AREA_INSET_COLOR);
+  });
 
   return (
     <div className="contents sm:hidden">

@@ -1,7 +1,6 @@
 "use client";
 
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
-import { colors } from "../../tailwind.config";
 
 export async function initCapacitor() {
   if (process.env.NEXT_PUBLIC_DEPLOY_ENV !== "mobile") return;
@@ -25,10 +24,6 @@ export async function initCapacitor() {
   await StatusBar.setOverlaysWebView({ overlay: true });
   await StatusBar.setStyle({ style: Style.Dark });
   await NavigationBar.setTransparency({ isTransparent: true });
-
-  // const color = colors.gray[950];
-  // await StatusBar.setBackgroundColor({ color });
-  // await NavigationBar.setColor({ color });
 
   const root = document.documentElement;
 
