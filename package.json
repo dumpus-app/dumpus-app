@@ -55,7 +55,7 @@
     "next": "13.4.8",
     "next-language-detector": "^1.0.2",
     "pako": "^2.1.0",
-    "postcss": "8.4.24",
+    "postcss": "8.4.25",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
