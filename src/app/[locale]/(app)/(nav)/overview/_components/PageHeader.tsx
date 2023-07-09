@@ -16,7 +16,7 @@ export default function PageHeader() {
       leftSlot={
         <>
           {premium && (
-            <div className="ml-2 inline-flex items-center rounded-full bg-gold-300 px-2 py-0.5 text-sm font-medium text-gold-800">
+            <div className="ml-2 inline-flex items-center rounded-full bg-yellow-300 px-2 py-0.5 text-sm font-medium text-gold-800">
               <SparklesIcon className="-ml-0.5 mr-1 h-3 w-3" />
               <span>Premium</span>
             </div>

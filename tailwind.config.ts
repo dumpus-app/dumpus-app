@@ -12,6 +12,7 @@ export const colors = {
   transparent: "transparent",
   inherit: "inherit",
   currentColor: "currentColor",
+  yellow: twColors.yellow,
   gold: {
     50: "#fcf2e5",
     100: "#e5dbca",
