@@ -18,12 +18,15 @@ export function formatNumber(
   }).format(n);
 }
 
-export function formatMoney(n?: number | null) {
+export function formatMoney(
+  n?: number | null,
+  { currency = "USD" }: { currency?: string } = {}
+) {
   if (n === undefined || n === null) return fallback;
 
   return Intl.NumberFormat(locale, {
     style: "currency",
-    currency: "USD",
+    currency,
     // Don't show fraction digits if integer
     maximumFractionDigits: n % 1 === 0 ? 0 : 2,
   }).format(n);

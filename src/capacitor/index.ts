@@ -1,12 +1,17 @@
 "use client";
 
+import { purchasesSingleton } from "./purchases";
+import { isCapacitorSupported } from "./utils";
+
+export const purchases = purchasesSingleton;
+
 export async function initCapacitor({
   navigate,
 }: {
   navigate: (url: string) => void;
 }) {
-  if (process.env.NEXT_PUBLIC_DEPLOY_ENV !== "mobile") return;
-  if (typeof document === "undefined") return;
+  const supported = isCapacitorSupported();
+  if (!supported) return;
 
   const { App } = await import("@capacitor/app");
 
@@ -25,4 +30,10 @@ export async function initCapacitor({
       navigate(pathname);
     }
   });
+
+  await purchases.init();
+
+  return () => {
+    App.removeAllListeners();
+  };
 }

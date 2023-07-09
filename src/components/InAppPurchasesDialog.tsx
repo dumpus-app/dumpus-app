@@ -1,11 +1,17 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { useMount } from "react-use";
+import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
+import useToast from "~/hooks/use-toast";
+import { configAtom } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
+import { emitter } from "~/utils/emitter";
+import { formatMoney } from "~/utils/format";
 
 // TODO: extract to i18n
 const content = [
@@ -16,6 +22,40 @@ const content = [
 
 export default function InAppPurchasesDialog() {
   const [open, setOpen] = useAtom(showInAppPurchasesDialogAtom);
+  const [supported, setSupported] = useState(false);
+  const [product, setProduct] =
+    useState<ReturnType<typeof purchases.getProduct>>();
+  const [config, setConfig] = useAtom(configAtom);
+  const toast = useToast();
+
+  useMount(() => {
+    const initializeDialog = () => {
+      setSupported(true);
+      setProduct(purchases.getProduct("supporter_test"));
+      emitter.on("purchases:transaction:approved", ({ key, product }) => {
+        if (key === "supporter_test") {
+          const newConfig = structuredClone(config);
+          newConfig.premium = true;
+          setConfig(newConfig);
+          toast({
+            title: "You're an Early Supporter",
+            description: "Thanks for supporting us!",
+            icon: CheckBadgeIcon,
+            id: key,
+          });
+          setOpen(false);
+        }
+      });
+    }
+    // the plugin can be initialized BEFORE this component is mounted
+    if (purchases.initialized) {
+      initializeDialog();
+    } else {
+      emitter.on("purchases:initialized", () => {
+        initializeDialog();
+      });
+    }
+  });
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -61,45 +101,57 @@ export default function InAppPurchasesDialog() {
                       ))}
                     </div>
                   </div>
-                  <div className="mt-4 grid grid-cols-1 gap-2">
-                    <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
-                      <div className="flex items-center justify-between">
-                        <div className="text-lg text-gray-50">
-                          Early supporter
+                  {supported && product ? (
+                    <div className="mt-4 grid grid-cols-1 gap-2">
+                      <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
+                        <div className="flex items-center justify-between">
+                          <div className="text-lg text-gray-50">
+                            Early supporter
+                          </div>
+                          <div className="rounded-full bg-success-400 px-2 py-0.5 text-sm text-gray-950">
+                            60% off
+                          </div>
                         </div>
-                        <div className="rounded-full bg-success-400 px-2 py-0.5 text-sm text-gray-950">
-                          60% off
+                        <div className="mt-1 flex items-end justify-between">
+                          <div className="text-3xl font-semibold text-white">
+                            {formatMoney(
+                              product.pricing!.priceMicros / 1_000_000,
+                              { currency: product.pricing!.currency }
+                            )}
+                          </div>
+                          <div className="text-gray-400">one-time</div>
                         </div>
                       </div>
-                      <div className="mt-1 flex items-end justify-between">
-                        <div className="text-3xl font-semibold text-white">
-                          1.29€
+                      <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
+                        <div className="flex items-center justify-between">
+                          <div className="text-lg text-gray-50">Supporter</div>
+                          <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
+                            Soon
+                          </div>
                         </div>
-                        <div className="text-gray-400">one-time</div>
+                        <div className="mt-1 flex items-end justify-between">
+                          <div className="text-3xl font-semibold text-white">
+                            3.29€
+                          </div>
+                          <div className="text-gray-400">one-time</div>
+                        </div>
                       </div>
                     </div>
-                    <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
-                      <div className="flex items-center justify-between">
-                        <div className="text-lg text-gray-50">Supporter</div>
-                        <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
-                          Soon
-                        </div>
-                      </div>
-                      <div className="mt-1 flex items-end justify-between">
-                        <div className="text-3xl font-semibold text-white">
-                          3.29€
-                        </div>
-                        <div className="text-gray-400">one-time</div>
-                      </div>
+                  ) : (
+                    <div className="mt-4 text-center font-mono text-danger-400">
+                      Payments not supported
                     </div>
-                  </div>
+                  )}
                 </div>
                 <Button
                   variant="brand"
                   className="mt-4 w-full"
-                  onClick={() => {}}
+                  onClick={() => {
+                    product!.getOffer()!.order();
+                  }}
+                  disabled={!supported}
                 >
-                  Proceed
+                  {supported ? "Proceed" : "Unavailable"}
                 </Button>
                 <button
                   type="button"

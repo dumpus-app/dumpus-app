@@ -6,14 +6,20 @@ import Button from "~/components/Button";
 import { configAtom } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 
+const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
+
 export default function LoadMore({ loadMore }: { loadMore: () => void }) {
   const { premium } = useAtomValue(configAtom);
   const setOpen = useSetAtom(showInAppPurchasesDialogAtom);
 
   return (
     <>
-      {/* TODO: implement on desktop */}
-      <div className={clsx("relative", premium ? "hidden" : "block sm:hidden")}>
+      <div
+        className={clsx(
+          "relative",
+          isMobile ? (premium ? "hidden" : "block") : "hidden"
+        )}
+      >
         <div className="absolute inset-0 top-auto h-16 bg-gradient-to-t from-gray-950 to-gray-950/0"></div>
       </div>
       <div className="mt-8 flex justify-center">
@@ -22,7 +28,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
           onClick={() => loadMore()}
           className={clsx(
             "text-brand-300 hover:underline",
-            premium ? "" : "hidden sm:block"
+            isMobile ? (premium ? "block" : "hidden") : "block"
           )}
         >
           Load more
@@ -30,7 +36,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
         <Button
           variant="premium"
           onClick={() => setOpen(true)}
-          className={clsx(premium ? "hidden" : "block sm:hidden")}
+          className={clsx(isMobile ? (premium ? "hidden" : "block") : "hidden")}
         >
           Unlock to view more!
         </Button>

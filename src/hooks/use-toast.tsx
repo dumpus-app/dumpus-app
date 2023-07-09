@@ -29,11 +29,13 @@ export default function useToast() {
     icon: Icon,
     automaticallyDismiss = true,
     variant,
+    id,
   }: {
     title: string;
     description: string;
     icon: Icon;
     automaticallyDismiss?: boolean;
+    id?: string;
   } & ToastVariants) {
     toast(
       ({ visible, id }) => (
@@ -82,7 +84,7 @@ export default function useToast() {
           </div>
         </Transition>
       ),
-      { duration: automaticallyDismiss ? 4000 : Infinity, style: {} }
+      { duration: automaticallyDismiss ? 4000 : Infinity, style: {}, id }
     );
   }
 
