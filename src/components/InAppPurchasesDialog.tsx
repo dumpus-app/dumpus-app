@@ -29,7 +29,7 @@ export default function InAppPurchasesDialog() {
   const toast = useToast();
 
   useMount(() => {
-    emitter.on("purchases:initialized", () => {
+    const initializeDialog = () => {
       setSupported(true);
       setProduct(purchases.getProduct("supporter_test"));
       emitter.on("purchases:transaction:approved", ({ key, product }) => {
@@ -46,7 +46,15 @@ export default function InAppPurchasesDialog() {
           setOpen(false);
         }
       });
-    });
+    }
+    // the plugin can be initialized BEFORE this component is mounted
+    if (purchases.initialized) {
+      initializeDialog();
+    } else {
+      emitter.on("purchases:initialized", () => {
+        initializeDialog();
+      });
+    }
   });
 
   return (
