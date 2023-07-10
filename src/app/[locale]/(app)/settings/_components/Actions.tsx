@@ -2,6 +2,7 @@
 
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import Link from "~/components/Link";
 import Section from "~/components/Section";
@@ -73,6 +74,19 @@ export default function Actions() {
             {loading ? "Deleting..." : "Delete current package"}
           </button>
         </Button>
+        {process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile" && (
+          <Button
+            variant="premium"
+            onClick={async () => {
+              setLoading(true);
+              await purchases.restorePurchases();
+              setLoading(false);
+            }}
+            disabled={loading}
+          >
+            {loading ? "Restoring..." : "Restore purchases"}
+          </Button>
+        )}
       </div>
     </Section>
   );
