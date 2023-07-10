@@ -1,11 +1,12 @@
 "use client";
 
-import { useAtomValue } from "jotai";
-import { selectedPackageAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import useUserDetails from "../use-user-details";
 
 export default function useUserData() {
-  const selectedPackage = useAtomValue(selectedPackageAtom);
+  const selectedPackage = useConfigStore(
+    (state) => state.computed.selectedPackage
+  );
 
   const data = useUserDetails({
     userID: selectedPackage?.package_owner_id || "",

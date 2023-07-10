@@ -1,16 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
-import { avatarURLFallback } from "~/utils/discord";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
-import { timeRangeAtom } from "~/stores/db";
-import NoDataAvailable from "~/components/NoDataAvailable";
-import { formatNumber } from "~/utils/format";
 import useUserDetails from "~/hooks/use-user-details";
+import { useConfigStore } from "~/stores/config";
+import { avatarURLFallback } from "~/utils/discord";
+import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
 
 function DMCard({
@@ -48,7 +47,7 @@ function DMCard({
 export default function TopDMsList() {
   const { getData, count } = useTopDMsData();
 
-  const timeRange = useAtomValue(timeRangeAtom);
+  const timeRange = useConfigStore((state) => state.timeRange);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-dms", timeRange],

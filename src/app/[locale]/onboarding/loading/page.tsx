@@ -5,7 +5,6 @@ import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import i18next from "i18next";
-import { useAtomValue } from "jotai";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Button from "~/components/Button";
@@ -14,7 +13,7 @@ import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
-import { nextDbIdAtom } from "~/stores/db";
+import { useDatabaseStore } from "~/stores/db";
 import { PackageAPIProcessResponse } from "~/types/package-api";
 import QueueDisplay from "./_components/QueueDisplay";
 
@@ -60,7 +59,7 @@ export default function Page() {
     refetchInterval: 1000, // 1s
   });
 
-  const nextDbId = useAtomValue(nextDbIdAtom);
+  const nextDbID = useDatabaseStore((state) => state.computed.nextID);
 
   useEffect(() => {
     if (
@@ -81,7 +80,7 @@ export default function Page() {
           return;
         }
         init({
-          id: nextDbId,
+          id: nextDbID,
           initData: {
             initialData: data,
             packageLink,
@@ -97,7 +96,7 @@ export default function Page() {
     api,
     backendURL,
     init,
-    nextDbId,
+    nextDbID,
     packageLink,
     processData,
     router,
@@ -111,7 +110,9 @@ export default function Page() {
         <>
           {statusQuery.data.processingStep === "LOCKED" ? (
             <QueueDisplay
-              position={statusQuery.data.processingQueuePosition.standardQueueUser}
+              position={
+                statusQuery.data.processingQueuePosition.standardQueueUser
+              }
             />
           ) : (
             (function () {

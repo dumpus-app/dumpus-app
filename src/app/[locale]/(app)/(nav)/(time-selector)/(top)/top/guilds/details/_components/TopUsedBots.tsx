@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
 import Image from "next/image";
 import Section from "~/components/Section";
 import StatCard from "~/components/data/StatCard";
 import usePackageAPI from "~/hooks/use-package-api";
-import { selectedPackageAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import { Activity, DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
 
@@ -15,7 +14,9 @@ type Bot = Pick<
   Required<Pick<Activity, "associated_user_id">> & { total_occurences: number };
 
 function BotCard({ bot }: { bot: Bot }) {
-  const selectedPackage = useAtomValue(selectedPackageAtom);
+  const selectedPackage = useConfigStore(
+    (state) => state.computed.selectedPackage
+  );
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
 
   const { data } = useQuery({
@@ -33,8 +34,8 @@ function BotCard({ bot }: { bot: Bot }) {
   const displayName = data?.display_name || bot.display_name || username;
   const avatarURL = data?.avatar_url || bot.user_avatar_url;
 
-  return (
-    username ? <StatCard
+  return username ? (
+    <StatCard
       value={
         <div className="flex items-center">
           <div className="relative mr-1 aspect-square w-6 sm:w-8">
@@ -55,8 +56,8 @@ function BotCard({ bot }: { bot: Bot }) {
           {bot.total_occurences} commands
         </div>
       }
-    /> : null
-  );
+    />
+  ) : null;
 }
 
 export default function TopUsedBots({ bots }: { bots: Bot[] }) {

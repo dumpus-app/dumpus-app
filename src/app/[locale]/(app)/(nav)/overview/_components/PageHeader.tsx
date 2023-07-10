@@ -2,11 +2,10 @@
 
 import Header from "~/components/layout/Header";
 import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
-import { useAtomValue } from "jotai";
-import { configAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 
 export default function PageHeader() {
-  const { premium } = useAtomValue(configAtom);
+  const premium = useConfigStore((state) => state.premium);
 
   return (
     <Header

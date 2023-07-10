@@ -2,11 +2,10 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
-import { timeRangeAtom } from "~/stores/db";
+import { useConfigStore } from "~/stores/config";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
@@ -14,7 +13,7 @@ import LoadMore from "../../_components/LoadMore";
 
 export default function TopChannelsList() {
   const { getData, count } = useTopChannelsData();
-  const timeRange = useAtomValue(timeRangeAtom);
+  const timeRange = useConfigStore((state) => state.timeRange);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-channels", timeRange],

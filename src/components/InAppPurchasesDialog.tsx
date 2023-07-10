@@ -8,7 +8,7 @@ import { useMount } from "react-use";
 import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
-import { configAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 import { emitter } from "~/utils/emitter";
 import { formatMoney } from "~/utils/format";
@@ -25,7 +25,7 @@ export default function InAppPurchasesDialog() {
   const [supported, setSupported] = useState(false);
   const [product, setProduct] =
     useState<ReturnType<typeof purchases.getProduct>>();
-  const [config, setConfig] = useAtom(configAtom);
+  const setPremium = useConfigStore((state) => state.setPremium);
   const toast = useToast();
 
   useMount(() => {
@@ -34,9 +34,7 @@ export default function InAppPurchasesDialog() {
       setProduct(purchases.getProduct("supporter_test"));
       emitter.on("purchases:transaction:approved", ({ key, product }) => {
         if (key === "supporter_test") {
-          const newConfig = structuredClone(config);
-          newConfig.premium = true;
-          setConfig(newConfig);
+          setPremium(true);
           toast({
             title: "You're an Early Supporter",
             description: "Thanks for supporting us!",
@@ -46,7 +44,7 @@ export default function InAppPurchasesDialog() {
           setOpen(false);
         }
       });
-    }
+    };
     // the plugin can be initialized BEFORE this component is mounted
     if (purchases.initialized) {
       initializeDialog();
