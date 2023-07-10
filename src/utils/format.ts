@@ -70,7 +70,7 @@ export function formatDate(
   }).format(typeof date === "string" ? new Date(date) : date);
 }
 
-export function formatDuration(n?: number | undefined, short?: boolean) {
+export function formatDuration(n?: number | undefined | null, short?: boolean) {
   if (!n) return fallback;
 
   if (n < 1000) {
