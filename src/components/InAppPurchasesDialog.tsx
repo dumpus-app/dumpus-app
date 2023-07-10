@@ -24,14 +24,17 @@ export default function InAppPurchasesDialog() {
   const [open, setOpen] = useAtom(showInAppPurchasesDialogAtom);
   const [supported, setSupported] = useState(false);
   const [product, setProduct] =
-    useState<ReturnType<typeof purchases.getProduct>>();
+    useState<Awaited<ReturnType<typeof purchases.getProduct>>>();
   const setPremium = useConfigStore((state) => state.setPremium);
   const toast = useToast();
+  const [loading, setLoading] = useState(false);
 
-  useMount(() => {
-    const initializeDialog = () => {
+  useMount(async () => {
+    const initializeDialog = async () => {
       setSupported(true);
-      setProduct(purchases.getProduct("supporter_test"));
+      const product = await purchases.getProduct("supporter_test");
+      setProduct(product);
+      console.log({ product });
       emitter.on("purchases:transaction:approved", ({ key, product }) => {
         if (key === "supporter_test") {
           setPremium(true);
@@ -47,10 +50,10 @@ export default function InAppPurchasesDialog() {
     };
     // the plugin can be initialized BEFORE this component is mounted
     if (purchases.initialized) {
-      initializeDialog();
+      await initializeDialog();
     } else {
-      emitter.on("purchases:initialized", () => {
-        initializeDialog();
+      emitter.on("purchases:initialized", async () => {
+        await initializeDialog();
       });
     }
   });
@@ -144,12 +147,18 @@ export default function InAppPurchasesDialog() {
                 <Button
                   variant="brand"
                   className="mt-4 w-full"
-                  onClick={() => {
-                    product!.getOffer()!.order();
+                  onClick={async () => {
+                    setLoading(true);
+                    await product!.getOffer()!.order();
+                    setLoading(false);
                   }}
-                  disabled={!supported}
+                  disabled={!supported || !product || loading}
                 >
-                  {supported ? "Proceed" : "Unavailable"}
+                  {loading
+                    ? "Loading..."
+                    : supported && product
+                    ? "Proceed"
+                    : "Unavailable"}
                 </Button>
                 <button
                   type="button"

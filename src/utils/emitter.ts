@@ -6,6 +6,6 @@ export const emitter = mitt<{
   "purchases:initialized": boolean;
   "purchases:transaction:approved": {
     key: ProductKey;
-    product: NonNullable<ReturnType<typeof purchases.getProduct>>;
+    product: Awaited<NonNullable<ReturnType<typeof purchases.getProduct>>>;
   };
 }>();

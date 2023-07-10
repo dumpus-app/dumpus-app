@@ -5,14 +5,14 @@ import { useMount, useUnmount } from "react-use";
 import { useRouter } from "next/navigation";
 import { initCapacitor, purchases } from "~/capacitor";
 import { createLogger } from "~/utils/logger";
+import { useConfigStore } from "~/stores/config";
 
 const logger = createLogger({ tag: "Capacitor init" });
 
 export default function useCapacitor() {
-  const [closeCapacitor, setCloseCapacitor] = useState<() => void>();
   const router = useRouter();
-
-  function purchasesCheck() {}
+  const [closeCapacitor, setCloseCapacitor] = useState<() => void>();
+  const setPremium = useConfigStore((state) => state.setPremium);
 
   useMount(async () => {
     const closeCapacitor = await initCapacitor({ navigate: router.replace });
@@ -20,8 +20,8 @@ export default function useCapacitor() {
     logger.info("Capacitor initialized");
     const product = await purchases.getProduct("supporter_test");
     if (product) {
-      console.log(product);
-      console.log(product.owned);
+      // TODO: check why always false
+      // setPremium(product.owned);
     }
   });
 
