@@ -1,7 +1,8 @@
 "use client";
 
-import { XCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
+import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import Link from "~/components/Link";
 import Section from "~/components/Section";
@@ -14,13 +15,18 @@ import {
 } from "~/utils/browser";
 
 export default function Actions() {
-  const [deletePackage, selectedPackage] = useConfigStore((state) => [
-    state.deletePackage,
-    state.computed.selectedPackage,
-  ]);
+  const [deletePackage, selectedPackage, premium, setPremium] = useConfigStore(
+    (state) => [
+      state.deletePackage,
+      state.computed.selectedPackage,
+      state.premium,
+      state.setPremium,
+    ]
+  );
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
 
   const [loading, setLoading] = useState(false);
+  const [confirmed, setConfirmed] = useState(false);
 
   async function handler() {
     setLoading(true);
@@ -73,6 +79,34 @@ export default function Actions() {
             {loading ? "Deleting..." : "Delete current package"}
           </button>
         </Button>
+        {premium && (
+          <Button
+            variant="premium"
+            onClick={async () => {
+              if (!confirmed) {
+                setConfirmed(true);
+                return;
+              }
+              setLoading(true);
+              await purchases.restorePurchases();
+              setPremium(false);
+              toast({
+                variant: "brand",
+                title: "Purchases restored",
+                description: "Give us some feedback on GitHub!",
+                icon: CheckCircleIcon,
+              });
+              setLoading(false);
+            }}
+            disabled={loading}
+          >
+            {loading
+              ? "Restoring..."
+              : confirmed
+              ? "Press to confirm :("
+              : "Restore purchases"}
+          </Button>
+        )}
       </div>
     </Section>
   );

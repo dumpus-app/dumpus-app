@@ -54,6 +54,10 @@ class PurchasesModule {
   public getProduct(key: ProductKey) {
     return cdv?.store.get(key);
   }
+
+  public async restorePurchases() {
+    await cdv?.store.restorePurchases();
+  }
 }
 
 export const purchasesSingleton = new PurchasesModule();
