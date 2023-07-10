@@ -164,12 +164,21 @@ export default function useUsageStatsData() {
 
   function countEvent(eventName: string) {
     const { data, hasError } = sql<{ event_count: number }>`
-    SELECT SUM(occurence_count) as event_count
-    FROM activity
-    WHERE event_name = '${eventName}'
-    AND day BETWEEN '${start}' AND '${end}';
-  `;
+      SELECT SUM(occurence_count) as event_count
+      FROM activity
+      WHERE event_name = '${eventName}'
+      AND day BETWEEN '${start}' AND '${end}';
+    `;
     return hasError ? null : data[0].event_count;
+  }
+
+  function getTimeSpentInVoiceChannels () {
+    const { data, hasError } = sql<{ time_spent: number }>`
+      SELECT SUM(duration_mins) as time_spent
+      FROM voice_sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}';
+    `;
+    return hasError ? null : (data[0].time_spent || 0) * 60 * 1000;
   }
 
   return {
@@ -185,16 +194,17 @@ export default function useUsageStatsData() {
     totalSessionDuration: () => getTotalSessionDuration(),
     receivedCalls: () => getReceivedCalls(),
     usePerOs: () => getUsePerOS(),
-    notificationClicked: () => countEvent("notification_clicked"),
-    emailReceived: () => countEvent("email_opened"),
-    loginSuccessful: () => countEvent("login_successful"),
-    userAvatarUpdated: () => countEvent("user_avatar_updated"),
-    appCrashed: () => countEvent("app_crashed"),
-    oauth2Authorized: () => countEvent("oauth2_authorize_accepted"),
-    voiceMessageRecorded: () => countEvent("voice_message_recorded"),
-    messageReported: () => countEvent("message_reported"),
-    messageEdited: () => countEvent("message_edited"),
-    nitroAds: () => countEvent("premium_upsell_viewed"),
-    captchaServed: () => countEvent("captcha_served"),
+    notificationClicked: () => countEvent('notification_clicked'),
+    emailReceived: () => countEvent('email_opened'),
+    loginSuccessful: () => countEvent('login_successful'),
+    userAvatarUpdated: () => countEvent('user_avatar_updated'),
+    appCrashed: () => countEvent('app_crashed'),
+    oauth2Authorized: () => countEvent('oauth2_authorize_accepted'),
+    voiceMessageRecorded: () => countEvent('voice_message_recorded'),
+    messageReported: () => countEvent('message_reported'),
+    messageEdited: () => countEvent('message_edited'),
+    nitroAds: () => countEvent('premium_upsell_viewed'),
+    captchaServed: () => countEvent('captcha_served'),
+    timeSpentVoice: () => getTimeSpentInVoiceChannels(),
   };
 }
