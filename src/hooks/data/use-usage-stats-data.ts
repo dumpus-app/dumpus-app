@@ -157,12 +157,21 @@ export default function useUsageStatsData() {
 
   function countEvent(eventName: string) {
     const { data, hasError } = sql<{ event_count: number }>`
-    SELECT SUM(occurence_count) as event_count
-    FROM activity
-    WHERE event_name = '${eventName}'
-    AND day BETWEEN '${start}' AND '${end}';
-  `;
-  return hasError ? null : data[0].event_count;
+      SELECT SUM(occurence_count) as event_count
+      FROM activity
+      WHERE event_name = '${eventName}'
+      AND day BETWEEN '${start}' AND '${end}';
+    `;
+    return hasError ? null : data[0].event_count;
+  }
+
+  function getTimeSpentInVoiceChannels () {
+    const { data, hasError } = sql<{ time_spent: number }>`
+      SELECT SUM(duration_mins) as time_spent
+      FROM voice_sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}';
+    `;
+    return hasError ? null : (data[0].time_spent || 0) * 60 * 1000;
   }
 
   return {
@@ -189,5 +198,6 @@ export default function useUsageStatsData() {
     messageEdited: () => countEvent('message_edited'),
     nitroAds: () => countEvent('premium_upsell_viewed'),
     captchaServed: () => countEvent('captcha_served'),
+    timeSpentVoice: () => getTimeSpentInVoiceChannels(),
   };
 }

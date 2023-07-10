@@ -21,7 +21,7 @@ import type { Icon } from "~/types";
 import { formatHour, formatMoney, formatNumber, formatDuration } from "~/utils/format";
 
 export default function Stats() {
-  const { usePerOs, notificationClicked, captchaServed, emailReceived, loginSuccessful, userAvatarUpdated, appCrashed, oauth2Authorized, voiceMessageRecorded, messageReported, messageEdited, nitroAds } =
+  const { usePerOs, notificationClicked, captchaServed, emailReceived, loginSuccessful, userAvatarUpdated, appCrashed, oauth2Authorized, voiceMessageRecorded, messageReported, messageEdited, nitroAds, timeSpentVoice } =
     useUsageStatsData();
   const { t } = useTranslation();
 
@@ -40,6 +40,7 @@ export default function Stats() {
         <StatCard value={formatNumber(messageReported(), { notation: 'standard' })} label="messages reported" />
         <StatCard value={formatNumber(messageEdited(), { notation: 'standard' })} label="messages edited" />
         <StatCard value={formatNumber(nitroAds(), { notation: 'standard' })} label="seen nitro ads" />
+        <StatCard value={formatDuration(timeSpentVoice())} label="spent in voice channels" />
     </div>
   );
 }
