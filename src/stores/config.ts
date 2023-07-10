@@ -240,7 +240,5 @@ export const useConfigStore = create(
 
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   // @ts-ignore
-  window.resetPremium = () => {
-    useConfigStore.getState().setPremium(false);
-  };
+  window.setPremium = useConfigStore.getState().setPremium;
 }

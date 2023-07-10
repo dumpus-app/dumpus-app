@@ -1,7 +1,8 @@
 "use client";
 
+import { Cog6ToothIcon } from "@heroicons/react/24/solid";
+import PremiumBadge from "~/components/PremiumBadge";
 import Header from "~/components/layout/Header";
-import { Cog6ToothIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import { useConfigStore } from "~/stores/config";
 
 export default function PageHeader() {
@@ -12,16 +13,7 @@ export default function PageHeader() {
       title="Overview"
       revealTitleOnScroll
       revealBorderOnScroll
-      leftSlot={
-        <>
-          {premium && (
-            <div className="ml-2 inline-flex items-center rounded-full bg-yellow-300 px-2 py-0.5 text-sm font-medium text-gold-800">
-              <SparklesIcon className="-ml-0.5 mr-1 h-3 w-3" />
-              <span>Premium</span>
-            </div>
-          )}
-        </>
-      }
+      leftSlot={<>{premium && <PremiumBadge className="ml-2" />}</>}
       rightSlot={
         <Header.Icon
           href={{
