@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release Android App
 
 on:
   release:
@@ -6,7 +6,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  release:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
 
     steps:
