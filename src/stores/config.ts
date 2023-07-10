@@ -241,4 +241,8 @@ export const useConfigStore = create(
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   // @ts-ignore
   window.setPremium = useConfigStore.getState().setPremium;
+  // @ts-ignore
+  window.cleanShareImage = (id: string) => {
+    useConfigStore.getState().setPackage(id, { shareImageData: undefined });
+  };
 }
