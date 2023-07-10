@@ -39,19 +39,16 @@ class PurchasesModule {
   }
 
   private async setupListeners() {
-    cdv.store
-      .when()
-      .approved((transaction) => {
-        // Can only be one product bought for now
-        const productID = transaction.products[0].id as ProductKey;
+    cdv.store.when().approved((transaction) => {
+      // Can only be one product bought for now
+      const productID = transaction.products[0].id as ProductKey;
 
-        emitter.emit("purchases:transaction:approved", {
-          key: productID,
-          product: this.getProduct(productID)!,
-        });
-        return transaction.verify();
-      })
-      .verified((receipt) => receipt.finish());
+      emitter.emit("purchases:transaction:approved", {
+        key: productID,
+        product: this.getProduct(productID)!,
+      });
+      transaction.finish();
+    });
   }
 
   public getProduct(key: ProductKey) {
