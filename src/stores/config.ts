@@ -161,7 +161,12 @@ export const useConfigStore = create(
       },
       reset: () => {
         set((state) => {
-          state = { ...state, ...get().computed.defaultState };
+          const { db, goToOnboardingAccess, premium, timeRange } =
+            get().computed.defaultState;
+          state.db = db;
+          state.goToOnboardingAccess = goToOnboardingAccess;
+          state.premium = premium;
+          state.timeRange = timeRange;
         });
       },
       setPremium: (v) =>
