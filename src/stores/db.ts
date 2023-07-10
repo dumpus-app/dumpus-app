@@ -1,81 +1,36 @@
-import { atom } from "jotai";
 import { type Database } from "sql.js";
-import { configAtom } from ".";
-import { atomWithLocalStorage } from "~/utils/jotai";
+import { create } from "zustand";
+import { useConfigStore } from "./config";
 
-export const dbIdAtom = atom((get) => {
-  const config = get(configAtom);
-  return config.db.selectedId;
-});
+export type DatabaseStoreInterface = {
+  _initialized: boolean;
+  _selectedID: null | string;
+  db: null | Database;
+  computed: {
+    nextID: Readonly<string>;
+  };
+  setDB: (v: null | Database) => void;
+  init: () => void;
+};
 
-export const nextDbIdAtom = atom((get) => {
-  const id = get(dbIdAtom);
+export const useDatabaseStore = create<DatabaseStoreInterface>((set, get) => ({
+  _initialized: false,
+  _selectedID: null,
+  db: null,
+  setDB: (db) => set({ db }),
+  computed: {
+    get nextID() {
+      const id = get()._selectedID;
 
-  return id ? `${parseInt(id) + 1}` : "0";
-});
-
-export const dbAtom = atom<null | Database>(null);
-
-export const dbExtremityDatesAtom = atom((get) => {
-  const db = get(dbAtom);
-
-  const results = db?.exec(
-    "SELECT MIN(day) AS start, MAX(day) AS end FROM activity"
-  );
-
-  return results?.[0].values[0] as unknown as [string, string] | undefined;
-});
-
-export const timeRanges = ["4 weeks", "6 months", "Year", "Lifetime"] as const;
-
-export type TimeRange = (typeof timeRanges)[number];
-
-export const timeRangeAtom = atom<TimeRange, [TimeRange], void>(
-  (get) => {
-    const config = get(configAtom);
-    return config.timeRange;
+      return id ? `${parseInt(id) + 1}` : "0";
+    },
   },
-  (get, set, newTimeRange) => {
-    const config = get(configAtom);
+  init: () => {
+    if (get()._initialized) return;
+    set({ _initialized: true });
 
-    const newConfig = structuredClone(config);
-    newConfig.timeRange = newTimeRange;
-
-    set(configAtom, newConfig);
-  }
-);
-
-export const timeRangeDates = atom((get) => {
-  const timeRange = get(timeRangeAtom);
-  const extremityDates = get(dbExtremityDatesAtom);
-
-  const firstDateLimit = new Date(extremityDates?.[0] || "2015-05-13");
-  const endDate = extremityDates ? new Date(extremityDates[1]) : new Date();
-
-  const firstDate = new Date();
-
-  switch (timeRange) {
-    case "4 weeks":
-      firstDate.setDate(firstDate.getDate() - 4 * 7);
-      break;
-    case "6 months":
-      firstDate.setMonth(firstDate.getMonth() - 6);
-      break;
-    case "Year":
-      firstDate.setFullYear(firstDate.getFullYear() - 1);
-      break;
-    case "Lifetime":
-      firstDate.setTime(firstDateLimit.getTime());
-      break;
-  }
-
-  function formatDate(date: Date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    return `${year}-${month}-${day}`;
-  }
-
-  return [formatDate(firstDate), formatDate(endDate)];
-});
+    useConfigStore.subscribe((state) => {
+      set({ _selectedID: state.db.selectedID });
+    });
+  },
+}));

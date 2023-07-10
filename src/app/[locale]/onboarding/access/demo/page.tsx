@@ -1,13 +1,12 @@
 "use client";
 
 import i18next from "i18next";
-import { useAtomValue } from "jotai";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
-import { nextDbIdAtom } from "~/stores/db";
+import { useDatabaseStore } from "~/stores/db";
 
 const packageID = "demo";
 const UPNKey = packageID;
@@ -16,7 +15,7 @@ const packageLink = packageID;
 export default function Page() {
   const router = useRouter();
 
-  const nextDbId = useAtomValue(nextDbIdAtom);
+  const nextDbID = useDatabaseStore((state) => state.computed.nextID);
   const { init } = useSQLInit();
   const api = usePackageAPI({});
 
@@ -32,7 +31,7 @@ export default function Page() {
         return;
       }
       init({
-        id: nextDbId,
+        id: nextDbID,
         initData: {
           initialData: data,
           packageLink,
@@ -43,7 +42,7 @@ export default function Page() {
         router.replace(`/${i18next.language}/overview`);
       });
     });
-  }, [api, init, nextDbId, router]);
+  }, [api, init, nextDbID, router]);
 
   return (
     <div className="flex flex-col items-center space-y-4">

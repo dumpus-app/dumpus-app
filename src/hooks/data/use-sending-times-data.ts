@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import { useDataSources } from "./_shared";
 
 export default function useSendingTimesData() {

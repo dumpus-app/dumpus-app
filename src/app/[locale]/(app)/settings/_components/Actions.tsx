@@ -1,27 +1,23 @@
 "use client";
 
 import { XCircleIcon } from "@heroicons/react/24/solid";
-import { useAtom, useAtomValue } from "jotai";
 import { useState } from "react";
 import Button from "~/components/Button";
 import Link from "~/components/Link";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
-import { getStorageKey } from "~/hooks/use-sql-init";
 import useToast from "~/hooks/use-toast";
-import {
-  CONFIG_ATOM_INITIAL_VALUE,
-  configAtom,
-  selectedPackageAtom,
-} from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import {
   LOCALSTORAGE_MAX_CAPACITY,
   getLocalStorageSize,
 } from "~/utils/browser";
 
 export default function Actions() {
-  const selectedPackage = useAtomValue(selectedPackageAtom);
-  const [config, setConfig] = useAtom(configAtom);
+  const [deletePackage, selectedPackage] = useConfigStore((state) => [
+    state.deletePackage,
+    state.computed.selectedPackage,
+  ]);
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
 
   const [loading, setLoading] = useState(false);
@@ -31,7 +27,6 @@ export default function Actions() {
 
     const { package_id, UPNKey, id } = selectedPackage;
 
-    localStorage.removeItem(getStorageKey(id));
     if (package_id !== "demo") {
       await api.remove({
         packageID: package_id,
@@ -39,18 +34,7 @@ export default function Actions() {
       });
     }
 
-    const newConfig = structuredClone(config);
-    const packageIndex = newConfig.db.packages.findIndex((p) => p.id === id)!;
-    newConfig.db.packages.splice(packageIndex, 1);
-
-    if (newConfig.db.packages.length === 0) {
-      setConfig(CONFIG_ATOM_INITIAL_VALUE);
-      window.location.href = "/";
-    } else {
-      newConfig.db.selectedId = newConfig.db.packages[0].id;
-      setConfig(newConfig);
-      window.location.reload();
-    }
+    deletePackage(id);
   }
 
   const toast = useToast();

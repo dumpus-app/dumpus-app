@@ -1,31 +1,25 @@
 "use client";
 
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { useState } from "react";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import packageAPI from "~/hooks/use-package-api";
 import { getStorageKey } from "~/hooks/use-sql-init";
-import {
-  CONFIG_ATOM_INITIAL_VALUE,
-  USERS_CACHE_ATOM_INITIAL_VALUE,
-  configAtom,
-  usersCacheAtom,
-} from "~/stores";
+import { USERS_CACHE_ATOM_INITIAL_VALUE, usersCacheAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 
 export default function DangerZone() {
-  const [config, setConfig] = useAtom(configAtom);
+  const [reset, packages] = useConfigStore((state) => [
+    state.reset,
+    state.db.packages,
+  ]);
   const setUsersCache = useSetAtom(usersCacheAtom);
 
   const [loading, setLoading] = useState(false);
 
   async function handler() {
     setLoading(true);
-
-    let packages: typeof config.db.packages = [];
-    try {
-      packages = config.db.packages;
-    } catch (err) {}
 
     for (const { backendURL, package_id, UPNKey, id } of packages) {
       localStorage.removeItem(getStorageKey(id));
@@ -36,7 +30,8 @@ export default function DangerZone() {
         UPNKey,
       });
     }
-    setConfig(CONFIG_ATOM_INITIAL_VALUE);
+
+    reset();
     setUsersCache(USERS_CACHE_ATOM_INITIAL_VALUE);
     window.location.href = "/";
   }

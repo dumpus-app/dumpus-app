@@ -5,17 +5,18 @@ import {
   ClipboardDocumentIcon,
   XCircleIcon,
 } from "@heroicons/react/24/solid";
-import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { useCopyToClipboard } from "react-use";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import useToast from "~/hooks/use-toast";
-import { selectedPackageAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import { formatDate } from "~/utils/format";
 
 export default function PackageDetails() {
-  const selectedPackage = useAtomValue(selectedPackageAtom);
+  const selectedPackage = useConfigStore(
+    (state) => state.computed.selectedPackage
+  );
   const [state, copyToClipboard] = useCopyToClipboard();
   const toast = useToast();
 

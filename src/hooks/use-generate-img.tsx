@@ -1,16 +1,15 @@
 "use client";
 
-import satori, { Font, init as initSatori } from "satori/wasm";
-import initYoga from "yoga-wasm-web";
 import * as resvg from "@resvg/resvg-wasm";
 import { useState } from "react";
+import satori, { Font, init as initSatori } from "satori/wasm";
+import initYoga from "yoga-wasm-web";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
-import { colors } from "../../tailwind.config";
-import { useAtom, useAtomValue } from "jotai";
-import { configAtom, selectedPackageAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import { Uint8ArrayToString, stringToUint8Array } from "~/utils/convert";
+import { colors } from "../../tailwind.config";
 
 async function getFontData(weight: number) {
   return await fetch(
@@ -20,8 +19,10 @@ async function getFontData(weight: number) {
 
 export default function useGenerateImg() {
   const [initialized, setInitialized] = useState(false);
-  const selectedPackage = useAtomValue(selectedPackageAtom);
-  const [config, setConfig] = useAtom(configAtom);
+  const [selectedPackage, setPackage] = useConfigStore((state) => [
+    state.computed.selectedPackage,
+    state.setPackage,
+  ]);
 
   async function init() {
     if (initialized) return;
@@ -74,11 +75,9 @@ export default function useGenerateImg() {
       });
       pngBuffer = resvgJS.render().asPng();
 
-      const newConfig = structuredClone(config);
-      newConfig.db.packages.find(
-        ({ id }) => id === selectedPackage.id
-      )!.shareImageData = Uint8ArrayToString(pngBuffer);
-      setConfig(newConfig);
+      setPackage(selectedPackage.id, {
+        shareImageData: Uint8ArrayToString(pngBuffer),
+      });
     }
 
     const file = new File([pngBuffer], "image.png", { type: "image/png" });

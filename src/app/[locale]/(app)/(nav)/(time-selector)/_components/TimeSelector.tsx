@@ -1,11 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import { useAtom } from "jotai";
-import { timeRangeAtom, timeRanges } from "~/stores/db";
+import { timeRanges, useConfigStore } from "~/stores/config";
 
 export default function TimeSelector() {
-  const [timeRange, setTimeRange] = useAtom(timeRangeAtom);
+  const [timeRange, setTimeRange] = useConfigStore((state) => [
+    state.timeRange,
+    state.setTimeRange,
+  ]);
 
   return (
     <div className="border-t border-gray-800 bg-gray-900 sm:border-none sm:bg-transparent">
