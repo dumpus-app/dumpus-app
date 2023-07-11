@@ -6,6 +6,44 @@ import { isCapacitorSupported } from "./utils";
 
 export const purchases = purchasesSingleton;
 
+async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
+  function setStyle(content: string) {
+    const id = "capacitor-styles";
+
+    if (document.getElementById(id)) {
+      document.getElementById(id)!.textContent = `:root { ${content} }`;
+    } else {
+      const style = document.createElement("style");
+      style.id = id;
+      style.textContent = `:root { ${content} }`;
+      document.head.appendChild(style);
+    }
+  }
+
+  if (isAndroid) {
+    const { SafeArea } = await import("capacitor-plugin-safe-area");
+
+    function handleInsets(insets: SafeAreaInsets["insets"]) {
+      let styleContent = "";
+      for (const [key, value] of Object.entries(insets)) {
+        styleContent += `--safe-area-${key}: ${value}px;`;
+      }
+      setStyle(styleContent);
+    }
+
+    handleInsets((await SafeArea.getSafeAreaInsets()).insets);
+    await SafeArea.addListener("safeAreaChanged", ({ insets }) =>
+      handleInsets(insets)
+    );
+  } else if (isiOS) {
+    let styleContent = "";
+    for (const key of ["top", "right", "bottom", "left"]) {
+      styleContent += `--safe-area-${key}: env(safe-area-inset-${key});`;
+    }
+    setStyle(styleContent);
+  }
+}
+
 export async function initCapacitor({
   navigate,
 }: {
@@ -20,7 +58,6 @@ export async function initCapacitor({
   const { NavigationBar } = await import(
     "@hugotomazi/capacitor-navigation-bar"
   );
-  const { SafeArea } = await import("capacitor-plugin-safe-area");
 
   const isAndroid = Capacitor.getPlatform() === "android";
   const isiOS = Capacitor.getPlatform() === "ios";
@@ -32,32 +69,13 @@ export async function initCapacitor({
       App.exitApp();
     }
   });
-
-  await StatusBar.setOverlaysWebView({ overlay: true });
-  await StatusBar.setStyle({ style: Style.Dark });
-  await NavigationBar.setTransparency({ isTransparent: true });
-
-  const root = document.documentElement;
-
-  function handleInsets(insets: SafeAreaInsets["insets"]) {
-    for (const [key, value] of Object.entries(insets)) {
-      // TODO: find where the bug is
-      // On IOS, envValue should not be empty.
-      // Maybe add a timeout?
-      const envValue = getComputedStyle(root).getPropertyValue(
-        `--env-safe-area-${key}-inset`
-      );
-      root.style.setProperty(
-        `--safe-area-${key}`,
-        isAndroid ? `${value}px` : envValue
-      );
-    }
+  if (isAndroid) {
+    await StatusBar.setOverlaysWebView({ overlay: true });
+    await NavigationBar.setTransparency({ isTransparent: true });
   }
+  await StatusBar.setStyle({ style: Style.Dark });
 
-  handleInsets((await SafeArea.getSafeAreaInsets()).insets);
-  await SafeArea.addListener("safeAreaChanged", ({ insets }) =>
-    handleInsets(insets)
-  );
+  await handleSafeArea(isAndroid, isiOS);
 
   App.addListener("appUrlOpen", ({ url: _url }) => {
     const url = new URL(_url);
