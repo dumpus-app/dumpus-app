@@ -6,18 +6,15 @@ PODS:
   - CapacitorCordova (5.0.3)
   - CapacitorNetwork (5.0.4):
     - Capacitor
-  - CapacitorStatusBar (5.0.5):
-    - Capacitor
-  - HugotomaziCapacitorNavigationBar (2.0.1):
-    - Capacitor
+  - CordovaPlugins (5.0.3):
+    - CapacitorCordova
 
 DEPENDENCIES:
   - "Capacitor (from `../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/.pnpm/@capacitor+app@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios`)"
   - "CapacitorNetwork (from `../../node_modules/.pnpm/@capacitor+network@5.0.4_@capacitor+core@5.0.3/node_modules/@capacitor/network`)"
-  - "CapacitorStatusBar (from `../../node_modules/.pnpm/@capacitor+status-bar@5.0.5_@capacitor+core@5.0.3/node_modules/@capacitor/status-bar`)"
-  - "HugotomaziCapacitorNavigationBar (from `../../node_modules/.pnpm/@hugotomazi+capacitor-navigation-bar@2.0.1_@capacitor+core@5.0.3/node_modules/@hugotomazi/capacitor-navigation-bar`)"
+  - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -28,19 +25,16 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.0.3/node_modules/@capacitor/ios"
   CapacitorNetwork:
     :path: "../../node_modules/.pnpm/@capacitor+network@5.0.4_@capacitor+core@5.0.3/node_modules/@capacitor/network"
-  CapacitorStatusBar:
-    :path: "../../node_modules/.pnpm/@capacitor+status-bar@5.0.5_@capacitor+core@5.0.3/node_modules/@capacitor/status-bar"
-  HugotomaziCapacitorNavigationBar:
-    :path: "../../node_modules/.pnpm/@hugotomazi+capacitor-navigation-bar@2.0.1_@capacitor+core@5.0.3/node_modules/@hugotomazi/capacitor-navigation-bar"
+  CordovaPlugins:
+    :path: "../capacitor-cordova-ios-plugins"
 
 SPEC CHECKSUMS:
   Capacitor: 304a960e431f9e6f78556554ca71c41c1b2b9680
   CapacitorApp: 7a5dec8b33573707164b293475d5c89ba684364a
   CapacitorCordova: def732a63679698df6fb392bbe6d269a0b61e937
   CapacitorNetwork: e2bd0bf1614aca34bb976f125a756a8a3df1c81a
-  CapacitorStatusBar: 540867ac3c63875b65bebd888f695de50a13a9a2
-  HugotomaziCapacitorNavigationBar: 9220af908152f38caa3963b8de23c36bf43d2468
+  CordovaPlugins: 976e2e0807dcbaa7eeb1a20d5d431facec33eff5
 
-PODFILE CHECKSUM: ff354fe71133a994898a530c95df7161b643d2aa
+PODFILE CHECKSUM: 4eaa6da1e51b9d57851e2f32c1dffac1f4083103
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.12.1

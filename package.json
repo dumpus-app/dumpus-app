@@ -17,6 +17,8 @@
     "lint": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=web \"pnpm script:list-locales && cross-env next lint\"",
     "android:dev": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",
     "android:dev:static": "cross-env-shell NODE_ENV=production \"echo 'Run `pnpm build:mobile first` && cap sync && cap run android\"",
+    "ios:dev": "cross-env-shell NODE_ENV=development \"cap sync ios && cap run ios\"",
+    "ios:dev:static": "cross-env-shell NODE_ENV=production \"cap sync ios && cap run ios\"",
     "script:list-locales": "node ./scripts/list-locales.cjs",
     "script:build-android": "cross-env-shell NODE_ENV=production \"cap sync\" && node ./scripts/build-android.cjs",
     "trapeze:run": "node ./trapeze.config.mjs"
