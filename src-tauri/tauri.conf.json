@@ -1,10 +1,10 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "pnpm build:desktop",
     "beforeDevCommand": "pnpm dev:desktop",
     "devPath": "http://localhost:3000",
-    "distDir": "../out"
+    "distDir": "../dist"
   },
   "package": {
     "productName": "dumpus-app",
@@ -29,7 +29,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "app.dumpus.app",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

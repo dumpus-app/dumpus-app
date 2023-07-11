@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import { useDataSources } from "./_shared";
 
 export default function useUsageStatsData() {
@@ -118,27 +117,33 @@ export default function useUsageStatsData() {
     const { data, hasError } = sql<{ average_session_duration: number }>`
       SELECT AVG(duration_mins) as average_session_duration
       FROM sessions
-      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}'
+      WHERE started_date BETWEEN '${new Date(start).getTime() / 1_000}' AND '${
+      new Date(end).getTime() / 1_000
+    }'
     `;
 
-    return hasError ? null : (data[0].average_session_duration || 0);
+    return hasError ? null : data[0].average_session_duration || 0;
   }
 
   function getTotalSessionDuration() {
     const { data, hasError } = sql<{ total_session_duration: number }>`
       SELECT SUM(duration_mins) as total_session_duration
       FROM sessions
-      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}'
+      WHERE started_date BETWEEN '${new Date(start).getTime() / 1_000}' AND '${
+      new Date(end).getTime() / 1_000
+    }'
     `;
 
-    return hasError ? null : (data[0].total_session_duration || 0);
+    return hasError ? null : data[0].total_session_duration || 0;
   }
 
   function getReceivedCalls() {
     const { data, hasError } = sql<{ received_calls: number }>`
       SELECT count(*) as received_calls
       FROM voice_sessions
-      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}';
+      WHERE started_date BETWEEN '${new Date(start).getTime() / 1_000}' AND '${
+      new Date(end).getTime() / 1_000
+    }';
     `;
 
     return hasError ? null : data[0].received_calls;
@@ -148,7 +153,9 @@ export default function useUsageStatsData() {
     const { data, hasError } = sql<{ os: string; count: number }>`
       SELECT SUM(duration_mins) / 60 as count, device_os as os
       FROM sessions
-      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}'
+      WHERE started_date BETWEEN '${new Date(start).getTime() / 1_000}' AND '${
+      new Date(end).getTime() / 1_000
+    }'
       GROUP BY device_os;
     `;
 
@@ -157,17 +164,26 @@ export default function useUsageStatsData() {
 
   function countEvent(eventName: string) {
     const { data, hasError } = sql<{ event_count: number }>`
-    SELECT SUM(occurence_count) as event_count
-    FROM activity
-    WHERE event_name = '${eventName}'
-    AND day BETWEEN '${start}' AND '${end}';
-  `;
-  return hasError ? null : data[0].event_count;
+      SELECT SUM(occurence_count) as event_count
+      FROM activity
+      WHERE event_name = '${eventName}'
+      AND day BETWEEN '${start}' AND '${end}';
+    `;
+    return hasError ? null : data[0].event_count;
+  }
+
+  function getTimeSpentInVoiceChannels () {
+    const { data, hasError } = sql<{ time_spent: number }>`
+      SELECT SUM(duration_mins) as time_spent
+      FROM voice_sessions
+      WHERE started_date BETWEEN '${(new Date(start).getTime() / 1_000)}' AND '${(new Date(end).getTime() / 1_000)}';
+    `;
+    return hasError ? null : (data[0].time_spent || 0) * 60 * 1000;
   }
 
   return {
     networkSize: () => getNetworkSize(),
-    joinedGuilds: () =>getJoinedGuilds(),
+    joinedGuilds: () => getJoinedGuilds(),
     topHour: () => getTopHour(),
     spentMoney: () => getSpentMoney(),
     messageCount: () => getMessageCount(),
@@ -189,5 +205,6 @@ export default function useUsageStatsData() {
     messageEdited: () => countEvent('message_edited'),
     nitroAds: () => countEvent('premium_upsell_viewed'),
     captchaServed: () => countEvent('captcha_served'),
+    timeSpentVoice: () => getTimeSpentInVoiceChannels(),
   };
 }

@@ -1,14 +1,15 @@
 "use client";
 
-import { useAtomValue } from "jotai";
-import { selectedPackageAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 
 export default function EnsureSelectedPackage({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const selectedPackage = useAtomValue(selectedPackageAtom);
+  const selectedPackage = useConfigStore(
+    (state) => state.computed.selectedPackage
+  );
 
   if (!selectedPackage) return null;
 

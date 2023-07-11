@@ -1,12 +1,13 @@
 "use client";
 
 import i18next from "i18next";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSQLInit from "~/hooks/use-sql-init";
-import { configAtom, usersCacheAtom } from "~/stores";
-import { dbAtom } from "~/stores/db";
+import { usersCacheAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
+import { useDatabaseStore } from "~/stores/db";
 import { createLogger } from "~/utils/logger";
 
 const logger = createLogger({ tag: "loading screen" });
@@ -23,9 +24,12 @@ export default function LoadingScreen({
   const pathname = usePathname() || "/";
   const router = useRouter();
 
-  const [config, setConfig] = useAtom(configAtom);
+  const [selectedID, goToOnboardingAccess] = useConfigStore((state) => [
+    state.db.selectedID,
+    state.goToOnboardingAccess,
+  ]);
   const [usersCache, setUsersCache] = useAtom(usersCacheAtom);
-  const db = useAtomValue(dbAtom);
+  const db = useDatabaseStore((state) => state.db);
   const { init } = useSQLInit();
 
   const redirectPath = `/${i18next.language}/onboarding`;
@@ -33,9 +37,8 @@ export default function LoadingScreen({
   useEffect(() => {
     if (!loading) return;
 
-    setConfig(config);
     setUsersCache(usersCache);
-    const hasSelectedPackage = !!config.db.selectedId;
+    const hasSelectedPackage = !!selectedID;
 
     if (["/", `/${i18next.language}/`].includes(pathname)) {
       logger.info("/ or /:locale");
@@ -45,7 +48,7 @@ export default function LoadingScreen({
 
     if (pathname.startsWith(`/${i18next.language}/onboarding/`)) {
       logger.info("onboarding");
-      if (!hasSelectedPackage && config.goToOnboardingAccess) {
+      if (!hasSelectedPackage && goToOnboardingAccess) {
         logger.info("go to access");
         router.replace(redirectPath + "/access");
       }
@@ -69,16 +72,16 @@ export default function LoadingScreen({
     }
 
     logger.info("init db");
-    init({ id: config.db.selectedId! });
+    init({ id: selectedID! });
   }, [
-    config,
     db,
+    goToOnboardingAccess,
     init,
     loading,
     pathname,
     redirectPath,
     router,
-    setConfig,
+    selectedID,
     setUsersCache,
     usersCache,
   ]);

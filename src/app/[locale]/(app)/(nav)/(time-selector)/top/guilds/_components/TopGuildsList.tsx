@@ -2,16 +2,15 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { useAtomValue } from "jotai";
+import Image from "next/image";
+import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
-import { timeRangeAtom } from "~/stores/db";
-import Image from "next/image";
-import { iconColor } from "~/utils/discord";
-import NoDataAvailable from "~/components/NoDataAvailable";
-import { formatNumber } from "~/utils/format";
+import { useConfigStore } from "~/stores/config";
 import { firstCharFromUnicode } from "~/utils";
+import { iconColor } from "~/utils/discord";
+import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
 
 function GuildCard({
@@ -63,7 +62,7 @@ function GuildCard({
 
 export default function TopGuildsList() {
   const { getData, count } = useTopGuildsData();
-  const timeRange = useAtomValue(timeRangeAtom);
+  const timeRange = useConfigStore((state) => state.timeRange);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-guilds", timeRange],

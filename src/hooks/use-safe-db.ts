@@ -1,10 +1,9 @@
 "use client";
 
-import { useAtomValue } from "jotai";
-import { dbAtom } from "~/stores/db";
+import { useDatabaseStore } from "~/stores/db";
 
 export default function useSafeDB() {
-  const db = useAtomValue(dbAtom);
+  const db = useDatabaseStore((state) => state.db);
 
   if (!db) {
     throw new Error("db hasn't been set yet.");

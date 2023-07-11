@@ -1,16 +1,20 @@
 "use client";
 
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
+import { purchasesSingleton } from "./purchases";
+import { isCapacitorSupported } from "./utils";
+
+export const purchases = purchasesSingleton;
 
 export async function initCapacitor({
   navigate,
 }: {
   navigate: (url: string) => void;
 }) {
-  if (process.env.NEXT_PUBLIC_DEPLOY_ENV !== "mobile") return;
-  if (typeof document === "undefined") return;
+  const supported = isCapacitorSupported();
+  if (!supported) return;
 
-  const { Capacitor } = await import("@capacitor/core")
+  const { Capacitor } = await import("@capacitor/core");
   const { App } = await import("@capacitor/app");
   const { StatusBar, Style } = await import("@capacitor/status-bar");
   const { NavigationBar } = await import(
@@ -18,8 +22,8 @@ export async function initCapacitor({
   );
   const { SafeArea } = await import("capacitor-plugin-safe-area");
 
-  const isAndroid = Capacitor.getPlatform() === "android"
-  const isiOS = Capacitor.getPlatform() === "ios"
+  const isAndroid = Capacitor.getPlatform() === "android";
+  const isiOS = Capacitor.getPlatform() === "ios";
 
   App.addListener("backButton", ({ canGoBack }) => {
     if (canGoBack) {
@@ -62,4 +66,10 @@ export async function initCapacitor({
       navigate(pathname);
     }
   });
+
+  await purchases.init();
+
+  return () => {
+    App.removeAllListeners();
+  };
 }

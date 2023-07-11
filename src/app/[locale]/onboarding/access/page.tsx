@@ -1,25 +1,18 @@
 "use client";
 
+import { useMount } from "react-use";
 import { useTranslation } from "~/i18n/client";
+import { useConfigStore } from "~/stores/config";
 import Methods from "./_components/Methods";
-import { useEffectOnce } from "react-use";
-import { useAtom } from "jotai";
-import { configAtom } from "~/stores";
-import { defu } from "defu";
 
 export default function Page() {
   const { t } = useTranslation();
-  const [config, setConfig] = useAtom(configAtom);
+  const setGoToOnboardingAccess = useConfigStore(
+    (state) => state.setGoToOnboardingAccess
+  );
 
-  useEffectOnce(() => {
-    setConfig(
-      defu(
-        {
-          goToOnboardingAccess: true,
-        },
-        config
-      )
-    );
+  useMount(() => {
+    setGoToOnboardingAccess(true);
   });
 
   return (

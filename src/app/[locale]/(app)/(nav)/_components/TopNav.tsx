@@ -10,6 +10,8 @@ import TimeSelector from "../(time-selector)/_components/TimeSelector";
 import TopSelector from "../(time-selector)/top/_components/TopSelector";
 import Header from "~/components/layout/Header";
 import { ChevronLeftIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+import PremiumBadge from "~/components/PremiumBadge";
+import { useConfigStore } from "~/stores/config";
 
 const settingsLink: LinkType = {
   name: "Settings",
@@ -20,6 +22,7 @@ const settingsLink: LinkType = {
 
 export default function TopNav() {
   const pathname = useI18nPathname();
+  const premium = useConfigStore((state) => state.premium);
 
   const showBack = pathname.includes("/details/");
   const showTopLinks = pathname.startsWith("/top") && !showBack;
@@ -43,8 +46,11 @@ export default function TopNav() {
                   className="rounded-full object-cover object-center"
                 />
               </div>
-              <span className="text-2xl font-bold uppercase text-white">
+              <span className="relative text-2xl font-bold uppercase text-white">
                 Dumpus
+                {premium && (
+                  <PremiumBadge className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border-2 border-gray-900 text-xs capitalize" />
+                )}
               </span>
             </Link>
             <div className="flex items-center space-x-2">

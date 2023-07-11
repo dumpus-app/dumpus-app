@@ -1,16 +1,16 @@
 "use client";
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
-import { defu } from "defu";
-import { useAtom, useAtomValue } from "jotai";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
-import { configAtom, unselectedPackagesAtom } from "~/stores";
+import { useConfigStore } from "~/stores/config";
 import { formatDate } from "~/utils/format";
 
 export default function PackageSwitch() {
-  const unselectedPackages = useAtomValue(unselectedPackagesAtom);
-  const [config, setConfig] = useAtom(configAtom);
+  const unselectedPackages = useConfigStore(
+    (state) => state.computed.unselectedPackages
+  );
+  const setSelectedID = useConfigStore((state) => state.setSelectedID);
 
   if (unselectedPackages.length === 0) {
     return null;
@@ -32,7 +32,7 @@ export default function PackageSwitch() {
               })}`}
               reverseTexts
               onClick={() => {
-                setConfig(defu({ db: { selectedId: id } }, config));
+                setSelectedID(id);
                 location.href = "/";
               }}
               rightIcon={ChevronRightIcon}

@@ -43,11 +43,11 @@ export default function useSQL() {
         queriesCache.set(cacheKey, data);
       }
 
-      logger.log(
-        `Query\n${query}\ntook ${+new Date() - +startDate}ms${
-          cachedData ? " (from cache)" : ""
-        }`
-      );
+      // logger.log(
+      //   `Query\n${query}\ntook ${+new Date() - +startDate}ms${
+      //     cachedData ? " (from cache)" : ""
+      //   }`
+      // );
 
       return {
         data,
