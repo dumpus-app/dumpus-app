@@ -221,7 +221,7 @@ def generate_demo_database():
         guild_channel_data.append(data)
         cur.execute(guild_channel_query, data)
 
-    for i in range(0, 10_000):
+    for i in range(0, 200):
         event_name = random.choice(["message_sent", "guild_joined", "application_command_used", "add_reaction", "email_opened", "login_successful", "app_crashed", "user_avatar_updated", "oauth2_authorize_accepted", "remote_auth_login", "notification_clicked", "captcha_served", "voice_message_recorded", "message_reported", "message_edited", "premium_upsell_viewed"])
         
         extra_field_1 = None
@@ -259,7 +259,7 @@ def generate_demo_database():
         # random day between 2021 and now
         day = datetime.date(random.randint(2021, datetime.datetime.now().year), random.randint(1, 12), random.randint(1, 28))
         hour = random.randint(0, 23)
-        occurence_count = random.randint(0, 100)
+        occurence_count = random.randint(0, 5_000)
         data = (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
         cur.execute(activity_query, data)
 
