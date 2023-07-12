@@ -53,14 +53,17 @@ export async function initCapacitor({
   if (!supported) return;
 
   const { Capacitor } = await import("@capacitor/core");
+
+  const isAndroid = Capacitor.getPlatform() === "android";
+  const isiOS = Capacitor.getPlatform() === "ios";
+
+  await handleSafeArea(isAndroid, isiOS);
+
   const { App } = await import("@capacitor/app");
   const { StatusBar, Style } = await import("@capacitor/status-bar");
   const { NavigationBar } = await import(
     "@hugotomazi/capacitor-navigation-bar"
   );
-
-  const isAndroid = Capacitor.getPlatform() === "android";
-  const isiOS = Capacitor.getPlatform() === "ios";
 
   App.addListener("backButton", ({ canGoBack }) => {
     if (canGoBack) {
@@ -74,8 +77,6 @@ export async function initCapacitor({
     await NavigationBar.setTransparency({ isTransparent: true });
   }
   await StatusBar.setStyle({ style: Style.Dark });
-
-  await handleSafeArea(isAndroid, isiOS);
 
   App.addListener("appUrlOpen", ({ url: _url }) => {
     const url = new URL(_url);
