@@ -163,6 +163,12 @@ def generate_demo_database():
         VALUES (?, ?, ?, ?, ?);
     '''
 
+    session_query = '''
+        INSERT INTO sessions
+        (started_date, ended_date, duration_mins, device_os)
+        VALUES (?, ?, ?, ?);
+    '''
+
     colors = ["Red", "Blue", "Green", "Yellow", "Purple", "Pink", "Black", "White", "Gold", "Silver"]
     animals = ["Lion", "Tiger", "Bear", "Wolf", "Eagle", "Hawk", "Fox", "Cat", "Dog", "Snake"]
 
@@ -256,6 +262,28 @@ def generate_demo_database():
         occurence_count = random.randint(0, 100)
         data = (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
         cur.execute(activity_query, data)
+
+    voice_session_data = []
+
+    for i in range(0, 100):
+        session_id = generate_random_18_digit_id()
+        user_id = generate_random_18_digit_id()
+        guild_id = random.choice(guild_data)[0]
+        channel_id = random.choice(guild_channel_data)[0]
+        start_time = datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 30), hours=random.randint(0, 23), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
+        end_time = start_time + datetime.timedelta(minutes=random.randint(0, 59), seconds=random.randint(0, 59))
+        data = (session_id, user_id, guild_id, channel_id, start_time, end_time)
+        voice_session_data.append(data)
+        cur.execute(voice_session_query, data)
+
+    session_data = []
+
+    for i in range(0, 10_000):
+        session_id = random.choice(voice_session_data)[0]
+        event_name = random.choice(["voice_session_started", "voice_session_ended"])
+        data = (session_id, event_name)
+        session_data.append(data)
+        cur.execute(session_data, data)
 
     cur.execute('''
         INSERT INTO package_data
