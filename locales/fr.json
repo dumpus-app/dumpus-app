@@ -46,7 +46,7 @@
       },
       {
         "title": "Peut-on faire confiance à Dumpus ?",
-        "description": "Ce \"paquet de données\" est très sensible. C'est pourquoi nous devons être clairs sur ce que l'application Dumpus en fait. Son code source est 100% open source (public). Bien que nous offrions un serveur de traitement gratuit, vous pouvez utiliser votre propre serveur pour garder un contrôle total sur vos données."
+        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
       },
       {
         "title": "Partagez-le avec vos amis !",
@@ -106,6 +106,7 @@
       "title": "Envoyez votre paquet de données",
       "description": "Choisissez votre méthode préférée.",
       "method": "Méthode {{n}}",
+      "noPackageYet": "No package yet?",
       "methods": {
         "link": {
           "title": "Entrez votre lien Discord",
