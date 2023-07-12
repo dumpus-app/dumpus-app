@@ -50,12 +50,14 @@ export default function SharePopup() {
             name: dm.user_name,
             // TODO: get latest url
             url: avatarURLFallback(dm.user_avatar_url, dm.dm_user_id),
+            count: formatNumber(dm.message_count),
           };
         }),
         topGuilds: (getGuildsData({}) || []).slice(0, 3).map((guild) => {
           return {
             name: guild.guild_name,
             url: "https://cdn.discordapp.com/embed/avatars/0.png",
+            count: formatNumber(guild.message_count),
           };
         }),
       });

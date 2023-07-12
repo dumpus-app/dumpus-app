@@ -24,7 +24,7 @@ export default function useGenerateImg() {
     state.setPackage,
   ]);
   const width = 1200;
-  const height = 847;
+  const height = 775;
 
   async function init() {
     if (initialized) return;
