@@ -158,7 +158,7 @@ export default function StaticShareImage({
             <div tw="flex mt-4">
               <StatCard
                 value={stats.appOpenings}
-                label="number of times the app you opened the app"
+                label="number of times you opened the app"
                 tw="mr-4"
               >
                 <svg
