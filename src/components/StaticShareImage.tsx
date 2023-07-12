@@ -15,8 +15,7 @@ export type Props = {
     messagesSent: string;
     timeSpent: string;
     appOpenings: string;
-    // TODO: rename
-    otherStat: string;
+    networkSize: string;
   };
   topDMS: ListElement[];
   topGuilds: ListElement[];
@@ -127,7 +126,7 @@ export default function StaticShareImage({
             <div tw="flex">
               <StatCard
                 value={stats.messagesSent}
-                label="Messages sent"
+                label="number of messages you sent"
                 tw="mr-4"
               >
                 <svg
@@ -140,7 +139,7 @@ export default function StaticShareImage({
                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                 </svg>
               </StatCard>
-              <StatCard value={stats.timeSpent} label="Spent on Discord">
+              <StatCard value={stats.timeSpent} label="time spent online on Discord">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -159,7 +158,7 @@ export default function StaticShareImage({
             <div tw="flex mt-4">
               <StatCard
                 value={stats.appOpenings}
-                label="App openings"
+                label="number of times the app you opened the app"
                 tw="mr-4"
               >
                 <svg
@@ -176,7 +175,7 @@ export default function StaticShareImage({
                   />
                 </svg>
               </StatCard>
-              <StatCard value={stats.otherStat} label="Other stat">
+              <StatCard value={stats.networkSize} label="number of users you talked with">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"

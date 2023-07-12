@@ -10,7 +10,7 @@ export function sqlOffset(offset: number) {
 
 export function useDataSources() {
   const sql = useSQL();
-  const [start, end] = useConfigStore((state) => state.computed.timeRangeDates);
+  const [start, end, startLimit, endLimit] = useConfigStore((state) => state.computed.timeRangeDates);
 
-  return { sql, start, end };
+  return { sql, start, end, startLimit, endLimit };
 }

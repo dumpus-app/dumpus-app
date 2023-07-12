@@ -70,7 +70,7 @@ type Actions = DerivedActions & {
 type Getters = {
   defaultState: PublicState;
   dbExtremityDates: [string, string] | undefined;
-  timeRangeDates: [string, string];
+  timeRangeDates: [string, string, string, string];
   selectedPackage: Package;
   unselectedPackages: Package[];
 };
@@ -132,7 +132,7 @@ export const useConfigStore = create(
             return `${year}-${month}-${day}`;
           }
 
-          return [formatDate(firstDate), formatDate(endDate)] as const;
+          return [formatDate(firstDate), formatDate(endDate), formatDate(firstDateLimit), formatDate(endDate)] as const;
         },
         get selectedPackage() {
           const {

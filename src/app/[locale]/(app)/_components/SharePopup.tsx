@@ -9,7 +9,7 @@ import useGenerateImg from "~/hooks/use-generate-img";
 import Image from "next/image";
 import useUserData from "~/hooks/data/use-user-data";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
-import { formatNumber } from "~/utils/format";
+import { formatDuration, formatNumber } from "~/utils/format";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import { avatarURLFallback } from "~/utils/discord";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
@@ -26,7 +26,7 @@ export default function SharePopup() {
   const [file, setFile] = useState<File>();
 
   const data = useUserData();
-  const { messageCount } = useUsageStatsData();
+  const { messageCount, totalSessionDuration, appStarted, networkSize } = useUsageStatsData(true);
   const { getData: getDMsData } = useTopDMsData();
   const { getData: getGuildsData } = useTopGuildsData();
 
@@ -41,9 +41,9 @@ export default function SharePopup() {
         },
         stats: {
           messagesSent: formatNumber(messageCount(), { notation: "standard" }),
-          timeSpent: "N/A",
-          appOpenings: "N/A",
-          otherStat: "N/A",
+          timeSpent: formatDuration((totalSessionDuration() || 0) * 60_000),
+          appOpenings: formatNumber(appStarted(), { notation: "standard" }),
+          networkSize: formatNumber(networkSize(), { notation: "standard" })
         },
         topDMS: (getDMsData({}) || []).slice(0, 3).map((dm) => {
           return {
