@@ -46,7 +46,7 @@
       },
       {
         "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That is why we need to be clear about what the Dumpus app does with it. Its source code is 100% open source (public). Although we offer a free processing server, you can use your own to keep full control over your data."
+        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
       },
       {
         "title": "Share it with your friends!",
