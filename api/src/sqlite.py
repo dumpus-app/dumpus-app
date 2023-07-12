@@ -215,8 +215,8 @@ def generate_demo_database():
         guild_channel_data.append(data)
         cur.execute(guild_channel_query, data)
 
-    for i in range(0, 5000):
-        event_name = random.choice(["message_sent", "guild_joined", "application_command_used", "add_reaction"])
+    for i in range(0, 10_000):
+        event_name = random.choice(["message_sent", "guild_joined", "application_command_used", "add_reaction", "email_opened", "login_successful", "app_crashed", "user_avatar_updated", "oauth2_authorize_accepted", "remote_auth_login", "notification_clicked", "captcha_served", "voice_message_recorded", "message_reported", "message_edited", "premium_upsell_viewed"])
         
         extra_field_1 = None
         extra_field_2 = None
@@ -242,10 +242,14 @@ def generate_demo_database():
             extra_field_1 = random.choice(emojis)
             extra_field_2 = '1' if random.choice([True, False]) else '0'
             associated_channel_id = random.choice(guild_channel_data)[0]
-        else:
+        elif event_name == "application_command_used":
             guild_id = random.choice(guild_data)[0]
             associated_user_id = random.choice(['159985870458322944', '936929561302675456', '432610292342587392', '276060004262477825'])
             associated_guild_id = guild_id
+        elif ["email_opened", "login_successful", "app_crashed", "user_avatar_updated", "oauth2_authorize_accepted", "remote_auth_login", "notification_clicked", "captcha_served", "voice_message_recorded", "message_reported", "message_edited", "premium_upsell_viewed"].__contains__(event_name):
+            pass
+        else:
+            pass
         # random day between 2021 and now
         day = datetime.date(random.randint(2021, datetime.datetime.now().year), random.randint(1, 12), random.randint(1, 28))
         hour = random.randint(0, 23)
