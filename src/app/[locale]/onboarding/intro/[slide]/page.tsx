@@ -30,8 +30,8 @@ export default async function Page({
   const { image, title, description } = slideData;
 
   return (
-    <div className="flex flex-col space-y-4 text-center">
-      <Image className="w-full" src={`/assets/${image}.png`} alt="" width={500} height={500} />
+    <div className="flex flex-col items-center	space-y-4 text-center">
+      <Image src={`/assets/${image}.png`} alt="" width={256} height={256} />
       <h1 className="text-xl font-bold text-white">{title}</h1>
       <p className="text-gray-400">
         <RenderMarkdown content={description} />

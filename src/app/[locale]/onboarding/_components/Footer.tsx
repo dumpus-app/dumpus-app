@@ -117,13 +117,15 @@ export default function Footer({ href, label }: Props) {
             {t("onboarding.shared.getData")}
           </Link>
         )}
-        <button
-          type="button"
-          onClick={(e) => setOpen(true)}
-          className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
-        >
-          {t("onboarding.shared.trust")}
-        </button>
+        {showGetDataLink && (
+          <button
+            type="button"
+            onClick={(e) => setOpen(true)}
+            className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+          >
+            {t("onboarding.shared.trust")}
+          </button>
+        )}
         {href && (
           <Button asChild>
             <Link href={href}>{label}</Link>
