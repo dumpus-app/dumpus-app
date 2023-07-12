@@ -24,7 +24,7 @@ export default function Methods() {
           key={key}
           href={href}
           title={title}
-          description={t("onboarding.access.method", { n: i + 1 })}
+          description={key === 'demo' ? t("onboarding.access.noPackageYet") : t("onboarding.access.method", { n: i + 1 })}
           reverseTexts
           rightIcon={ChevronRightIcon}
         />
