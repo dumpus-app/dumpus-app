@@ -136,9 +136,7 @@ export default function SharePopup() {
                     </Dialog.Title>
                     <div className="space-y-2 px-4 text-base text-gray-400">
                       <p className="mt-2 text-gray-400">
-                        Using your own server allows you to skip the queue.
-                        Financial supporters can also skip as a token of
-                        appreciation.
+                        Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)
                       </p>
                     </div>
                   </div>
