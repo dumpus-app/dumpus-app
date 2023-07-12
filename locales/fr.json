@@ -22,9 +22,9 @@
       "previous": "Précédent",
       "trust": "Pourquoi devrais-je faire confiance à l'application ?",
       "trustContent": [
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
-        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
+        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
+        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
       ],
       "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !",
       "getData": "How to get my data?"
