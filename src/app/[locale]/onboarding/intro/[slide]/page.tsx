@@ -4,8 +4,9 @@ import Slide1 from "./_components/Slide1";
 import Slide2 from "./_components/Slide2";
 import Slide3 from "./_components/Slide3";
 import RenderMarkdown from "~/components/RenderMarkdown";
+import Image from "next/image";
 
-const SLIDES = [Slide1, Slide2, Slide3].map((e) => ({ image: e }));
+const SLIDES = ['how', 'trust', 'share'].map((e) => ({ image: e }));
 
 export function generateStaticParams() {
   return SLIDES.map((_, i) => ({
@@ -26,11 +27,11 @@ export default async function Page({
     }) as unknown as { title: string; description: string }),
     ...SLIDES[index],
   };
-  const { image: Img, title, description } = slideData;
+  const { image, title, description } = slideData;
 
   return (
     <div className="flex flex-col space-y-4 text-center">
-      <Img className="w-full" />
+      <Image className="w-full" src={`/assets/${image}.png`} alt="" width={500} height={500} />
       <h1 className="text-xl font-bold text-white">{title}</h1>
       <p className="text-gray-400">
         <RenderMarkdown content={description} />
