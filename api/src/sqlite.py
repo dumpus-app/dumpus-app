@@ -266,22 +266,23 @@ def generate_demo_database():
     voice_session_data = []
 
     for i in range(0, 100):
-        session_id = generate_random_18_digit_id()
-        user_id = generate_random_18_digit_id()
         guild_id = random.choice(guild_data)[0]
         channel_id = random.choice(guild_channel_data)[0]
-        start_time = datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 30), hours=random.randint(0, 23), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
-        end_time = start_time + datetime.timedelta(minutes=random.randint(0, 59), seconds=random.randint(0, 59))
-        data = (session_id, user_id, guild_id, channel_id, start_time, end_time)
+        start_time = datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 1_200), hours=random.randint(0, 23), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
+        end_time = start_time + datetime.timedelta(minutes=random.randint(0, 500), seconds=random.randint(0, 59))
+        duration_mins = (end_time - start_time).total_seconds() // 60
+        data = (channel_id, guild_id, duration_mins, start_time, end_time)
         voice_session_data.append(data)
         cur.execute(voice_session_query, data)
 
     session_data = []
 
     for i in range(0, 10_000):
-        session_id = random.choice(voice_session_data)[0]
-        event_name = random.choice(["voice_session_started", "voice_session_ended"])
-        data = (session_id, event_name)
+        start_time = datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 1_200), hours=random.randint(0, 23), minutes=random.randint(0, 59), seconds=random.randint(0, 59))
+        end_time = start_time + datetime.timedelta(minutes=random.randint(0, 500), seconds=random.randint(0, 59))
+        duration_mins = (end_time - start_time).total_seconds() // 60
+        device_os = random.choice(["windows", "linux", "macos", "android", "ios"])
+        data = (start_time, end_time, duration_mins, device_os)
         session_data.append(data)
         cur.execute(session_data, data)
 
