@@ -7,6 +7,8 @@ Dumpus is a cross-platform app that gives you advanced statistics on your Discor
 <a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./.github/assets/playstore.png" hspace="10" height="100px" /></a>
 <a href="#"><img src="./.github/assets/appstore.png" height="100px" /></a>
 
+or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux builds](https://github.com/dumpus-app/dumpus-app/releases/latest).
+
 ## Screenshots
 
 | | | |
