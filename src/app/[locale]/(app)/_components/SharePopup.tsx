@@ -21,7 +21,7 @@ export default function SharePopup() {
     generatingShareImageAtom
   );
 
-  const { init, generate } = useGenerateImg();
+  const { init, generate, width, height } = useGenerateImg();
   const [url, setUrl] = useState<string>();
   const [file, setFile] = useState<File>();
 
@@ -110,7 +110,10 @@ export default function SharePopup() {
             >
               <Dialog.Panel className="relative transform rounded-2xl border border-gray-800 bg-gray-900 p-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
                 <div>
-                  <div className="relative aspect-[1200/627] w-full">
+                  <div
+                    className="relative w-full"
+                    style={{ aspectRatio: `${width}/${height}` }}
+                  >
                     {url ? (
                       <Image
                         src={url || ""}
