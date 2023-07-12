@@ -11,7 +11,10 @@ export default function Toaster() {
     <ReactHotToaster
       position="bottom-right"
       containerClassName="transition-transform duration-150"
-      containerStyle={{ transform: `translateY(${-height}px)` }}
+      containerStyle={{
+        transform: `translateY(${-height}px)`,
+        bottom: "calc(var(--safe-area-bottom-inset) + 16px)",
+      }}
       reverseOrder={false}
     >
       {(t) => <>{resolveValue(t.message, t)}</>}

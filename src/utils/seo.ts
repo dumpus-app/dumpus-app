@@ -11,6 +11,8 @@ export function generateSEO({
   const ogImage = `${BASE_URL}/assets/og.png`;
 
   return {
+    viewport:
+      "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
     metadataBase: new URL(BASE_URL),
     title,
     description,

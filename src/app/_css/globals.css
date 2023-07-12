@@ -8,6 +8,14 @@
   @apply contents;
 }
 
+/* Managed in src/capacitor/index.ts */
+:root {
+  --safe-area-top-inset: var(--safe-area-top, 0px);
+  --safe-area-right-inset: var(--safe-area-right, 0px);
+  --safe-area-bottom-inset: var(--safe-area-bottom, 0px);
+  --safe-area-left-inset: var(--safe-area-left, 0px);
+}
+
 html {
   color-scheme: dark;
   -webkit-tap-highlight-color: transparent;

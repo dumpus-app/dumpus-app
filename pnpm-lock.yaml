@@ -20,6 +20,9 @@ dependencies:
   '@capacitor/network':
     specifier: ^5.0.4
     version: 5.0.4(@capacitor/core@5.0.3)
+  '@capacitor/status-bar':
+    specifier: ^5.0.5
+    version: 5.0.5(@capacitor/core@5.0.3)
   '@headlessui/react':
     specifier: ^1.7.14
     version: 1.7.14(react-dom@18.2.0)(react@18.2.0)
@@ -29,6 +32,9 @@ dependencies:
   '@hookform/resolvers':
     specifier: ^3.1.0
     version: 3.1.0(react-hook-form@7.43.9)
+  '@hugotomazi/capacitor-navigation-bar':
+    specifier: ^2.0.1
+    version: 2.0.1(@capacitor/core@5.0.3)
   '@radix-ui/react-label':
     specifier: ^2.0.1
     version: 2.0.1(react-dom@18.2.0)(react@18.2.0)
@@ -56,6 +62,9 @@ dependencies:
   autoprefixer:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.25)
+  capacitor-plugin-safe-area:
+    specifier: ^2.0.5
+    version: 2.0.5(@capacitor/core@5.0.3)
   class-variance-authority:
     specifier: ^0.6.0
     version: 0.6.0(typescript@5.1.6)
@@ -325,6 +334,14 @@ packages:
       '@capacitor/core': 5.0.3
     dev: false
 
+  /@capacitor/status-bar@5.0.5(@capacitor/core@5.0.3):
+    resolution: {integrity: sha512-8ykkIbndeAaATrAYcr4CLSplTeR6CU15h8trXV3DgLXlFQAC6E/WJnoMy1QL61n5rHh725nixqwCTepcgGx/rw==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 5.0.3
+    dev: false
+
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
@@ -395,6 +412,14 @@ packages:
       react-hook-form: ^7.0.0
     dependencies:
       react-hook-form: 7.43.9(react@18.2.0)
+    dev: false
+
+  /@hugotomazi/capacitor-navigation-bar@2.0.1(@capacitor/core@5.0.3):
+    resolution: {integrity: sha512-Gq6vmAyOZLLHie/8wgGEs/V/aItJMXgivAcNItUDEfTpfXVAVbUdb0juOsXEqYgRCysksAmgHAEOg1WXE+L//Q==}
+    peerDependencies:
+      '@capacitor/core': ^4.0.1
+    dependencies:
+      '@capacitor/core': 5.0.3
     dev: false
 
   /@humanwhocodes/config-array@0.11.10:
@@ -1759,6 +1784,14 @@ packages:
 
   /caniuse-lite@1.0.30001487:
     resolution: {integrity: sha512-83564Z3yWGqXsh2vaH/mhXfEM0wX+NlBCm1jYHOb97TrTWJEmPTccZgeLTPBUUb0PNVo+oomb7wkimZBIERClA==}
+    dev: false
+
+  /capacitor-plugin-safe-area@2.0.5(@capacitor/core@5.0.3):
+    resolution: {integrity: sha512-Lg3P+/aW2/+C3gz2/xZFdfjgkOJ/ZSFTmZSxLaSY6lIudOTjwVpjoxhAyKUz1tc13Carjqdlq01yRrr++XOzAg==}
+    peerDependencies:
+      '@capacitor/core': ^5.0.0
+    dependencies:
+      '@capacitor/core': 5.0.3
     dev: false
 
   /ccount@2.0.1:
