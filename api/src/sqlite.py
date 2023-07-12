@@ -284,7 +284,7 @@ def generate_demo_database():
         device_os = random.choice(["windows", "linux", "macos", "android", "ios"])
         data = (start_time, end_time, duration_mins, device_os)
         session_data.append(data)
-        cur.execute(session_data, data)
+        cur.execute(session_query, data)
 
     cur.execute('''
         INSERT INTO package_data
