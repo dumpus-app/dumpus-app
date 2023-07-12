@@ -252,7 +252,7 @@ def generate_demo_database():
             guild_id = random.choice(guild_data)[0]
             associated_user_id = random.choice(['159985870458322944', '936929561302675456', '432610292342587392', '276060004262477825'])
             associated_guild_id = guild_id
-        elif ["email_opened", "login_successful", "app_crashed", "user_avatar_updated", "oauth2_authorize_accepted", "remote_auth_login", "notification_clicked", "captcha_served", "voice_message_recorded", "message_reported", "message_edited", "premium_upsell_viewed"].__contains__(event_name):
+        elif ["email_opened", "login_successful", "app_crashed", "app_opened", "user_avatar_updated", "oauth2_authorize_accepted", "remote_auth_login", "notification_clicked", "captcha_served", "voice_message_recorded", "message_reported", "message_edited", "premium_upsell_viewed"].__contains__(event_name):
             pass
         else:
             pass
