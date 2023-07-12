@@ -270,7 +270,7 @@ def generate_demo_database():
         channel_id = random.choice(guild_channel_data)[0]
         start_time = (datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 1_200), hours=random.randint(0, 23), minutes=random.randint(0, 59), seconds=random.randint(0, 59))).timestamp()
         end_time = start_time + datetime.timedelta(minutes=random.randint(0, 500), seconds=random.randint(0, 59)).total_seconds()
-        duration_mins = (end_time - start_time).total_seconds() // 60
+        duration_mins = (end_time - start_time) // 60
         data = (channel_id, guild_id, duration_mins, start_time, end_time)
         voice_session_data.append(data)
         cur.execute(voice_session_query, data)
@@ -280,7 +280,7 @@ def generate_demo_database():
     for i in range(0, 10_000):
         start_time = (datetime.datetime.now() - datetime.timedelta(days=random.randint(0, 1_200), hours=random.randint(0, 23), minutes=random.randint(0, 59), seconds=random.randint(0, 59))).timestamp()
         end_time = start_time + datetime.timedelta(minutes=random.randint(0, 500), seconds=random.randint(0, 59)).total_seconds()
-        duration_mins = (end_time - start_time).total_seconds() // 60
+        duration_mins = (end_time - start_time) // 60
         device_os = random.choice(["windows", "linux", "macos", "android", "ios"])
         data = (start_time, end_time, duration_mins, device_os)
         session_data.append(data)
