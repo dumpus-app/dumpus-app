@@ -106,6 +106,7 @@
       "title": "Envoyez votre paquet de données",
       "description": "Choisissez votre méthode préférée.",
       "method": "Méthode {{n}}",
+      "noPackageYet": "No package yet?",
       "methods": {
         "link": {
           "title": "Entrez votre lien Discord",
