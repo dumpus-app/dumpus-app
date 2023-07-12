@@ -1,5 +1,11 @@
 import clsx from "clsx";
 
+type ListElement = {
+  name: string;
+  url: string;
+  count: string;
+};
+
 export type Props = {
   user: {
     displayName: string;
@@ -12,14 +18,8 @@ export type Props = {
     // TODO: rename
     otherStat: string;
   };
-  topDMS: {
-    name: string;
-    url: string;
-  }[];
-  topGuilds: {
-    name: string;
-    url: string;
-  }[];
+  topDMS: ListElement[];
+  topGuilds: ListElement[];
 };
 
 function StatCard({
@@ -52,28 +52,45 @@ function StatCard({
 function TopList({
   title,
   elements,
+  tw,
 }: {
   title: string;
-  elements: {
-    name: string;
-    url: string;
-  }[];
+  elements: ListElement[];
+  tw?: string;
 }) {
   return (
-    <div tw="flex flex-col">
-      <div tw="text-lg text-gray-300 font-medium">{title}</div>
-      <div tw="flex flex-col">
-        {elements.map(({ name, url }, i) => (
-          <div key={i} tw="flex items-center mt-2">
-            {/* eslint-disable-next-line */}
-            <img
-              src={url}
-              alt=""
-              tw="object-cover object-center rounded-full"
-              width={48}
-              height={48}
-            />
-            <div tw="ml-2 text-xl text-white">{name}</div>
+    <div tw={clsx("flex flex-col bg-gray-800 p-4 rounded-lg flex-1", tw)}>
+      <div tw="text-xl text-gray-300 font-medium">{title}</div>
+      <div tw="flex flex-col mt-2">
+        {elements.map(({ name, url, count }, i) => (
+          <div key={i} tw="flex items-center mt-2 justify-between">
+            <div tw="flex items-center">
+              {/* eslint-disable-next-line */}
+              <img
+                src={url}
+                alt=""
+                tw="object-cover object-center rounded-full"
+                width={48}
+                height={48}
+              />
+              <div tw="ml-2 text-xl text-white">{name}</div>
+            </div>
+            <div tw="flex items-center text-brand-300">
+              <div tw="mr-2 text-xl">{count}</div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                // @ts-ignore
+                tw="h-8 w-8"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
           </div>
         ))}
       </div>
@@ -90,8 +107,8 @@ export default function StaticShareImage({
   return (
     <div tw="h-full w-full flex flex-col bg-gray-950 text-gray-400">
       <div tw="h-4 bg-brand-300 flex-shrink-0" />
-      <div tw="flex-1 p-8 flex">
-        <div tw="flex-1 h-full flex flex-col mr-8">
+      <div tw="flex-1 p-8 flex flex-col">
+        <div tw="flex-1 h-full flex flex-col">
           <div tw="flex mb-8">
             {/* eslint-disable-next-line */}
             <img
@@ -172,6 +189,10 @@ export default function StaticShareImage({
               </StatCard>
             </div>
           </div>
+          <div tw="flex mt-4">
+            <TopList title="Top DMs" elements={topDMS} tw="mr-4" />
+            <TopList title="Top Guilds" elements={topGuilds} />
+          </div>
           <div tw="mt-auto flex justify-between items-center">
             <div tw="text-white flex text-xl">
               <div>Get yours at</div>
@@ -186,11 +207,6 @@ export default function StaticShareImage({
               height={64}
             />
           </div>
-        </div>
-        <div tw="w-1/3 h-full flex-shrink-0 bg-gray-800 p-4 rounded-lg flex flex-col justify-between">
-          <TopList title="Top DMs" elements={topDMS} />
-          <div tw="h-px bg-gray-300" />
-          <TopList title="Top Guilds" elements={topGuilds} />
         </div>
       </div>
     </div>

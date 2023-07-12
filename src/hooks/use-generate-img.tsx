@@ -23,6 +23,8 @@ export default function useGenerateImg() {
     state.computed.selectedPackage,
     state.setPackage,
   ]);
+  const width = 1200;
+  const height = 775;
 
   async function init() {
     if (initialized) return;
@@ -51,10 +53,9 @@ export default function useGenerateImg() {
         }))
       )) as Font[];
 
-      const width = 1200;
       const svg = await satori(<StaticShareImage {...props} />, {
         width,
-        height: 627,
+        height,
         fonts,
         tailwindConfig: {
           theme: {
@@ -87,5 +88,5 @@ export default function useGenerateImg() {
     return { svgURL, file };
   }
 
-  return { init, generate, initialized };
+  return { init, generate, initialized, width, height };
 }
