@@ -1,11 +1,10 @@
 "use client";
 
-import { useAtomValue } from "jotai";
 import { Toaster as ReactHotToaster, resolveValue } from "react-hot-toast";
-import { bottomNavHeightAtom } from "~/stores/ui";
+import { useAppStore } from "~/stores";
 
 export default function Toaster() {
-  const height = useAtomValue(bottomNavHeightAtom);
+  const height = useAppStore(({ ui }) => ui.bottomNavHeight);
 
   return (
     <ReactHotToaster

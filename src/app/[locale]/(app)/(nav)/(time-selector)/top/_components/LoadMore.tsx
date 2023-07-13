@@ -1,16 +1,16 @@
 "use client";
 
 import clsx from "clsx";
-import { useSetAtom } from "jotai";
 import Button from "~/components/Button";
 import { useAppStore } from "~/stores";
-import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 
 const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 
 export default function LoadMore({ loadMore }: { loadMore: () => void }) {
-  const premium = useAppStore(({ config }) => config.premium);
-  const setOpen = useSetAtom(showInAppPurchasesDialogAtom);
+  const [premium, setOpen] = useAppStore(({ config, ui }) => [
+    config.premium,
+    ui.setShowInAppPurchasesDialog,
+  ]);
 
   return (
     <>

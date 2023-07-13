@@ -1,32 +1,35 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { useAtom } from "jotai";
-import Button from "~/components/Button";
-import { generatingShareImageAtom, showSharePopupAtom } from "~/stores/ui";
-import { useState, Fragment, useEffect } from "react";
-import useGenerateImg from "~/hooks/use-generate-img";
 import Image from "next/image";
-import useUserData from "~/hooks/data/use-user-data";
-import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
-import { formatDuration, formatNumber } from "~/utils/format";
-import useTopDMsData from "~/hooks/data/use-top-dms-data";
-import { avatarURLFallback } from "~/utils/discord";
-import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
+import { Fragment, useEffect, useState } from "react";
+import Button from "~/components/Button";
 import { BASE_URL } from "~/constants";
+import useTopDMsData from "~/hooks/data/use-top-dms-data";
+import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
+import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
+import useUserData from "~/hooks/data/use-user-data";
+import useGenerateImg from "~/hooks/use-generate-img";
+import { useAppStore } from "~/stores";
+import { avatarURLFallback } from "~/utils/discord";
+import { formatDuration, formatNumber } from "~/utils/format";
 
 export default function SharePopup() {
-  const [open, setOpen] = useAtom(showSharePopupAtom);
-  const [generatingShareImage, setGeneratingShareImage] = useAtom(
-    generatingShareImageAtom
-  );
+  const [open, setOpen, generatingShareImage, setGeneratingShareImage] =
+    useAppStore(({ ui }) => [
+      ui.showSharePopup,
+      ui.setShowSharePopup,
+      ui.generatingShareImage,
+      ui.setGeneratingShareImage,
+    ]);
 
   const { init, generate, width, height } = useGenerateImg();
   const [url, setUrl] = useState<string>();
   const [file, setFile] = useState<File>();
 
   const data = useUserData();
-  const { messageCount, totalSessionDuration, appStarted, networkSize } = useUsageStatsData(true);
+  const { messageCount, totalSessionDuration, appStarted, networkSize } =
+    useUsageStatsData(true);
   const { getData: getDMsData } = useTopDMsData();
   const { getData: getGuildsData } = useTopGuildsData();
 
@@ -43,7 +46,7 @@ export default function SharePopup() {
           messagesSent: formatNumber(messageCount(), { notation: "standard" }),
           timeSpent: formatDuration((totalSessionDuration() || 0) * 60_000),
           appOpenings: formatNumber(appStarted(), { notation: "standard" }),
-          networkSize: formatNumber(networkSize(), { notation: "standard" })
+          networkSize: formatNumber(networkSize(), { notation: "standard" }),
         },
         topDMS: (getDMsData({}) || []).slice(0, 3).map((dm) => {
           return {
@@ -70,6 +73,7 @@ export default function SharePopup() {
       gen();
     });
   }, [
+    appStarted,
     data.package_owner_avatar_url,
     data.package_owner_display_name,
     generate,
@@ -78,8 +82,10 @@ export default function SharePopup() {
     getGuildsData,
     init,
     messageCount,
+    networkSize,
     open,
     setGeneratingShareImage,
+    totalSessionDuration,
   ]);
 
   const canShare = !!navigator.share;
@@ -136,7 +142,8 @@ export default function SharePopup() {
                     </Dialog.Title>
                     <div className="space-y-2 px-4 text-base text-gray-400">
                       <p className="mt-2 text-gray-400">
-                        Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)
+                        Share your recap with your friends on Twitter,
+                        Instagram, Reddit, Discord...! :)
                       </p>
                     </div>
                   </div>

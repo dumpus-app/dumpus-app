@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { syncAppStore } from "~/stores";
 
 export default function useStoreInit() {
+  const [init, setInit] = useState(false);
+
   useEffect(() => {
-    const unsubscribe = syncAppStore();
+    const unsub = syncAppStore();
+    setInit(true);
 
     return () => {
-      unsubscribe();
+      unsub();
     };
   }, []);
+
+  return init;
 }

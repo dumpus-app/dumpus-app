@@ -1,11 +1,12 @@
 "use client";
 
-import { useAtomValue } from "jotai";
-import { safeAreaBottomColorAtom, safeAreaTopColorAtom } from "~/stores/ui";
+import { useAppStore } from "~/stores";
 
 export default function SafeArea({ children }: { children: React.ReactNode }) {
-  const topColor = useAtomValue(safeAreaTopColorAtom);
-  const bottomColor = useAtomValue(safeAreaBottomColorAtom);
+  const [topColor, bottomColor] = useAppStore(({ ui }) => [
+    ui.safeAreaTopColor,
+    ui.safeAreaBottomColor,
+  ]);
 
   return (
     <>

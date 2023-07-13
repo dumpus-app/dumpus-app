@@ -1,27 +1,24 @@
 "use client";
 
-import { links } from "~/constants";
-import Link from "~/components/Link";
 import clsx from "clsx";
-import { useI18nPathname } from "~/hooks/use-i18n";
-import { useMeasure, useMount, useUnmount } from "react-use";
 import { useEffect } from "react";
-import { useSetAtom } from "jotai";
-import {
-  DEFAULT_SAFE_AREA_INSET_COLOR,
-  bottomNavHeightAtom,
-  safeAreaBottomColorAtom,
-} from "~/stores/ui";
+import { useMeasure, useMount, useUnmount } from "react-use";
 import colors from "tailwindcss/colors";
+import Link from "~/components/Link";
+import { links } from "~/constants";
+import { useI18nPathname } from "~/hooks/use-i18n";
+import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 export type Props = {
   children?: React.ReactNode;
 };
 
 export default function BottomNav({ children }: Props) {
   const pathname = useI18nPathname();
-  const setHeight = useSetAtom(bottomNavHeightAtom);
   const [ref, { height }] = useMeasure<HTMLDivElement>();
-  const setSafeAreaBottomColor = useSetAtom(safeAreaBottomColorAtom);
+  const [setHeight, setSafeAreaBottomColor] = useAppStore(({ ui }) => [
+    ui.setBottomNavHeight,
+    ui.setSafeAreaBottomColor,
+  ]);
 
   useEffect(() => {
     setHeight(height);

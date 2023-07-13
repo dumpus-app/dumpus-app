@@ -1,5 +1,5 @@
 import type { PackageAPIUserResponse } from "~/types/package-api";
-import { CreateSlice } from "./zustand-test";
+import { CreateSlice } from ".";
 
 type State = {
   usersCache: PackageAPIUserResponse[];

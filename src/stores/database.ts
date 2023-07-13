@@ -1,5 +1,5 @@
 import { type Database } from "sql.js";
-import { type CreateSlice } from "./zustand-test";
+import { type CreateSlice } from ".";
 
 type State = {
   db: null | Database;

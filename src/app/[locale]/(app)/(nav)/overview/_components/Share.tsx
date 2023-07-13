@@ -1,11 +1,10 @@
 "use client";
 
-import { useSetAtom } from "jotai";
 import Button from "~/components/Button";
-import { showSharePopupAtom } from "~/stores/ui";
+import { useAppStore } from "~/stores";
 
 export default function Share() {
-  const setOpen = useSetAtom(showSharePopupAtom);
+  const setOpen = useAppStore(({ ui }) => ui.setShowSharePopup);
 
   return (
     <div className="rounded-t-xl border border-b-0 border-gray-800 bg-gray-900 p-2">

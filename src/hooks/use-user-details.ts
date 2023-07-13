@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import defu from "defu";
 import { useEffect, useRef } from "react";
 import { PackageAPIUserResponse } from "~/types/package-api";
 import usePackageAPI from "./use-package-api";
@@ -50,5 +49,5 @@ export default function useUserDetails({ userID }: { userID: string }) {
     setUsersCache(newCache);
   }, [data, setUsersCache, userCache, userID, usersCache]);
 
-  return defu(userCache, data) as PackageAPIUserResponse | undefined;
+  return { ...userCache, ...data } as PackageAPIUserResponse | undefined;
 }

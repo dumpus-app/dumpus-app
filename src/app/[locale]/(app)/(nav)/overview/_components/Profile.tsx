@@ -1,12 +1,11 @@
 "use client";
 
-import { useSetAtom } from "jotai";
 import Image from "next/image";
 import { useNetworkState } from "react-use";
 import Button from "~/components/Button";
 import ProfileHeader from "~/components/ProfileHeader";
 import useUserData from "~/hooks/data/use-user-data";
-import { showSharePopupAtom } from "~/stores/ui";
+import { useAppStore } from "~/stores";
 
 export default function Profile() {
   const userData = useUserData();
@@ -17,7 +16,7 @@ export default function Profile() {
   } = userData;
 
   const networkState = useNetworkState();
-  const setOpen = useSetAtom(showSharePopupAtom);
+  const setOpen = useAppStore(({ ui }) => ui.setShowSharePopup);
 
   const size = (() => {
     switch (networkState.effectiveType) {

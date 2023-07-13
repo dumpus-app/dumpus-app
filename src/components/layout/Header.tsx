@@ -1,17 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import { Icon } from "~/types";
-import Link from "../Link";
-import { useScrolled } from "~/hooks/use-layout";
-import { useSetAtom } from "jotai";
-import {
-  DEFAULT_SAFE_AREA_INSET_COLOR,
-  safeAreaTopColorAtom,
-} from "~/stores/ui";
 import { useCallback, useEffect } from "react";
-import { colors } from "../../../tailwind.config";
 import { useMount, useUnmount } from "react-use";
+import { useScrolled } from "~/hooks/use-layout";
+import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
+import { Icon } from "~/types";
+import { colors } from "../../../tailwind.config";
+import Link from "../Link";
 
 export type Props = {
   title?: string;
@@ -42,7 +38,7 @@ export default function Header({
   const showTitle = revealTitleOnScroll ? scrolled : true;
   const showBorder = revealBorderOnScroll ? scrolled : false;
   const showBackground = revealBackgroundOnScroll ? scrolled : false;
-  const setSafeAreaTopColor = useSetAtom(safeAreaTopColorAtom);
+  const setSafeAreaTopColor = useAppStore(({ ui }) => ui.setSafeAreaTopColor);
 
   const showLightBackground = useCallback(() => {
     return transparent ? (showBackground ? true : false) : true;

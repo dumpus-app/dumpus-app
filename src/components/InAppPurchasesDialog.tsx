@@ -2,14 +2,12 @@
 
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
-import { useAtom } from "jotai";
 import { Fragment, useState } from "react";
 import { useMount } from "react-use";
 import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
 import { useAppStore } from "~/stores";
-import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 import { emitter } from "~/utils/emitter";
 import { formatMoney } from "~/utils/format";
 
@@ -21,7 +19,10 @@ const content = [
 ];
 
 export default function InAppPurchasesDialog() {
-  const [open, setOpen] = useAtom(showInAppPurchasesDialogAtom);
+  const [open, setOpen] = useAppStore(({ ui }) => [
+    ui.showInAppPurchasesDialog,
+    ui.setShowInAppPurchasesDialog,
+  ]);
   const [supported, setSupported] = useState(false);
   const [product, setProduct] =
     useState<Awaited<ReturnType<typeof purchases.getProduct>>>();
