@@ -11,7 +11,7 @@ import TopSelector from "../(time-selector)/top/_components/TopSelector";
 import Header from "~/components/layout/Header";
 import { ChevronLeftIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import PremiumBadge from "~/components/PremiumBadge";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 
 const settingsLink: LinkType = {
   name: "Settings",
@@ -22,7 +22,7 @@ const settingsLink: LinkType = {
 
 export default function TopNav() {
   const pathname = useI18nPathname();
-  const premium = useConfigStore((state) => state.premium);
+  const premium = useAppStore(({ config }) => config.premium);
 
   const showBack = pathname.includes("/details/");
   const showTopLinks = pathname.startsWith("/top") && !showBack;

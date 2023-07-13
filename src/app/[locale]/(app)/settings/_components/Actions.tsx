@@ -8,17 +8,15 @@ import Link from "~/components/Link";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
 import useToast from "~/hooks/use-toast";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore, useSelectedPackage } from "~/stores";
 import {
   LOCALSTORAGE_MAX_CAPACITY,
   getLocalStorageSize,
 } from "~/utils/browser";
 
 export default function Actions() {
-  const [deletePackage, selectedPackage] = useConfigStore((state) => [
-    state.deletePackage,
-    state.computed.selectedPackage,
-  ]);
+  const deletePackage = useAppStore(({ config }) => config.deletePackage);
+  const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
 
   const [loading, setLoading] = useState(false);

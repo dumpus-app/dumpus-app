@@ -107,6 +107,9 @@ dependencies:
   jotai:
     specifier: ^2.1.0
     version: 2.1.0(react@18.2.0)
+  lodash-es:
+    specifier: ^4.17.21
+    version: 4.17.21
   lz-string:
     specifier: ^1.5.0
     version: 1.5.0
@@ -196,6 +199,9 @@ devDependencies:
   '@trapezedev/project':
     specifier: ^7.0.10
     version: 7.0.10(@types/node@20.4.1)(typescript@5.1.6)
+  '@types/lodash-es':
+    specifier: ^4.17.7
+    version: 4.17.7
   '@types/pako':
     specifier: ^2.0.0
     version: 2.0.0
@@ -1208,6 +1214,16 @@ packages:
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: false
+
+  /@types/lodash-es@4.17.7:
+    resolution: {integrity: sha512-z0ptr6UI10VlU6l5MYhGwS4mC8DZyYer2mCoyysZtSF7p26zOX8UpbrV0YpNYLGS8K4PUFIyEr62IMFFjveSiQ==}
+    dependencies:
+      '@types/lodash': 4.14.195
+    dev: true
+
+  /@types/lodash@4.14.195:
+    resolution: {integrity: sha512-Hwx9EUgdwf2GLarOjQp5ZH8ZmblzcbTBC2wtQWNKARBSxM9ezRIAUpeDTgoQRAFB0+8CNWXVA9+MaSOzOF3nPg==}
+    dev: true
 
   /@types/mdast@3.0.11:
     resolution: {integrity: sha512-Y/uImid8aAwrEA24/1tcRZwpxX3pIFTSilcNDKSPn+Y2iDywSEachzRuvgAYYLR3wpGXAsMbv5lvKLDZLeYPAw==}
@@ -4275,6 +4291,10 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
+    dev: false
+
+  /lodash-es@4.17.21:
+    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
   /lodash._baseassign@3.2.0:

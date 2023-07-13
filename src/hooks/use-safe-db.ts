@@ -1,9 +1,9 @@
 "use client";
 
-import { useDatabaseStore } from "~/stores/db";
+import { useAppStore } from "~/stores";
 
 export default function useSafeDB() {
-  const db = useDatabaseStore((state) => state.db);
+  const db = useAppStore(({ database }) => database.db);
 
   if (!db) {
     throw new Error("db hasn't been set yet.");

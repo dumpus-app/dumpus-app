@@ -3,14 +3,19 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 import { formatDate } from "~/utils/format";
 
 export default function PackageSwitch() {
-  const unselectedPackages = useConfigStore(
-    (state) => state.computed.unselectedPackages
+  const [setSelectedID, selectedID, packages] = useAppStore(({ config }) => [
+    config.setSelectedID,
+    config.selectedID,
+    config.packages,
+  ]);
+  const getUnselectedPackages = useAppStore(
+    ({ config }) => config.getUnselectedPackages
   );
-  const setSelectedID = useConfigStore((state) => state.setSelectedID);
+  const unselectedPackages = getUnselectedPackages(packages, selectedID);
 
   if (unselectedPackages.length === 0) {
     return null;

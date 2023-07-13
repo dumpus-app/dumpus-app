@@ -2,13 +2,13 @@
 
 import { useMount } from "react-use";
 import { useTranslation } from "~/i18n/client";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 import Methods from "./_components/Methods";
 
 export default function Page() {
   const { t } = useTranslation();
-  const setGoToOnboardingAccess = useConfigStore(
-    (state) => state.setGoToOnboardingAccess
+  const setGoToOnboardingAccess = useAppStore(
+    ({ config }) => config.setGoToOnboardingAccess
   );
 
   useMount(() => {

@@ -7,7 +7,7 @@ import initYoga from "yoga-wasm-web";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore, useSelectedPackage } from "~/stores";
 import { Uint8ArrayToString, stringToUint8Array } from "~/utils/convert";
 import { colors } from "../../tailwind.config";
 
@@ -19,10 +19,8 @@ async function getFontData(weight: number) {
 
 export default function useGenerateImg() {
   const [initialized, setInitialized] = useState(false);
-  const [selectedPackage, setPackage] = useConfigStore((state) => [
-    state.computed.selectedPackage,
-    state.setPackage,
-  ]);
+  const setPackage = useAppStore(({ config }) => config.setPackage);
+  const selectedPackage = useSelectedPackage();
   const width = 1200;
   const height = 775;
 

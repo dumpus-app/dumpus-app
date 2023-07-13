@@ -8,7 +8,7 @@ import { useMount } from "react-use";
 import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 import { emitter } from "~/utils/emitter";
 import { formatMoney } from "~/utils/format";
@@ -25,7 +25,7 @@ export default function InAppPurchasesDialog() {
   const [supported, setSupported] = useState(false);
   const [product, setProduct] =
     useState<Awaited<ReturnType<typeof purchases.getProduct>>>();
-  const setPremium = useConfigStore((state) => state.setPremium);
+  const setPremium = useAppStore(({ config }) => config.setPremium);
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 

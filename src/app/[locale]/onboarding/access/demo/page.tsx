@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
-import { useDatabaseStore } from "~/stores/db";
+import { useAppStore } from "~/stores";
 
 const packageID = "demo";
 const UPNKey = packageID;
@@ -15,7 +15,11 @@ const packageLink = packageID;
 export default function Page() {
   const router = useRouter();
 
-  const nextDbID = useDatabaseStore((state) => state.computed.nextID);
+  const [selectedID, getNextID] = useAppStore(({ config, database }) => [
+    config.selectedID,
+    database.getNextID,
+  ]);
+  const nextID = getNextID(selectedID);
   const { init } = useSQLInit();
   const api = usePackageAPI({});
 
@@ -31,7 +35,7 @@ export default function Page() {
         return;
       }
       init({
-        id: nextDbID,
+        id: nextID,
         initData: {
           initialData: data,
           packageLink,
@@ -42,7 +46,7 @@ export default function Page() {
         router.replace(`/${i18next.language}/overview`);
       });
     });
-  }, [api, init, nextDbID, router]);
+  }, [api, init, nextID, router]);
 
   return (
     <div className="flex flex-col items-center space-y-4">

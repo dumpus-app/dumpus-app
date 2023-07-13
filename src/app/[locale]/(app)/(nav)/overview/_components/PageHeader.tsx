@@ -3,10 +3,10 @@
 import { Cog6ToothIcon } from "@heroicons/react/24/solid";
 import PremiumBadge from "~/components/PremiumBadge";
 import Header from "~/components/layout/Header";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 
 export default function PageHeader() {
-  const premium = useConfigStore((state) => state.premium);
+  const premium = useAppStore(({ config }) => config.premium);
 
   return (
     <Header

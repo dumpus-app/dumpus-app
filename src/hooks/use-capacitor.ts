@@ -5,14 +5,14 @@ import { useMount, useUnmount } from "react-use";
 import { useRouter } from "next/navigation";
 import { initCapacitor, purchases } from "~/capacitor";
 import { createLogger } from "~/utils/logger";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 
 const logger = createLogger({ tag: "Capacitor init" });
 
 export default function useCapacitor() {
   const router = useRouter();
   const [closeCapacitor, setCloseCapacitor] = useState<() => void>();
-  const setPremium = useConfigStore((state) => state.setPremium);
+  const setPremium = useAppStore(({ config }) => config.setPremium);
 
   useMount(async () => {
     const closeCapacitor = await initCapacitor({ navigate: router.replace });

@@ -3,7 +3,7 @@ import Image from "next/image";
 import Section from "~/components/Section";
 import StatCard from "~/components/data/StatCard";
 import usePackageAPI from "~/hooks/use-package-api";
-import { useConfigStore } from "~/stores/config";
+import { useSelectedPackage } from "~/stores";
 import { Activity, DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
 
@@ -14,9 +14,7 @@ type Bot = Pick<
   Required<Pick<Activity, "associated_user_id">> & { total_occurences: number };
 
 function BotCard({ bot }: { bot: Bot }) {
-  const selectedPackage = useConfigStore(
-    (state) => state.computed.selectedPackage
-  );
+  const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
 
   const { data } = useQuery({

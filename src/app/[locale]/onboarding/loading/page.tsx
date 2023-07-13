@@ -13,7 +13,7 @@ import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
-import { useDatabaseStore } from "~/stores/db";
+import { useAppStore } from "~/stores";
 import { PackageAPIProcessResponse } from "~/types/package-api";
 import QueueDisplay from "./_components/QueueDisplay";
 
@@ -59,7 +59,11 @@ export default function Page() {
     refetchInterval: 1000, // 1s
   });
 
-  const nextDbID = useDatabaseStore((state) => state.computed.nextID);
+  const [selectedID, getNextID] = useAppStore(({ config, database }) => [
+    config.selectedID,
+    database.getNextID,
+  ]);
+  const nextID = getNextID(selectedID);
 
   useEffect(() => {
     if (
@@ -80,7 +84,7 @@ export default function Page() {
           return;
         }
         init({
-          id: nextDbID,
+          id: nextID,
           initData: {
             initialData: data,
             packageLink,
@@ -96,7 +100,7 @@ export default function Page() {
     api,
     backendURL,
     init,
-    nextDbID,
+    nextID,
     packageLink,
     processData,
     router,

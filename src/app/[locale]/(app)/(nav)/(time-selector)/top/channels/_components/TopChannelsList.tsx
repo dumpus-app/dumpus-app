@@ -5,7 +5,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopChannelsData from "~/hooks/data/use-top-channels-data";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
@@ -13,7 +13,7 @@ import LoadMore from "../../_components/LoadMore";
 
 export default function TopChannelsList() {
   const { getData, count } = useTopChannelsData();
-  const timeRange = useConfigStore((state) => state.timeRange);
+  const timeRange = useAppStore(({ config }) => config.timeRange);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-channels", timeRange],

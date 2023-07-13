@@ -2,13 +2,11 @@
 
 import { useState } from "react";
 import Button from "~/components/Button";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore, useSelectedPackage } from "~/stores";
 
 export default function ExitDemoBanner() {
-  const [deletePackage, { package_id, id }] = useConfigStore((state) => [
-    state.deletePackage,
-    state.computed.selectedPackage,
-  ]);
+  const deletePackage = useAppStore(({ config }) => config.deletePackage);
+  const { package_id, id } = useSelectedPackage();
 
   const [loading, setLoading] = useState(false);
   const demo = package_id === "demo";

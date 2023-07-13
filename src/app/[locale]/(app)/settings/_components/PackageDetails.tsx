@@ -10,13 +10,11 @@ import { useCopyToClipboard } from "react-use";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import useToast from "~/hooks/use-toast";
-import { useConfigStore } from "~/stores/config";
+import { useSelectedPackage } from "~/stores";
 import { formatDate } from "~/utils/format";
 
 export default function PackageDetails() {
-  const selectedPackage = useConfigStore(
-    (state) => state.computed.selectedPackage
-  );
+  const selectedPackage = useSelectedPackage();
   const [state, copyToClipboard] = useCopyToClipboard();
   const toast = useToast();
 

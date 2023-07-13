@@ -7,7 +7,7 @@ import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useWidgetAPI from "~/hooks/use-widget-api";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
@@ -62,7 +62,7 @@ function GuildCard({
 
 export default function TopGuildsList() {
   const { getData, count } = useTopGuildsData();
-  const timeRange = useConfigStore((state) => state.timeRange);
+  const timeRange = useAppStore(({ config }) => config.timeRange);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-guilds", timeRange],

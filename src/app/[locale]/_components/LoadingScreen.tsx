@@ -1,13 +1,10 @@
 "use client";
 
 import i18next from "i18next";
-import { useAtom } from "jotai";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useSQLInit from "~/hooks/use-sql-init";
-import { usersCacheAtom } from "~/stores";
-import { useConfigStore } from "~/stores/config";
-import { useDatabaseStore } from "~/stores/db";
+import { useAppStore } from "~/stores";
 import { createLogger } from "~/utils/logger";
 
 const logger = createLogger({ tag: "loading screen" });
@@ -24,12 +21,13 @@ export default function LoadingScreen({
   const pathname = usePathname() || "/";
   const router = useRouter();
 
-  const [selectedID, goToOnboardingAccess] = useConfigStore((state) => [
-    state.db.selectedID,
-    state.goToOnboardingAccess,
-  ]);
-  const [usersCache, setUsersCache] = useAtom(usersCacheAtom);
-  const db = useDatabaseStore((state) => state.db);
+  const [selectedID, goToOnboardingAccess, db] = useAppStore(
+    ({ config, database }) => [
+      config.selectedID,
+      config.goToOnboardingAccess,
+      database.db,
+    ]
+  );
   const { init } = useSQLInit();
 
   const redirectPath = `/${i18next.language}/onboarding`;
@@ -37,7 +35,6 @@ export default function LoadingScreen({
   useEffect(() => {
     if (!loading) return;
 
-    setUsersCache(usersCache);
     const hasSelectedPackage = !!selectedID;
 
     if (["/", `/${i18next.language}/`].includes(pathname)) {
@@ -82,8 +79,6 @@ export default function LoadingScreen({
     redirectPath,
     router,
     selectedID,
-    setUsersCache,
-    usersCache,
   ]);
 
   if (loading)

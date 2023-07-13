@@ -1,13 +1,10 @@
 "use client";
 
-import { useConfigStore } from "~/stores/config";
+import { useSelectedPackage } from "~/stores";
 import useUserDetails from "../use-user-details";
 
 export default function useUserData() {
-  const selectedPackage = useConfigStore(
-    (state) => state.computed.selectedPackage
-  );
-
+  const selectedPackage = useSelectedPackage();
   const data = useUserDetails({
     userID: selectedPackage?.package_owner_id || "",
   });

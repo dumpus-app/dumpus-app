@@ -3,13 +3,13 @@
 import clsx from "clsx";
 import { useSetAtom } from "jotai";
 import Button from "~/components/Button";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore } from "~/stores";
 import { showInAppPurchasesDialogAtom } from "~/stores/ui";
 
 const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 
 export default function LoadMore({ loadMore }: { loadMore: () => void }) {
-  const premium = useConfigStore((state) => state.premium);
+  const premium = useAppStore(({ config }) => config.premium);
   const setOpen = useSetAtom(showInAppPurchasesDialogAtom);
 
   return (

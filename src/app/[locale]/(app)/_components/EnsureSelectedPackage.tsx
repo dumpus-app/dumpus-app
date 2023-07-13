@@ -1,15 +1,13 @@
 "use client";
 
-import { useConfigStore } from "~/stores/config";
+import { useSelectedPackage } from "~/stores";
 
 export default function EnsureSelectedPackage({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const selectedPackage = useConfigStore(
-    (state) => state.computed.selectedPackage
-  );
+  const selectedPackage = useSelectedPackage();
 
   if (!selectedPackage) return null;
 

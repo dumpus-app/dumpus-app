@@ -3,8 +3,7 @@
 import pako from "pako";
 import { useRef } from "react";
 import initSqlJs from "sql.js";
-import { useConfigStore } from "~/stores/config";
-import { useDatabaseStore } from "~/stores/db";
+import { useAppStore } from "~/stores";
 import type { PackageData } from "~/types/sql";
 import { retrieveUint8Array, storeUint8Array } from "~/utils/localstorage";
 import { resultAsList } from "~/utils/sql";
@@ -13,15 +12,19 @@ const STORAGE_KEY = "db";
 export const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
 
 export default function useSQLInit() {
-  const setDb = useDatabaseStore((state) => state.setDB);
-  const { packages, setSelectedID, addPackage, setPackage } = useConfigStore(
-    ({ db: { packages }, setSelectedID, addPackage, setPackage }) => ({
-      packages,
-      setSelectedID,
-      addPackage,
-      setPackage,
-    })
-  );
+  const { packages, setSelectedID, addPackage, setPackage, setDB } =
+    useAppStore(
+      ({
+        config: { packages, setSelectedID, addPackage, setPackage },
+        database: { setDB },
+      }) => ({
+        packages,
+        setSelectedID,
+        addPackage,
+        setPackage,
+        setDB,
+      })
+    );
 
   const isInitializedRef = useRef(false);
 
@@ -81,7 +84,7 @@ export default function useSQLInit() {
       }
       setSelectedID(id);
     }
-    setDb(_db);
+    setDB(_db);
   }
 
   return { init };

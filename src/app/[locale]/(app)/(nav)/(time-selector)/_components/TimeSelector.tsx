@@ -1,12 +1,12 @@
 "use client";
 
 import clsx from "clsx";
-import { timeRanges, useConfigStore } from "~/stores/config";
+import { timeRanges, useAppStore } from "~/stores";
 
 export default function TimeSelector() {
-  const [timeRange, setTimeRange] = useConfigStore((state) => [
-    state.timeRange,
-    state.setTimeRange,
+  const [timeRange, setTimeRange] = useAppStore(({ config }) => [
+    config.timeRange,
+    config.setTimeRange,
   ]);
 
   return (

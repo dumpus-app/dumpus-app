@@ -2,19 +2,17 @@
 
 import { useQuery } from "@tanstack/react-query";
 import defu from "defu";
-import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
-import { usersCacheAtom } from "~/stores";
 import { PackageAPIUserResponse } from "~/types/package-api";
 import usePackageAPI from "./use-package-api";
-import { useConfigStore } from "~/stores/config";
+import { useAppStore, useSelectedPackage } from "~/stores";
 
 export default function useUserDetails({ userID }: { userID: string }) {
-  const selectedPackage = useConfigStore(
-    (state) => state.computed.selectedPackage
+  const [usersCache, setUsersCache] = useAppStore(
+    ({ usersCache, setUsersCache }) => [usersCache, setUsersCache]
   );
+  const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
-  const [usersCache, setUsersCache] = useAtom(usersCacheAtom);
   const doneRef = useRef(false);
 
   const { data } = useQuery({
