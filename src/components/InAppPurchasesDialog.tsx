@@ -33,11 +33,11 @@ export default function InAppPurchasesDialog() {
   useMount(async () => {
     const initializeDialog = async () => {
       setSupported(true);
-      const product = await purchases.getProduct("supporter_test");
+      const product = await purchases.getProduct("supporter");
       setProduct(product);
       console.log({ product });
       emitter.on("purchases:transaction:approved", ({ key, product }) => {
-        if (key === "supporter_test") {
+        if (key === "supporter") {
           setPremium(true);
           toast({
             title: "You're an Early Supporter",

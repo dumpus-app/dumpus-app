@@ -18,7 +18,7 @@ export default function useCapacitor() {
     const closeCapacitor = await initCapacitor({ navigate: router.replace });
     setCloseCapacitor(closeCapacitor);
     logger.info("Capacitor initialized");
-    const product = await purchases.getProduct("supporter_test");
+    const product = await purchases.getProduct("supporter");
     if (product) {
       // TODO: check why always false
       // setPremium(product.owned);

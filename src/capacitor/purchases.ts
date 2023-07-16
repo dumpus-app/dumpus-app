@@ -2,14 +2,14 @@
 
 import { emitter } from "~/utils/emitter";
 
-const PRODUCT_SUPPORTER_TEST_KEY = "supporter_test";
-export type ProductKey = typeof PRODUCT_SUPPORTER_TEST_KEY;
+const PRODUCT_SUPPORTER_KEY = "supporter";
+export type ProductKey = typeof PRODUCT_SUPPORTER_KEY;
 
 let cdv: typeof CdvPurchase;
 
 class PurchasesModule {
   public initialized = false;
-  public productsKeys = [PRODUCT_SUPPORTER_TEST_KEY] as const;
+  public productsKeys = [PRODUCT_SUPPORTER_KEY] as const;
 
   constructor() {}
 
@@ -29,10 +29,15 @@ class PurchasesModule {
   private async registerProducts() {
     cdv.store.register([
       {
-        id: PRODUCT_SUPPORTER_TEST_KEY,
+        id: PRODUCT_SUPPORTER_KEY,
         type: cdv.ProductType.NON_CONSUMABLE,
         platform: cdv.Platform.GOOGLE_PLAY,
       },
+      {
+        id: PRODUCT_SUPPORTER_KEY,
+        type: cdv.ProductType.NON_CONSUMABLE,
+        platform: cdv.Platform.APPLE_APPSTORE
+      }
     ]);
 
     await cdv.store.update();
