@@ -10,18 +10,13 @@ export function sqlOffset(offset: number) {
 
 export function useDataSources() {
   const sql = useSQL();
-  const [timeRange, db, getExtremityDates, getTimeRangeDates] = useAppStore(
+  const [timeRange, db, getTimeRangeDates] = useAppStore(
     ({ config, database }) => [
       config.timeRange,
       database.db,
-      database.getExtremityDates,
-      config.getTimeRangeDates,
+      database.getTimeRangeDates,
     ]
   );
-  const [start, end, startLimit, endLimit] = getTimeRangeDates(
-    timeRange,
-    getExtremityDates(db)
-  );
 
-  return { sql, start, end, startLimit, endLimit };
+  return { sql, ...getTimeRangeDates({ timeRange, db }) };
 }
