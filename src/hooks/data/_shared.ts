@@ -18,8 +18,5 @@ export function useDataSources() {
     ]
   );
 
-  const dates = getTimeRangeDates({ timeRange, db });
-  console.log(dates);
-
-  return { sql, ...dates };
+  return { sql, ...getTimeRangeDates({ timeRange, db }) };
 }
