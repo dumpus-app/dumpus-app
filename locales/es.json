@@ -78,8 +78,16 @@
           "display": "iOS",
           "steps": [
             {
-              "name": "Open your settings ios",
-              "image": "https://florian-lefebvre.dev/images/og-image.jpg"
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/ios/step1.jpg"
+            },
+            {
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/ios/step2.jpg"
+            },
+            {
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/ios/step3.jpg"
             }
           ]
         },
