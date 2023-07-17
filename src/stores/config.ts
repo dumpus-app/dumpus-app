@@ -1,7 +1,6 @@
+import { getStorageKey } from "~/hooks/use-sql-init";
 import type { PackageData } from "~/types/sql";
 import { type CreateSlice } from ".";
-import { getStorageKey } from "~/hooks/use-sql-init";
-import { type DatabaseSlice } from "./database";
 
 export const timeRanges = ["4 weeks", "6 months", "Year", "Lifetime"] as const;
 

@@ -1,6 +1,6 @@
 import { type Database } from "sql.js";
 import { type CreateSlice } from ".";
-import type { ConfigSlice } from "./config";
+import { type ConfigSlice } from "./config";
 
 type State = {
   db: null | Database;
