@@ -1,0 +1,35 @@
+{
+  "identifier" : "7955D6D2",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6451364202",
+      "localizations" : [
+        {
+          "description" : "Show your support and unlock awesome perks!",
+          "displayName" : "Early Supporter",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "supporter",
+      "referenceName" : "Early Supporter",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6450952260",
+    "_developerTeamID" : "DHZ73CC729",
+    "_lastSynchronizedDate" : 711289612.80614495
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}
