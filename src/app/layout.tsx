@@ -15,7 +15,6 @@ export default function RootLayout({
 }) {
   useCapacitor();
   const init = useStoreInit();
-  console.log(init);
 
   return (
     <Providers>
