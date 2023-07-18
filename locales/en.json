@@ -62,15 +62,15 @@
           "steps": [
             {
               "name": "Open your Discord settings",
-              "image": "/assets/onboarding/en/android/step1.jpg"
+              "image": "/assets/onboarding/en/android/step1.png"
             },
             {
               "name": "Open the \"Privacy & Safety\" tab",
-              "image": "/assets/onboarding/en/android/step2.jpg"
+              "image": "/assets/onboarding/en/android/step2.png"
             },
             {
               "name": "Click on \"Request Data\"",
-              "image": "/assets/onboarding/en/android/step3.jpg"
+              "image": "/assets/onboarding/en/android/step3.png"
             }
           ]
         },
