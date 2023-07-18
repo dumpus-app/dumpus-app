@@ -6,8 +6,8 @@
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "Cargando...",
+      "description": "Por favor, espere."
     }
   },
   "onboarding": {
