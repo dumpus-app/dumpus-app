@@ -118,7 +118,7 @@ def create_new_empty_database():
             package_owner_name TEXT NOT NULL,
             package_owner_display_name TEXT,
             package_owner_avatar_url TEXT,
-            package_is_partial BOOLEAN NOT NULL DEFAULT 0,
+            package_is_partial BOOLEAN NOT NULL DEFAULT 0
         )
     ''')
 
