@@ -1,0 +1,184 @@
+{
+  "seo": {
+    "title": "Dumpus | Stats for Discord",
+    "description": "Get detailed insights and stats for your Discord account"
+  },
+  "global": {
+    "loading": {
+      "title": "Loading...",
+      "description": "Please wait."
+    }
+  },
+  "onboarding": {
+    "routesLabels": {
+      "/": "Let's go",
+      "/intro/1": "Got it!",
+      "/intro/2": "Awesome!",
+      "/intro/3": "Let's get my package!",
+      "/setup": "Got it!"
+    },
+    "shared": {
+      "previous": "Previous",
+      "trust": "Why should I trust the app?",
+      "trustContent": [
+        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
+        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
+        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+      ],
+      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
+      "getData": "How to get my data?"
+    },
+    "/": {
+      "welcome": "Welcome to Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Step {{n}}",
+      "steps": [
+        "Briefing",
+        "Request your data",
+        "Start the analysis"
+      ]
+    },
+    "slides": [
+      {
+        "title": "How does Dumpus work?",
+        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+      },
+      {
+        "title": "Can I trust Dumpus?",
+        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+      },
+      {
+        "title": "Share it with your friends!",
+        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+      }
+    ],
+    "setup": {
+      "title": "How do I get my data package?",
+      "description": "Select an operating system to get started.",
+      "data": {
+        "android": {
+          "display": "Android",
+          "steps": [
+            {
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/android/step1.png"
+            },
+            {
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/android/step2.png"
+            },
+            {
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/android/step3.png"
+            }
+          ]
+        },
+        "ios": {
+          "display": "iOS",
+          "steps": [
+            {
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/ios/step1.png"
+            },
+            {
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/ios/step2.png"
+            },
+            {
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/ios/step3.png"
+            }
+          ]
+        },
+        "desktop": {
+          "display": "Desktop",
+          "steps": [
+            {
+              "name": "Open your Discord settings",
+              "image": "/assets/onboarding/en/desktop/step1.png"
+            },
+            {
+              "name": "Open the \"Privacy & Safety\" tab",
+              "image": "/assets/onboarding/en/desktop/step2.png"
+            },
+            {
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
+            }
+          ]
+        }
+      }
+    },
+    "access": {
+      "title": "Submit your Data Package",
+      "description": "Choose your favorite method.",
+      "method": "Method {{n}}",
+      "noPackageYet": "No package yet?",
+      "methods": {
+        "link": {
+          "title": "Enter your Discord link",
+          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
+          "discordLink": "Discord link",
+          "advanced": "Advanced",
+          "backendURL": "Backend URL",
+          "optional": "optional",
+          "backendURLHint": "Your own hosted open source server URL",
+          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
+          "explore": "Explore!",
+          "errors": {
+            "required": "Required",
+            "url": "Invalid URL",
+            "startWith": "Link must start with {{url}}",
+            "emptyKey": "UPN key can't be empty"
+          }
+        },
+        "email": {
+          "title": "Transfer the email (soon)",
+          "content": [
+            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
+            "See you soon!"
+          ]
+        },
+        "demo": {
+          "title": "Demo"
+        }
+      }
+    },
+    "loading": {
+      "queue": {
+        "title": "You're in the queue!",
+        "why": "Why is there a queue?",
+        "whyContent": [
+          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
+          "That's why we have a queue, to make sure everyone can use the service.",
+          "You can self-host our API server to avoid the queue."
+        ],
+        "position": "position",
+        "waitingTime": "Estimated waiting time is",
+        "useBackend": "Use my own backend"
+      }
+    }
+  },
+  "stats": {
+    "messagesSent": "messages sent",
+    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "joinedServers": "joined servers",
+    "joinedServersDesc": "We've got a real Discord server explorer!",
+    "knownUsers": "known users",
+    "knownUsersDesc": "Well, you know a lot of people!",
+    "spentMoney": "spent",
+    "spentMoneyDesc_positive": "That's a lot of cash...!",
+    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "appStarts": "app starts",
+    "appStartsPerDay": "You open Discord about {{value}} times per day!",
+    "totalTimeSpent": "You spent about {{value}} on Discord",
+    "avgSessionTime": "avg. session time"
+  },
+  "sheerNumbers": "Sheer numbers",
+  "mostActiveDMs": "Most active DMs",
+  "mostActiveServers": "Most active servers",
+  "mostActiveChannels": "Most active channels",
+  "discordHours": "Your Discord hours",
+  "activityTime": "Activity over time",
+  "messageSentCount": "Message sent count"
+}
