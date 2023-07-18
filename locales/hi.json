@@ -6,13 +6,13 @@
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "लोड हो रहा है...",
+      "description": "कृपया प्रतीक्षा करें।"
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
+      "/": "चल दर",
       "/intro/1": "Got it!",
       "/intro/2": "Awesome!",
       "/intro/3": "Let's get my package!",
