@@ -49,7 +49,7 @@ jobs:
           # Call to ChatGPT
           openai.api_key = os.getenv('OPENAI_API_KEY')
           prompt = content
-          response = openai.ChatCompletion.create(model='gpt-4', messages=[{'role': 'user', 'content': f'{prompt}\nGenerate a documentation markdown table for each table of the SQLite database. For example:\n\n**activity table**\n|Column|Description\n|event_name|One sentence to explain to the developers what kind of data they will find here. If the code provided allows you to provide an example of data format or value that is great, but do not invent anything.|same for this column|etc.\n\n**Table 2**\n|Column|Description|...\n\netc.'}])
+          response = openai.ChatCompletion.create(model='gpt-4', messages=[{'role': 'user', 'content': f'{prompt}\nGenerate a documentation markdown table for each table of the SQLite database (including package_data). For example:\n\n**activity table**\n|Column|Description\n|event_name|One sentence to explain to the developers what kind of data they will find here. If the code provided allows you to provide an example of data format or value that is great, but do not invent anything.|same for this column|etc.\n\n**Table 2**\n|Column|Description|...\n\netc.'}])
           readme_content = response.choices[0].message.content.strip()
 
           # Write to db_doc.md
