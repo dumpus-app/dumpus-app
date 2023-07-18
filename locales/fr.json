@@ -103,7 +103,8 @@
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Click on \"Request Data\""
+              "name": "Click on \"Request Data\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
         }
