@@ -1,8 +1,8 @@
 {
-  "localeDisplay": "English",
+  "localeDisplay": "हिंदी",
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "डंपस | डिस्कॉर्ड के लिए स्टैट्स",
+    "description": "अपने डिस्कॉर्ड खाते के लिए विस्तृत जानकारी और आँकड़े प्राप्त करें"
   },
   "global": {
     "loading": {
