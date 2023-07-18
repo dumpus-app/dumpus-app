@@ -1,61 +1,61 @@
 {
   "localeDisplay": "Français",
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "Dumpus | Stats pour Discord",
+    "description": "Obtenez des informations et des statistiques détaillées sur votre compte Discord"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "Chargement...",
+      "description": "Veuillez patienter."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "Allons-y",
+      "/intro/1": "Compris !",
+      "/intro/2": "Parfait !",
+      "/intro/3": "Allons récupérer mes données !",
+      "/setup": "Compris !"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "Précédent",
+      "trust": "Pourquoi devrais-je faire confiance à l'application ?",
       "trustContent": [
         "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
         "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
         "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
+      "30DaysDelay": "N'oubliez pas qu'il peut s'écouler jusqu'à 30 jours avant que vous ne receviez l'e-mail. Soyez patient !",
       "getData": "How to get my data?"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "Bienvenue sur Dumpus",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "Etape {{n}}",
       "steps": [
         "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "Demandez vos données",
+        "Démarrez l'analyse"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "Comment marche Dumpus ?",
+        "description": "Discord enregistre chaque action que vous effectuez sur leur application dans votre \"paquet de données\". Dumpus analyse ce paquet pour générer des statistiques sur votre compte."
       },
       {
-        "title": "Can I trust Dumpus?",
+        "title": "Peut-on faire confiance à Dumpus ?",
         "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "Partagez-le avec vos amis !",
+        "description": "Si les statistiques sont amusantes à voir, elles le sont encore plus à comparer avec vos amis. C'est pourquoi nous avons fait en sorte qu'il soit facile de partager vos statistiques avec vos amis."
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "Comment obtenir mon paquet de données ?",
+      "description": "Sélectionnez une plateforme pour commencer.",
       "data": {
         "android": {
           "display": "Android",
@@ -92,7 +92,7 @@
           ]
         },
         "desktop": {
-          "display": "Desktop",
+          "display": "PC/Mac",
           "steps": [
             {
               "name": "Open your Discord settings",
@@ -111,37 +111,37 @@
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
+      "title": "Envoyez votre paquet de données",
+      "description": "Choisissez votre méthode préférée.",
+      "method": "Méthode {{n}}",
       "noPackageYet": "No package yet?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
-          "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "title": "Entrez votre lien Discord",
+          "description": "Vous pouvez l'obtenir dans l'email reçu de Discord. Copiez le lien à partir du bouton intitulé **Vous pouvez le télécharger ici**.",
+          "discordLink": "Lien Discord",
+          "advanced": "Avancé",
+          "backendURL": "URL du backend",
+          "optional": "facultatif",
+          "backendURLHint": "Votre propre URL de serveur open source hébergé",
+          "notice": "En poursuivant, vous acceptez notre [politique de confidentialité](/privacy) et nos [conditions](/terms).",
+          "explore": "Explorez !",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "Obligatoire",
+            "url": "URL invalide",
+            "startWith": "Le lien doit commencer par {{url}}",
+            "emptyKey": "La clé UPN ne peut pas être vide"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Transférez l'email (bientôt)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Transférez l'e-mail reçu de Discord à **process@dumpus.app**. Nous vous enverrons un lien lorsqu'il sera prêt.",
+            "A tout de suite !"
           ]
         },
         "demo": {
-          "title": "Demo"
+          "title": "Démo"
         }
       }
     },
