@@ -27,8 +27,8 @@ function DMCard({
   const avatarURL = !userDataAvatar?.includes(".gif")
     ? userDataAvatar
     : userDataAvatar.replace(
-        focused ? ".png" : ".gif",
-        focused ? ".gif" : ".png"
+        focused ? ".webp" : ".gif",
+        focused ? ".gif" : ".webp"
       );
 
   return (
