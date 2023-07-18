@@ -121,22 +121,22 @@
           "discordLink": "Link-ul Discord",
           "advanced": "Avansat",
           "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "optional": "opțional",
+          "backendURLHint": "Adresa URL a serverului open source găzduit",
+          "notice": "Continuând, sunteți de acord cu [politica noastră de confidențialitate](/privacy) și cu [termenii](/termenii).",
+          "explore": "Exploră!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "Necesar",
+            "url": "URL invalid",
+            "startWith": "Linkul trebuie să înceapă cu {{url}}",
+            "emptyKey": "Cheia UPN nu poate fi goală"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Transferă e-mailul (în curând)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Transferă e-mailul primit de la Discord la **process@dumpus.app**. Îți vom trimite un link când este gata.",
+            "Pe curând!"
           ]
         },
         "demo": {
@@ -146,37 +146,37 @@
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "Ești la coadă!",
+        "why": "De ce este o coadă?",
         "whyContent": [
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "poziție",
+        "waitingTime": "Timpul de așteptare estimat este",
+        "useBackend": "Folosește propriul meu backend"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "messagesSent": "mesaje trimise",
+    "messagesSentPerDay": "Adică aproximativ {{value}} mesaje pe zi!",
     "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "joinedServersDesc": "Avem un adevărat explorator de server Discord!",
+    "knownUsers": "utilizatori cunoscuți",
+    "knownUsersDesc": "Ei bine, cunoști o mulțime de oameni!",
+    "spentMoney": "cheltuiți",
+    "spentMoneyDesc_positive": "Sunt mulți bani...!",
+    "spentMoneyDesc_empty": "Ești o persoană gospodărească!",
     "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "You spent about {{value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "appStartsPerDay": "Tu deschizi Discord de aproximativ {{value}} ori pe zi!",
+    "totalTimeSpent": "Ai petrecut aproximativ {{value}} pe Discord",
+    "avgSessionTime": "timpul mediu de sesiune"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
+  "sheerNumbers": "Cifre simple",
+  "mostActiveDMs": "Cele mai active DM-uri",
+  "mostActiveServers": "Cele mai active servere",
   "mostActiveChannels": "Cele mai active canale",
   "discordHours": "Orele tale din Discord",
   "activityTime": "Activitate de-a lungul timpului",
