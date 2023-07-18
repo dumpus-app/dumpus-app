@@ -1,74 +1,74 @@
 {
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "Dumpus | Discord को तथ्याङ्क",
+    "description": "आफ्नो Discord account को लागि विस्तृत अन्तर्दृष्टि र तथ्याङ्कहरू प्राप्त गर्नुहोस्"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "लोड हुदैछ...",
+      "description": "कृपया पर्खनुहोस."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "सुरु गरौँ",
+      "/intro/1": "बुझे!",
+      "/intro/2": "गज्जब!",
+      "/intro/3": "मेरो प्याकेज प्राप्त गरौं!",
+      "/setup": "बुझे!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "पछाडी जाऔं",
+      "trust": "मैले यो app लाई किन विश्वास गरौँ?",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "Dumpus १००% open source छ। तपाईंले [GitHub](https://github.com/dumpus-app/dumpus-app) मा Dumpus को कोड पढ्न सक्नुहुन्छ, र आफ्नै सर्भरमा पनि host गर्न सक्नुहुन्छ।",
+        "हामीसँग पूर्ण रूपमा [client-side web app](https://ddpe.androz2091.fr) पनि छ। यसमा कम सुविधाहरू छन्, तर कुनै बाहिरी API भने प्रयोग भएका छैनन्।",
+        "यो app ले कुनैपनि data बाहिरी API मा store नगरी काम गर्छ। तपाइलाई केहि जिज्ञासाहरु भए हामीलाई तुरुन्तै contact@dumpus.app मा सम्पर्क गर्नुहोला।"
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "30DaysDelay": "यो इमेल प्राप्त गर्न तपाइलाई ३० दिन सम्म लाग्न सक्छ। कृपया धैर्य गर्नुहोला!",
+      "getData": "मा आफ्नो data कसरि प्राप्त गर्न सक्छु?"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "Dumpus मा तपाइलाई स्वागत छ।",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "{{n}}औं चरण",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "छोटकरीमा",
+        "आफ्नो डाटा request गर्नुहोस्",
+        "विश्लेषण सुरु गर्नुहोस"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "Dumpus ले कसरि काम गर्छ?",
+        "description": "Discord ले तपाइँको \"Data Package\" मा तपाइँले गरेका हरेक कार्यहरुको रेकर्ड राख्दछ। Dumpus ले तपाईको यस Data Package को विश्लेषण गरेर तपाइको खाताको तथ्यांक तथा जानकारी निकल्दछ।"
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "के म Dumpus माथि विश्वास गर्न सक्छु?",
+        "description": "यो \"Data Package\" भनेको एकदमै संबेदनशील कुरा हो। तेही भएर जोकोहीलेपनि हाम्रो code पढ्न र यसले के गर्दछ भनेर हेर्नसक्छ (१००% open source)। हामीले तपाइलाई free processing सर्भर त प्रदान गर्छौनै, तपाइले आफ्नो Data सुरक्षित राख्न आफ्नै सर्भर पनि प्रयोग गर्न सक्नुहुन्छ। "
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "साथीभाईहरुमाझ share गर्नुहोस!",
+        "description": "तथ्यांकहरू हेर्दा रमाइलो त हुन्छनै, आफ्नो साथिहरुसंग तुलना गर्न अझै रमाइलो हुन्छ। तेही भएर हामीले तपाइलाई आफ्नो तथ्यांक हजुरको साथीहरुमाझ share गर्न सहज बनाएका छौ।"
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "म मेरो data package कसरी प्राप्त गर्न सक्छु?",
+      "description": "सुरु गर्न operating system छान्नुहोस्।",
       "data": {
         "android": {
           "display": "Android",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "तपाइको Discord setting खोल्नुहोस्",
               "image": "/assets/onboarding/en/android/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "\"Privacy & Safety\" tab खोल्नुहोस्",
               "image": "/assets/onboarding/en/android/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "\"Request Data\" मा थिच्नुहोस",
               "image": "/assets/onboarding/en/android/step3.png"
             }
           ]
@@ -77,15 +77,15 @@
           "display": "iOS",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "तपाइको Discord setting खोल्नुहोस्",
               "image": "/assets/onboarding/en/ios/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "\"Privacy & Safety\" tab खोल्नुहोस्",
               "image": "/assets/onboarding/en/ios/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "\"Request Data\" मा थिच्नुहोस",
               "image": "/assets/onboarding/en/ios/step3.png"
             }
           ]
@@ -94,15 +94,15 @@
           "display": "Desktop",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "तपाइको Discord setting खोल्नुहोस्",
               "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "\"Privacy & Safety\" tab खोल्नुहोस्",
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "\"Request Data\" मा थिच्नुहोस",
               "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
@@ -110,33 +110,33 @@
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "तपाइको Data Package submit गर्नुहोस्",
+      "description": "तपाइको मनपर्दो बिधि छान्नुहोस्।",
+      "method": "{{n}}औं बिधि",
+      "noPackageYet": "तपाईसंग package छैन?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
+          "title": "तपाईको Discord link लेख्नुहोस्",
+          "description": "तपाइँले यसलाई Discord ले पठाएको email मा प्राप्त गर्न सक्नुहुन्छ। **You can download it here** नामको button को link copy गर्नुहोला।",
           "discordLink": "Discord link",
           "advanced": "Advanced",
           "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
+          "optional": "वैकल्पिक",
+          "backendURLHint": "तपाई आफैले होस्ट गरेको open source सर्भर URL",
+          "notice": "अगाडि बढ्नासाथै तपाईं हाम्रो [privacy policy](/privacy) र हाम्रा [terms](/terms) मा सहमति जनाउनुहुन्छ।",
           "explore": "Explore!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "आवश्यक",
+            "url": "URL मिलेन",
+            "startWith": "Link {{url}} बाट सुरु हुनुपर्छ",
+            "emptyKey": "UPN key खाली हुनु हुदैन"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Email transfer गर्नुहोस् (soon)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Discord बाट प्राप्त email **process@dumpus.app** मा transfer गर्नुहोस्। यो तयार भएपछि हामी तपाईंलाई एउटा लिङ्क पठाउनेछौँ।",
+            "तपाइलाई चाडै भेटौला!"
           ]
         },
         "demo": {
@@ -146,39 +146,39 @@
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "तपाई queue मा हुनुहुन्छ!",
+        "why": "यहाँ किन queue छ?",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "Dumpus एक नि:शुल्क सेवा हो, र हाम्रो सर्भरले एकचोटीमा थोरै मात्र package handle गर्न सक्छ।",
+          "तेही भएर सबैजनाले यो सेवा विना कुनै अबरोध प्रयोग गर्न सकुन भनेर हामीले queue राखेका हौ।",
+          "तपाईं queue बाट बच्नको लागि हाम्रो API सर्भर आफै host गर्न सक्नुहुन्छ।"
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "स्थान",
+        "waitingTime": "अनुमानित पर्खिनुपर्ने समय",
+        "useBackend": "मेरो आफ्नै backend प्रयोग गर"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{value}} messages per day!",
-    "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "You spent about {{value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "messagesSent": "पठाइएको message हरु",
+    "messagesSentPerDay": "यो भनेको अन्दाजी दिनको {{value}} message हरु हो!",
+    "joinedServers": "join भएका server हरु",
+    "joinedServersDesc": "हामीले साचिकैको Discord सर्भर explorer पाएका छौं!",
+    "knownUsers": "थाहा भएका प्रयोगकर्ताहरु",
+    "knownUsersDesc": "तपाइले धेरैजनालाई चिन्नुहुदो रहेछ!",
+    "spentMoney": "खर्च गरिएको",
+    "spentMoneyDesc_positive": "त्यो धेरै पैसा हो...!",
+    "spentMoneyDesc_empty": "तपाईं एक मितव्ययी व्यक्ति हुनुहुन्छ!",
+    "appStarts": "app खोलेको",
+    "appStartsPerDay": "तपाइले दिनको लगभग {{value}} चोटी Discord खोल्नुहुन्छ!",
+    "totalTimeSpent": "तपाइले लगभग {{value}} रुपिया Discord मा खर्च गर्नुभएको छ",
+    "avgSessionTime": "औसत session समय"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count"
+  "sheerNumbers": "सरासर संख्याहरू",
+  "mostActiveDMs": "एकदम सक्रिय DM हरु",
+  "mostActiveServers": "एकदम सक्रिय server हरु",
+  "mostActiveChannels": "एकदम सक्रिय channel हरु",
+  "discordHours": "तपाईको Discord चलाउने समय",
+  "activityTime": "समय अनुसार तपाईको गतिविधि",
+  "messageSentCount": "पठाइएको message संख्या"
 }
