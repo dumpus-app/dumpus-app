@@ -1,76 +1,75 @@
 {
-  "localeDisplay": "English",
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "Dumpus | Statistiche per Discord",
+    "description": "Ottieni informazioni dettagliate e statistiche sul tuo account Discord"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "Caricamento in corso...",
+      "description": "Attendere prego."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "Cominciamo",
+      "/intro/1": "Capito!",
+      "/intro/2": "Fantastico!",
+      "/intro/3": "Prendi il tuo package!",
+      "/setup": "Capito!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "Precedente",
+      "trust": "Perché dovrei fidarmi dell'app?",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "Dumpus è 100% open source. Puoi leggere il codice su [GitHub](https://github.com/dumpus-app/dumpus-app) e persino hostare il tuo server.",
+        "Abbiamo anche un'[app web client-side](https://ddpe.androz2091.fr), con meno funzionalità ma senza API esterne.",
+        "L'app funziona senza alcun dato leggibile memorizzato sull'API esterna. Se hai ancora domande, non esitare a contattarci a contact@dumpus.app."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "30DaysDelay": "Tieni a mente che può richiedere fino a 30 giorni ricevere l'email. Sii paziente!",
+      "getData": "Come ottenere i miei dati?"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "Benvenuto su Dumpus",
       "description": "$t(seo.description)",
       "step": "Step {{n}}",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "Sintesi",
+        "Richiedi i tuoi dati",
+        "Avvia l'analisi"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "Come funziona Dumpus?",
+        "description": "Discord registra ogni azione che esegui sulla loro app nel tuo \"Pacchetto dati\". Dumpus analizza questo pacchetto per generare statistiche e informazioni sul tuo account."
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "Posso fidarmi di Dumpus?",
+        "description": "Questo \"pacchetto dati\" è molto sensibile. Ecco perché chiunque può leggere il nostro codice e vedere cosa facciamo con esso (100% open source). Anche se offriamo un server di elaborazione gratuito, è possibile utilizzare il proprio server per mantenere il pieno controllo dei dati."
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "Condividilo con i tuoi amici!",
+        "description": "Mentre le statistiche sono divertenti da vedere, sono ancora più divertenti da confrontare con i tuoi amici. Ecco perché abbiamo reso facile condividere le tue statistiche con i tuoi amici."
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "Come posso ottenere il mio pacchetto dati?",
+      "description": "Seleziona un sistema operativo per iniziare.",
       "data": {
         "android": {
           "display": "Android",
           "steps": [
             {
-              "name": "Open your Discord settings",
-              "image": "/assets/onboarding/en/android/step1.jpg"
+              "name": "Apri le impostazioni di Discord",
+              "image": "/assets/onboarding/en/android/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
-              "image": "/assets/onboarding/en/android/step2.jpg"
+              "name": "Apri la scheda \"Privacy e sicurezza\"",
+              "image": "/assets/onboarding/en/android/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
-              "image": "/assets/onboarding/en/android/step3.jpg"
+              "name": "Clicca su \"Voglio richiedere i miei dati\"",
+              "image": "/assets/onboarding/en/android/step3.png"
             }
           ]
         },
@@ -78,15 +77,15 @@
           "display": "iOS",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Apri le impostazioni di Discord",
               "image": "/assets/onboarding/en/ios/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Apri la scheda \"Privacy e sicurezza\"",
               "image": "/assets/onboarding/en/ios/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Clicca su \"Voglio richiedere i miei dati\"",
               "image": "/assets/onboarding/en/ios/step3.png"
             }
           ]
@@ -95,15 +94,15 @@
           "display": "Desktop",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Apri le impostazioni di Discord",
               "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Apri la scheda \"Privacy e sicurezza\"",
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Clicca su \"Voglio richiedere i miei dati\"",
               "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
@@ -111,33 +110,33 @@
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "Invia il tuo Pacchetto Dati",
+      "description": "Scegli il tuo metodo preferito.",
+      "method": "Metodo {{n}}",
+      "noPackageYet": "Non hai ancora un pacchetto?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
-          "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "title": "Inserisci il tuo link Discord",
+          "description": "Puoi ottenerlo nell'email ricevuta da Discord. Copia il link dal pulsante dal titolo **Puoi scaricarlo qui**.",
+          "discordLink": "Link Discord",
+          "advanced": "Avanzato",
+          "backendURL": "URL Backend",
+          "optional": "opzionale",
+          "backendURLHint": "L'URL del tuo server open source hostato",
+          "notice": "Procedendo, accetti la nostra [politica sulla riservatezza](/privacy) e i nostri [termini](/terms).",
+          "explore": "Esplora!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "Richiesto",
+            "url": "URL non valido",
+            "startWith": "Il link deve iniziare con {{url}}",
+            "emptyKey": "La chiave UPN non può essere vuota"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Trasferisci l'email (prossimamente)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Trasferisci l'email ricevuta da Discord a **process@dumpus.app**. Ti invieremo un link quando sarà pronto.",
+            "A presto!"
           ]
         },
         "demo": {
@@ -147,39 +146,39 @@
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "Sei in coda!",
+        "why": "Perché c'è una coda?",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "Dumpus è un servizio gratis, e il nostro server non può analizzare più di alcuni pacchetti allo stesso tempo.",
+          "Ecco perché abbiamo una coda, per fare in modo che tutti possano utilizzare il servizio.",
+          "Puoi self-hostare il nostro server API per evitare la coda."
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "posizione",
+        "waitingTime": "Il tempo di attesa stimato è",
+        "useBackend": "Usa il mio backend"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{value}} messages per day!",
-    "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "You spent about {{value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "messagesSent": "messaggi inviati",
+    "messagesSentPerDay": "Sono all'incirca {{value}} messaggi al giorno!",
+    "joinedServers": "server aggiunti",
+    "joinedServersDesc": "Abbiamo un vero esploratore di server Discord!",
+    "knownUsers": "utenti conosciuti",
+    "knownUsersDesc": "Beh, conosci un sacco di persone!",
+    "spentMoney": "spesi",
+    "spentMoneyDesc_positive": "Sono un sacco di soldi...!",
+    "spentMoneyDesc_empty": "Sei una persona tirchia!",
+    "appStarts": "avvii dell'app",
+    "appStartsPerDay": "Apri Discord circa {{value}} volte al giorno!",
+    "totalTimeSpent": "Hai speso circa {{value}} su Discord",
+    "avgSessionTime": "tempo di sessione medio"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count"
+  "sheerNumbers": "Numeri puri",
+  "mostActiveDMs": "DM più attivi",
+  "mostActiveServers": "Server più attivi",
+  "mostActiveChannels": "Canali più attivi",
+  "discordHours": "Le tue ore su Discord",
+  "activityTime": "Attività nel tempo",
+  "messageSentCount": "Conteggio di messaggi inviati"
 }
