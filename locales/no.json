@@ -1,74 +1,74 @@
 {
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "Dumpus | Statistikk for Discord",
+    "description": "Få detaljert innsikt og statistikk for din Discord-bruker"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "Laster inn...",
+      "description": "Vennligst vent."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "Gå videre",
+      "/intro/1": "Forstått!",
+      "/intro/2": "Fantastisk!",
+      "/intro/3": "La oss hente datapakken min!",
+      "/setup": "Forstått!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "Tilbake",
+      "trust": "Hvorfor skal jeg stole på appen?",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "Dumpus er 100% åpen kildekode. Du kan lese gjennom koden på [GitHub](https://github.com/dumpus-app/dumpus-app), og til og med kjøre din egen server.",
+        "Vi har også en helt [client-side webapp](https://ddpe.androz2091.fr), med færre egenskaper men uten noen eksterne API-er.",
+        "Appen fungerer uten noe lesbar data lagret på det eksterne API-et. Hvis du uansett har noen spørsmål, ta gjerne kontakt med oss på contact@dumpus.app."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "30DaysDelay": "Husk at det kan ta opptil 30 dager å motta e-posten. Vær tolmodig!",
+      "getData": "Hvordan skaffer jeg datapakken?"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "Velkommen til Dumpus",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "Steg {{n}}",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "Oppsummering",
+        "Be om dataene dine",
+        "Start analysen"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "Hvordan fungerer Dumpus?",
+        "description": "Discord registrerer hver handling du utfører på appen deres i \"Datapakken\". Dumpus analyserer denne pakken for å generere statistikk og informasjon om kontoen din."
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "Kan jeg stole på Dumpus?",
+        "description": "Denne \"Datapakken\" inneholder sensitiv informasjon. Derfor kan hvem som helst kan lese kildekoden vår og se hva vi gjør med den (100% åpen kildekode). Selv om vi tilbyr en gratis behandlingsserver, kan du bruke din egen server for å få full kontroll over dataene dine."
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "Del det med vennene dine!",
+        "description": "Selv om statistikk er morsomt å se, er det enda morsommere å sammenligne med vennene dine. Derfor har vi gjort det enkelt å dele statistikken din med vennene dine."
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "Hvordan skaffer jeg datapakken min?",
+      "description": "Velg et operativsystem for å komme i gang.",
       "data": {
         "android": {
           "display": "Android",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Åpne Discord-innstillingene dine",
               "image": "/assets/onboarding/en/android/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Åpne fanen \"Personvern og sikkerhet\"",
               "image": "/assets/onboarding/en/android/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Trykk på \"Be om data\"",
               "image": "/assets/onboarding/en/android/step3.png"
             }
           ]
@@ -77,32 +77,32 @@
           "display": "iOS",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Åpne Discord-innstillingene dine",
               "image": "/assets/onboarding/en/ios/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Åpne fanen \"Personvern og sikkerhet\"",
               "image": "/assets/onboarding/en/ios/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Trykk på \"Be om data\"",
               "image": "/assets/onboarding/en/ios/step3.png"
             }
           ]
         },
         "desktop": {
-          "display": "Desktop",
+          "display": "Datamaskin",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Åpne Discord-innstillingene dine",
               "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Åpne fanen \"Personvern og sikkerhet\"",
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Trykk på \"Be om data\"",
               "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
@@ -110,33 +110,33 @@
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "Last opp datapakken din",
+      "description": "Velg din foretrukkede metode.",
+      "method": "Metode {{n}}",
+      "noPackageYet": "Ingen datapakke enda?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
-          "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "title": "Skriv inn din Discord-lenke",
+          "description": "Du kan skaffe den fra e-posten som er mottatt fra Discord. Kopier lenken fra knappen som sier \"Du kan laste den ned her\".",
+          "discordLink": "Discord-lenke",
+          "advanced": "Avansert",
+          "backendURL": "Backend-URL",
+          "optional": "valgfritt",
+          "backendURLHint": "Din egen server-URL for åpen kildekode",
+          "notice": "Ved å fortsette, godtar du våre [retningslinjer for personvern](/privacy) og [vilkår](/terms).",
+          "explore": "Utforsk!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "Påkrevd",
+            "url": "Ugyldig URL",
+            "startWith": "Lenken må starte med {{url}}",
+            "emptyKey": "UPN-nøkkel kan ikke være tom"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Overfør e-posten (snart)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Overfør e-posten mottatt fra Discord til **process@dumpus.app**. Vi sender deg en lenke når den er klar.",
+            "Ses snart!"
           ]
         },
         "demo": {
@@ -146,39 +146,39 @@
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "Du er i køen!",
+        "why": "Hvorfor er det en kø?",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "Dumpus er en gratis tjeneste, og vår server kan ikke analysere mer enn noen få datapakker samtidig.",
+          "Derfor har vi en kø for å sikre at alle kan bruke tjenesten.",
+          "Du kan sette opp en egen API-server for å unngå køen."
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "posisjon",
+        "waitingTime": "Anslått ventetid er",
+        "useBackend": "Bruk min egen server"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{value}} messages per day!",
-    "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "You spent about {{value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "messagesSent": "meldinger sendt",
+    "messagesSentPerDay": "Det er rundt {{value}} meldinger hver dag!",
+    "joinedServers": "servere lagt til",
+    "joinedServersDesc": "Vi har en ekte Discord-server utforsker!",
+    "knownUsers": "kjente brukere",
+    "knownUsersDesc": "Vel, du kjenner mange personer!",
+    "spentMoney": "brukt",
+    "spentMoneyDesc_positive": "Det er mye penger...!",
+    "spentMoneyDesc_empty": "Du er veldig sparsommelig!",
+    "appStarts": "programstart",
+    "appStartsPerDay": "Du åpner Discord cirka {{value}} ganger hver dag!",
+    "totalTimeSpent": "Du har brukt rundt {{value}} timer på Discord",
+    "avgSessionTime": "gjennomsnittstid"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count"
+  "sheerNumbers": "Rene tall",
+  "mostActiveDMs": "Mest aktive direktemeldinger",
+  "mostActiveServers": "Mest aktive servere",
+  "mostActiveChannels": "Mest aktive kanaler",
+  "discordHours": "Timene dine i Discord",
+  "activityTime": "Aktivitet over tid",
+  "messageSentCount": "Antall meldinger sendt"
 }
