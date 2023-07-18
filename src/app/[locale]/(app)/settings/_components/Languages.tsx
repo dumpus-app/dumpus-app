@@ -49,7 +49,7 @@ function LocalesList() {
                   as="span"
                   className="font-medium text-gray-400"
                 >
-                  {i18next.getFixedT(locale)("localeDisplay")}
+                  {new Intl.DisplayNames(['en'], {type: 'language'}).of(locale)}
                 </RadioGroup.Label>
                 <span
                   className={clsx(
@@ -138,7 +138,7 @@ export default function Languages() {
         <div className="px-2">
           <DetailCard
             onClick={() => setOpen(true)}
-            title={t("localeDisplay")}
+            title={new Intl.DisplayNames(['en'], {type: 'language'}).of(i18next.language)!}
             description={`${locales.length} available`}
             reverseTexts
             rightIcon={ChevronRightIcon}
