@@ -79,15 +79,15 @@
           "steps": [
             {
               "name": "Deschide setările din Discord",
-              "image": "/assets/onboarding/en/ios/step1.jpg"
+              "image": "/assets/onboarding/en/ios/step1.png"
             },
             {
               "name": "Deschide \"Confidențialitate și securitate\"",
-              "image": "/assets/onboarding/en/ios/step2.jpg"
+              "image": "/assets/onboarding/en/ios/step2.png"
             },
             {
               "name": "Apasă pe \"Solicită Date\"",
-              "image": "/assets/onboarding/en/ios/step3.jpg"
+              "image": "/assets/onboarding/en/ios/step3.png"
             }
           ]
         },
@@ -150,9 +150,9 @@
         "title": "Ești la coadă!",
         "why": "De ce este o coadă?",
         "whyContent": [
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
+          "That's why we have a queue, to make sure everyone can use the service.",
+          "You can self-host our API server to avoid the queue."
         ],
         "position": "poziție",
         "waitingTime": "Timpul de așteptare estimat este",
