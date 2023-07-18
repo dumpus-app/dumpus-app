@@ -1,75 +1,75 @@
 {
-  "localeDisplay": "English",
+  "localeDisplay": "Engleză",
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "Dumpus | Statistici pentru Discord",
+    "description": "Obține informații detaliate și statistici pentru contul tău Discord"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "Se încarcă...",
+      "description": "Te rog să aștepți."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "Să începem",
+      "/intro/1": "Am înțeles!",
+      "/intro/2": "Excelent!",
+      "/intro/3": "Hai să luăm pachetul meu!",
+      "/setup": "Am înțeles!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "Anterior",
+      "trust": "De ce ar trebui să am încredere în aplicația asta?",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "Dumpus este sursă deschisă 100%. Poți citi codul pe [GitHub](https://github.com/dumpus-app/dumpus-app), și chiar să găzduiești propriul server.",
+        "Noi avem de asemenea o completă [aplicație web la nivelul clientului](https://ddpe.androz2091.fr), cu puține caracteristici, dar fără un API extern.",
+        "Aplicația funcționează fără date care pot fi citite stocate pe API-ul extern. Dacă mai aveți întrebări, nu ezitați să ne contactați la contact@dumpus.app."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "30DaysDelay": "Rețineți că poate dura până la 30 de zile pentru a primi e-mailul. Fii răbdător!",
+      "getData": "Cum să îmi obțin datele?"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "Bun venit la Dumbus",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "Pasul {{n}}",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "Informare",
+        "Solicită datele tale",
+        "Începe analiza"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "Cum funcționează Dumpus?",
+        "description": "Discord înregistrează fiecare acțiune pe care o efectuați în aplicația sa în „Pachetul de date”. Dumpus analizează acest pachet pentru a genera statistici și informații despre contul tău."
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "Pot să am încredere în Dumpus?",
+        "description": "Acest „Pachet de date” este foarte sensibil. De aceea oricine poate citi codul nostru și poate vedea ce facem cu el (100% open source). Deși oferim un server de procesare gratuit, poți folosi propriul server pentru a păstra controlul deplin asupra datelor tale."
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "Împărtășește-l cu prietenii tăi!",
+        "description": "Deși statisticile sunt amuzante de văzut, sunt și mai distractive de comparat cu prietenii tăi. De aceea, am făcut ușor să împărtășești statisticile cu prietenii tăi."
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "Cum îmi iau pachetul de date?",
+      "description": "Selectați un sistem de operare pentru a începe.",
       "data": {
         "android": {
           "display": "Android",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Deschide setările din Discord",
               "image": "/assets/onboarding/en/android/step1.jpg"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Deschide \"Confidențialitate și securitate\"",
               "image": "/assets/onboarding/en/android/step2.jpg"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Apasă pe \"Solicită Date\"",
               "image": "/assets/onboarding/en/android/step3.jpg"
             }
           ]
@@ -78,15 +78,15 @@
           "display": "iOS",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Deschide setările din Discord",
               "image": "/assets/onboarding/en/ios/step1.jpg"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Deschide \"Confidențialitate și securitate\"",
               "image": "/assets/onboarding/en/ios/step2.jpg"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Apasă pe \"Solicită Date\"",
               "image": "/assets/onboarding/en/ios/step3.jpg"
             }
           ]
@@ -95,15 +95,15 @@
           "display": "Desktop",
           "steps": [
             {
-              "name": "Open your Discord settings",
+              "name": "Deschide setările din Discord",
               "image": "/assets/onboarding/en/desktop/step1.png"
             },
             {
-              "name": "Open the \"Privacy & Safety\" tab",
+              "name": "Deschide \"Confidențialitate și securitate\"",
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
+              "name": "Apasă pe \"Solicită Date\"",
               "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
@@ -111,33 +111,33 @@
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "Trimite Pachetul de Date",
+      "description": "Alegeți metoda preferată.",
+      "method": "Metoda {{n}}",
+      "noPackageYet": "Niciun pachet încă?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
+          "title": "Introdu linkul Discord",
+          "description": "Îl poți obține în e-mailul primit de la Discord. Copiați linkul de pe butonul intitulat **Il puteți descărca aici**.",
+          "discordLink": "Link-ul Discord",
+          "advanced": "Avansat",
           "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "optional": "opțional",
+          "backendURLHint": "Adresa URL a serverului open source găzduit",
+          "notice": "Continuând, sunteți de acord cu [politica noastră de confidențialitate](/privacy) și cu [termenii](/termenii).",
+          "explore": "Exploră!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "Necesar",
+            "url": "URL invalid",
+            "startWith": "Linkul trebuie să înceapă cu {{url}}",
+            "emptyKey": "Cheia UPN nu poate fi goală"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Transferă e-mailul (în curând)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Transferă e-mailul primit de la Discord la **process@dumpus.app**. Îți vom trimite un link când este gata.",
+            "Pe curând!"
           ]
         },
         "demo": {
@@ -147,39 +147,39 @@
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "Ești la coadă!",
+        "why": "De ce este o coadă?",
         "whyContent": [
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "poziție",
+        "waitingTime": "Timpul de așteptare estimat este",
+        "useBackend": "Folosește propriul meu backend"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "messagesSent": "mesaje trimise",
+    "messagesSentPerDay": "Adică aproximativ {{value}} mesaje pe zi!",
     "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "joinedServersDesc": "Avem un adevărat explorator de server Discord!",
+    "knownUsers": "utilizatori cunoscuți",
+    "knownUsersDesc": "Ei bine, cunoști o mulțime de oameni!",
+    "spentMoney": "cheltuiți",
+    "spentMoneyDesc_positive": "Sunt mulți bani...!",
+    "spentMoneyDesc_empty": "Ești o persoană gospodărească!",
     "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "You spent about {{value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "appStartsPerDay": "Tu deschizi Discord de aproximativ {{value}} ori pe zi!",
+    "totalTimeSpent": "Ai petrecut aproximativ {{value}} pe Discord",
+    "avgSessionTime": "timpul mediu de sesiune"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count"
+  "sheerNumbers": "Cifre simple",
+  "mostActiveDMs": "Cele mai active DM-uri",
+  "mostActiveServers": "Cele mai active servere",
+  "mostActiveChannels": "Cele mai active canale",
+  "discordHours": "Orele tale din Discord",
+  "activityTime": "Activitate de-a lungul timpului",
+  "messageSentCount": "Număr de mesaje trimise"
 }
