@@ -103,7 +103,8 @@
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Apasă pe \"Solicită Date\""
+              "name": "Apasă pe \"Solicită Date\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
             }
           ]
         }
