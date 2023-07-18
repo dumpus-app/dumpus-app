@@ -1,0 +1,184 @@
+{
+  "seo": {
+    "title": "Dumpus | Statistikk for Discord",
+    "description": "Få detaljert innsikt og statistikk for din Discord-bruker"
+  },
+  "global": {
+    "loading": {
+      "title": "Laster inn...",
+      "description": "Vennligst vent."
+    }
+  },
+  "onboarding": {
+    "routesLabels": {
+      "/": "Gå videre",
+      "/intro/1": "Forstått!",
+      "/intro/2": "Fantastisk!",
+      "/intro/3": "La oss hente datapakken min!",
+      "/setup": "Forstått!"
+    },
+    "shared": {
+      "previous": "Tilbake",
+      "trust": "Hvorfor skal jeg stole på appen?",
+      "trustContent": [
+        "Dumpus er 100% åpen kildekode. Du kan lese gjennom koden på [GitHub](https://github.com/dumpus-app/dumpus-app), og til og med kjøre din egen server.",
+        "Vi har også en helt [client-side webapp](https://ddpe.androz2091.fr), med færre egenskaper men uten noen eksterne API-er.",
+        "Appen fungerer uten noe lesbar data lagret på det eksterne API-et. Hvis du uansett har noen spørsmål, ta gjerne kontakt med oss på contact@dumpus.app."
+      ],
+      "30DaysDelay": "Husk at det kan ta opptil 30 dager å motta e-posten. Vær tolmodig!",
+      "getData": "Hvordan skaffer jeg datapakken?"
+    },
+    "/": {
+      "welcome": "Velkommen til Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Steg {{n}}",
+      "steps": [
+        "Oppsummering",
+        "Be om dataene dine",
+        "Start analysen"
+      ]
+    },
+    "slides": [
+      {
+        "title": "Hvordan fungerer Dumpus?",
+        "description": "Discord registrerer hver handling du utfører på appen deres i \"Datapakken\". Dumpus analyserer denne pakken for å generere statistikk og informasjon om kontoen din."
+      },
+      {
+        "title": "Kan jeg stole på Dumpus?",
+        "description": "Denne \"Datapakken\" inneholder sensitiv informasjon. Derfor kan hvem som helst kan lese kildekoden vår og se hva vi gjør med den (100% åpen kildekode). Selv om vi tilbyr en gratis behandlingsserver, kan du bruke din egen server for å få full kontroll over dataene dine."
+      },
+      {
+        "title": "Del det med vennene dine!",
+        "description": "Selv om statistikk er morsomt å se, er det enda morsommere å sammenligne med vennene dine. Derfor har vi gjort det enkelt å dele statistikken din med vennene dine."
+      }
+    ],
+    "setup": {
+      "title": "Hvordan skaffer jeg datapakken min?",
+      "description": "Velg et operativsystem for å komme i gang.",
+      "data": {
+        "android": {
+          "display": "Android",
+          "steps": [
+            {
+              "name": "Åpne Discord-innstillingene dine",
+              "image": "/assets/onboarding/en/android/step1.png"
+            },
+            {
+              "name": "Åpne fanen \"Personvern og sikkerhet\"",
+              "image": "/assets/onboarding/en/android/step2.png"
+            },
+            {
+              "name": "Trykk på \"Be om data\"",
+              "image": "/assets/onboarding/en/android/step3.png"
+            }
+          ]
+        },
+        "ios": {
+          "display": "iOS",
+          "steps": [
+            {
+              "name": "Åpne Discord-innstillingene dine",
+              "image": "/assets/onboarding/en/ios/step1.png"
+            },
+            {
+              "name": "Åpne fanen \"Personvern og sikkerhet\"",
+              "image": "/assets/onboarding/en/ios/step2.png"
+            },
+            {
+              "name": "Trykk på \"Be om data\"",
+              "image": "/assets/onboarding/en/ios/step3.png"
+            }
+          ]
+        },
+        "desktop": {
+          "display": "Datamaskin",
+          "steps": [
+            {
+              "name": "Åpne Discord-innstillingene dine",
+              "image": "/assets/onboarding/en/desktop/step1.png"
+            },
+            {
+              "name": "Åpne fanen \"Personvern og sikkerhet\"",
+              "image": "/assets/onboarding/en/desktop/step2.png"
+            },
+            {
+              "name": "Trykk på \"Be om data\"",
+              "image": "/assets/onboarding/en/desktop/step3.png"
+            }
+          ]
+        }
+      }
+    },
+    "access": {
+      "title": "Last opp datapakken din",
+      "description": "Velg din foretrukkede metode.",
+      "method": "Metode {{n}}",
+      "noPackageYet": "Ingen datapakke enda?",
+      "methods": {
+        "link": {
+          "title": "Skriv inn din Discord-lenke",
+          "description": "Du kan skaffe den fra e-posten som er mottatt fra Discord. Kopier lenken fra knappen som sier \"Du kan laste den ned her\".",
+          "discordLink": "Discord-lenke",
+          "advanced": "Avansert",
+          "backendURL": "Backend-URL",
+          "optional": "valgfritt",
+          "backendURLHint": "Din egen server-URL for åpen kildekode",
+          "notice": "Ved å fortsette, godtar du våre [retningslinjer for personvern](/privacy) og [vilkår](/terms).",
+          "explore": "Utforsk!",
+          "errors": {
+            "required": "Påkrevd",
+            "url": "Ugyldig URL",
+            "startWith": "Lenken må starte med {{url}}",
+            "emptyKey": "UPN-nøkkel kan ikke være tom"
+          }
+        },
+        "email": {
+          "title": "Overfør e-posten (snart)",
+          "content": [
+            "Overfør e-posten mottatt fra Discord til **process@dumpus.app**. Vi sender deg en lenke når den er klar.",
+            "Ses snart!"
+          ]
+        },
+        "demo": {
+          "title": "Demo"
+        }
+      }
+    },
+    "loading": {
+      "queue": {
+        "title": "Du er i køen!",
+        "why": "Hvorfor er det en kø?",
+        "whyContent": [
+          "Dumpus er en gratis tjeneste, og vår server kan ikke analysere mer enn noen få datapakker samtidig.",
+          "Derfor har vi en kø for å sikre at alle kan bruke tjenesten.",
+          "Du kan sette opp en egen API-server for å unngå køen."
+        ],
+        "position": "posisjon",
+        "waitingTime": "Anslått ventetid er",
+        "useBackend": "Bruk min egen server"
+      }
+    }
+  },
+  "stats": {
+    "messagesSent": "meldinger sendt",
+    "messagesSentPerDay": "Det er rundt {{value}} meldinger hver dag!",
+    "joinedServers": "servere lagt til",
+    "joinedServersDesc": "Vi har en ekte Discord-server utforsker!",
+    "knownUsers": "kjente brukere",
+    "knownUsersDesc": "Vel, du kjenner mange personer!",
+    "spentMoney": "brukt",
+    "spentMoneyDesc_positive": "Det er mye penger...!",
+    "spentMoneyDesc_empty": "Du er veldig sparsommelig!",
+    "appStarts": "programstart",
+    "appStartsPerDay": "Du åpner Discord cirka {{value}} ganger hver dag!",
+    "totalTimeSpent": "Du har brukt rundt {{value}} timer på Discord",
+    "avgSessionTime": "gjennomsnittstid"
+  },
+  "sheerNumbers": "Rene tall",
+  "mostActiveDMs": "Mest aktive direktemeldinger",
+  "mostActiveServers": "Mest aktive servere",
+  "mostActiveChannels": "Mest aktive kanaler",
+  "discordHours": "Timene dine i Discord",
+  "activityTime": "Aktivitet over tid",
+  "messageSentCount": "Antall meldinger sendt"
+}
