@@ -181,146 +181,148 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
         analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics') and name.endswith('.json')), None)
 
-        compute_time_per_line = []
-        for line in TextIOWrapper(zip.open(analytics_file_name)):
+        if analytics_file_name:
 
-            compute_time_per_line_start = time.time()
+            compute_time_per_line = []
+            for line in TextIOWrapper(zip.open(analytics_file_name)):
 
-            analytics_line_json = orjson.loads(line)
-            # count
-            analytics_line_count += 1
+                compute_time_per_line_start = time.time()
 
-            if not 'event_type' in analytics_line_json:
-                continue
+                analytics_line_json = orjson.loads(line)
+                # count
+                analytics_line_count += 1
 
-            try:
+                if not 'event_type' in analytics_line_json:
+                    continue
 
-                event_type = analytics_line_json['event_type']
+                try:
 
-                # voice channel logs
-                if event_type == 'join_voice_channel' or event_type == 'leave_voice_channel':
-                    voice_channel_logs.append({
-                        'timestamp': get_ts_string_parser(
-                            analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
-                        ).timestamp(),
-                        'event_type': event_type,
-                        'channel_id': analytics_line_json['channel_id'],
-                        'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
-                    })
+                    event_type = analytics_line_json['event_type']
 
-                if event_type == 'session_start' or event_type == 'session_end':
-                    session_logs.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                        'event_type': 'session_start' if event_type == 'session_start' else 'session_end',
-                        'os': analytics_line_json['os']
-                    })
-                
-                if event_type == 'guild_joined':
-                    guild_joined.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                        'guild_id': analytics_line_json['guild_id']
-                    })
+                    # voice channel logs
+                    if event_type == 'join_voice_channel' or event_type == 'leave_voice_channel':
+                        voice_channel_logs.append({
+                            'timestamp': get_ts_string_parser(
+                                analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
+                            ).timestamp(),
+                            'event_type': event_type,
+                            'channel_id': analytics_line_json['channel_id'],
+                            'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
+                        })
 
-                if event_type == 'bot_token_compromised':
-                    bot_token_compromised.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+                    if event_type == 'session_start' or event_type == 'session_end':
+                        session_logs.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'event_type': 'session_start' if event_type == 'session_start' else 'session_end',
+                            'os': analytics_line_json['os']
+                        })
+                    
+                    if event_type == 'guild_joined':
+                        guild_joined.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'guild_id': analytics_line_json['guild_id']
+                        })
 
-                if event_type == 'dev_portal_page_viewed':
-                    if analytics_line_json['page_name'].startswith('/docs/'):
-                        dev_portal_page_viewed.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+                    if event_type == 'bot_token_compromised':
+                        bot_token_compromised.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
-                if event_type == 'application_created':
-                    application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+                    if event_type == 'dev_portal_page_viewed':
+                        if analytics_line_json['page_name'].startswith('/docs/'):
+                            dev_portal_page_viewed.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
-                if event_type == 'email_opened':
-                    email_opened.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                    })
+                    if event_type == 'application_created':
+                        application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
 
-                if event_type == 'login_successful':
-                    login_successful.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'email_opened':
+                        email_opened.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        })
 
-                if event_type == 'user_avatar_updated':
-                    user_avatar_updated.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
-                
-                if event_type == 'app_crashed' or event_type == 'app_native_crash':
-                    app_crashed.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'login_successful':
+                        login_successful.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'oauth2_authorize_accepted':
-                    oauth2_authorize_accepted.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'user_avatar_updated':
+                        user_avatar_updated.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+                    
+                    if event_type == 'app_crashed' or event_type == 'app_native_crash':
+                        app_crashed.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'remote_auth_login':
-                    remote_auth_login.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'oauth2_authorize_accepted':
+                        oauth2_authorize_accepted.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'notification_clicked':
-                    notification_clicked.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'remote_auth_login':
+                        remote_auth_login.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'captcha_served':
-                    captcha_served.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'notification_clicked':
+                        notification_clicked.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'voice_message_recorded':
-                    voice_message_recorded.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'captcha_served':
+                        captcha_served.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'message_reported':
-                    message_reported.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'voice_message_recorded':
+                        voice_message_recorded.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'message_edited':
-                    message_edited.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'message_reported':
+                        message_reported.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'premium_upsell_viewed':
-                    premium_upsell_viewed.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
-                    })
+                    if event_type == 'message_edited':
+                        message_edited.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'application_command_used':
-                    if analytics_line_json['application_id'] == '-1' or 'guild_id' not in analytics_line_json:
-                        continue
-                    application_command_used.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                        'application_id': analytics_line_json['application_id'],
-                        'guild_id': analytics_line_json['guild_id']
-                    })
+                    if event_type == 'premium_upsell_viewed':
+                        premium_upsell_viewed.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
 
-                if event_type == 'add_reaction':
-                    add_reaction.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                        'user_id': analytics_line_json['user_id'],
-                        'channel_id': analytics_line_json['channel_id'],
-                        'emoji_name': analytics_line_json['emoji_name'],
-                        'is_custom_emoji': 'emoji_id' in analytics_line_json
-                    })
+                    if event_type == 'application_command_used':
+                        if analytics_line_json['application_id'] == '-1' or 'guild_id' not in analytics_line_json:
+                            continue
+                        application_command_used.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'application_id': analytics_line_json['application_id'],
+                            'guild_id': analytics_line_json['guild_id']
+                        })
 
-                if event_type == 'app_opened':
-                    app_opened.append({
-                        'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                        'os': analytics_line_json['os']
-                    })
+                    if event_type == 'add_reaction':
+                        add_reaction.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'user_id': analytics_line_json['user_id'],
+                            'channel_id': analytics_line_json['channel_id'],
+                            'emoji_name': analytics_line_json['emoji_name'],
+                            'is_custom_emoji': 'emoji_id' in analytics_line_json
+                        })
 
-            except:
-                print('Error while parsing analytics line: ')
-                print(analytics_line_json)
-                raise
+                    if event_type == 'app_opened':
+                        app_opened.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'os': analytics_line_json['os']
+                        })
 
-            compute_time_per_line.append(time.time() - compute_time_per_line_start)
+                except:
+                    print('Error while parsing analytics line: ')
+                    print(analytics_line_json)
+                    raise
+
+                compute_time_per_line.append(time.time() - compute_time_per_line_start)
 
         print(f'Analytics data: {time.time() - start}')
         print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
