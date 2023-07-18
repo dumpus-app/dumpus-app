@@ -324,8 +324,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
                 compute_time_per_line.append(time.time() - compute_time_per_line_start)
 
+            print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
+
         print(f'Analytics data: {time.time() - start}')
-        print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
         print(f'Session logs: {len(session_logs)}')
 
         '''
