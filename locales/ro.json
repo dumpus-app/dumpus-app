@@ -111,9 +111,9 @@
     },
     "access": {
       "title": "Trimite Pachetul de Date",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "description": "Alegeți metoda preferată.",
+      "method": "Metoda {{n}}",
+      "noPackageYet": "Niciun pachet încă?",
       "methods": {
         "link": {
           "title": "Enter your Discord link",
@@ -177,8 +177,8 @@
   "sheerNumbers": "Sheer numbers",
   "mostActiveDMs": "Most active DMs",
   "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
+  "mostActiveChannels": "Cele mai active canale",
+  "discordHours": "Orele tale din Discord",
   "activityTime": "Activity over time",
   "messageSentCount": "Message sent count"
 }
