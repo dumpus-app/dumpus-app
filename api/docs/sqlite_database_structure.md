@@ -1,69 +1,33 @@
 Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.
 
 
+This code is about the analysis of Discord data. More specifically, it creates several tables (in SQLite format) storing different kinds of information, including activities, direct messages, payments, etc., from Discord's package data.
+
 **activity table**
 |Column|Description|
-|------|-----------|
-|event_name|The name of the event/activity conducted. e.g., "message_sent", "guild_joined", "application_command_used", "add_reaction", etc.|
-|day|The date when the event/activity conducted (formatted as "Year-Month-Day").|
-|hour|The hour when the event/activity conducted (24-hour format).|
-|occurrence_count|The number of times the event/activity occurred.|
-|associated_channel_id|The id of the channel associated with the event. Could be null for events not related to a specific channel.|
-|associated_guild_id|The id of the guild associated with the event. Could be null for events not related to a specific guild.|
-|associated_user_id|The id of the user associated with the event. Could be null for events not related to a user.|
-|extra_field_1|Additional information related to the event (varies based on event_type).|
-|extra_field_2|More additional information related to the event (varies based on event_type).|
+|---|---|
+|event_name|The type of event/activity which happened. Could include messages sent, reactions added, app opens, etc.|
+|day|The date when the event took place, in the format 'YYYY-MM-DD.'|
+|hour|The hour (in 24h format) when the event took place.|
+|occurence_count|The number of times this specific event occured.|
+|associated_channel_id|The unique identifier of the Discord channel associated with the event.|
+|associated_guild_id|The unique identifier of the Discord Guild (server) associated with the event.|
+|associated_user_id|The unique identifier of a Discord user associated with the event.|
+|extra_field_1|Extra data related to the event; its value depends on event_name.|
+|extra_field_2|Additional data related to the event; its value depends on event_name.|
 
 **dm_channels_data table**
 |Column|Description|
-|------|-----------|
-|channel_id|The unique id of the direct message (DM) channel.|
-|dm_user_id|The id of the user in the DM channel.|
-|user_name|The username of the user in the DM channel.|
-|display_name|The display name of the user in the DM channel.|
-|user_avatar_url|The URL of the user's avatar in the DM channel.|
-|total_message_count|The total number of messages exchanged in the DM channel.|
-|total_voice_channel_duration|The total duration spent in voice channels in this DM channel.|
-|sentiment_score|The sentiment score of the messages exchanged in the DM channel.|
+|---|---|
+|channel_id|The unique identifier of the direct message channel.|
+|dm_user_id|The unique identifier of a user participating in the direct message conversation.|
+|user_name|The name of the Discord user.|
+|display_name|Displayed name of the Discord user.|
+|user_avatar_url|URL of the Discord user's avatar.|
+|total_message_count|Total number of messages sent in this direct message channel.|
+|total_voice_channel_duration|Total duration of voice calls in this direct message channel.|
+|sentiment_score|Sentiment analysis score of the messages in this direct message channel.|
 
-**guild_channels_data table**
-|Column|Description|
-|------|-----------|
-|channel_id|The unique id of the guild channel.|
-|guild_id|The id of the guild associated with the channel.|
-|channel_name|The name of the guild channel.|
-|total_message_count|The total number of messages exchanged in the guild channel.|
-|total_voice_channel_duration|The total duration spent in voice channels in this guild channel.|
+The rest of the tables follow a similar pattern, storing unique identifiers for the pertinent data (e.g., payment id, guild id, channel id, user id), along with the information about those data points (like payment amount, date, description, channel name, message count, and so on). 
 
-**guilds table**
-|Column|Description|
-|------|-----------|
-|guild_id|The unique id of the guild.|
-|guild_name|The name of the guild.|
-|total_message_count|The total number of messages exchanged in the guild.|
-
-**payments table**
-|Column|Description|
-|------|-----------|
-|payment_id|The unique id of the payment transaction.|
-|payment_date|The date when the payment was made (formatted as "Year-Month-Day").|
-|payment_amount|The amount of the payment.|
-|payment_currency|The currency of the payment.|
-|payment_description|The description of the payment.|
-
-**voice_sessions table**
-|Column|Description|
-|------|-----------|
-|channel_id|The unique id of the channel where the voice session took place.|
-|guild_id|The id of the guild where the voice session took place.|
-|duration_mins|The duration of the voice session in minutes.|
-|started_date|The start date of the voice session.|
-|ended_date|The end date of the voice session.|
-
-**sessions table**
-|Column|Description|
-|------|-----------|
-|duration_mins|The duration of the session in minutes.|
-|started_date|The start date of the session.|
-|ended_date|The end date of the session.|
-|device_os|The operating system of the device used during the session.|
+This information can further be used for statistical analysis, machine learning algorithms, sentiment analysis, and other data analysis tasks.
