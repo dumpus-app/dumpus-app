@@ -33,7 +33,11 @@
       "welcome": "Welcome to Dumpus",
       "description": "$t(seo.description)",
       "step": "Step {{n}}",
-      "steps": ["Briefing", "Request your data", "Start the analysis"]
+      "steps": [
+        "Briefing",
+        "Request your data",
+        "Start the analysis"
+      ]
     },
     "slides": [
       {
@@ -99,8 +103,7 @@
               "image": "/assets/onboarding/en/desktop/step2.png"
             },
             {
-              "name": "Click on \"Request Data\"",
-              "image": "/assets/onboarding/en/desktop/step3.png"
+              "name": "Click on \"Request Data\""
             }
           ]
         }
