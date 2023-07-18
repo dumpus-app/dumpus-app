@@ -94,6 +94,8 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     start = time.time()
 
+    is_partial = True
+
     analytics_line_count = 0
 
     session_logs = []
@@ -182,6 +184,8 @@ def read_analytics_file(package_status_id, package_id, link, session):
         analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics') and name.endswith('.json')), None)
 
         if analytics_file_name:
+
+            is_partial = False
 
             compute_time_per_line = []
             for line in TextIOWrapper(zip.open(analytics_file_name)):
@@ -752,9 +756,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     cur.execute('''
         INSERT INTO package_data
-        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url)
-        VALUES (?, ?, ?, ?, ?, ?);
-    ''', (package_id, '0.1.0',  user_data['id'], user_data['username'], user_data['display_name'], user_data['avatar_url']))
+        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url, package_is_partial)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    ''', (package_id, '0.1.0',  user_data['id'], user_data['username'], user_data['display_name'], user_data['avatar_url']), 1 if is_partial else 0)
 
     conn.commit()
 

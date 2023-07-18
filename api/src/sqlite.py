@@ -117,7 +117,8 @@ def create_new_empty_database():
             package_owner_id TEXT NOT NULL,
             package_owner_name TEXT NOT NULL,
             package_owner_display_name TEXT,
-            package_owner_avatar_url TEXT
+            package_owner_avatar_url TEXT,
+            package_is_partial BOOLEAN NOT NULL DEFAULT 0,
         )
     ''')
 
@@ -291,9 +292,9 @@ def generate_demo_database():
 
     cur.execute('''
         INSERT INTO package_data
-        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url)
-        VALUES (?, ?, ?, ?, ?, ?);
-    ''', ('demo', '0.1.0', generate_random_18_digit_id(), 'wumpus', 'Wumpus', 'https://cdn.discordapp.com/embed/avatars/0.png'))
+        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url, package_is_partial)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    ''', ('demo', '0.1.0', generate_random_18_digit_id(), 'wumpus', 'Wumpus', 'https://cdn.discordapp.com/embed/avatars/0.png'), 0)
 
     conn.commit()
 
