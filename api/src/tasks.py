@@ -583,107 +583,122 @@ def read_analytics_file(package_status_id, package_id, link, session):
             hour = int(timestamp.strftime('%H'))
             activity_data.append(('guild_joined', day, hour, count, None, guild_id, None, None, None))
 
-    application_command_used_pdf = pd.DataFrame(application_command_used)
-    application_command_used_pdf_grouped = application_command_used_pdf.groupby(['guild_id', 'application_id'])
-    for (guild_id, application_id), group in application_command_used_pdf_grouped:
-        # check if first element includes a guild_id key
-        entries = count_dates_day(group['timestamp'])
-        for timestamp, count in entries.items():
+    if (len(application_command_used) > 0):
+        application_command_used_pdf = pd.DataFrame(application_command_used)
+        application_command_used_pdf_grouped = application_command_used_pdf.groupby(['guild_id', 'application_id'])
+        for (guild_id, application_id), group in application_command_used_pdf_grouped:
+            # check if first element includes a guild_id key
+            entries = count_dates_day(group['timestamp'])
+            for timestamp, count in entries.items():
+                day = timestamp.strftime('%Y-%m-%d')
+                hour = int(timestamp.strftime('%H'))
+                activity_data.append(('application_command_used', day, hour, count, None, guild_id, application_id, None, None))
+
+    if (len(add_reaction) > 0):
+        add_reaction_pdf = pd.DataFrame(add_reaction)
+        add_reaction_pdf_grouped = add_reaction_pdf.groupby(['channel_id', 'emoji_name'])
+        for (channel_id, emoji_name), group in add_reaction_pdf_grouped:
+            # check with first item if is custom
+            is_custom = '1' if group.iloc[0]['is_custom_emoji'] is True else '0'
+            entries = count_dates_day(group['timestamp'])
+            for timestamp, count in entries.items():
+                day = timestamp.strftime('%Y-%m-%d')
+                hour = int(timestamp.strftime('%H'))
+                activity_data.append(('add_reaction', day, hour, count, channel_id, None, None, emoji_name, is_custom))
+
+    if (len(app_opened) > 0):
+        app_opened_pdf = pd.DataFrame(app_opened)
+        app_opened_pdf_grouped = app_opened_pdf.groupby(['os'])
+        for (os,), group in app_opened_pdf_grouped:
+            entries = count_dates_day(group['timestamp'])
+            for timestamp, count in entries.items():
+                day = timestamp.strftime('%Y-%m-%d')
+                hour = int(timestamp.strftime('%H'))
+                activity_data.append(('app_opened', day, hour, count, None, None, None, os, None))
+
+    if (len(email_opened) > 0):
+        email_opened_entries = count_dates_day(map(lambda ev: ev['timestamp'], email_opened))
+        for timestamp, count in email_opened_entries.items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('application_command_used', day, hour, count, None, guild_id, application_id, None, None))
+            activity_data.append(('email_opened', day, hour, count, None, None, None, None, None))
 
-    add_reaction_pdf = pd.DataFrame(add_reaction)
-    add_reaction_pdf_grouped = add_reaction_pdf.groupby(['channel_id', 'emoji_name'])
-    for (channel_id, emoji_name), group in add_reaction_pdf_grouped:
-        # check with first item if is custom
-        is_custom = '1' if group.iloc[0]['is_custom_emoji'] is True else '0'
-        entries = count_dates_day(group['timestamp'])
-        for timestamp, count in entries.items():
+    if (len(login_successful) > 0):
+        login_successful_entries = count_dates_day(map(lambda ev: ev['timestamp'], login_successful))
+        for timestamp, count in login_successful_entries.items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('add_reaction', day, hour, count, channel_id, None, None, emoji_name, is_custom))
+            activity_data.append(('login_successful', day, hour, count, None, None, None, None, None))
 
-    app_opened_pdf = pd.DataFrame(app_opened)
-    app_opened_pdf_grouped = app_opened_pdf.groupby(['os'])
-    for (os,), group in app_opened_pdf_grouped:
-        entries = count_dates_day(group['timestamp'])
-        for timestamp, count in entries.items():
+    if (len(app_crashed) > 0):
+        app_crashed_entries = count_dates_day(map(lambda ev: ev['timestamp'], app_crashed))
+        for timestamp, count in app_crashed_entries.items():
             day = timestamp.strftime('%Y-%m-%d')
             hour = int(timestamp.strftime('%H'))
-            activity_data.append(('app_opened', day, hour, count, None, None, None, os, None))
+            activity_data.append(('app_crashed', day, hour, count, None, None, None, None, None))
 
-    email_opened_entries = count_dates_day(map(lambda ev: ev['timestamp'], email_opened))
-    for timestamp, count in email_opened_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('email_opened', day, hour, count, None, None, None, None, None))
+    if (len(user_avatar_updated) > 0):
+        user_avatar_updated_entries = count_dates_day(map(lambda ev: ev['timestamp'], user_avatar_updated))
+        for timestamp, count in user_avatar_updated_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('user_avatar_updated', day, hour, count, None, None, None, None, None))
 
-    login_successful_entries = count_dates_day(map(lambda ev: ev['timestamp'], login_successful))
-    for timestamp, count in login_successful_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('login_successful', day, hour, count, None, None, None, None, None))
+    if (len(bot_token_compromised) > 0):
+        oauth2_authorize_accepted_entries = count_dates_day(map(lambda ev: ev['timestamp'], oauth2_authorize_accepted))
+        for timestamp, count in oauth2_authorize_accepted_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('oauth2_authorize_accepted', day, hour, count, None, None, None, None, None))
 
-    app_crashed_entries = count_dates_day(map(lambda ev: ev['timestamp'], app_crashed))
-    for timestamp, count in app_crashed_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('app_crashed', day, hour, count, None, None, None, None, None))
+    if (len(remote_auth_login) > 0):
+        remote_auth_login_entries = count_dates_day(map(lambda ev: ev['timestamp'], remote_auth_login))
+        for timestamp, count in remote_auth_login_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('remote_auth_login', day, hour, count, None, None, None, None, None))
 
-    user_avatar_updated_entries = count_dates_day(map(lambda ev: ev['timestamp'], user_avatar_updated))
-    for timestamp, count in user_avatar_updated_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('user_avatar_updated', day, hour, count, None, None, None, None, None))
+    if (len(dev_portal_page_viewed) > 0):
+        notification_clicked_entries = count_dates_day(map(lambda ev: ev['timestamp'], notification_clicked))
+        for timestamp, count in notification_clicked_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('notification_clicked', day, hour, count, None, None, None, None, None))
 
-    oauth2_authorize_accepted_entries = count_dates_day(map(lambda ev: ev['timestamp'], oauth2_authorize_accepted))
-    for timestamp, count in oauth2_authorize_accepted_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('oauth2_authorize_accepted', day, hour, count, None, None, None, None, None))
+    if (len(captcha_served) > 0):
+        captcha_served_entries = count_dates_day(map(lambda ev: ev['timestamp'], captcha_served))
+        for timestamp, count in captcha_served_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('captcha_served', day, hour, count, None, None, None, None, None))
 
-    remote_auth_login_entries = count_dates_day(map(lambda ev: ev['timestamp'], remote_auth_login))
-    for timestamp, count in remote_auth_login_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('remote_auth_login', day, hour, count, None, None, None, None, None))
+    if (len(application_created) > 0):
+        voice_message_recorded_entries = count_dates_day(map(lambda ev: ev['timestamp'], voice_message_recorded))
+        for timestamp, count in voice_message_recorded_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('voice_message_recorded', day, hour, count, None, None, None, None, None))
 
-    notification_clicked_entries = count_dates_day(map(lambda ev: ev['timestamp'], notification_clicked))
-    for timestamp, count in notification_clicked_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('notification_clicked', day, hour, count, None, None, None, None, None))
+    if (len(message_reported) > 0):
+        message_reported_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_reported))
+        for timestamp, count in message_reported_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('message_reported', day, hour, count, None, None, None, None, None))
 
-    captcha_served_entries = count_dates_day(map(lambda ev: ev['timestamp'], captcha_served))
-    for timestamp, count in captcha_served_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('captcha_served', day, hour, count, None, None, None, None, None))
+    if (len(message_edited) > 0):
+        message_edited_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_edited))
+        for timestamp, count in message_edited_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('message_edited', day, hour, count, None, None, None, None, None))
 
-    voice_message_recorded_entries = count_dates_day(map(lambda ev: ev['timestamp'], voice_message_recorded))
-    for timestamp, count in voice_message_recorded_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('voice_message_recorded', day, hour, count, None, None, None, None, None))
-
-    message_reported_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_reported))
-    for timestamp, count in message_reported_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('message_reported', day, hour, count, None, None, None, None, None))
-
-    message_edited_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_edited))
-    for timestamp, count in message_edited_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('message_edited', day, hour, count, None, None, None, None, None))
-
-    premium_upsell_viewed_entries = count_dates_day(map(lambda ev: ev['timestamp'], premium_upsell_viewed))
-    for timestamp, count in premium_upsell_viewed_entries.items():
-        day = timestamp.strftime('%Y-%m-%d')
-        hour = int(timestamp.strftime('%H'))
-        activity_data.append(('premium_upsell_viewed', day, hour, count, None, None, None, None, None))
+    if (len(premium_upsell_viewed) > 0):
+        premium_upsell_viewed_entries = count_dates_day(map(lambda ev: ev['timestamp'], premium_upsell_viewed))
+        for timestamp, count in premium_upsell_viewed_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('premium_upsell_viewed', day, hour, count, None, None, None, None, None))
 
     activity_query = '''
         INSERT INTO activity
