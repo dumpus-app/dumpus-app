@@ -10,6 +10,7 @@ import useWidgetAPI from "~/hooks/use-widget-api";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
+import useFocus from "~/hooks/use-focus";
 
 function GuildCard({
   guild,
@@ -26,6 +27,8 @@ function GuildCard({
     staleTime: Infinity,
   });
 
+  const focused = useFocus();
+
   return (
     <AvatarCard
       name={guild.guild_name}
@@ -36,7 +39,14 @@ function GuildCard({
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-full">
             <Image
-              src={data.icon_url}
+              src={
+                data.icon_url.includes(".gif")
+                  ? data.icon_url.replace(
+                      focused ? ".webp" : ".gif",
+                      focused ? ".gif" : ".webp"
+                    )
+                  : data.icon_url
+              }
               alt={`${data.name}'s avatar`}
               fill
               className="rounded-lg object-cover object-center"
@@ -62,7 +72,7 @@ export default function TopGuilds() {
   const data = useTopGuildsData().getData({});
 
   return (
-    <Section title={t('mostActiveServers')} href="/top/guilds">
+    <Section title={t("mostActiveServers")} href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((guild) => (
