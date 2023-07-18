@@ -249,7 +249,7 @@ def get_avatar(package_id, user_id):
         if not user:
             return make_response('', 500)
         
-        avatar_extension = 'avatar' in user and user['avatar'].startswith('a_') and 'gif' or 'png'
+        avatar_extension = 'avatar' in user and user['avatar'].startswith('a_') and 'gif' or 'webp'
         avatar_url = 'avatar' in user and f'https://cdn.discordapp.com/avatars/{user_id}/{user["avatar"]}.{avatar_extension}' or None
 
         return jsonify({
