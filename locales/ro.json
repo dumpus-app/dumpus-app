@@ -116,10 +116,10 @@
       "noPackageYet": "Niciun pachet încă?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
+          "title": "Introdu linkul Discord",
+          "description": "Îl poți obține în e-mailul primit de la Discord. Copiați linkul de pe butonul intitulat **Il puteți descărca aici**.",
+          "discordLink": "Link-ul Discord",
+          "advanced": "Avansat",
           "backendURL": "Backend URL",
           "optional": "optional",
           "backendURLHint": "Your own hosted open source server URL",
