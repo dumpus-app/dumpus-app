@@ -146,9 +146,9 @@
         "title": "You're in the queue!",
         "why": "Why is there a queue?",
         "whyContent": [
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore.",
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur amet labore."
+          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
+          "That's why we have a queue, to make sure everyone can use the service.",
+          "You can self-host our API server to avoid the queue."
         ],
         "position": "position",
         "waitingTime": "Estimated waiting time is",
