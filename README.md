@@ -27,16 +27,17 @@ or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux buil
 This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.androz2091.fr), a.k.a **DDPE**. You can see the improvements below:
 
 
-| Feature | Dumpus (Supporter version) | Dumpus (Free version) | DDPE |
-| --- | --- | --- | --- |
-| **100% open source** | ✅ | ✅ | ✅ |
-| **Easy, free distribution** | 🟠 (€1.29, free if [self-hosted](./.github/SELF_HOSTING.md)) | ✅ | ✅ |
-| **Cross-platform** | ✅ | ✅ | ❌ (web only) |
-| **Server-side processing** | ✅ | ✅ | ❌ (only work on really powerful devices) |
-| **Advanced statistics** | ✅ | ✅ | ❌ (only basic analysis) |
-| **More than 10 top DMs/servers/channels** | ✅ (unlimited) | ✅ (up to 20) | ❌ (10 max) |
-| **Shareable stats card** | ✅ | ✅ | ❌ |
-| **Multi-packages handling** | ✅ | ✅ | ❌ |
+| Feature | Dumpus | DDPE |
+| --- | --- | --- |
+| **100% open source** | ✅ | ✅ |
+| **Cross-platform** | ✅ | ❌ (web only) |
+| **Server-side processing** | ✅ | ❌ (only work on really powerful devices) |
+| **Advanced statistics** | ✅ | ❌ (only basic analysis) |
+| **More than 10 top DMs/servers/channels** | ✅ (up to 20) | ❌ (10 max) |
+| **Shareable stats card** | ✅ | ❌ |
+| **Multi-packages handling** | ✅ | ❌ |
+
+Users that self-host the project can access unlimited top (instead of 20) for free. When using our hosted API, users can buy the `Supporter` version to get the access.
 
 ## Self-hosting
 
