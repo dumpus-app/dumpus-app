@@ -9,6 +9,7 @@ import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import useUserDetails from "~/hooks/use-user-details";
 import { avatarURLFallback } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
+import useFocus from "~/hooks/use-focus";
 
 function DMCard({
   dm,
@@ -21,7 +22,14 @@ function DMCard({
 
   const username = dm.user_name;
   const displayName = data?.display_name || username;
-  const avatarURL = data?.avatar_url || dm.user_avatar_url;
+  const userDataAvatar = data?.avatar_url || dm.user_avatar_url;
+  const focused = useFocus();
+  const avatarURL = !userDataAvatar?.includes(".gif")
+    ? userDataAvatar
+    : userDataAvatar.replace(
+        focused ? ".png" : ".gif",
+        focused ? ".gif" : ".png"
+      );
 
   return (
     <AvatarCard
@@ -44,7 +52,6 @@ function DMCard({
 }
 
 export default function TopDMs() {
-  
   const { t } = useTranslation();
 
   const data = useTopDMsData().getData({});
@@ -64,7 +71,7 @@ export default function TopDMs() {
   })();
 
   return (
-    <Section title={t('mostActiveDMs')} href="/top/dms">
+    <Section title={t("mostActiveDMs")} href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((dm) => (
