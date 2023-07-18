@@ -3,6 +3,7 @@
 import i18next from "i18next";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { VERSION } from "~/constants";
 import useSQLInit from "~/hooks/use-sql-init";
 import { useAppStore } from "~/stores";
 import { createLogger } from "~/utils/logger";
@@ -83,13 +84,16 @@ export default function LoadingScreen({
 
   if (loading)
     return (
-      <div className="my-auto flex flex-col items-center space-y-4">
-        <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
-        <div className="max-w-xs text-center">
-          <h1 className="text-xl font-bold text-white">{title}</h1>
-          <p className="mt-2 text-gray-400">{description}</p>
+      <>
+        <div className="my-auto flex flex-col items-center space-y-4">
+          <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
+          <div className="max-w-xs text-center">
+            <h1 className="text-xl font-bold text-white">{title}</h1>
+            <p className="mt-2 text-gray-400">{description}</p>
+          </div>
         </div>
-      </div>
+        <div className="mb-2 text-center text-gray-400">{VERSION}</div>
+      </>
     );
 
   return <>{children}</>;

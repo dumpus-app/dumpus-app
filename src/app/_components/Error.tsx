@@ -2,6 +2,7 @@
 
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import Button from "~/components/Button";
+import { VERSION } from "~/constants";
 import { NextErrorProps } from "~/types";
 
 export default function Error({ error, reset }: NextErrorProps) {
@@ -37,6 +38,7 @@ export default function Error({ error, reset }: NextErrorProps) {
 ## Error
 
 \`\`\`bash
+Version: ${VERSION}
 Name: ${error.name}
 Message: ${error.message}
 Cause: ${error.cause || "none"}

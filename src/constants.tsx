@@ -4,6 +4,9 @@ import {
   ChartBarIcon,
   ChartPieIcon,
 } from "@heroicons/react/24/solid";
+import packageJson from "../package.json";
+
+const { version } = packageJson;
 
 export const links = [
   {
@@ -39,3 +42,16 @@ export const BASE_URL = "https://web.dumpus.app";
 export const SITE_NAME = "Dumpus";
 
 export const ESTIMATED_QUEUE_DURATION = 60 * 2 * 1000; // 2m in ms
+
+const _nodeEnv = (() => {
+  switch (process.env.NODE_ENV) {
+    case "development":
+      return "dev";
+    case "production":
+      return "prod";
+    default:
+      return process.env.NODE_ENV;
+  }
+})();
+
+export const VERSION = `v${version}-${process.env.NEXT_PUBLIC_DEPLOY_ENV} (${_nodeEnv})`;

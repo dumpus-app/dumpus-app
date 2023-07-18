@@ -45,7 +45,7 @@ export default forwardRef<HTMLButtonElement, ButtonProps>(function Button(
 
   return (
     <Comp
-      ref={ref as any}
+      ref={ref}
       className={clsx(buttonVariants({ variant, size }), className)}
       type={type}
       {...props}
