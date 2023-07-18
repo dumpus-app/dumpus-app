@@ -1,5 +1,4 @@
 {
-  "localeDisplay": "Engleză",
   "seo": {
     "title": "Dumpus | Statistici pentru Discord",
     "description": "Obține informații detaliate și statistici pentru contul tău Discord"
@@ -62,15 +61,15 @@
           "steps": [
             {
               "name": "Deschide setările din Discord",
-              "image": "/assets/onboarding/en/android/step1.jpg"
+              "image": "/assets/onboarding/en/android/step1.png"
             },
             {
               "name": "Deschide \"Confidențialitate și securitate\"",
-              "image": "/assets/onboarding/en/android/step2.jpg"
+              "image": "/assets/onboarding/en/android/step2.png"
             },
             {
               "name": "Apasă pe \"Solicită Date\"",
-              "image": "/assets/onboarding/en/android/step3.jpg"
+              "image": "/assets/onboarding/en/android/step3.png"
             }
           ]
         },
