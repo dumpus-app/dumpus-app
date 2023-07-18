@@ -1,29 +1,29 @@
 {
-  "localeDisplay": "हिंदी",
+  "localeDisplay": "English",
   "seo": {
-    "title": "डंपस | डिस्कॉर्ड के लिए स्टैट्स",
-    "description": "अपने डिस्कॉर्ड खाते के लिए विस्तृत जानकारी और आँकड़े प्राप्त करें"
+    "title": "Dumpus | Stats for Discord",
+    "description": "Get detailed insights and stats for your Discord account"
   },
   "global": {
     "loading": {
-      "title": "लोड हो रहा है...",
-      "description": "कृपया प्रतीक्षा करें।"
+      "title": "Loading...",
+      "description": "Please wait."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "चल दर",
-      "/intro/1": "समझ गया!",
-      "/intro/2": "शानदार!",
-      "/intro/3": "चलो मेरा पैकेज ले लो!",
-      "/setup": "समझ गया!"
+      "/": "Let's go",
+      "/intro/1": "Got it!",
+      "/intro/2": "Awesome!",
+      "/intro/3": "Let's get my package!",
+      "/setup": "Got it!"
     },
     "shared": {
-      "previous": "पिछला",
-      "trust": "मुझे इस ऐप पर भरोसा क्यों करना चाहिए?",
+      "previous": "Previous",
+      "trust": "Why should I trust the app?",
       "trustContent": [
-        "डंपस 100% खुला स्रोत है। आप [GitHub](https://github.com/dumpus-app/dumpus-app) पर कोड पढ़ सकते हैं और अपना स्वयं का सर्वर भी होस्ट कर सकते हैं।",
-        "हमारे पास पूरी तरह से एक [क्लाइंट-साइड वेब ऐप](https://ddpe.androz2091.fr) भी है, जिसमें कम सुविधाएं हैं लेकिन कोई बाहरी एपीआई नहीं है।",
+        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
+        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
         "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
       ],
       "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
