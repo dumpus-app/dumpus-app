@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
@@ -10,7 +9,7 @@ import useWidgetAPI from "~/hooks/use-widget-api";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
-import useFocus from "~/hooks/use-focus";
+import DiscordImage from "~/components/DiscordImage";
 
 function GuildCard({
   guild,
@@ -27,8 +26,6 @@ function GuildCard({
     staleTime: Infinity,
   });
 
-  const focused = useFocus();
-
   return (
     <AvatarCard
       name={guild.guild_name}
@@ -38,15 +35,8 @@ function GuildCard({
       image={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-full">
-            <Image
-              src={
-                data.icon_url.includes(".gif")
-                  ? data.icon_url.replace(
-                      focused ? ".webp" : ".gif",
-                      focused ? ".gif" : ".webp"
-                    )
-                  : data.icon_url
-              }
+            <DiscordImage
+              src={data.icon_url}
               alt={`${data.name}'s avatar`}
               fill
               className="rounded-lg object-cover object-center"

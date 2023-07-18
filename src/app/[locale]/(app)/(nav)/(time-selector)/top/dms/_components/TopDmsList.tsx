@@ -2,7 +2,6 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
@@ -11,6 +10,7 @@ import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
+import DiscordImage from "~/components/DiscordImage";
 
 function DMCard({
   dm,
@@ -31,7 +31,7 @@ function DMCard({
       description={`${formatNumber(dm.message_count)} messages sent`}
       leftSlot={
         <div className="relative aspect-square w-10">
-          <Image
+          <DiscordImage
             src={avatarURLFallback(avatarURL, dm.dm_user_id)}
             alt={`${username}'s avatar`}
             fill

@@ -6,9 +6,9 @@ import { SimpleIconsDiscord } from "~/components/icons";
 import type { Guild } from "~/types/sql";
 import useWidgetAPI from "~/hooks/use-widget-api";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import { iconColor } from "~/utils/discord";
 import { firstCharFromUnicode } from "~/utils";
+import DiscordImage from "~/components/DiscordImage";
 
 export default function Profile({
   guild,
@@ -36,7 +36,7 @@ export default function Profile({
       imageSlot={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-16 sm:w-32">
-            <Image
+            <DiscordImage
               src={data.icon_url}
               alt={`${data.name}'s avatar`}
               fill

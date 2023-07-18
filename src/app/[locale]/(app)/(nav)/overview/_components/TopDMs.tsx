@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useNetworkState } from "react-use";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
@@ -9,7 +8,7 @@ import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import useUserDetails from "~/hooks/use-user-details";
 import { avatarURLFallback } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
-import useFocus from "~/hooks/use-focus";
+import DiscordImage from "~/components/DiscordImage";
 
 function DMCard({
   dm,
@@ -22,14 +21,7 @@ function DMCard({
 
   const username = dm.user_name;
   const displayName = data?.display_name || username;
-  const userDataAvatar = data?.avatar_url || dm.user_avatar_url;
-  const focused = useFocus();
-  const avatarURL = !userDataAvatar?.includes(".gif")
-    ? userDataAvatar
-    : userDataAvatar.replace(
-        focused ? ".webp" : ".gif",
-        focused ? ".gif" : ".webp"
-      );
+  const avatarURL = data?.avatar_url || dm.user_avatar_url;
 
   return (
     <AvatarCard
@@ -39,7 +31,7 @@ function DMCard({
       href={`/top/dms/details?id=${dm.dm_user_id}`}
       image={
         <div className="relative aspect-square w-full">
-          <Image
+          <DiscordImage
             src={avatarURLFallback(avatarURL, dm.dm_user_id) + `?size=${size}`}
             alt={`${username}'s avatar`}
             fill
