@@ -5,7 +5,7 @@ API to extract statistics from the Discord Data Packages (GDPR packages). This A
 ## Table of Contents
 
 * [Architecture Documentation](#architecture-documentation)
-* [Start a custom instance](#start-a-custom-instance)
+* [Self-hosting](#self-hosting)
 * [API Documentation](#api-documentation)
 * [Troubleshooting](#troubleshooting)
 
@@ -28,23 +28,19 @@ Thus:
 * when a Discord Data Package is to be stored in a database, it is encrypted with its UPN KEY.
 * when the client queries the server, it must always provide its UPN KEY to prove that it is the owner of the Discord Data Package, and to enable the server to return the decrypted data (if the client makes a data request).
 
-### Start a custom instance
+## Self-hosting
 
 Anyone can host their own Dumpus instance. The official Dumpus client can then be configured to use it.
 
-To do this, two Dockerfiles are required:
-
-* `Dockerfile.api`: contains the API shown in blue on the diagram above. Only one instance is required. It must be accessible from a URL that must be entered in the official Dumpus client.
-
-* `Dockerfile.worker`: contains the code used to process Discord data packets. Multiple instances can be launched, but a single instance is sufficient for personal use.
-
-You'll also need a PostgreSQL database and a RabbitMQ instance. The two Docker containers above will need two environment variables to run:
-```
-POSTGRES_URL=postgresql://<user>:<password>@<host>:<port>/<database>
-RABBITMQ_URL=amqp://<host>:<port>
-```
-
-The `Dockerfile.flower` is used to launch an instance of Flower, a web interface for monitoring workers. It is not necessary to launch this instance for personal use.
+* clone <https://github.com/dumpus-app/dumpus-api>
+* you can use Docker (easy way)
+* or you can install everything by yourself:
+    - install requirements with pip
+    - start a RabbitMQ server (or redis)
+    - start a PostgreSQL server
+    - fill the .env file with your Redis and PostgreSQL creds
+    - start the API using `waitress-serve --port=5000 app:app`
+    - start one worker using `celery --app tasks worker --loglevel=info --queues=regular_process --hostname=regular_process@%h --concurrency=1`
 
 By default, Dumpus API will only treat zip files sent from `https://discord.click`. You can specify a `DL_ZIP_WHITELISTED_DOMAINS` environment variable to add other allowed domains.
 
