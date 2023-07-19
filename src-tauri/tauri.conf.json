@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "dumpus-app",
-    "version": "0.1.0"
+    "version": "../package.json"
   },
   "tauri": {
     "allowlist": {
@@ -58,7 +58,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "DUMPUS",
+        "title": "Dumpus",
         "width": 800
       }
     ]
