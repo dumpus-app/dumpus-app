@@ -13,7 +13,11 @@ export default function DailySentMessages({
   const { t } = useTranslation();
   return (
     <Section title="Messages sent per day">
-      <SimpleBarChart data={data} className="px-2" legend={t('messageSentCount')} />
+      <SimpleBarChart
+        data={data}
+        className="px-2"
+        legend={t("messageSentCount")}
+      />
     </Section>
   );
 }

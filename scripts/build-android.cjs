@@ -3,23 +3,28 @@ const path = require("path");
 
 require("dotenv").config();
 
-const {
-  ANDROID_KEYSTORE_PATH,
-  ANDROID_KEYSTORE_PASSWORD,
-  ANDROID_HOME_PATH
-} = process.env;
+const { ANDROID_KEYSTORE_PATH, ANDROID_KEYSTORE_PASSWORD, ANDROID_HOME_PATH } =
+  process.env;
 
 const keystoreAlias = process.env.ANDROID_KEYSTORE_ALIAS || "upload";
 const androidReleaseType = process.env.ANDROID_RELEASE_TYPE || "AAB";
 
 console.log("Run pnpm build:mobile first");
 
-const command = `cross-env-shell ${ANDROID_HOME_PATH ? `ANDROID_HOME_PATH="${ANDROID_HOME_PATH}"` : ''} NODE_ENV=production pnpm cap build android --keystorepath ${ANDROID_KEYSTORE_PATH} --keystorepass '${ANDROID_KEYSTORE_PASSWORD}' --keystorealias ${keystoreAlias} --keystorealiaspass '${ANDROID_KEYSTORE_PASSWORD}' --androidreleasetype ${androidReleaseType}`;
+const command = `cross-env-shell ${
+  ANDROID_HOME_PATH ? `ANDROID_HOME_PATH="${ANDROID_HOME_PATH}"` : ""
+} NODE_ENV=production pnpm cap build android --keystorepath ${ANDROID_KEYSTORE_PATH} --keystorepass '${ANDROID_KEYSTORE_PASSWORD}' --keystorealias ${keystoreAlias} --keystorealiaspass '${ANDROID_KEYSTORE_PASSWORD}' --androidreleasetype ${androidReleaseType}`;
 
 const outputPath = `./android/app/build/outputs/apk/release`;
 
-const outputUnsignedFilePath = path.join(outputPath, `app-release-unsigned.apk`);
-const outputApkSignedFilePath = path.join(outputPath, `app-release-apksigner-signed.apk`);
+const outputUnsignedFilePath = path.join(
+  outputPath,
+  `app-release-unsigned.apk`
+);
+const outputApkSignedFilePath = path.join(
+  outputPath,
+  `app-release-apksigner-signed.apk`
+);
 
 const signCommand = `cp ${outputUnsignedFilePath} ${outputApkSignedFilePath} && apksigner sign --ks ${ANDROID_KEYSTORE_PATH} --ks-key-alias ${keystoreAlias} --ks-pass pass:${ANDROID_KEYSTORE_PASSWORD} --key-pass pass:${ANDROID_KEYSTORE_PASSWORD} ${outputApkSignedFilePath}`;
 

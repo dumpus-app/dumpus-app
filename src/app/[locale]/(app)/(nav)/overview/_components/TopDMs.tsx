@@ -44,7 +44,6 @@ function DMCard({
 }
 
 export default function TopDMs() {
-  
   const { t } = useTranslation();
 
   const data = useTopDMsData().getData({});
@@ -64,7 +63,7 @@ export default function TopDMs() {
   })();
 
   return (
-    <Section title={t('mostActiveDMs')} href="/top/dms">
+    <Section title={t("mostActiveDMs")} href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((dm) => (
