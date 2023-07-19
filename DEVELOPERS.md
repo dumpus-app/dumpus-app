@@ -3,6 +3,7 @@
 ## Local setup
 
 - Node.js >= `v16.17.0`
+- PNPM >= `8.0.0`
 - Visual Studio Code
 
 If you plan on developing more specific parts of the app, follow their respective guides:
@@ -64,4 +65,4 @@ To debug, read the [Capacitor docs](https://capacitorjs.com/docs/vscode/debuggin
 
 ### Developing the desktop app
 
-Run `dev:tauri` and that's it!
+Run `pnpm dev:tauri` and that's it!
