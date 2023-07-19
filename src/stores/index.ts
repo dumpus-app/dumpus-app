@@ -4,6 +4,7 @@ import { createConfigSlice, type ConfigSlice } from "./config";
 import { createDatabaseSlice, type DatabaseSlice } from "./database";
 import { createUISlice, type UISlice } from "./ui";
 import { createUsersCacheSlice, type UsersCacheSlice } from "./users-cache";
+import { migrateConfig, migrateUsersCache } from "./migrations";
 
 export { timeRanges } from "./config";
 export { DEFAULT_SAFE_AREA_INSET_COLOR } from "./ui";
@@ -33,7 +34,6 @@ export function useSelectedPackage() {
     config.packages,
     config.selectedID,
   ]);
-  const state = useAppStore((state) => state);
   const getSelectedPackage = useAppStore(
     ({ config }) => config.getSelectedPackage
   );
@@ -48,11 +48,8 @@ const configStorage = create(
     {
       name: "config",
       storage: createJSONStorage(() => localStorage),
-      version: 0,
-      migrate: (persistedState, version) => {
-        // https://github.com/pmndrs/zustand/blob/main/docs/integrations/persisting-store-data.md#migrate
-        return persistedState as any;
-      },
+      version: 1,
+      migrate: migrateConfig,
     }
   )
 );
@@ -66,10 +63,7 @@ const usersCacheStorage = create(
       name: "users-cache",
       storage: createJSONStorage(() => localStorage),
       version: 0,
-      migrate: (persistedState, version) => {
-        // https://github.com/pmndrs/zustand/blob/main/docs/integrations/persisting-store-data.md#migrate
-        return persistedState as any;
-      },
+      migrate: migrateUsersCache,
     }
   )
 );
