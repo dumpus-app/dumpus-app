@@ -4,7 +4,12 @@ Translations can be found in the `/locales` directory. We use Crowdin to manage 
 
 ## Using Crowdin
 
-TBD (cc @Androz2091 #209)
+Crowdin is the platform we use to manage translations.
+
+* Create a Crowdin account [here](https://crowdin.com/join).
+* Join the project [here](https://crowdin.com/project/dumpus-app).
+* Select the language you want to translate. If it's not available, please open an issue on GitHub.
+* You can now add support for your language!
 
 ## Adding translation strings
 
