@@ -41,7 +41,7 @@ Users that self-host the project can access unlimited top (instead of 20) for fr
 ## Self-hosting
 
 You can self-host **everything** in the project, for free. You can build the app for all the environments (mobile, web, desktop...), host your own instance of the API, the database, to keep **complete control on your data**.
-[Here is a guide to self-host the app](./.github/SELF_HOSTING.md).
+[Here is a guide to self-host the app](./DEVELOPERS.md).
 
 ## Need help?
 
