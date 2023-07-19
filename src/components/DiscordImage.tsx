@@ -9,15 +9,15 @@ export default function DiscordImage(props: DiscordImageProps) {
   const focused = useFocus();
 
   const imageSrc =
-    typeof props.src === "string" &&
+    typeof src === "string" &&
     // ignore placeholders
-    !props.src.includes("/embed") &&
-    props.src.includes(".gif")
-      ? props.src.replace(
+    !src.includes("/embed") &&
+    src.includes(".gif")
+      ? src.replace(
           focused ? ".webp" : ".gif",
           focused ? ".gif" : ".webp"
         )
-      : props.src;
+      : src;
 
   // eslint-disable-next-line
   return <Image {...props} src={imageSrc} />;
