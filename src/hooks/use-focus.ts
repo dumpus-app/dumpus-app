@@ -6,7 +6,7 @@ type OnFocusChangeHandler = (focused: boolean) => unknown;
 
 export default function useFocus<E extends HTMLElement>(
   target?: React.RefObject<E> | null,
-  onFocusChange?: OnFocusChangeHandler
+  onFocusChange?: (focused: boolean) => void;
 ) {
   const [focused, setFocused] = useState(() => {
     return window.document.activeElement != null;
