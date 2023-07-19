@@ -1,141 +1,141 @@
 {
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "دامپوس | آمار برای دیسکورد",
+    "description": "از آمار و ارقام اکانت دیسکوردتان خبردار شوید"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "در حال بارگذاری...",
+      "description": "لطفا صبر کنید."
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "بیا بریم",
+      "/intro/1": "گرفتم!",
+      "/intro/2": "فوق العاده اس!",
+      "/intro/3": "بریم بسته ی من را بگیریم!",
+      "/setup": "گرفتم!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "قبلی",
+      "trust": "چرا باید به این برنامه اعتماد کنم؟",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "دامپوس %100 متن باز و غیر رمزگذاری شده است. شما میتوانید کد را در (https://github.com/dumpus-app/dumpus-app)[گیتهاب] بخوانید، و حتی سرور خود را میزبانی کنید.",
+        "ما همچنین [برنامه وب سمت مشتری](https://ddpe.androz2091.fr)، با امکانات کمتر اما بدون هیچ رابط برنامه نویسی کاربردی(api) خارجی.",
+        "این برنامه بدون هیچ داده قابل خواندن ذخیره شده در رابط برنامه نویسی کاربردی خارجی کار میکند."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "30DaysDelay": "لطفا به یاد داشته باشید که بیش از 30 روز طول میکشد تا ایمیل را دریافت کنید. صبور باشید!",
+      "getData": "چطور داده های خود را دریافت کنم؟"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "به دامپوس خوش آمدید!",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "مرحله {{n}}",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "خلاصه سازی",
+        "اطلاعات خود را درخواست کنید",
+        "تحلیل و بررسی را شروع کنید"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "دامپوس چطور کار میکند؟",
+        "description": "دیسکورد هر اقدامی را که روی برنامه‌اش انجام می‌دهید در «بسته داده» شما ثبت می‌کند. دامپوس این بسته را برای تولید آمار و اطلاعات در مورد حساب شما تجزیه و تحلیل می کند."
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "آیا میتوانم به دامپوس اعتماد کنم؟",
+        "description": "این \"بسته داده\" بسیار حساس است. به همین دلیل است که هر کسی می تواند کد ما را بخواند و ببیند که ما با آن چه می کنیم (%100 منبع باز). اگرچه ما یک سرور پردازش رایگان ارائه می دهیم، اما می توانید از سرور خود برای کنترل کامل داده های خود استفاده کنید."
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "با دوستان خود به اشتراک بگذارید!",
+        "description": "در حالی که دیدن آمارها خنده دار است، اما مقایسه آنها با دوستانتان جالب تر است. به همین دلیل است که ما به اشتراک گذاری آمار خود را با دوستان خود آسان کرده ایم."
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "چطور بسته داده خود را دریافت کنم؟",
+      "description": "برای شروع یک سیستم عامل را انتخاب کنید.",
       "osDisplays": {
-        "android": "Android",
-        "ios": "iOS",
-        "desktop": "Desktop"
+        "android": "اندروید",
+        "ios": "ای او اس (iOS)",
+        "desktop": "دسکتاپ"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "تنظیمات دیسکورد خود را باز کنید",
+        "privacy": "صفحه \"حریم و امنیت\" را باز کنید",
+        "request": "بر روی \"درخواست داده\" کلیک کنید"
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "بسته داده خود را ارسال کنید",
+      "description": "روش مورد علاقه خود را انتخاب کنید.",
+      "method": "روش {{n}}",
+      "noPackageYet": "هنوز بسته ای ندارید؟",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
+          "title": "لینک (پیوند) دیسکورد خود را وارد کنید",
+          "description": "می توانید آن را در ایمیل دریافتی از Discord دریافت کنید. لینک را از روی دکمه با عنوان **You can download it here** کپی کنید.",
+          "discordLink": "لینک دیسکورد",
+          "advanced": "پیشرفته",
           "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "optional": "اختیاری",
+          "backendURLHint": "URL سرور منبع باز میزبانی شده خودتان",
+          "notice": "با ادامه، شما با [خط‌مشی رازداری](privacy/) و [terms](terms/) ما موافقت می‌کنید.",
+          "explore": "کاوش!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "الزامی",
+            "url": "آدرس نامعتبر",
+            "startWith": "پیوند باید با {{url}} شروع شود",
+            "emptyKey": "کلید UPN نمی تواند خالی باشد"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "انتقال ایمیل (به زودی)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "ایمیل دریافتی از دیسکورد را به **process@dumpus.app** انتقال دهید. وقتی  آماده شد پیوندی را برای شما ارسال می کنیم.",
+            "به زودی میبینمت!"
           ]
         },
         "demo": {
-          "title": "Demo"
+          "title": "نسخه ی نمایشی"
         }
       }
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "شما در صف هستید!",
+        "why": "چرا صف است؟",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "دامپوس یک سرویس رایگان است و سرور ما نمی تواند بیش از چند بسته را به طور همزمان تجزیه و تحلیل کند.",
+          "به همین دلیل است که ما یک صف داریم تا مطمئن شویم همه می توانند از این سرویس استفاده کنند.",
+          "شما می توانید سرور API ما را خود میزبانی کنید تا از صف اجتناب کنید."
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "جایگاه",
+        "waitingTime": "زمان تخمینی انتظار است",
+        "useBackend": "از بک‌اند خودم استفاده کن"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
-    "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "messagesSent": "پیام ارسال شد",
+    "messagesSentPerDay": "این تقریباً {{- value}} پیام در روز است!",
+    "joinedServers": "سرور هایی که به آنها پیوستید",
+    "joinedServersDesc": "ما یک کاوشگر سرور دیسکورد واقعی داریم!",
+    "knownUsers": "کاربران شناخته شده",
+    "knownUsersDesc": "خب، شما افراد زیادی را می شناسید!",
+    "spentMoney": "خرج شده",
+    "spentMoneyDesc_positive": "این خیلی پول است...!",
+    "spentMoneyDesc_empty": "شما آدم مقتصدی هستی!",
+    "appStarts": "برنامه در حال شروع است",
+    "appStartsPerDay": "شما حدود {{- value}} بار در روز دیسکورد را باز می کنید!",
+    "totalTimeSpent": "شما حدود {{- value}} را در دیسکورد هزینه کردید",
+    "avgSessionTime": "میانگین زمان جلسه"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count"
+  "sheerNumbers": "اعداد محض",
+  "mostActiveDMs": "فعال ترین DM ها",
+  "mostActiveServers": "فعال ترین سرور ها",
+  "mostActiveChannels": "فعال ترین کانال ها",
+  "discordHours": "ساعت های دیسکورد شما",
+  "activityTime": "فعالیت در طول زمان",
+  "messageSentCount": "تعداد پیام ارسال شده"
 }
