@@ -8,7 +8,7 @@ export default function useFocus<E extends HTMLElement>(
   onFocusChange?: (focused: boolean) => void
 ) {
   const [focused, setFocused] = useState(() => {
-    return window.document.activeElement != null;
+    return typeof window !== "undefined" ? window.document.activeElement != null : true;
   });
 
   useEffect(() => {
