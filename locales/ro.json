@@ -161,7 +161,7 @@
   },
   "stats": {
     "messagesSent": "mesaje trimise",
-    "messagesSentPerDay": "Adică aproximativ {{value}} mesaje pe zi!",
+    "messagesSentPerDay": "Adică aproximativ {{- value}} mesaje pe zi!",
     "joinedServers": "joined servers",
     "joinedServersDesc": "Avem un adevărat explorator de server Discord!",
     "knownUsers": "utilizatori cunoscuți",
@@ -170,8 +170,8 @@
     "spentMoneyDesc_positive": "Sunt mulți bani...!",
     "spentMoneyDesc_empty": "Ești o persoană gospodărească!",
     "appStarts": "app starts",
-    "appStartsPerDay": "Tu deschizi Discord de aproximativ {{value}} ori pe zi!",
-    "totalTimeSpent": "Ai petrecut aproximativ {{value}} pe Discord",
+    "appStartsPerDay": "Tu deschizi Discord de aproximativ {{- value}} ori pe zi!",
+    "totalTimeSpent": "Ai petrecut aproximativ {{- value}} pe Discord",
     "avgSessionTime": "timpul mediu de sesiune"
   },
   "sheerNumbers": "Cifre simple",

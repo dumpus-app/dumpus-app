@@ -10,18 +10,33 @@ import {
   PhoneArrowDownLeftIcon,
   UsersIcon,
   ChatBubbleBottomCenterTextIcon,
-  CursorArrowRippleIcon
+  CursorArrowRippleIcon,
 } from "@heroicons/react/24/solid";
 import DetailCard from "~/components/data/DetailCard";
 import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import { useTranslation } from "~/i18n/client";
 import type { Icon } from "~/types";
-import { formatHour, formatMoney, formatNumber, formatDuration } from "~/utils/format";
+import {
+  formatHour,
+  formatMoney,
+  formatNumber,
+  formatDuration,
+} from "~/utils/format";
 
 export default function Stats() {
-  const { networkSize, joinedGuilds, topHour, spentMoney, appStarted, avgAppStartedPerDay, messageCount, avgMessageCountPerDay, avgSessionDuration, totalSessionDuration } =
-    useUsageStatsData();
+  const {
+    networkSize,
+    joinedGuilds,
+    topHour,
+    spentMoney,
+    appStarted,
+    avgAppStartedPerDay,
+    messageCount,
+    avgMessageCountPerDay,
+    avgSessionDuration,
+    totalSessionDuration,
+  } = useUsageStatsData();
   const { t } = useTranslation();
 
   const data: {
@@ -33,15 +48,17 @@ export default function Stats() {
     {
       value: formatNumber(messageCount(), { notation: "standard" }),
       title: t("stats.messagesSent"),
-      description: t("stats.messagesSentPerDay", { value: avgMessageCountPerDay() }),
-      icon: ChatBubbleBottomCenterTextIcon
+      description: t("stats.messagesSentPerDay", {
+        value: avgMessageCountPerDay(),
+      }),
+      icon: ChatBubbleBottomCenterTextIcon,
     },
     {
       value: formatNumber(joinedGuilds()),
       title: t("stats.joinedServers"),
       description: t("stats.joinedServersDesc"),
       icon: ArrowLeftOnRectangleIcon,
-    },/*
+    } /*
     {
       value: "N/A",
       title: "received calls",
@@ -59,7 +76,7 @@ export default function Stats() {
       title: "top hour",
       description: "lorem ipsum",
       icon: ClockIcon,
-    },*/
+    },*/,
     {
       value: formatNumber(networkSize()),
       title: t("stats.knownUsers"),
@@ -71,7 +88,9 @@ export default function Stats() {
       title: t("stats.spentMoney"),
       // TODO: fix this more properly (context is not working because of keyof)
       // @ts-ignore
-      description: t("stats.spentMoneyDesc", { context: (spentMoney() || 0) > 0 ? 'positive' : 'empty' }),
+      description: t("stats.spentMoneyDesc", {
+        context: (spentMoney() || 0) > 0 ? "positive" : "empty",
+      }),
       icon: BanknotesIcon,
     },
     {
@@ -83,9 +102,11 @@ export default function Stats() {
     {
       value: formatDuration((avgSessionDuration() || 0) * 60_000),
       title: t("stats.avgSessionTime"),
-      description: t("stats.totalTimeSpent", { value: formatDuration((totalSessionDuration() || 0) * 60_000, true) }),
+      description: t("stats.totalTimeSpent", {
+        value: formatDuration((totalSessionDuration() || 0) * 60_000, true),
+      }),
       icon: ClockIcon,
-    }
+    },
   ];
 
   return (

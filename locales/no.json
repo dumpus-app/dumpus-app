@@ -161,7 +161,7 @@
   },
   "stats": {
     "messagesSent": "meldinger sendt",
-    "messagesSentPerDay": "Det er rundt {{value}} meldinger hver dag!",
+    "messagesSentPerDay": "Det er rundt {{- value}} meldinger hver dag!",
     "joinedServers": "servere lagt til",
     "joinedServersDesc": "Vi har en ekte Discord-server utforsker!",
     "knownUsers": "kjente brukere",
@@ -170,8 +170,8 @@
     "spentMoneyDesc_positive": "Det er mye penger...!",
     "spentMoneyDesc_empty": "Du er veldig sparsommelig!",
     "appStarts": "programstart",
-    "appStartsPerDay": "Du åpner Discord cirka {{value}} ganger hver dag!",
-    "totalTimeSpent": "Du har brukt rundt {{value}} timer på Discord",
+    "appStartsPerDay": "Du åpner Discord cirka {{- value}} ganger hver dag!",
+    "totalTimeSpent": "Du har brukt rundt {{- value}} timer på Discord",
     "avgSessionTime": "gjennomsnittstid"
   },
   "sheerNumbers": "Rene tall",

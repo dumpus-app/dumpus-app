@@ -161,7 +161,7 @@
   },
   "stats": {
     "messagesSent": "पठाइएको message हरु",
-    "messagesSentPerDay": "यो भनेको अन्दाजी दिनको {{value}} message हरु हो!",
+    "messagesSentPerDay": "यो भनेको अन्दाजी दिनको {{- value}} message हरु हो!",
     "joinedServers": "join भएका server हरु",
     "joinedServersDesc": "हामीले साचिकैको Discord सर्भर explorer पाएका छौं!",
     "knownUsers": "थाहा भएका प्रयोगकर्ताहरु",
@@ -170,8 +170,8 @@
     "spentMoneyDesc_positive": "त्यो धेरै पैसा हो...!",
     "spentMoneyDesc_empty": "तपाईं एक मितव्ययी व्यक्ति हुनुहुन्छ!",
     "appStarts": "app खोलेको",
-    "appStartsPerDay": "तपाइले दिनको लगभग {{value}} चोटी Discord खोल्नुहुन्छ!",
-    "totalTimeSpent": "तपाइले लगभग {{value}} रुपिया Discord मा खर्च गर्नुभएको छ",
+    "appStartsPerDay": "तपाइले दिनको लगभग {{- value}} चोटी Discord खोल्नुहुन्छ!",
+    "totalTimeSpent": "तपाइले लगभग {{- value}} रुपिया Discord मा खर्च गर्नुभएको छ",
     "avgSessionTime": "औसत session समय"
   },
   "sheerNumbers": "सरासर संख्याहरू",

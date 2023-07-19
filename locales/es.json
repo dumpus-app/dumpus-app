@@ -161,7 +161,7 @@
   },
   "stats": {
     "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{value}} messages per day!",
+    "messagesSentPerDay": "That's about {{- value}} messages per day!",
     "joinedServers": "joined servers",
     "joinedServersDesc": "We've got a real Discord server explorer!",
     "knownUsers": "known users",
@@ -170,8 +170,8 @@
     "spentMoneyDesc_positive": "That's a lot of cash...!",
     "spentMoneyDesc_empty": "You're a thrifty person!",
     "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{value}} times per day!",
-    "totalTimeSpent": "You spent about {{value}} on Discord",
+    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
+    "totalTimeSpent": "You spent about {{- value}} on Discord",
     "avgSessionTime": "avg. session time"
   },
   "sheerNumbers": "Sheer numbers",
