@@ -55,58 +55,15 @@
     "setup": {
       "title": "Cum îmi iau pachetul de date?",
       "description": "Selectați un sistem de operare pentru a începe.",
-      "data": {
-        "android": {
-          "display": "Android",
-          "steps": [
-            {
-              "name": "Deschide setările din Discord",
-              "image": "/assets/onboarding/en/android/step1.png"
-            },
-            {
-              "name": "Deschide \"Confidențialitate și securitate\"",
-              "image": "/assets/onboarding/en/android/step2.png"
-            },
-            {
-              "name": "Apasă pe \"Solicită Date\"",
-              "image": "/assets/onboarding/en/android/step3.png"
-            }
-          ]
-        },
-        "ios": {
-          "display": "iOS",
-          "steps": [
-            {
-              "name": "Deschide setările din Discord",
-              "image": "/assets/onboarding/en/ios/step1.png"
-            },
-            {
-              "name": "Deschide \"Confidențialitate și securitate\"",
-              "image": "/assets/onboarding/en/ios/step2.png"
-            },
-            {
-              "name": "Apasă pe \"Solicită Date\"",
-              "image": "/assets/onboarding/en/ios/step3.png"
-            }
-          ]
-        },
-        "desktop": {
-          "display": "Desktop",
-          "steps": [
-            {
-              "name": "Deschide setările din Discord",
-              "image": "/assets/onboarding/en/desktop/step1.png"
-            },
-            {
-              "name": "Deschide \"Confidențialitate și securitate\"",
-              "image": "/assets/onboarding/en/desktop/step2.png"
-            },
-            {
-              "name": "Apasă pe \"Solicită Date\"",
-              "image": "/assets/onboarding/en/desktop/step3.png"
-            }
-          ]
-        }
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "Desktop"
+      },
+      "steps": {
+        "settings": "Open your Discord settings",
+        "privacy": "Open the \"Privacy & Safety\" tab",
+        "request": "Click on \"Request Data\""
       }
     },
     "access": {
@@ -161,7 +118,7 @@
   },
   "stats": {
     "messagesSent": "mesaje trimise",
-    "messagesSentPerDay": "Adică aproximativ {{- value}} mesaje pe zi!",
+    "messagesSentPerDay": "That's about {{- value}} messages per day!",
     "joinedServers": "joined servers",
     "joinedServersDesc": "Avem un adevărat explorator de server Discord!",
     "knownUsers": "utilizatori cunoscuți",
@@ -170,8 +127,8 @@
     "spentMoneyDesc_positive": "Sunt mulți bani...!",
     "spentMoneyDesc_empty": "Ești o persoană gospodărească!",
     "appStarts": "app starts",
-    "appStartsPerDay": "Tu deschizi Discord de aproximativ {{- value}} ori pe zi!",
-    "totalTimeSpent": "Ai petrecut aproximativ {{- value}} pe Discord",
+    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
+    "totalTimeSpent": "You spent about {{- value}} on Discord",
     "avgSessionTime": "timpul mediu de sesiune"
   },
   "sheerNumbers": "Cifre simple",

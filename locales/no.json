@@ -55,58 +55,15 @@
     "setup": {
       "title": "Hvordan skaffer jeg datapakken min?",
       "description": "Velg et operativsystem for å komme i gang.",
-      "data": {
-        "android": {
-          "display": "Android",
-          "steps": [
-            {
-              "name": "Åpne Discord-innstillingene dine",
-              "image": "/assets/onboarding/en/android/step1.png"
-            },
-            {
-              "name": "Åpne fanen \"Personvern og sikkerhet\"",
-              "image": "/assets/onboarding/en/android/step2.png"
-            },
-            {
-              "name": "Trykk på \"Be om data\"",
-              "image": "/assets/onboarding/en/android/step3.png"
-            }
-          ]
-        },
-        "ios": {
-          "display": "iOS",
-          "steps": [
-            {
-              "name": "Åpne Discord-innstillingene dine",
-              "image": "/assets/onboarding/en/ios/step1.png"
-            },
-            {
-              "name": "Åpne fanen \"Personvern og sikkerhet\"",
-              "image": "/assets/onboarding/en/ios/step2.png"
-            },
-            {
-              "name": "Trykk på \"Be om data\"",
-              "image": "/assets/onboarding/en/ios/step3.png"
-            }
-          ]
-        },
-        "desktop": {
-          "display": "Datamaskin",
-          "steps": [
-            {
-              "name": "Åpne Discord-innstillingene dine",
-              "image": "/assets/onboarding/en/desktop/step1.png"
-            },
-            {
-              "name": "Åpne fanen \"Personvern og sikkerhet\"",
-              "image": "/assets/onboarding/en/desktop/step2.png"
-            },
-            {
-              "name": "Trykk på \"Be om data\"",
-              "image": "/assets/onboarding/en/desktop/step3.png"
-            }
-          ]
-        }
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "Desktop"
+      },
+      "steps": {
+        "settings": "Open your Discord settings",
+        "privacy": "Open the \"Privacy & Safety\" tab",
+        "request": "Click on \"Request Data\""
       }
     },
     "access": {
@@ -161,7 +118,7 @@
   },
   "stats": {
     "messagesSent": "meldinger sendt",
-    "messagesSentPerDay": "Det er rundt {{- value}} meldinger hver dag!",
+    "messagesSentPerDay": "That's about {{- value}} messages per day!",
     "joinedServers": "servere lagt til",
     "joinedServersDesc": "Vi har en ekte Discord-server utforsker!",
     "knownUsers": "kjente brukere",
@@ -170,8 +127,8 @@
     "spentMoneyDesc_positive": "Det er mye penger...!",
     "spentMoneyDesc_empty": "Du er veldig sparsommelig!",
     "appStarts": "programstart",
-    "appStartsPerDay": "Du åpner Discord cirka {{- value}} ganger hver dag!",
-    "totalTimeSpent": "Du har brukt rundt {{- value}} timer på Discord",
+    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
+    "totalTimeSpent": "You spent about {{- value}} on Discord",
     "avgSessionTime": "gjennomsnittstid"
   },
   "sheerNumbers": "Rene tall",
