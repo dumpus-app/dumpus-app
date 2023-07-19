@@ -20,7 +20,6 @@ export default function StepImage({
   return (
     <div className="relative aspect-video w-full">
       <ImageZoom>
-        {/* TODO: extract to check if valid */}
         <Image
           src={src}
           alt={alt}
