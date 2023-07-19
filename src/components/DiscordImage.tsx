@@ -20,6 +20,7 @@ export default function DiscordImage(props: DiscordImageProps) {
         )
       : src;
 
+  // TODO: check why alt is not detected
   // eslint-disable-next-line
   return <Image {...rest} src={imageSrc} />;
 }
