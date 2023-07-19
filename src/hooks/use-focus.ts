@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-type OnFocusChangeHandler = (focused: boolean) => unknown;
 
 export default function useFocus<E extends HTMLElement>(
   target?: React.RefObject<E> | null,

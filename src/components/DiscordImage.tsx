@@ -6,6 +6,7 @@ import useFocus from "~/hooks/use-focus";
 type DiscordImageProps = React.ComponentProps<typeof Image>;
 
 export default function DiscordImage(props: DiscordImageProps) {
+  const { src, ...rest } = props;
   const focused = useFocus();
 
   const imageSrc =
@@ -20,5 +21,5 @@ export default function DiscordImage(props: DiscordImageProps) {
       : src;
 
   // eslint-disable-next-line
-  return <Image {...props} src={imageSrc} />;
+  return <Image {...rest} src={imageSrc} />;
 }
