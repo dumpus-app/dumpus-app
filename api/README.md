@@ -55,7 +55,7 @@ Authorization: Bearer <UPN_KEY>
 
 * `POST /process`
 
-Request:
+Request body:
 ```js
 {
     "package_link": "https://click.discord.com/ls/click?upn=<UPN_KEY>"
