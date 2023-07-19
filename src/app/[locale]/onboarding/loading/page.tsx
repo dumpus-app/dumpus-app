@@ -66,14 +66,18 @@ export default function Page() {
   const nextID = getNextID(selectedID);
 
   useEffect(() => {
-    if (
+    const hasError = !!statusQuery.data?.isErrored;
+    const isPending =
       statusQuery.data?.processingStep !== "PROCESSED" ||
       !packageLink ||
       !UPNKey ||
-      !processData
-    ) {
+      !processData;
+
+    if (isPending) {
+      isStatusQueryEnabled.current = !hasError;
       return;
     }
+
     isStatusQueryEnabled.current = false;
 
     api
