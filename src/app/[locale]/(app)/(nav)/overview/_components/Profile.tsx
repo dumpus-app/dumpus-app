@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useNetworkState } from "react-use";
 import Button from "~/components/Button";
+import DiscordImage from "~/components/DiscordImage";
 import ProfileHeader from "~/components/ProfileHeader";
 import useUserData from "~/hooks/data/use-user-data";
 import { useAppStore } from "~/stores";
@@ -37,7 +37,7 @@ export default function Profile() {
       title={package_owner_display_name}
       imageSlot={
         <div className="relative h-24 w-24 sm:h-32 sm:w-32">
-          <Image
+          <DiscordImage
             src={package_owner_avatar_url + `?size=${size}`}
             alt={`${package_owner_display_name}'s Avatar`}
             fill

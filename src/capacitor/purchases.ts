@@ -36,8 +36,8 @@ class PurchasesModule {
       {
         id: PRODUCT_SUPPORTER_KEY,
         type: cdv.ProductType.NON_CONSUMABLE,
-        platform: cdv.Platform.APPLE_APPSTORE
-      }
+        platform: cdv.Platform.APPLE_APPSTORE,
+      },
     ]);
 
     await cdv.store.update();

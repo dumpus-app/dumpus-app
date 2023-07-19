@@ -2,7 +2,6 @@
 
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import DetailCard from "~/components/data/DetailCard";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
@@ -12,6 +11,7 @@ import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
+import DiscordImage from "~/components/DiscordImage";
 
 function GuildCard({
   guild,
@@ -37,7 +37,7 @@ function GuildCard({
       leftSlot={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-10">
-            <Image
+            <DiscordImage
               src={data.icon_url}
               alt={`${data.name}'s avatar`}
               fill

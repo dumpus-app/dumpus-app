@@ -24,7 +24,7 @@ export type PackageAPIStatusResponse = Prettify<
         isErrored: true;
         errorMessageCode:
           | "UNKNOWN_PACKAGE_ID"
-          | "SERVER_ERROR"
+          | "UNKNOWN_ERROR"
           | "UNAUTHORIZED"
           | "EXPIRED_LINK";
       }

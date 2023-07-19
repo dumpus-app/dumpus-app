@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useNetworkState } from "react-use";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
@@ -9,6 +8,7 @@ import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import useUserDetails from "~/hooks/use-user-details";
 import { avatarURLFallback } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
+import DiscordImage from "~/components/DiscordImage";
 
 function DMCard({
   dm,
@@ -31,7 +31,7 @@ function DMCard({
       href={`/top/dms/details?id=${dm.dm_user_id}`}
       image={
         <div className="relative aspect-square w-full">
-          <Image
+          <DiscordImage
             src={avatarURLFallback(avatarURL, dm.dm_user_id) + `?size=${size}`}
             alt={`${username}'s avatar`}
             fill
@@ -44,7 +44,6 @@ function DMCard({
 }
 
 export default function TopDMs() {
-  
   const { t } = useTranslation();
 
   const data = useTopDMsData().getData({});
@@ -64,7 +63,7 @@ export default function TopDMs() {
   })();
 
   return (
-    <Section title={t('mostActiveDMs')} href="/top/dms">
+    <Section title={t("mostActiveDMs")} href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((dm) => (

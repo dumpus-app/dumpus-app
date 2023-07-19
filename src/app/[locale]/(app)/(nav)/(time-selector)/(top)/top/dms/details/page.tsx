@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useNetworkState } from "react-use";
 import ProfileHeader from "~/components/ProfileHeader";
@@ -16,6 +15,7 @@ import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
 import { formatDate, formatHour, formatNumber } from "~/utils/format";
 import SentimentScore from "./_components/SentimentScore";
+import DiscordImage from "~/components/DiscordImage";
 
 export default function Page() {
   const params = useSearchParams()!;
@@ -58,7 +58,7 @@ export default function Page() {
         title={displayName}
         imageSlot={
           <div className="relative h-16 w-16 sm:h-32 sm:w-32">
-            <Image
+            <DiscordImage
               src={
                 avatarURLFallback(avatarURL, user.dm_user_id) + `?size=${size}`
               }

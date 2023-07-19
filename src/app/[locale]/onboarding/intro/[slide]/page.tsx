@@ -6,7 +6,7 @@ import Slide3 from "./_components/Slide3";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import Image from "next/image";
 
-const SLIDES = ['how', 'trust', 'share'].map((e) => ({ image: e }));
+const SLIDES = ["how", "trust", "share"].map((e) => ({ image: e }));
 
 export function generateStaticParams() {
   return SLIDES.map((_, i) => ({

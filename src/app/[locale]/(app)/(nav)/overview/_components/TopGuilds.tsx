@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import ScrollArea from "~/components/ScrollArea";
 import Section from "~/components/Section";
 import AvatarCard from "~/components/data/AvatarCard";
@@ -10,6 +9,7 @@ import useWidgetAPI from "~/hooks/use-widget-api";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
+import DiscordImage from "~/components/DiscordImage";
 
 function GuildCard({
   guild,
@@ -35,7 +35,7 @@ function GuildCard({
       image={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-full">
-            <Image
+            <DiscordImage
               src={data.icon_url}
               alt={`${data.name}'s avatar`}
               fill
@@ -62,7 +62,7 @@ export default function TopGuilds() {
   const data = useTopGuildsData().getData({});
 
   return (
-    <Section title={t('mostActiveServers')} href="/top/guilds">
+    <Section title={t("mostActiveServers")} href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((guild) => (

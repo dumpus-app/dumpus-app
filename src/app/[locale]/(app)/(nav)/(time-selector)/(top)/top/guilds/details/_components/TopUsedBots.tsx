@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
 import Section from "~/components/Section";
 import StatCard from "~/components/data/StatCard";
 import usePackageAPI from "~/hooks/use-package-api";
 import { useSelectedPackage } from "~/stores";
 import { Activity, DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
+import DiscordImage from "~/components/DiscordImage";
 
 type Bot = Pick<
   DmChannelsData,
@@ -37,7 +37,7 @@ function BotCard({ bot }: { bot: Bot }) {
       value={
         <div className="flex items-center">
           <div className="relative mr-1 aspect-square w-6 sm:w-8">
-            <Image
+            <DiscordImage
               src={avatarURLFallback(avatarURL, bot.associated_user_id)}
               alt={`${displayName}'s avatar`}
               fill
