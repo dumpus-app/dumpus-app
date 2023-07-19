@@ -1,38 +1,22 @@
 "use client";
 
-import { ComputerDesktopIcon } from "@heroicons/react/24/solid";
-import { useEffect, useMemo, useState } from "react";
-import useOS, { type OS } from "~/hooks/use-os";
-import type { Icon } from "~/types";
 import { Tab } from "@headlessui/react";
-import Image from "next/image";
-import { SimpleIconsAndroid, SimpleIconsIos } from "~/components/icons";
+import { useEffect, useState } from "react";
+import useOS from "~/hooks/use-os";
 import { useTranslation } from "~/i18n/client";
-import ImageZoom from "~/components/ImageZoom";
-
-const icons: Record<OS, Icon> = {
-  android: SimpleIconsAndroid,
-  ios: SimpleIconsIos,
-  desktop: ComputerDesktopIcon,
-};
+import useTranslationData from "./_hooks/use-translation-data";
+import StepImage from "./_components/StepImage";
 
 export default function Page() {
   const { t } = useTranslation();
   const os = useOS();
 
+  const data = useTranslationData();
+
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const data = useMemo(() => {
-    const rawData = t("onboarding.setup.data", {
-      returnObjects: true,
-    });
-    return (Object.keys(rawData) as OS[]).map((key) => {
-      return { ...rawData[key], key, icon: icons[key] };
-    });
-  }, [t]);
-
   useEffect(() => {
-    setSelectedIndex(data.findIndex((e) => e.key === os));
+    setSelectedIndex(data.findIndex((e) => e.os === os));
   }, [data, os]);
 
   return (
@@ -47,9 +31,9 @@ export default function Page() {
       </div>
       <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <Tab.List className="flex justify-center space-x-2">
-          {data.map(({ key, display, icon: Icon }) => (
+          {data.map(({ os, display, icon: Icon }) => (
             <Tab
-              key={key}
+              key={os}
               className="flex aspect-square h-20 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-900 p-2 text-gray-400 data-[headlessui-state='selected']:text-brand-300"
             >
               <Icon className="h-12 w-12" />
@@ -58,27 +42,18 @@ export default function Page() {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-8 w-full">
-          {data.map(({ key, steps }) => (
-            <Tab.Panel key={key} className="space-y-4">
+          {data.map(({ os, steps }) => (
+            <Tab.Panel key={os} className="space-y-4">
               {steps.map(({ name, image }, i) => (
                 <div
-                  key={`${key}-${i}`}
+                  key={`${os}-${i}`}
                   className="flex flex-col items-center space-y-2"
                 >
                   <div className="flex aspect-square h-8 items-center justify-center rounded-full bg-brand-300 font-bold text-gray-950">
                     {i + 1}
                   </div>
                   <div className="text-lg font-bold text-white">{name}</div>
-                  <div className="relative aspect-video w-full">
-                    <ImageZoom>
-                      <Image
-                        src={image}
-                        alt={name}
-                        fill
-                        className="rounded-lg border-2 border-gray-700 bg-brand-950 object-cover object-center"
-                      />
-                    </ImageZoom>
-                  </div>
+                  <StepImage src={image} alt={name} />
                 </div>
               ))}
             </Tab.Panel>
