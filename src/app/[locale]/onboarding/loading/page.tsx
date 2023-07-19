@@ -66,9 +66,7 @@ export default function Page() {
   const nextID = getNextID(selectedID);
 
   useEffect(() => {
-    const isLockedOrErrored =
-      statusQuery.data?.processingStep === "LOCKED" ||
-      !!statusQuery.data?.isErrored;
+    const hasError = !!statusQuery.data?.isErrored;
     const isPending =
       statusQuery.data?.processingStep !== "PROCESSED" ||
       !packageLink ||
@@ -76,7 +74,7 @@ export default function Page() {
       !processData;
 
     if (isPending) {
-      isStatusQueryEnabled.current = isLockedOrErrored;
+      isStatusQueryEnabled.current = !hasError;
       return;
     }
 
