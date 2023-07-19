@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 export default function useFocus<E extends HTMLElement>(
   target?: React.RefObject<E> | null,
-  onFocusChange?: (focused: boolean) => void;
+  onFocusChange?: (focused: boolean) => void
 ) {
   const [focused, setFocused] = useState(() => {
     return window.document.activeElement != null;
