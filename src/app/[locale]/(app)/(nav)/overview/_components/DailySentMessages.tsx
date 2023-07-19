@@ -21,11 +21,11 @@ export default function DailySentMessages() {
   }));
 
   return (
-    <Section title={t('activityTime')} href="/stats#daily-sent-messages">
+    <Section title={t("activityTime")} href="/stats#daily-sent-messages">
       <SimpleBarChart
         data={data}
         className="px-2"
-        legend={t('messageSentCount')}
+        legend={t("messageSentCount")}
       />
     </Section>
   );

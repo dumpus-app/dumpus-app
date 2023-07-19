@@ -8,33 +8,42 @@ import { formatHour, formatNumber } from "~/utils/format";
 import { useTranslation } from "~/i18n/client";
 
 export default function UsageStats() {
-  const { messageCount, networkSize, joinedGuilds, topHour, appStarted, receivedCalls } =
-    useUsageStatsData();
+  const {
+    messageCount,
+    networkSize,
+    joinedGuilds,
+    topHour,
+    appStarted,
+    receivedCalls,
+  } = useUsageStatsData();
   const { t } = useTranslation();
 
   const data = [
     {
-      value: formatNumber(messageCount(), { notation: 'standard' }),
+      value: formatNumber(messageCount(), { notation: "standard" }),
       label: "messages sent",
     },
     {
-      value: formatNumber(joinedGuilds(), { notation: 'standard' }),
+      value: formatNumber(joinedGuilds(), { notation: "standard" }),
       label: "server joined",
     },
-    { value: formatNumber(receivedCalls(), { notation: 'standard' }), label: "received calls" },
+    {
+      value: formatNumber(receivedCalls(), { notation: "standard" }),
+      label: "received calls",
+    },
     { value: formatHour(topHour()), label: "top hour" },
     {
-      value: formatNumber(networkSize(), { notation: 'standard' }),
+      value: formatNumber(networkSize(), { notation: "standard" }),
       label: "known users",
     },
     {
-      value: formatNumber(appStarted(), { notation: 'standard' }),
-      label: "Discord app started"
-    }
+      value: formatNumber(appStarted(), { notation: "standard" }),
+      label: "Discord app started",
+    },
   ];
 
   return (
-    <Section title={t('sheerNumbers')} href="/stats">
+    <Section title={t("sheerNumbers")} href="/stats">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {data.map((stat, i) => (

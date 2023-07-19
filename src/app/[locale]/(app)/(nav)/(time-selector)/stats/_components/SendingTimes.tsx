@@ -19,7 +19,7 @@ function Chart() {
         label: formatHour(label),
       }))}
       className="px-2 sm:flex-1"
-      legend={t('messageSentCount')}
+      legend={t("messageSentCount")}
     />
   );
 }
@@ -55,7 +55,7 @@ export default function SendingTimes() {
   const { t } = useTranslation();
 
   return (
-    <Section title={t('discordHours')}>
+    <Section title={t("discordHours")}>
       <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0">
         <Chart />
         <Stats />

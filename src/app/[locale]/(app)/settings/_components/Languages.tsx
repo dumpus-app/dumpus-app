@@ -49,7 +49,9 @@ function LocalesList() {
                   as="span"
                   className="font-medium text-gray-400"
                 >
-                  {new Intl.DisplayNames(['en'], {type: 'language'}).of(locale)}
+                  {new Intl.DisplayNames(["en"], { type: "language" }).of(
+                    locale
+                  )}
                 </RadioGroup.Label>
                 <span
                   className={clsx(
@@ -138,7 +140,11 @@ export default function Languages() {
         <div className="px-2">
           <DetailCard
             onClick={() => setOpen(true)}
-            title={new Intl.DisplayNames(['en'], {type: 'language'}).of(i18next.language)!}
+            title={
+              new Intl.DisplayNames(["en"], { type: "language" }).of(
+                i18next.language
+              )!
+            }
             description={`${locales.length} available`}
             reverseTexts
             rightIcon={ChevronRightIcon}
