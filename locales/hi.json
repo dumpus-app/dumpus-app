@@ -1,141 +1,141 @@
 {
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "डंपस | डिस्कॉर्ड के लिए आँकड़े",
+    "description": "अपने डिस्कॉर्ड खाते के लिए विस्तृत जानकारी और आँकड़े प्राप्त करें"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "लोड हो रहा है...",
+      "description": "कृपया प्रतीक्षा करें।"
     }
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "चल दर",
+      "/intro/1": "समझ गया!",
+      "/intro/2": "शानदार!",
+      "/intro/3": "चलो मेरा पैकेज ले लो!",
+      "/setup": "समझ गया!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "पिछला",
+      "trust": "मुझे इस ऐप पर भरोसा क्यों करना चाहिए?",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "डंपस 100% खुला स्रोत है। आप [GitHub](https://github.com/dumpus-app/dumpus-app) पर कोड पढ़ सकते हैं और अपना स्वयं का सर्वर भी होस्ट कर सकते हैं।",
+        "हमारे पास पूरी तरह से एक [क्लाइंट-साइड वेब ऐप](https://ddpe.androz2091.fr) भी है, जिसमें कम सुविधाएं हैं लेकिन कोई बाहरी एपीआई नहीं है।",
+        "ऐप बाहरी एपीआई पर संग्रहीत किसी भी पठनीय डेटा के बिना काम कर रहा है। यदि आपके पास अभी भी कोई प्रश्न है, तो बेझिझक हमसे contact@dumpus.app पर संपर्क करें।"
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "30DaysDelay": "ध्यान रखें कि ईमेल प्राप्त होने में 30 दिन तक का समय लग सकता है। धैर्य रखें!",
+      "getData": "मेरा डेटा कैसे प्राप्त करें?"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "डंपस में आपका स्वागत है",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "कदम {{n}}",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "ब्रीफिंग",
+        "अपने डेटा का अनुरोध करें",
+        "विश्लेषण शुरू करें"
       ]
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "डंपस कैसे काम करता है",
+        "description": "डिस्कॉर्ड आपके ऐप पर आपके द्वारा की गई प्रत्येक गतिविधि को आपके \"डेटा पैकेज\" में रिकॉर्ड करता है। डंपस आपके खाते के बारे में आंकड़े और जानकारी उत्पन्न करने के लिए इस पैकेज का विश्लेषण करता है।"
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "क्या मैं डंपस पर भरोसा कर सकता हूँ?",
+        "description": "यह \"डेटा पैकेज\" बहुत संवेदनशील है. इसीलिए कोई भी हमारा कोड पढ़ सकता है और देख सकता है कि हम इसके साथ क्या करते हैं (100% खुला स्रोत)। यद्यपि हम एक निःशुल्क प्रोसेसिंग सर्वर प्रदान करते हैं, आप अपने डेटा पर पूर्ण नियंत्रण रखने के लिए अपने स्वयं के सर्वर का उपयोग कर सकते हैं।"
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "इसे अपने दोस्तों के साथ साझा करें!",
+        "description": "हालाँकि आँकड़े देखने में मज़ेदार हैं, लेकिन अपने दोस्तों के साथ उनकी तुलना करने में और भी मज़ेदार हैं। इसीलिए हमने आपके आँकड़े आपके दोस्तों के साथ साझा करना आसान बना दिया है।"
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "मैं अपना डेटा पैकेज कैसे प्राप्त करूं?",
+      "description": "आरंभ करने के लिए एक ऑपरेटिंग सिस्टम चुनें|",
       "osDisplays": {
-        "android": "Android",
-        "ios": "iOS",
-        "desktop": "Desktop"
+        "android": "एंड्रॉयड",
+        "ios": "आईओएस",
+        "desktop": "डेस्कटॉप"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "अपनी डिस्कॉर्ड सेटिंग खोलें",
+        "privacy": "\"गोपनीयता और सुरक्षा\" टैब खोलें",
+        "request": "\"अनुरोध डेटा\" पर क्लिक करें"
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "अपना डेटा पैकेज सबमिट करें",
+      "description": "अपनी पसंदीदा विधि चुनें",
+      "method": "तरीका {{n}}",
+      "noPackageYet": "अभी तक कोई पैकेज नहीं?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
-          "discordLink": "Discord link",
-          "advanced": "Advanced",
-          "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "title": "अपनी डिस्कॉर्ड लिंक दर्ज करें",
+          "description": "आप इसे डिस्कॉर्ड से प्राप्त ईमेल में प्राप्त कर सकते हैं। **आप इसे यहां डाउनलोड कर सकते हैं** शीर्षक वाले बटन से लिंक कॉपी करें।",
+          "discordLink": "डिस्कॉर्ड लिंक",
+          "advanced": "विकसित",
+          "backendURL": "बैकएंड यूआरएल",
+          "optional": "वैकल्पिक",
+          "backendURLHint": "आपका स्वयं का होस्ट किया गया ओपन सोर्स सर्वर यूआरएल",
+          "notice": "आगे बढ़ते हुए, आप हमारी [गोपनीयता नीति](/गोपनीयता) और हमारी [शर्तें](/शर्तें) से सहमत होते हैं।",
+          "explore": "एक्सप्लोर करें!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "आवश्यक",
+            "url": "अमान्य यूआरएल",
+            "startWith": "लिंक {{url}} से शुरू होना चाहिए",
+            "emptyKey": "यूपीएन कुंजी खाली नहीं हो सकती"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "ईमेल स्थानांतरित करें (जल्द ही)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "डिस्कॉर्ड से प्राप्त ईमेल को **process@dumpus.app** पर स्थानांतरित करें। जब यह तैयार हो जाएगा तो हम आपको एक लिंक भेजेंगे।",
+            "जल्द ही फिर मिलेंगे!"
           ]
         },
         "demo": {
-          "title": "Demo"
+          "title": "डेमो"
         }
       }
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "आप कतार में हैं!",
+        "why": "वहां कतार क्यों है?",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "डंपस एक निःशुल्क सेवा है, और हमारा सर्वर एक ही समय में कुछ पैकेजों से अधिक का विश्लेषण नहीं कर सकता है।",
+          "इसीलिए हमारे पास एक कतार है, यह सुनिश्चित करने के लिए कि हर कोई सेवा का उपयोग कर सके।",
+          "कतार से बचने के लिए आप हमारे एपीआई सर्वर को स्वयं-होस्ट कर सकते हैं।"
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "पद",
+        "waitingTime": "अनुमानित प्रतीक्षा समय है",
+        "useBackend": "मेरे अपने बैकएंड का उपयोग करें"
       }
     }
   },
   "stats": {
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
-    "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "avg. session time"
+    "messagesSent": "संदेश भेज दिया गया",
+    "messagesSentPerDay": "यह प्रति दिन लगभग {{- value}} संदेश है!",
+    "joinedServers": "सर्वर से जुड़े",
+    "joinedServersDesc": "हमें एक वास्तविक डिस्कॉर्ड सर्वर एक्सप्लोरर मिल गया है!",
+    "knownUsers": "ज्ञात उपयोगकर्ता",
+    "knownUsersDesc": "ख़ैर, आप बहुत से लोगों को जानते हैं!",
+    "spentMoney": "खर्च",
+    "spentMoneyDesc_positive": "यह बहुत सारा पैसा है...!",
+    "spentMoneyDesc_empty": "आप एक मितव्ययी व्यक्ति हैं!",
+    "appStarts": "ऐप प्रारंभ होता है",
+    "appStartsPerDay": "आप प्रति दिन लगभग {{- value}} बार डिस्कॉर्ड खोलते हैं!",
+    "totalTimeSpent": "आपने डिस्कोर्ड पर लगभग {{- value}} खर्च किया",
+    "avgSessionTime": "औसत सत्र समय"
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count"
+  "sheerNumbers": "निरी संख्याएं",
+  "mostActiveDMs": "सबसे सक्रिय डीएम",
+  "mostActiveServers": "सर्वाधिक सक्रिय सर्वर",
+  "mostActiveChannels": "सर्वाधिक सक्रिय चैनल",
+  "discordHours": "डिस्कॉर्ड पर आपका कुल समय",
+  "activityTime": "समय के साथ गतिविधि",
+  "messageSentCount": "संदेश भेजे गए गिनती"
 }
