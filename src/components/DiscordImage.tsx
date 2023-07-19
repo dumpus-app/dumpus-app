@@ -6,7 +6,7 @@ import useFocus from "~/hooks/use-focus";
 type DiscordImageProps = React.ComponentProps<typeof Image>;
 
 export default function DiscordImage(props: DiscordImageProps) {
-  const { src, ...rest } = props;
+  const { src, alt, ...rest } = props;
   const focused = useFocus();
 
   const imageSrc =
@@ -14,13 +14,8 @@ export default function DiscordImage(props: DiscordImageProps) {
     // ignore placeholders
     !src.includes("/embed") &&
     src.includes(".gif")
-      ? src.replace(
-          focused ? ".webp" : ".gif",
-          focused ? ".gif" : ".webp"
-        )
+      ? src.replace(focused ? ".webp" : ".gif", focused ? ".gif" : ".webp")
       : src;
 
-  // TODO: check why alt is not detected
-  // eslint-disable-next-line
-  return <Image {...rest} src={imageSrc} />;
+  return <Image {...rest} alt={alt} src={imageSrc} />;
 }
