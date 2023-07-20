@@ -111,7 +111,7 @@ export default function StaticShareImage({
           <div tw="flex mb-8">
             {/* eslint-disable-next-line */}
             <img
-              src={user.avatarURL}
+              src={user.avatarURL.replace(/.webp|.gif/, ".png")}
               alt=""
               tw="object-cover object-center rounded-full"
               width={128}

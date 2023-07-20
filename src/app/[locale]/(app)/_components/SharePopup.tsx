@@ -40,7 +40,10 @@ export default function SharePopup() {
       const { svgURL, file } = await generate({
         user: {
           displayName: data.package_owner_display_name,
-          avatarURL: data.package_owner_avatar_url,
+          avatarURL: data.package_owner_avatar_url.replace(
+            /.webp|.gif/,
+            ".png"
+          ),
         },
         stats: {
           messagesSent: formatNumber(messageCount(), { notation: "standard" }),
@@ -52,7 +55,10 @@ export default function SharePopup() {
           return {
             name: dm.user_name,
             // TODO: get latest url
-            url: avatarURLFallback(dm.user_avatar_url, dm.dm_user_id),
+            url: avatarURLFallback(dm.user_avatar_url, dm.dm_user_id).replace(
+              /.webp|.gif/,
+              ".png"
+            ),
             count: formatNumber(dm.message_count),
           };
         }),
