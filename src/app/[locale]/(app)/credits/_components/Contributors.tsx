@@ -1,7 +1,7 @@
 "use client";
 
 import Section from "~/components/Section";
-import contributorsData from "../../../../../../contributors.json";
+import contributorsData from "~/data/contributors.json";
 import DetailCard from "~/components/data/DetailCard";
 import {
   BugAntIcon,
@@ -109,7 +109,7 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
       leftSlot={
         <div className="relative aspect-square w-10">
           <DiscordImage
-            src={avatarUrl}
+            src={`/assets/contributors/${name}.png`}
             alt={`${name}'s avatar`}
             fill
             className="rounded-full object-cover object-center"
