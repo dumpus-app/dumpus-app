@@ -60,7 +60,7 @@ export default function About() {
         <DetailCard
           href="/credits"
           title="Credits"
-          description="People who helped us"
+          description="Project's contributors"
           reverseTexts
           leftSlot={<LeftIcon icon={UserGroupIcon} />}
           rightIcon={ChevronRightIcon}

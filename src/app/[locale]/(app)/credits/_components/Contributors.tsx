@@ -23,8 +23,6 @@ type Contributor = {
   priority?: number;
 };
 
-// TODO: sort
-
 function sortContributors() {
   const contributors: Contributor[] = [];
   let remainingContributors: Contributor[] = contributorsData;
