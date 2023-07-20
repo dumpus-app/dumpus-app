@@ -36,16 +36,16 @@ export default function Roles() {
           leftSlot={<LeftIcon icon={FilmIcon} className="text-[#FBBF24]" />}
         />
         <DetailCard
-          title="Translator"
-          description="Lorem ipsum"
-          leftSlot={<Flag code="fr" />}
-        />
-        <DetailCard
           title="Developer"
           description="Lorem ipsum"
           leftSlot={
             <LeftIcon icon={CommandLineIcon} className="text-[#818CF8]" />
           }
+        />
+        <DetailCard
+          title="Translator"
+          description="Lorem ipsum"
+          leftSlot={<Flag code="fr" />}
         />
       </div>
     </Section>

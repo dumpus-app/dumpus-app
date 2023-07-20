@@ -9,6 +9,7 @@ export type Props = Omit<
   "children" | "title" | "href"
 > & {
   leftSlot?: React.ReactNode;
+  rightSlot?: React.ReactNode;
   rightIcon?: Icon;
   title: string | JSX.Element;
   description: string;
@@ -18,6 +19,7 @@ export type Props = Omit<
 
 export default function DetailCard({
   leftSlot,
+  rightSlot,
   rightIcon: RightIcon,
   title,
   description,
@@ -61,7 +63,7 @@ export default function DetailCard({
           {description}
         </div>
       </div>
-      {RightIcon && <RightIcon className="h-7 w-7 shrink-0" />}
+      {rightSlot || (RightIcon && <RightIcon className="h-7 w-7 shrink-0" />)}
     </Link>
   );
 }

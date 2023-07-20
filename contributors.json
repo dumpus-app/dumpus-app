@@ -3,26 +3,18 @@
     "avatarUrl": "https://avatars.githubusercontent.com/u/42497995?v=4",
     "name": "Androz",
     "description": "God",
-    "bugs": 1,
+    "bugs": 10,
     "translation": "fr",
-    "developer": 1,
+    "developer": 10,
     "priority": 0
   },
   {
     "avatarUrl": "https://avatars.githubusercontent.com/u/69633530?v=4",
     "name": "Florian Lefebvre",
     "description": "God after God",
-    "bugs": 1,
-    "translation": "fr",
-    "developer": 1,
+    "bugs": 10,
+    "translation": "gb-ukm",
+    "developer": 10,
     "priority": 1
-  },
-  {
-    "avatarUrl": "https://avatars.githubusercontent.com/u/42497995?v=4",
-    "name": "TEST",
-    "bugs": 1,
-    "translation": "en",
-    "influencer": true,
-    "developer": 1
   }
 ]
