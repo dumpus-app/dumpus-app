@@ -1,0 +1,68 @@
+[
+  {
+    "name": "androz2091",
+    "description": "Back-end API developer",
+    "bugs": 1000000,
+    "translation": "fr",
+    "developer": 100000,
+    "priority": 0
+  },
+  {
+    "name": "florian_lefebvre",
+    "description": "Front-end developer, UI/UX designer",
+    "bugs": 100000,
+    "translation": "fr",
+    "developer": 100000,
+    "priority": 1
+  },
+  {
+    "name": "kaki87",
+    "description": "Got the idea and helped building this project",
+    "translation": "fr",
+    "priority": 2
+  },
+  {
+    "name": "hunam",
+    "description": "UI designer and full-stack developer",
+    "bugs": 1,
+    "translation": "fr",
+    "developer": 0,
+    "priority": 3
+  },
+  {
+    "name": "thearchaeopteryx",
+    "bugs": 2,
+    "translation": "np",
+    "developer": 2
+  },
+  {
+    "name": "mariusbegby",
+    "bugs": 1,
+    "translation": "no"
+  },
+  {
+    "name": "lukebtw",
+    "bugs": 1,
+    "translation": "it"
+  },
+  {
+    "name": "mampo",
+    "bugs": 1
+  },
+  {
+    "name": "jazzyarmando1234",
+    "translation": "ro"
+  },
+  {
+    "name": "aim.exe",
+    "translation": "in"
+  },
+  {
+    "name": "gamers_indo1223",
+    "translation": "id"
+  },
+  {
+    "name": "monwg",
+    "translation": "ir"
+  }
+]

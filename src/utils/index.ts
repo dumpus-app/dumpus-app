@@ -87,3 +87,13 @@ export function shuffleArray<T>(array: T[]) {
 
   return array;
 }
+
+export function partitionArray<T>(
+  array: T[],
+  filter: (e: T, i: number, arr: T[]) => boolean
+) {
+  const pass: T[] = [];
+  const fail: T[] = [];
+  array.forEach((e, i, arr) => (filter(e, i, arr) ? pass : fail).push(e));
+  return [pass, fail] as const;
+}

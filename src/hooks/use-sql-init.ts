@@ -12,19 +12,26 @@ const STORAGE_KEY = "db";
 export const getStorageKey = (id: string) => `${STORAGE_KEY}:${id}`;
 
 export default function useSQLInit() {
-  const { packages, setSelectedID, addPackage, setPackage, setDB } =
-    useAppStore(
-      ({
-        config: { packages, setSelectedID, addPackage, setPackage },
-        database: { setDB },
-      }) => ({
-        packages,
-        setSelectedID,
-        addPackage,
-        setPackage,
-        setDB,
-      })
-    );
+  const {
+    packages,
+    setSelectedID,
+    addPackage,
+    setPackage,
+    setDB,
+    setTimeRange,
+  } = useAppStore(
+    ({
+      config: { packages, setSelectedID, addPackage, setPackage, setTimeRange },
+      database: { setDB },
+    }) => ({
+      packages,
+      setSelectedID,
+      addPackage,
+      setPackage,
+      setDB,
+      setTimeRange,
+    })
+  );
 
   const isInitializedRef = useRef(false);
 
@@ -83,6 +90,7 @@ export default function useSQLInit() {
         addPackage(newPackage);
       }
       setSelectedID(id);
+      setTimeRange("Lifetime");
     }
     setDB(_db);
   }
