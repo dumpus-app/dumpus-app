@@ -3,7 +3,6 @@
 import Section from "~/components/Section";
 import contributorsData from "../../../../../../contributors.json";
 import DetailCard from "~/components/data/DetailCard";
-import Image from "next/image";
 import {
   BugAntIcon,
   CommandLineIcon,
@@ -11,6 +10,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Flag from "./Flag";
 import { partitionArray } from "~/utils";
+import DiscordImage from "~/components/DiscordImage";
 
 type Contributor = {
   avatarUrl: string;
@@ -108,7 +108,7 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
       }
       leftSlot={
         <div className="relative aspect-square w-10">
-          <Image
+          <DiscordImage
             src={avatarUrl}
             alt={`${name}'s avatar`}
             fill
