@@ -10,6 +10,7 @@ import {
   FilmIcon,
 } from "@heroicons/react/24/solid";
 import Flag from "./Flag";
+import { partitionArray } from "~/utils";
 
 type Contributor = {
   avatarUrl: string;
@@ -23,7 +24,67 @@ type Contributor = {
 };
 
 // TODO: sort
-const contributors: Contributor[] = contributorsData;
+
+function sortContributors() {
+  const contributors: Contributor[] = [];
+  let remainingContributors: Contributor[] = contributorsData;
+
+  // Priority contributors
+  {
+    const [priorityContributors, rest] = partitionArray(
+      remainingContributors,
+      (c) => c.priority !== undefined
+    );
+    remainingContributors = rest;
+
+    priorityContributors.sort((a, b) => a.priority! - b.priority!);
+    contributors.push(...priorityContributors);
+  }
+
+  // Devs
+  {
+    const [devContributors, rest] = partitionArray(
+      remainingContributors,
+      (c) => c.developer !== undefined
+    );
+    remainingContributors = rest;
+
+    devContributors.sort((a, b) => a.developer! - b.developer!);
+    contributors.push(...devContributors);
+  }
+
+  // Bug hunters
+  {
+    const [bugContributors, rest] = partitionArray(
+      remainingContributors,
+      (c) => c.bugs !== undefined
+    );
+    remainingContributors = rest;
+
+    bugContributors.sort((a, b) => a.bugs! - b.bugs!);
+    contributors.push(...bugContributors);
+  }
+
+  // Influencers
+  {
+    const [influencers, rest] = partitionArray(
+      remainingContributors,
+      (c) => !!c.influencer
+    );
+    remainingContributors = rest;
+
+    contributors.push(...influencers);
+  }
+
+  // Translators
+  {
+    contributors.push(...remainingContributors);
+  }
+
+  return contributors;
+}
+
+const contributors = sortContributors();
 
 function ContributorCard({ contributor }: { contributor: Contributor }) {
   const {
