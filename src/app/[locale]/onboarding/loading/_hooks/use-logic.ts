@@ -159,7 +159,7 @@ export default function useLogic() {
     api,
     packageID: packageID || "",
     UPNKey: UPNKey || "",
-    enabled: status.data?.processingStep === "PROCESSED" || false,
+    enabled: status.data?.processingStep === "PROCESSED",
   });
 
   useRedirect({
