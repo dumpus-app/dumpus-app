@@ -38,7 +38,7 @@ export default function PackageSwitch() {
               reverseTexts
               onClick={() => {
                 setSelectedID(id);
-                location.href = "/";
+                window.location.href = "/";
               }}
               rightIcon={ChevronRightIcon}
             />
