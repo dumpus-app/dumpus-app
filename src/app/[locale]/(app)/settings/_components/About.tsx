@@ -5,9 +5,11 @@ import DetailCard from "~/components/data/DetailCard";
 import { Icon } from "~/types";
 import {
   ArrowTopRightOnSquareIcon,
+  ChevronRightIcon,
   ClipboardDocumentIcon,
   GlobeAltIcon,
   InformationCircleIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/solid";
 import { SimpleIconsDiscord, SimpleIconsGithub } from "~/components/icons";
 import { BASE_URL, VERSION } from "~/constants";
@@ -60,6 +62,14 @@ export default function About() {
           reverseTexts
           leftSlot={<LeftIcon icon={SimpleIconsGithub} />}
           rightIcon={ArrowTopRightOnSquareIcon}
+        />
+        <DetailCard
+          href="/credits"
+          title="Credits"
+          description="Project's contributors"
+          reverseTexts
+          leftSlot={<LeftIcon icon={UserGroupIcon} />}
+          rightIcon={ChevronRightIcon}
         />
       </div>
     </Section>
