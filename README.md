@@ -4,8 +4,8 @@ Dumpus is a cross-platform app that gives you advanced statistics on your Discor
 
 ## Download
 
-<a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./.github/assets/playstore.png" hspace="10" height="100px" /></a>
-<a href="#"><img src="./.github/assets/appstore.png" height="100px" /></a>
+<a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./assets/playstore.png" hspace="10" height="100px" /></a>
+<a href="#"><img src="./assets/appstore.png" height="100px" /></a>
 
 or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux builds](https://github.com/dumpus-app/dumpus-app/releases/latest).
 
@@ -13,7 +13,7 @@ or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux buil
 
 |                                                               |                                                               |                                                               |
 | ------------------------------------------------------------- | ------------------------------------------------------------- | ------------------------------------------------------------- |
-| <img src="./.github/assets/screenshot1.jpg" height="400px" /> | <img src="./.github/assets/screenshot2.jpg" height="400px" /> | <img src="./.github/assets/screenshot3.jpg" height="400px" /> |
+| <img src="./assets/screenshot1.jpg" height="400px" /> | <img src="./assets/screenshot2.jpg" height="400px" /> | <img src="./assets/screenshot3.jpg" height="400px" /> |
 
 ## Made with
 
