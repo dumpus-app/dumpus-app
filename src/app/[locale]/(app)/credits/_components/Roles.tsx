@@ -27,24 +27,24 @@ export default function Roles() {
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <DetailCard
           title="Bug hunter"
-          description="Lorem ipsum"
+          description="Most important people to provide you with stable app."
           leftSlot={<LeftIcon icon={BugAntIcon} className="text-[#FB7185]" />}
         />
         <DetailCard
           title="Influencer"
-          description="Lorem ipsum"
+          description="These people helped us to spread the word about the app."
           leftSlot={<LeftIcon icon={FilmIcon} className="text-[#FBBF24]" />}
         />
         <DetailCard
           title="Developer"
-          description="Lorem ipsum"
+          description="These people made direct contributions to the app's code."
           leftSlot={
             <LeftIcon icon={CommandLineIcon} className="text-[#818CF8]" />
           }
         />
         <DetailCard
           title="Translator"
-          description="Lorem ipsum"
+          description="These people made the app available worldwide."
           leftSlot={<Flag code="fr" />}
         />
       </div>

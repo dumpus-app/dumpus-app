@@ -1,20 +1,85 @@
 [
   {
     "avatarUrl": "https://avatars.githubusercontent.com/u/42497995?v=4",
-    "name": "Androz",
-    "description": "God",
-    "bugs": 10,
+    "name": "@androz2091",
+    "description": "Back-end API developer",
+    "bugs": 1000000,
     "translation": "fr",
-    "developer": 10,
+    "developer": 100000,
     "priority": 0
   },
   {
     "avatarUrl": "https://avatars.githubusercontent.com/u/69633530?v=4",
-    "name": "Florian Lefebvre",
-    "description": "God after God",
+    "name": "@florian_lefebvre",
+    "description": "Front-end UI developer",
     "bugs": 10,
-    "translation": "gb-ukm",
+    "translation": "fr",
     "developer": 10,
     "priority": 1
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/236952680201715714/9f8f56730a097338968b19016b43e58c.webp?size=40",
+    "name": "@kaki87",
+    "description": "Got the idea and helped building this project",
+    "translation": "fr",
+    "priority": 2
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/365942020923064340/7bdf0094f6c645502b99cc92985fd463.webp?size=80",
+    "name": "@hunam",
+    "description": "UI designer and full-stack developer",
+    "bugs": 1,
+    "translation": "fr",
+    "developer": 0,
+    "priority": 3
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/916316955772862475/1c03b69ec36f2fda15a0131cdbd70018.webp?size=80",
+    "name": "@thearchaeopteryx",
+    "bugs": 2,
+    "translation": "np",
+    "developer": 2
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/188756563731808266/59610307d35b78ea57395f8f51727c80.webp?size=80",
+    "name": "@mariusbegby",
+    "bugs": 1,
+    "translation": "no"
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/1095455197121237103/3931d00f3fce93ea1d5f06687efb4159.webp?size=80",
+    "name": "@lukebtw",
+    "bugs": 1,
+    "translation": "it"
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/876801702051856424/ef0186db796cede85bf0ab34d19d5971.webp?size=80",
+    "name": "@mampo",
+    "bugs": 1
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/876801702051856424/ef0186db796cede85bf0ab34d19d5971.webp?size=80",
+    "name": "@mampo",
+    "bugs": 1
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/650303709225549826/c290e8bd32c8dee377053dd30b45be3f.webp?size=80",
+    "name": "@jazzyarmando1234",
+    "translation": "ro"
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/1035467531646947328/a_c4a85a7fc84ccfd4d58cd86e3506dc05.gif?size=80",
+    "name": "@aim.exe.",
+    "translation": "in"
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/694370838719234151/a_c1ff5d3b4da4513a2eca884db81a71ec.gif?size=80",
+    "name": "@gamers_indo1223",
+    "translation": "id"
+  },
+  {
+    "avatarUrl": "https://cdn.discordapp.com/avatars/1091427362492661863/88c461dad5c59382d3c81ac5106e1cec.webp?size=80",
+    "name": "@monwg",
+    "translation": "ir"
   }
 ]
