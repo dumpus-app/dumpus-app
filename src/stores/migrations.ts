@@ -5,8 +5,7 @@ export const migrateConfig = (persistedState: unknown, version: number) => {
 
   if (version === 0) {
     for (const pkg of config.packages) {
-      // TODO: check if it's false or "0"
-      pkg.package_is_partial = false;
+      pkg.package_is_partial = 0;
     }
     version++;
   }
