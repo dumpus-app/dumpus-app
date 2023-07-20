@@ -1,45 +1,15 @@
 "use client";
 
-import {
-  CheckCircleIcon,
-  ClipboardDocumentIcon,
-  XCircleIcon,
-} from "@heroicons/react/24/solid";
-import { useEffect } from "react";
-import { useCopyToClipboard } from "react-use";
+import { ClipboardDocumentIcon } from "@heroicons/react/24/solid";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
-import useToast from "~/hooks/use-toast";
 import { useSelectedPackage } from "~/stores";
 import { formatDate } from "~/utils/format";
+import useCopy from "../_hooks/use-copy";
 
 export default function PackageDetails() {
   const selectedPackage = useSelectedPackage();
-  const [state, copyToClipboard] = useCopyToClipboard();
-  const toast = useToast();
-
-  useEffect(() => {
-    if (state.error) {
-      toast({
-        id: "cant-copy",
-        variant: "danger",
-        title: "Can't copy to clipboard",
-        description: state.error.message,
-        icon: XCircleIcon,
-      });
-    } else if (state.value) {
-      let sliced = state.value.slice(0, 40);
-      if (sliced.length !== state.value.length) {
-        sliced += "...";
-      }
-      toast({
-        id: sliced,
-        title: "Copied to clipboard!",
-        description: sliced,
-        icon: CheckCircleIcon,
-      });
-    }
-  }, [state, toast]);
+  const copy = useCopy();
 
   // During reset
   if (!selectedPackage) return null;
@@ -48,7 +18,7 @@ export default function PackageDetails() {
     <Section title="Package details">
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <DetailCard
-          onClick={() => copyToClipboard(selectedPackage.UPNKey)}
+          onClick={() => copy(selectedPackage.UPNKey)}
           title={selectedPackage.UPNKey}
           description="UPN Key"
           reverseTexts
@@ -56,7 +26,7 @@ export default function PackageDetails() {
         />
         <DetailCard
           onClick={() =>
-            copyToClipboard(
+            copy(
               formatDate(selectedPackage.dateAdded, {
                 hour: false,
                 minute: false,
@@ -72,21 +42,21 @@ export default function PackageDetails() {
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          onClick={() => copyToClipboard(selectedPackage.package_id)}
+          onClick={() => copy(selectedPackage.package_id)}
           title={selectedPackage.package_id}
           description="Package ID"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          onClick={() => copyToClipboard(selectedPackage.package_owner_name)}
+          onClick={() => copy(selectedPackage.package_owner_name)}
           title={selectedPackage.package_owner_name}
           description="Discord user"
           reverseTexts
           rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
-          onClick={() => copyToClipboard(selectedPackage.backendURL)}
+          onClick={() => copy(selectedPackage.backendURL)}
           title={selectedPackage.backendURL}
           description="Backend URL"
           reverseTexts

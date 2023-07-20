@@ -5,25 +5,31 @@ import DetailCard from "~/components/data/DetailCard";
 import { Icon } from "~/types";
 import {
   ArrowTopRightOnSquareIcon,
+  ClipboardDocumentIcon,
   GlobeAltIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { SimpleIconsDiscord, SimpleIconsGithub } from "~/components/icons";
 import { BASE_URL, VERSION } from "~/constants";
+import useCopy from "../_hooks/use-copy";
 
 function LeftIcon({ icon: Icon }: { icon: Icon }) {
   return <Icon className="h-8 w-8" />;
 }
 
 export default function About() {
+  const copy = useCopy();
+
   return (
     <Section title="About">
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <DetailCard
           title={VERSION}
           description="Version"
+          onClick={() => copy(VERSION)}
           reverseTexts
           leftSlot={<LeftIcon icon={InformationCircleIcon} />}
+          rightIcon={ClipboardDocumentIcon}
         />
         <DetailCard
           href={BASE_URL}
