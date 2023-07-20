@@ -10,7 +10,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Flag from "./Flag";
 import { partitionArray } from "~/utils";
-import DiscordImage from "~/components/DiscordImage";
+import Image from "next/image";
 
 type Contributor = {
   avatarUrl: string;
@@ -106,7 +106,7 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
       }
       leftSlot={
         <div className="relative aspect-square w-10">
-          <DiscordImage
+          <Image
             src={`/assets/contributors/${name}.png`}
             alt={`${name}'s avatar`}
             fill
