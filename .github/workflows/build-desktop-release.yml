@@ -32,12 +32,12 @@ jobs:
       - name: Rust cache
         uses: swatinem/rust-cache@v2
         with:
-          workspaces: './src-tauri -> target'
+          workspaces: "./src-tauri -> target"
 
       - name: Sync node version and setup cache
         uses: actions/setup-node@v3
         with:
-          node-version: '19.9.0'
+          node-version: "19.9.0"
 
       - name: Install pnpm
         run: npm install -g pnpm

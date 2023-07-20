@@ -120,9 +120,9 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     const { data, hasError } = sql<{ average_session_duration: number }>`
       SELECT AVG(duration_mins) as average_session_duration
       FROM sessions
-      WHERE started_date BETWEEN '${new Date(startDate).getTime() / 1_000}' AND '${
-      new Date(endDate).getTime() / 1_000
-    }'
+      WHERE started_date BETWEEN '${
+        new Date(startDate).getTime() / 1_000
+      }' AND '${new Date(endDate).getTime() / 1_000}'
     `;
 
     return hasError ? null : data[0].average_session_duration || 0;
@@ -132,9 +132,9 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     const { data, hasError } = sql<{ total_session_duration: number }>`
       SELECT SUM(duration_mins) as total_session_duration
       FROM sessions
-      WHERE started_date BETWEEN '${new Date(startDate).getTime() / 1_000}' AND '${
-      new Date(endDate).getTime() / 1_000
-    }'
+      WHERE started_date BETWEEN '${
+        new Date(startDate).getTime() / 1_000
+      }' AND '${new Date(endDate).getTime() / 1_000}'
     `;
 
     return hasError ? null : data[0].total_session_duration || 0;
@@ -144,9 +144,9 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     const { data, hasError } = sql<{ received_calls: number }>`
       SELECT count(*) as received_calls
       FROM voice_sessions
-      WHERE started_date BETWEEN '${new Date(startDate).getTime() / 1_000}' AND '${
-      new Date(endDate).getTime() / 1_000
-    }';
+      WHERE started_date BETWEEN '${
+        new Date(startDate).getTime() / 1_000
+      }' AND '${new Date(endDate).getTime() / 1_000}';
     `;
 
     return hasError ? null : data[0].received_calls;
@@ -156,9 +156,9 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     const { data, hasError } = sql<{ os: string; count: number }>`
       SELECT SUM(duration_mins) / 60 as count, device_os as os
       FROM sessions
-      WHERE started_date BETWEEN '${new Date(startDate).getTime() / 1_000}' AND '${
-      new Date(endDate).getTime() / 1_000
-    }'
+      WHERE started_date BETWEEN '${
+        new Date(startDate).getTime() / 1_000
+      }' AND '${new Date(endDate).getTime() / 1_000}'
       GROUP BY device_os;
     `;
 
@@ -175,11 +175,13 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     return hasError ? null : data[0].event_count;
   }
 
-  function getTimeSpentInVoiceChannels () {
+  function getTimeSpentInVoiceChannels() {
     const { data, hasError } = sql<{ time_spent: number }>`
       SELECT SUM(duration_mins) as time_spent
       FROM voice_sessions
-      WHERE started_date BETWEEN '${(new Date(startDate).getTime() / 1_000)}' AND '${(new Date(endDate).getTime() / 1_000)}';
+      WHERE started_date BETWEEN '${
+        new Date(startDate).getTime() / 1_000
+      }' AND '${new Date(endDate).getTime() / 1_000}';
     `;
     return hasError ? null : (data[0].time_spent || 0) * 60 * 1000;
   }
@@ -197,17 +199,17 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     totalSessionDuration: () => getTotalSessionDuration(),
     receivedCalls: () => getReceivedCalls(),
     usePerOs: () => getUsePerOS(),
-    notificationClicked: () => countEvent('notification_clicked'),
-    emailReceived: () => countEvent('email_opened'),
-    loginSuccessful: () => countEvent('login_successful'),
-    userAvatarUpdated: () => countEvent('user_avatar_updated'),
-    appCrashed: () => countEvent('app_crashed'),
-    oauth2Authorized: () => countEvent('oauth2_authorize_accepted'),
-    voiceMessageRecorded: () => countEvent('voice_message_recorded'),
-    messageReported: () => countEvent('message_reported'),
-    messageEdited: () => countEvent('message_edited'),
-    nitroAds: () => countEvent('premium_upsell_viewed'),
-    captchaServed: () => countEvent('captcha_served'),
+    notificationClicked: () => countEvent("notification_clicked"),
+    emailReceived: () => countEvent("email_opened"),
+    loginSuccessful: () => countEvent("login_successful"),
+    userAvatarUpdated: () => countEvent("user_avatar_updated"),
+    appCrashed: () => countEvent("app_crashed"),
+    oauth2Authorized: () => countEvent("oauth2_authorize_accepted"),
+    voiceMessageRecorded: () => countEvent("voice_message_recorded"),
+    messageReported: () => countEvent("message_reported"),
+    messageEdited: () => countEvent("message_edited"),
+    nitroAds: () => countEvent("premium_upsell_viewed"),
+    captchaServed: () => countEvent("captcha_served"),
     timeSpentVoice: () => getTimeSpentInVoiceChannels(),
   };
 }
