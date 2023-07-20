@@ -21,7 +21,8 @@
     "ios:dev:static": "cross-env-shell NODE_ENV=production \"cap sync ios && cap run ios\"",
     "script:list-locales": "node ./scripts/list-locales.cjs",
     "script:build-android": "cross-env-shell NODE_ENV=production \"cap sync\" && node ./scripts/build-android.cjs",
-    "trapeze:run": "node ./trapeze.config.mjs"
+    "trapeze:run": "node ./trapeze.config.mjs",
+    "tauri:icon": "tauri icon ./ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x~car.png"
   },
   "dependencies": {
     "@capacitor/android": "^5.0.3",
