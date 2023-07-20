@@ -67,7 +67,7 @@ function useStatus({
   });
 
   useEffect(() => {
-    setErroredStatus(data?.isErrored || false);
+    setErroredStatus(!!data?.isErrored);
   }, [data]);
 
   return { data, status };
