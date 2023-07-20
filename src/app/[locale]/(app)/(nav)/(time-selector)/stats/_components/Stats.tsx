@@ -107,7 +107,9 @@ export default function Stats() {
           }),
           icon: CursorArrowRippleIcon,
         },
-    {
+      package_is_partial
+        ? null
+        : {
       value: formatDuration((avgSessionDuration() || 0) * 60_000),
       title: t("stats.avgSessionTime"),
       description: t("stats.totalTimeSpent", {
