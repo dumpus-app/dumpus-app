@@ -55,58 +55,15 @@
     "setup": {
       "title": "म मेरो data package कसरी प्राप्त गर्न सक्छु?",
       "description": "सुरु गर्न operating system छान्नुहोस्।",
-      "data": {
-        "android": {
-          "display": "Android",
-          "steps": [
-            {
-              "name": "तपाइको Discord setting खोल्नुहोस्",
-              "image": "/assets/onboarding/en/android/step1.png"
-            },
-            {
-              "name": "\"Privacy & Safety\" tab खोल्नुहोस्",
-              "image": "/assets/onboarding/en/android/step2.png"
-            },
-            {
-              "name": "\"Request Data\" मा थिच्नुहोस",
-              "image": "/assets/onboarding/en/android/step3.png"
-            }
-          ]
-        },
-        "ios": {
-          "display": "iOS",
-          "steps": [
-            {
-              "name": "तपाइको Discord setting खोल्नुहोस्",
-              "image": "/assets/onboarding/en/ios/step1.png"
-            },
-            {
-              "name": "\"Privacy & Safety\" tab खोल्नुहोस्",
-              "image": "/assets/onboarding/en/ios/step2.png"
-            },
-            {
-              "name": "\"Request Data\" मा थिच्नुहोस",
-              "image": "/assets/onboarding/en/ios/step3.png"
-            }
-          ]
-        },
-        "desktop": {
-          "display": "Desktop",
-          "steps": [
-            {
-              "name": "तपाइको Discord setting खोल्नुहोस्",
-              "image": "/assets/onboarding/en/desktop/step1.png"
-            },
-            {
-              "name": "\"Privacy & Safety\" tab खोल्नुहोस्",
-              "image": "/assets/onboarding/en/desktop/step2.png"
-            },
-            {
-              "name": "\"Request Data\" मा थिच्नुहोस",
-              "image": "/assets/onboarding/en/desktop/step3.png"
-            }
-          ]
-        }
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "Desktop"
+      },
+      "steps": {
+        "settings": "Open your Discord settings",
+        "privacy": "Open the \"Privacy & Safety\" tab",
+        "request": "Click on \"Request Data\""
       }
     },
     "access": {
@@ -161,7 +118,7 @@
   },
   "stats": {
     "messagesSent": "पठाइएको message हरु",
-    "messagesSentPerDay": "यो भनेको अन्दाजी दिनको {{- value}} message हरु हो!",
+    "messagesSentPerDay": "That's about {{- value}} messages per day!",
     "joinedServers": "join भएका server हरु",
     "joinedServersDesc": "हामीले साचिकैको Discord सर्भर explorer पाएका छौं!",
     "knownUsers": "थाहा भएका प्रयोगकर्ताहरु",
@@ -170,8 +127,8 @@
     "spentMoneyDesc_positive": "त्यो धेरै पैसा हो...!",
     "spentMoneyDesc_empty": "तपाईं एक मितव्ययी व्यक्ति हुनुहुन्छ!",
     "appStarts": "app खोलेको",
-    "appStartsPerDay": "तपाइले दिनको लगभग {{- value}} चोटी Discord खोल्नुहुन्छ!",
-    "totalTimeSpent": "तपाइले लगभग {{- value}} रुपिया Discord मा खर्च गर्नुभएको छ",
+    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
+    "totalTimeSpent": "You spent about {{- value}} on Discord",
     "avgSessionTime": "औसत session समय"
   },
   "sheerNumbers": "सरासर संख्याहरू",

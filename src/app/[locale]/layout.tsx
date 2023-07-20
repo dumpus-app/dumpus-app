@@ -1,7 +1,7 @@
 import type { Metadata, ResolvingMetadata } from "next";
 import { initI18next, useTranslation } from "~/i18n";
 import { locales } from "~/i18n/settings";
-import { PageProps } from "~/types";
+import type { PageProps } from "~/types";
 import LoadingScreen from "./_components/LoadingScreen";
 import { generateSEO } from "~/utils/seo";
 import InAppPurchasesDialog from "~/components/InAppPurchasesDialog";

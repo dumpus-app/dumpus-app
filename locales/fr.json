@@ -55,58 +55,15 @@
     "setup": {
       "title": "Comment obtenir mon paquet de données ?",
       "description": "Sélectionnez une plateforme pour commencer.",
-      "data": {
-        "android": {
-          "display": "Android",
-          "steps": [
-            {
-              "name": "Open your Discord settings",
-              "image": "/assets/onboarding/en/android/step1.png"
-            },
-            {
-              "name": "Open the \"Privacy & Safety\" tab",
-              "image": "/assets/onboarding/en/android/step2.png"
-            },
-            {
-              "name": "Click on \"Request Data\"",
-              "image": "/assets/onboarding/en/android/step3.png"
-            }
-          ]
-        },
-        "ios": {
-          "display": "iOS",
-          "steps": [
-            {
-              "name": "Open your Discord settings",
-              "image": "/assets/onboarding/en/ios/step1.png"
-            },
-            {
-              "name": "Open the \"Privacy & Safety\" tab",
-              "image": "/assets/onboarding/en/ios/step2.png"
-            },
-            {
-              "name": "Click on \"Request Data\"",
-              "image": "/assets/onboarding/en/ios/step3.png"
-            }
-          ]
-        },
-        "desktop": {
-          "display": "PC/Mac",
-          "steps": [
-            {
-              "name": "Open your Discord settings",
-              "image": "/assets/onboarding/en/desktop/step1.png"
-            },
-            {
-              "name": "Open the \"Privacy & Safety\" tab",
-              "image": "/assets/onboarding/en/desktop/step2.png"
-            },
-            {
-              "name": "Click on \"Request Data\"",
-              "image": "/assets/onboarding/en/desktop/step3.png"
-            }
-          ]
-        }
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "Desktop"
+      },
+      "steps": {
+        "settings": "Open your Discord settings",
+        "privacy": "Open the \"Privacy & Safety\" tab",
+        "request": "Click on \"Request Data\""
       }
     },
     "access": {

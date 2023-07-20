@@ -36,7 +36,7 @@ export default function About() {
           rightIcon={ArrowTopRightOnSquareIcon}
         />
         <DetailCard
-          href="https://discord.com"
+          href="https://androz2091.fr/discord"
           noI18n
           target="_blank"
           title="Discord"
