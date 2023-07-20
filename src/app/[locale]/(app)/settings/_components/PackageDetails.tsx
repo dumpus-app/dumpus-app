@@ -21,6 +21,7 @@ export default function PackageDetails() {
   useEffect(() => {
     if (state.error) {
       toast({
+        id: "cant-copy",
         variant: "danger",
         title: "Can't copy to clipboard",
         description: state.error.message,
@@ -32,6 +33,7 @@ export default function PackageDetails() {
         sliced += "...";
       }
       toast({
+        id: sliced,
         title: "Copied to clipboard!",
         description: sliced,
         icon: CheckCircleIcon,
