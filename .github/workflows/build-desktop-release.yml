@@ -44,7 +44,7 @@ jobs:
 
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
       - name: Build the app
         uses: tauri-apps/tauri-action@v0
