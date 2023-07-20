@@ -16,6 +16,7 @@ import DetailCard from "~/components/data/DetailCard";
 import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import { useTranslation } from "~/i18n/client";
+import { useSelectedPackage } from "~/stores";
 import type { Icon } from "~/types";
 import {
   formatHour,
@@ -38,6 +39,7 @@ export default function Stats() {
     totalSessionDuration,
   } = useUsageStatsData();
   const { t } = useTranslation();
+  const { package_is_partial } = useSelectedPackage();
 
   const data: {
     value: string;
@@ -53,12 +55,14 @@ export default function Stats() {
       }),
       icon: ChatBubbleBottomCenterTextIcon,
     },
-    {
-      value: formatNumber(joinedGuilds()),
-      title: t("stats.joinedServers"),
-      description: t("stats.joinedServersDesc"),
-      icon: ArrowLeftOnRectangleIcon,
-    } /*
+    package_is_partial
+      ? null
+      : {
+          value: formatNumber(joinedGuilds()),
+          title: t("stats.joinedServers"),
+          description: t("stats.joinedServersDesc"),
+          icon: ArrowLeftOnRectangleIcon,
+        } /*
     {
       value: "N/A",
       title: "received calls",
@@ -93,12 +97,16 @@ export default function Stats() {
       }),
       icon: BanknotesIcon,
     },
-    {
-      value: formatNumber(appStarted(), { notation: "standard" }),
-      title: t("stats.appStarts"),
-      description: t("stats.appStartsPerDay", { value: avgAppStartedPerDay() }),
-      icon: CursorArrowRippleIcon,
-    },
+    package_is_partial
+      ? null
+      : {
+          value: formatNumber(appStarted(), { notation: "standard" }),
+          title: t("stats.appStarts"),
+          description: t("stats.appStartsPerDay", {
+            value: avgAppStartedPerDay(),
+          }),
+          icon: CursorArrowRippleIcon,
+        },
     {
       value: formatDuration((avgSessionDuration() || 0) * 60_000),
       title: t("stats.avgSessionTime"),
@@ -107,7 +115,7 @@ export default function Stats() {
       }),
       icon: ClockIcon,
     },
-  ];
+  ].filter((stat) => stat !== null) as any;
 
   return (
     <div className="grid grid-cols-1 gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8 md:grid-cols-3">
