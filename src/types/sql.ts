@@ -58,4 +58,5 @@ export type PackageData = {
   package_owner_name: string;
   package_owner_display_name: string;
   package_owner_avatar_url: string;
+  package_is_partial: boolean;
 };

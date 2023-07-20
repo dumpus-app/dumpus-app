@@ -17,6 +17,7 @@ import SimplePieChart from "~/components/data/PieChart";
 import StatCard from "~/components/data/StatCard";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import { useTranslation } from "~/i18n/client";
+import { useSelectedPackage } from "~/stores";
 import type { Icon } from "~/types";
 import {
   formatHour,
@@ -42,10 +43,13 @@ export default function Stats() {
     timeSpentVoice,
   } = useUsageStatsData();
   const { t } = useTranslation();
+  const { package_is_partial } = useSelectedPackage();
 
   console.log(
     (usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os }))
   );
+
+  if (package_is_partial) return null;
 
   return (
     <div className="grid grid-cols-2 gap-2 px-2 py-4 desktop-container sm:grid-cols-3 sm:py-8 md:grid-cols-4">
