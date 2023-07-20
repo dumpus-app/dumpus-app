@@ -13,7 +13,6 @@ import { partitionArray } from "~/utils";
 import Image from "next/image";
 
 type Contributor = {
-  avatarUrl: string;
   name: string;
   description?: string;
   bugs?: number;
@@ -86,7 +85,6 @@ const contributors = sortContributors();
 
 function ContributorCard({ contributor }: { contributor: Contributor }) {
   const {
-    avatarUrl,
     name,
     description,
     bugs = 0,
