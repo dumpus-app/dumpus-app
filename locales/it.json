@@ -119,6 +119,7 @@
   "stats": {
     "messagesSent": "messaggi inviati",
     "messagesSentPerDay": "That's about {{- value}} messages per day!",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "server aggiunti",
     "joinedServersDesc": "Abbiamo un vero esploratore di server Discord!",
     "knownUsers": "utenti conosciuti",
@@ -129,7 +130,24 @@
     "appStarts": "avvii dell'app",
     "appStartsPerDay": "You open Discord about {{- value}} times per day!",
     "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "tempo di sessione medio"
+    "avgSessionTime": "tempo di sessione medio",
+    "receivedCalls": "received calls",
+    "topHour": "top hour",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
+    "commands": "{{- value}} commands"
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentiment analysis (experimental)",
+    "anger": "Anger",
+    "happiness": "Happiness"
   },
   "sheerNumbers": "Numeri puri",
   "mostActiveDMs": "DM più attivi",
@@ -137,5 +155,7 @@
   "mostActiveChannels": "Canali più attivi",
   "discordHours": "Le tue ore su Discord",
   "activityTime": "Attività nel tempo",
-  "messageSentCount": "Conteggio di messaggi inviati"
+  "messageSentCount": "Conteggio di messaggi inviati",
+  "share": "Share",
+  "members": "{{- value}} members"
 }
