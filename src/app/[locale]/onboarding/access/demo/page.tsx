@@ -1,6 +1,7 @@
 "use client";
 
 import i18next from "i18next";
+import { useTranslation } from "~/i18n/client";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
@@ -13,6 +14,7 @@ const UPNKey = packageID;
 const packageLink = packageID;
 
 export default function Page() {
+  const { t } = useTranslation();
   const router = useRouter();
 
   const [selectedID, getNextID] = useAppStore(({ config, database }) => [
@@ -52,8 +54,8 @@ export default function Page() {
     <div className="flex flex-col items-center space-y-4">
       <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
       <div className="max-w-xs text-center">
-        <h1 className="text-xl font-bold text-white">We’re loading the demo</h1>
-        <p className="mt-2 text-gray-400">Please wait...</p>
+        <h1 className="text-xl font-bold text-white">{t("onboarding.loading.progress.loadingDemo.title")}</h1>
+        <p className="mt-2 text-gray-400">{t("onboarding.loading.progress.loadingDemo.description")}</p>
       </div>
     </div>
   );
