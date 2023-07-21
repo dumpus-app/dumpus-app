@@ -119,6 +119,7 @@
   "stats": {
     "messagesSent": "संदेश भेज दिया गया",
     "messagesSentPerDay": "यह प्रति दिन लगभग {{- value}} संदेश है!",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "सर्वर से जुड़े",
     "joinedServersDesc": "हमें एक वास्तविक डिस्कॉर्ड सर्वर एक्सप्लोरर मिल गया है!",
     "knownUsers": "ज्ञात उपयोगकर्ता",
@@ -129,7 +130,24 @@
     "appStarts": "ऐप प्रारंभ होता है",
     "appStartsPerDay": "आप प्रति दिन लगभग {{- value}} बार डिस्कॉर्ड खोलते हैं!",
     "totalTimeSpent": "आपने डिस्कोर्ड पर लगभग {{- value}} खर्च किया",
-    "avgSessionTime": "औसत सत्र समय"
+    "avgSessionTime": "औसत सत्र समय",
+    "receivedCalls": "received calls",
+    "topHour": "top hour",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
+    "commands": "{{- value}} commands"
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentiment analysis (experimental)",
+    "anger": "Anger",
+    "happiness": "Happiness"
   },
   "sheerNumbers": "निरी संख्याएं",
   "mostActiveDMs": "सबसे सक्रिय डीएम",
@@ -137,5 +155,7 @@
   "mostActiveChannels": "सर्वाधिक सक्रिय चैनल",
   "discordHours": "डिस्कॉर्ड पर आपका कुल समय",
   "activityTime": "समय के साथ गतिविधि",
-  "messageSentCount": "संदेश भेजे गए गिनती"
+  "messageSentCount": "संदेश भेजे गए गिनती",
+  "share": "Share",
+  "members": "{{- value}} members"
 }
