@@ -99,7 +99,9 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
     <DetailCard
       title={name}
       description={t("credits.contributions", {
-        value: description || bugs + developer + (translation ? 1 : 0) + (influencer ? 1 : 0),
+        value:
+          description ||
+          bugs + developer + (translation ? 1 : 0) + (influencer ? 1 : 0),
       })}
       leftSlot={
         <div className="relative aspect-square w-10">
