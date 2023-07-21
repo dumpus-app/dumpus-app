@@ -12,7 +12,6 @@ type Package = {
   UPNKey: string;
   dateAdded: string;
   backendURL: string;
-  shareImageData?: string;
 } & PackageData;
 
 type State = {

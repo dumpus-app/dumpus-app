@@ -84,12 +84,8 @@ export function syncAppStore() {
 
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   const {
-    config: { setPremium, setPackage },
+    config: { setPremium },
   } = useAppStore.getState();
   // @ts-ignore
   window.setPremium = setPremium;
-  // @ts-ignore
-  window.cleanShareImage = (id: string) => {
-    setPackage(id, { shareImageData: undefined });
-  };
 }
