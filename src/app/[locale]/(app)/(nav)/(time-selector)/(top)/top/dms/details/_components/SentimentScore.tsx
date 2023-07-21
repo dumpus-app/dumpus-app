@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Section from "~/components/Section";
+import { useTranslation } from "~/i18n/client";
 
 function mapScoreToRange(score: number): number {
   if (score < -1 || score > 1) {
@@ -23,6 +24,7 @@ function mapScoreToRange(score: number): number {
 
 export default function SentimentScore({ score }: { score: number }) {
   const activeIndex = mapScoreToRange(score);
+  const { t } = useTranslation();
 
   const colors = [
     "bg-danger-500",
@@ -37,11 +39,11 @@ export default function SentimentScore({ score }: { score: number }) {
   ];
 
   return (
-    <Section title="Sentiment analysis (experimental)">
+    <Section title={t("sentimentAnalysis.title")}>
       <div className="mx-2 space-y-2">
         <div className="flex items-center justify-between px-4 text-sm sm:px-6 sm:text-base">
-          <div className="text-danger-500">Anger</div>
-          <div className="text-success-500">Happiness</div>
+          <div className="text-danger-500">{t("sentimentAnalysis.anger")}</div>
+          <div className="text-success-500">{t("sentimentAnalysis.happiness")}</div>
         </div>
         <div className="grid h-8 grid-cols-9 rounded-full bg-white sm:h-12">
           {colors.map((color, i) => {
