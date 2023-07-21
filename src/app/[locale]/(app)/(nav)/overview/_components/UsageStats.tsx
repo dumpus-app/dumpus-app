@@ -23,30 +23,30 @@ export default function UsageStats() {
   const data: { value: string; label: string }[] = [
     {
       value: formatNumber(messageCount(), { notation: "standard" }),
-      label: "messages sent",
+      label: t("stats.messagesSent"),
     },
     package_is_partial
       ? null
       : {
           value: formatNumber(joinedGuilds(), { notation: "standard" }),
-          label: "server joined",
+          label: t("stats.joinedServers"),
         },
     package_is_partial
       ? null
       : {
           value: formatNumber(receivedCalls(), { notation: "standard" }),
-          label: "received calls",
+          label: t("stats.receivedCalls"),
         },
-    { value: formatHour(topHour()), label: "top hour" },
+    { value: formatHour(topHour()), label: t("stats.topHour") },
     {
       value: formatNumber(networkSize(), { notation: "standard" }),
-      label: "known users",
+      label: t("stats.knownUsers"),
     },
     package_is_partial
       ? null
       : {
           value: formatNumber(appStarted(), { notation: "standard" }),
-          label: "Discord app started",
+          label: t("stats.appStarted"),
         },
   ].filter((stat) => stat !== null) as any;
 

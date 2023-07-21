@@ -1,6 +1,7 @@
 "use client";
 
 import StatCard from "~/components/data/StatCard";
+import { useTranslation } from "~/i18n/client";
 
 export default function Stats({
   messagesCount,
@@ -13,10 +14,12 @@ export default function Stats({
   joinsCount: string;
   topChatHour: string;
 }) {
+  const { t } = useTranslation();
+
   const data = [
     {
       value: messagesCount,
-      label: "total messages sent",
+      label: t("stats.totalMessagesSent"),
     },
     /*{
       value: invitesCount,
@@ -24,11 +27,11 @@ export default function Stats({
     },*/
     {
       value: joinsCount,
-      label: "guild joins",
+      label: t("stats.guildJoins"),
     },
     {
       value: topChatHour,
-      label: "top chat hour",
+      label: t("stats.topChatHour"),
     },
   ];
 
