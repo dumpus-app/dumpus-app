@@ -1,5 +1,3 @@
-import { useTranslation } from "~/i18n";
-import { PageProps } from "~/types";
 import PageHeader from "./_components/PageHeader";
 import About from "./_components/About";
 import PackageSwitch from "./_components/PackageSwitch";
@@ -9,9 +7,7 @@ import TopNav from "../(nav)/_components/TopNav";
 import PackageDetails from "./_components/PackageDetails";
 import Actions from "./_components/Actions";
 
-export default async function Page({ params: { locale } }: PageProps) {
-  const { t } = await useTranslation(locale);
-
+export default function Page() {
   return (
     <>
       <TopNav />

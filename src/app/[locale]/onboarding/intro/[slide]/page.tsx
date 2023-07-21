@@ -1,8 +1,7 @@
-import { useTranslation } from "~/i18n";
+"use client";
+
+import { useTranslation } from "~/i18n/client";
 import { PageProps } from "~/types";
-import Slide1 from "./_components/Slide1";
-import Slide2 from "./_components/Slide2";
-import Slide3 from "./_components/Slide3";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import Image from "next/image";
 
@@ -14,10 +13,10 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function Page({
-  params: { locale, slide },
+export default function Page({
+  params: { slide },
 }: PageProps<{ slide: string }>) {
-  const { t } = await useTranslation(locale);
+  const { t } = useTranslation();
 
   const index = Number(slide) - 1;
   const slideData = {

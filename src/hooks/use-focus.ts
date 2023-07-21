@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-
 export default function useFocus<E extends HTMLElement>(
   target?: React.RefObject<E> | null,
   onFocusChange?: (focused: boolean) => void
 ) {
   const [focused, setFocused] = useState(() => {
-    return typeof window !== "undefined" ? window.document.activeElement != null : true;
+    return typeof window !== "undefined"
+      ? window.document.activeElement != null
+      : true;
   });
 
   useEffect(() => {

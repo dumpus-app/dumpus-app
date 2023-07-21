@@ -9,7 +9,7 @@ import StaticShareImage, {
 } from "~/components/StaticShareImage";
 import { useAppStore, useSelectedPackage } from "~/stores";
 import { Uint8ArrayToString, stringToUint8Array } from "~/utils/convert";
-import { colors } from "../../tailwind.config";
+import { colors } from "#root/tailwind.config";
 
 async function getFontData(weight: number) {
   return await fetch(

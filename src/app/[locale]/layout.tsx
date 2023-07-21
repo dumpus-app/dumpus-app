@@ -1,5 +1,5 @@
 import type { Metadata, ResolvingMetadata } from "next";
-import { initI18next, useTranslation } from "~/i18n";
+import { initI18next } from "~/i18n";
 import { locales } from "~/i18n/settings";
 import type { PageProps } from "~/types";
 import LoadingScreen from "./_components/LoadingScreen";
@@ -23,24 +23,16 @@ export async function generateMetadata(
   return generateSEO({ title, description });
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
-  params: { locale },
 }: PageProps<
   {},
   {
     children: React.ReactNode;
   }
 >) {
-  const { t } = await useTranslation(locale);
-
   return (
-    <LoadingScreen
-      data={{
-        title: t("global.loading.title"),
-        description: t("global.loading.description"),
-      }}
-    >
+    <LoadingScreen>
       {children}
       <InAppPurchasesDialog />
     </LoadingScreen>

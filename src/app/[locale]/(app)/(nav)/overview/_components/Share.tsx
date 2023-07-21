@@ -9,7 +9,7 @@ export default function Share() {
   const { t } = useTranslation();
 
   return (
-    <div className="rounded-t-xl border border-b-0 border-gray-800 bg-gray-900 p-2">
+    <div className="px-2 py-4 sm:hidden">
       <Button type="button" onClick={() => setOpen(true)} className="w-full">
         {t("share")}
       </Button>

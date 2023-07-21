@@ -65,13 +65,14 @@ export async function initCapacitor({
     "@hugotomazi/capacitor-navigation-bar"
   );
 
-  App.addListener("backButton", ({ canGoBack }) => {
-    if (canGoBack) {
-      window.history.back();
-    } else {
-      App.exitApp();
-    }
-  });
+  // TODO: fix in #50
+  // App.addListener("backButton", ({ canGoBack }) => {
+  //   if (canGoBack) {
+  //     window.history.back();
+  //   } else {
+  //     App.exitApp();
+  //   }
+  // });
   if (isAndroid) {
     await StatusBar.setOverlaysWebView({ overlay: true });
     await NavigationBar.setTransparency({ isTransparent: true });

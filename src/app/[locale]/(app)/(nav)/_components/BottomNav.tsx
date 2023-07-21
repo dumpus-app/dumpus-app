@@ -8,11 +8,9 @@ import Link from "~/components/Link";
 import { links } from "~/constants";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
-export type Props = {
-  children?: React.ReactNode;
-};
+import TimeSelector from "./TimeSelector";
 
-export default function BottomNav({ children }: Props) {
+export default function BottomNav() {
   const pathname = useI18nPathname();
   const [ref, { height }] = useMeasure<HTMLDivElement>();
   const [setHeight, setSafeAreaBottomColor] = useAppStore(({ ui }) => [
@@ -40,7 +38,7 @@ export default function BottomNav({ children }: Props) {
         ref={ref}
         className="fixed bottom-safe-area-bottom-inset left-0 right-0 z-20"
       >
-        {children}
+        <TimeSelector />
         <div className="border-t border-gray-800 bg-gray-900">
           <div className="flex items-center space-x-1 px-1 py-1">
             {links.map((link) => (

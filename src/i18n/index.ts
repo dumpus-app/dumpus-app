@@ -10,14 +10,14 @@ export async function initI18next(locale: string) {
     .use(
       resourcesToBackend(
         // @ts-ignore
-        (language, namespace) => import(`../../locales/${language}.json`)
+        (language, namespace) => import(`#root/locales/${language}.json`)
       )
     )
     .init(getOptions(locale));
   return i18nInstance;
 }
 
-export async function useTranslation(locale: string) {
+export async function useServerTranslation(locale: string) {
   const i18nextInstance = await initI18next(locale);
   return {
     t: i18nextInstance.getFixedT(locale),

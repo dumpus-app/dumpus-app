@@ -8,7 +8,7 @@ import { useI18nPathname } from "~/hooks/use-i18n";
 import { useScrolled } from "~/hooks/use-layout";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import { Link as LinkType } from "~/types";
-import { colors } from "../../../../../../../../tailwind.config";
+import { colors } from "#root/tailwind.config";
 
 const links = [
   {

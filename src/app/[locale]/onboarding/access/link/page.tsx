@@ -1,10 +1,11 @@
-import { useTranslation } from "~/i18n";
-import { PageProps } from "~/types";
+"use client";
+
+import { useTranslation } from "~/i18n/client";
 import LinkForm from "./_components/LinkForm";
 import RenderMarkdown from "~/components/RenderMarkdown";
 
-export default async function Page({ params: { locale } }: PageProps) {
-  const { t } = await useTranslation(locale);
+export default function Page() {
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col items-center space-y-4">

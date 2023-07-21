@@ -6,12 +6,12 @@ import type { Link as LinkType } from "~/types";
 import { links } from "~/constants";
 import clsx from "clsx";
 import { useI18nPathname } from "~/hooks/use-i18n";
-import TimeSelector from "../(time-selector)/_components/TimeSelector";
-import TopSelector from "../(time-selector)/top/_components/TopSelector";
 import Header from "~/components/layout/Header";
 import { ChevronLeftIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import PremiumBadge from "~/components/PremiumBadge";
 import { useAppStore } from "~/stores";
+import TopSelector from "../top/_components/TopSelector";
+import TimeSelector from "./TimeSelector";
 
 const settingsLink: LinkType = {
   name: "Settings",
@@ -26,7 +26,8 @@ export default function TopNav() {
 
   const showBack = pathname.includes("/details/");
   const showTopLinks = pathname.startsWith("/top") && !showBack;
-  const showSubNav = showBack || showTopLinks || pathname.startsWith("/stats");
+  const showSubNav =
+    !pathname.startsWith("/settings") && !pathname.startsWith("/credits");
 
   return (
     <div className="hidden sm:contents">
