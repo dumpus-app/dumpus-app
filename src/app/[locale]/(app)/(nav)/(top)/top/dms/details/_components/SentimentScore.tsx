@@ -43,7 +43,9 @@ export default function SentimentScore({ score }: { score: number }) {
       <div className="mx-2 space-y-2">
         <div className="flex items-center justify-between px-4 text-sm sm:px-6 sm:text-base">
           <div className="text-danger-500">{t("sentimentAnalysis.anger")}</div>
-          <div className="text-success-500">{t("sentimentAnalysis.happiness")}</div>
+          <div className="text-success-500">
+            {t("sentimentAnalysis.happiness")}
+          </div>
         </div>
         <div className="grid h-8 grid-cols-9 rounded-full bg-white sm:h-12">
           {colors.map((color, i) => {
