@@ -215,11 +215,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         })
 
                     if event_type == 'session_start' or event_type == 'session_end':
-                        session_logs.append({
-                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                            'event_type': 'session_start' if event_type == 'session_start' else 'session_end',
-                            'os': analytics_line_json['os']
-                        })
+                        if 'os' in analytics_line_json:
+                            session_logs.append({
+                                'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                                'event_type': 'session_start' if event_type == 'session_start' else 'session_end',
+                                'os': analytics_line_json['os']
+                            })
                     
                     if event_type == 'guild_joined':
                         guild_joined.append({
@@ -316,10 +317,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
                         })
 
                     if event_type == 'app_opened':
-                        app_opened.append({
-                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
-                            'os': analytics_line_json['os']
-                        })
+                        if 'os' in analytics_line_json:
+                            app_opened.append({
+                                'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                                'os': analytics_line_json['os']
+                            })
 
                 except:
                     print('Error while parsing analytics line: ')
