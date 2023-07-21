@@ -97,3 +97,5 @@ export function partitionArray<T>(
   array.forEach((e, i, arr) => (filter(e, i, arr) ? pass : fail).push(e));
   return [pass, fail] as const;
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
