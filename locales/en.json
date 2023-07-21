@@ -171,12 +171,12 @@
   "settings": {
     "title": "Settings",
     "toasts": {
-      "copy_error": "Can't copy to clipboard",
+      "copyError": "Can't copy to clipboard",
       "copied": "Copied to clipboard!"
     },
-    "package_switch": {
+    "packageSwitch": {
       "title": "Switch Package",
-      "description": "Generated on {{- date}}",
+      "description": "Generated on {{- date}}"
     }
   },
   "sheerNumbers": "Sheer numbers",
