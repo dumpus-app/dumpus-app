@@ -1,4 +1,5 @@
 import StatCard from "~/components/data/StatCard";
+import { useTranslation } from "~/i18n/client";
 
 export default function Stats({
   messagesCount,
@@ -9,18 +10,20 @@ export default function Stats({
   topChatHour: string;
   reactionsCount: string;
 }) {
+  const { t } = useTranslation();
+
   const data = [
     {
       value: messagesCount,
-      label: "total messages sent",
+      label: t("stats.totalMessagesSent"),
     },
     {
       value: topChatHour,
-      label: "top chat hour",
+      label: t("stats.topChatHour"),
     },
     {
       value: reactionsCount,
-      label: "reactions added",
+      label: t("stats.reactionsAdded"),
     },
   ];
 

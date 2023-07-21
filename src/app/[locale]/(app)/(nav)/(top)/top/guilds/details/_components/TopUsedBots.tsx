@@ -6,6 +6,7 @@ import { useSelectedPackage } from "~/stores";
 import { Activity, DmChannelsData } from "~/types/sql";
 import { avatarURLFallback } from "~/utils/discord";
 import DiscordImage from "~/components/DiscordImage";
+import { useTranslation } from "~/i18n/client";
 
 type Bot = Pick<
   DmChannelsData,
@@ -14,6 +15,7 @@ type Bot = Pick<
   Required<Pick<Activity, "associated_user_id">> & { total_occurences: number };
 
 function BotCard({ bot }: { bot: Bot }) {
+  const { t } = useTranslation();
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
 
@@ -51,7 +53,7 @@ function BotCard({ bot }: { bot: Bot }) {
       }
       label={
         <div className="text-sm text-gray-400 sm:text-lg">
-          {bot.total_occurences} commands
+          {t("stats.commands", { value: bot.total_occurences })}
         </div>
       }
     />

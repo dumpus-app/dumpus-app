@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { iconColor } from "~/utils/discord";
 import { firstCharFromUnicode } from "~/utils";
 import DiscordImage from "~/components/DiscordImage";
+import { useTranslation } from "~/i18n/client";
 
 export default function Profile({
   guild,
@@ -17,6 +18,7 @@ export default function Profile({
   guild: Guild;
   discordLink: string;
 }) {
+  const { t } = useTranslation();
   const { getGuild } = useWidgetAPI({});
 
   const { isSuccess, data } = useQuery({
@@ -29,8 +31,8 @@ export default function Profile({
     <ProfileHeader
       description={
         isSuccess && data.error === undefined
-          ? `${data.member_count} members`
-          : "N/A members"
+          ? t("members", { value: data.member_count })
+          : t("members", { value: "N/A" })
       }
       title={guild.guild_name}
       imageSlot={
