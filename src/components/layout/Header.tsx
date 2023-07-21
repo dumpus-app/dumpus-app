@@ -6,7 +6,7 @@ import { useMount, useUnmount } from "react-use";
 import { useScrolled } from "~/hooks/use-layout";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import { Icon } from "~/types";
-import { colors } from "../../../tailwind.config";
+import { colors } from "#root/tailwind.config";
 import Link from "../Link";
 
 export type Props = {

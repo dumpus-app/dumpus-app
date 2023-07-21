@@ -1,5 +1,5 @@
 import { CreateSlice } from ".";
-import { colors } from "../../tailwind.config";
+import { colors } from "#root/tailwind.config";
 
 type State = {
   bottomNavHeight: number;
