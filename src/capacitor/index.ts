@@ -3,6 +3,7 @@
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
 import { purchasesSingleton } from "./purchases";
 import { isCapacitorSupported } from "./utils";
+import { Capacitor } from "@capacitor/core";
 
 export const purchases = purchasesSingleton;
 
@@ -47,8 +48,6 @@ async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
 export async function initCapacitor() {
   const supported = isCapacitorSupported();
   if (!supported) return;
-
-  const { Capacitor } = await import("@capacitor/core");
 
   const isAndroid = Capacitor.getPlatform() === "android";
   const isiOS = Capacitor.getPlatform() === "ios";
