@@ -140,7 +140,7 @@
     "guildJoins": "guild joins",
     "commands": "{{- value}} commands"
   },
-  "dedicatedStats": {
+  "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
     "appOpeningsPerDay": "Discord app openings per day"
   },

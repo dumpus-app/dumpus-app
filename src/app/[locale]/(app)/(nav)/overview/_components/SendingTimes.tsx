@@ -33,11 +33,11 @@ function Stats() {
   const data = [
     {
       value: formatNumber(avgMessagesSentPerDay),
-      label: t("dedicatedStats.messagesSentPerDay"),
+      label: t("sendingTimeStats.messagesSentPerDay"),
     },
     {
       value: formatNumber(avgOpeningCountPerDay),
-      label: t("dedicatedStats.appOpeningsPerDay"),
+      label: t("sendingTimeStats.appOpeningsPerDay"),
     },
   ];
 
