@@ -80,7 +80,7 @@
           "backendURL": "Backend URL",
           "optional": "اختیاری",
           "backendURLHint": "URL سرور منبع باز میزبانی شده خودتان",
-          "notice": "با ادامه، شما با [خط‌مشی رازداری](privacy/) و [terms](terms/) ما موافقت می‌کنید.",
+          "notice": "با ادامه، شما با [خط‌مشی رازداری](privacy/) و [شرایط](terms/) ما موافقت می‌کنید.",
           "explore": "کاوش!",
           "errors": {
             "required": "الزامی",
