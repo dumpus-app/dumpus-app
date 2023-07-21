@@ -24,8 +24,8 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
     }
   })();
 
-  const errorStep = isErrored ? currentStep : null
-  
+  const errorStep = isErrored ? currentStep : null;
+
   const steps = [
     t("onboarding.loading.progress.downloading"),
     t("onboarding.loading.progress.analyzing"),

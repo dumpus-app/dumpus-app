@@ -41,9 +41,7 @@ export default function DangerZone() {
   return (
     <Section title={t("settings.dangerZone.title")}>
       <div className="grid grid-cols-1 gap-2 px-2">
-        <p className="text-gray-400">
-          {t("settings.dangerZone.description")}
-        </p>
+        <p className="text-gray-400">{t("settings.dangerZone.description")}</p>
         <Button asChild variant="danger">
           <button
             onClick={(e) => {
@@ -51,7 +49,9 @@ export default function DangerZone() {
             }}
             disabled={loading}
           >
-            {loading ? t("settings.dangerZone.loading") : t("settings.dangerZone.quit")}
+            {loading
+              ? t("settings.dangerZone.loading")
+              : t("settings.dangerZone.quit")}
           </button>
         </Button>
       </div>

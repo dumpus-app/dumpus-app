@@ -71,7 +71,9 @@ export default function Actions() {
             }}
             disabled={loading}
           >
-            {loading ? t("settings.actions.deleting") : t("settings.actions.delete")}
+            {loading
+              ? t("settings.actions.deleting")
+              : t("settings.actions.delete")}
           </button>
         </Button>
         {process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile" && (
@@ -84,7 +86,9 @@ export default function Actions() {
             }}
             disabled={loading}
           >
-            {loading ? t("settings.actions.restoring") : t("settings.actions.restorePurchases")}
+            {loading
+              ? t("settings.actions.restoring")
+              : t("settings.actions.restorePurchases")}
           </Button>
         )}
       </div>
