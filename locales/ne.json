@@ -119,6 +119,7 @@
   "stats": {
     "messagesSent": "पठाइएको message हरु",
     "messagesSentPerDay": "That's about {{- value}} messages per day!",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "join भएका server हरु",
     "joinedServersDesc": "हामीले साचिकैको Discord सर्भर explorer पाएका छौं!",
     "knownUsers": "थाहा भएका प्रयोगकर्ताहरु",
@@ -129,7 +130,24 @@
     "appStarts": "app खोलेको",
     "appStartsPerDay": "You open Discord about {{- value}} times per day!",
     "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "औसत session समय"
+    "avgSessionTime": "औसत session समय",
+    "receivedCalls": "received calls",
+    "topHour": "top hour",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
+    "commands": "{{- value}} commands"
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentiment analysis (experimental)",
+    "anger": "Anger",
+    "happiness": "Happiness"
   },
   "sheerNumbers": "सरासर संख्याहरू",
   "mostActiveDMs": "एकदम सक्रिय DM हरु",
@@ -137,5 +155,7 @@
   "mostActiveChannels": "एकदम सक्रिय channel हरु",
   "discordHours": "तपाईको Discord चलाउने समय",
   "activityTime": "समय अनुसार तपाईको गतिविधि",
-  "messageSentCount": "पठाइएको message संख्या"
+  "messageSentCount": "पठाइएको message संख्या",
+  "share": "Share",
+  "members": "{{- value}} members"
 }
