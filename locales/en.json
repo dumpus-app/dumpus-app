@@ -122,17 +122,17 @@
           "title": "We’re loading your data",
           "description": "Please wait..."
         },
-        "loading_demo": {
+        "loadingDemo": {
           "title": "We’re loading the demo",
           "description": "Please wait..."
         }
       },
       "error": "An error occurred...",
-      "unknown_package_id": "This package is unknown.",
+      "unknownPackageId": "This package is unknown.",
       "unauthorized": "You are not allowed to interact with this package data.",
-      "invalid_link": "Link invalid.",
-      "unknown_error": "An unknown error occured.",
-      "expired_link": "Link expired."
+      "invalidLink": "Link invalid.",
+      "unknownError": "An unknown error occured.",
+      "expiredLink": "Link expired."
     }
   },
   "stats": {
@@ -167,6 +167,17 @@
     "title": "Sentiment analysis (experimental)",
     "anger": "Anger",
     "happiness": "Happiness"
+  },
+  "settings": {
+    "title": "Settings",
+    "toasts": {
+      "copy_error": "Can't copy to clipboard",
+      "copied": "Copied to clipboard!"
+    },
+    "package_switch": {
+      "title": "Switch Package",
+      "description": "Generated on {{- date}}",
+    }
   },
   "sheerNumbers": "Sheer numbers",
   "mostActiveDMs": "Most active DMs",

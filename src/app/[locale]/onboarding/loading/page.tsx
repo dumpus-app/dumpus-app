@@ -26,11 +26,11 @@ export default function Page() {
       <Error
         error={
           {
-            UNKNOWN_PACKAGE_ID: t("onboarding.loading.unknown_package_id"),
+            UNKNOWN_PACKAGE_ID: t("onboarding.loading.unknownPackageId"),
             UNAUTHORIZED: t("onboarding.loading.unauthorized"),
-            INVALID_LINK: t("onboarding.loading.invalid_link"),
-            UNKNOWN_ERROR: t("onboarding.loading.unknown_error"),
-            EXPIRED_LINK: t("onboarding.loading.expired_link"),
+            INVALID_LINK: t("onboarding.loading.invalidLink"),
+            UNKNOWN_ERROR: t("onboarding.loading.unknownError"),
+            EXPIRED_LINK: t("onboarding.loading.expiredLink"),
           }[error]
         }
       />

@@ -54,8 +54,8 @@ export default function Page() {
     <div className="flex flex-col items-center space-y-4">
       <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
       <div className="max-w-xs text-center">
-        <h1 className="text-xl font-bold text-white">{t("onboarding.loading.progress.loading_demo.title")}</h1>
-        <p className="mt-2 text-gray-400">{t("onboarding.loading.progress.loading_demo.description")}</p>
+        <h1 className="text-xl font-bold text-white">{t("onboarding.loading.progress.loadingDemo.title")}</h1>
+        <p className="mt-2 text-gray-400">{t("onboarding.loading.progress.loadingDemo.description")}</p>
       </div>
     </div>
   );
