@@ -107,16 +107,16 @@ export default function Stats() {
           }),
           icon: CursorArrowRippleIcon,
         },
-      package_is_partial
-        ? null
-        : {
-      value: formatDuration((avgSessionDuration() || 0) * 60_000),
-      title: t("stats.avgSessionTime"),
-      description: t("stats.totalTimeSpent", {
-        value: formatDuration((totalSessionDuration() || 0) * 60_000, true),
-      }),
-      icon: ClockIcon,
-    },
+    package_is_partial
+      ? null
+      : {
+          value: formatDuration((avgSessionDuration() || 0) * 60_000),
+          title: t("stats.avgSessionTime"),
+          description: t("stats.totalTimeSpent", {
+            value: formatDuration((totalSessionDuration() || 0) * 60_000, true),
+          }),
+          icon: ClockIcon,
+        },
   ].filter((stat) => stat !== null) as any;
 
   return (
