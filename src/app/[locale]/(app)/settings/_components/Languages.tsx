@@ -3,7 +3,7 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import i18next from "i18next";
+import i18next, { t } from "i18next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useRef, useState } from "react";
 import Section from "~/components/Section";
@@ -112,7 +112,7 @@ function LocaleSwitcher({
                     as="h3"
                     className="text-lg font-bold text-white"
                   >
-                    Switch language
+                    {t("settings.languages.switch")}
                   </Dialog.Title>
                   <div className="mt-2">
                     <LocalesList />
@@ -133,7 +133,7 @@ export default function Languages() {
 
   return (
     <>
-      <Section title="Languages">
+      <Section title={t("settings.languages.title")}>
         <div className="px-2">
           <DetailCard
             onClick={() => setOpen(true)}
@@ -142,7 +142,9 @@ export default function Languages() {
                 i18next.language
               )!
             }
-            description={`${locales.length} available`}
+            description={t("settings.languages.description", {
+              value: locales.length,
+            })}
             reverseTexts
             rightIcon={ChevronRightIcon}
           />

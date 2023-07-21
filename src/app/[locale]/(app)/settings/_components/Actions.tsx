@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "~/i18n/client";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import { purchases } from "~/capacitor";
@@ -15,6 +16,7 @@ import {
 } from "~/utils/browser";
 
 export default function Actions() {
+  const { t } = useTranslation();
   const deletePackage = useAppStore(({ config }) => config.deletePackage);
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
@@ -42,7 +44,7 @@ export default function Actions() {
   if (!selectedPackage) return null;
 
   return (
-    <Section title="Actions">
+    <Section title={t("settings.actions.title")}>
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
         <Button
           asChild
@@ -53,8 +55,8 @@ export default function Actions() {
               e.preventDefault();
               toast({
                 variant: "danger",
-                title: "Can't add new package",
-                description: "Not enough storage in app",
+                title: t("settings.actions.notEnoughStorage.title"),
+                description: t("settings.actions.notEnoughStorage.description"),
                 icon: XCircleIcon,
               });
             }
@@ -69,7 +71,7 @@ export default function Actions() {
             }}
             disabled={loading}
           >
-            {loading ? "Deleting..." : "Delete current package"}
+            {loading ? t("settings.actions.deleting") : t("settings.actions.delete")}
           </button>
         </Button>
         {process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile" && (
@@ -82,7 +84,7 @@ export default function Actions() {
             }}
             disabled={loading}
           >
-            {loading ? "Restoring..." : "Restore purchases"}
+            {loading ? t("settings.actions.restoring") : t("settings.actions.restorePurchases")}
           </Button>
         )}
       </div>
