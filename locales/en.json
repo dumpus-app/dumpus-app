@@ -113,7 +113,26 @@
         "position": "position",
         "waitingTime": "Estimated waiting time is",
         "useBackend": "Use my own backend"
-      }
+      },
+      "progress": {
+        "downloading": "Downloading",
+        "analyzing": "Analyzing",
+        "processed": "Processed",
+        "loading": {
+          "title": "We’re loading your data",
+          "description": "Please wait..."
+        },
+        "loading_demo": {
+          "title": "We’re loading the demo",
+          "description": "Please wait..."
+        }
+      },
+      "error": "An error occurred...",
+      "unknown_package_id": "This package is unknown.",
+      "unauthorized": "You are not allowed to interact with this package data.",
+      "invalid_link": "Link invalid.",
+      "unknown_error": "An unknown error occured.",
+      "expired_link": "Link expired."
     }
   },
   "stats": {
