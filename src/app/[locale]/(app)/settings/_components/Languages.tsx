@@ -14,19 +14,16 @@ import { locales } from "~/i18n/settings";
 function LocalesList() {
   const pathname = usePathname() || "/";
   const searchParams = useSearchParams();
-  const router = useRouter();
 
   return (
     <RadioGroup
       value={i18next.language}
       onChange={(v) => {
-        router.push(
-          (pathname + "?" + searchParams?.toString()).replace(
-            `/${i18next.language}`,
-            `/${v}`
-          )
-        );
-        i18next.changeLanguage(v);
+        window.location.href = (
+          pathname +
+          "?" +
+          searchParams?.toString()
+        ).replace(`/${i18next.language}`, `/${v}`);
       }}
     >
       <RadioGroup.Label className="sr-only">Locales</RadioGroup.Label>

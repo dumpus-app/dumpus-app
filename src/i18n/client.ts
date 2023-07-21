@@ -22,7 +22,7 @@ i18next
     ...getOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
-      order: ["path", "localStorage", "htmlTag", "navigator"],
+      order: ["path", "localStorage", "navigator", "htmlTag"],
     },
   });
 
