@@ -119,6 +119,7 @@
   "stats": {
     "messagesSent": "پیام ارسال شد",
     "messagesSentPerDay": "این تقریباً {{- value}} پیام در روز است!",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "سرور هایی که به آنها پیوستید",
     "joinedServersDesc": "ما یک کاوشگر سرور دیسکورد واقعی داریم!",
     "knownUsers": "کاربران شناخته شده",
@@ -129,7 +130,24 @@
     "appStarts": "برنامه در حال شروع است",
     "appStartsPerDay": "شما حدود {{- value}} بار در روز دیسکورد را باز می کنید!",
     "totalTimeSpent": "شما حدود {{- value}} را در دیسکورد هزینه کردید",
-    "avgSessionTime": "میانگین زمان جلسه"
+    "avgSessionTime": "میانگین زمان جلسه",
+    "receivedCalls": "received calls",
+    "topHour": "top hour",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
+    "commands": "{{- value}} commands"
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentiment analysis (experimental)",
+    "anger": "Anger",
+    "happiness": "Happiness"
   },
   "sheerNumbers": "اعداد محض",
   "mostActiveDMs": "فعال ترین DM ها",
@@ -137,5 +155,7 @@
   "mostActiveChannels": "فعال ترین کانال ها",
   "discordHours": "ساعت های دیسکورد شما",
   "activityTime": "فعالیت در طول زمان",
-  "messageSentCount": "تعداد پیام ارسال شده"
+  "messageSentCount": "تعداد پیام ارسال شده",
+  "share": "Share",
+  "members": "{{- value}} members"
 }
