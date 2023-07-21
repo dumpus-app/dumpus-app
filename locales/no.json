@@ -119,6 +119,7 @@
   "stats": {
     "messagesSent": "meldinger sendt",
     "messagesSentPerDay": "That's about {{- value}} messages per day!",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "servere lagt til",
     "joinedServersDesc": "Vi har en ekte Discord-server utforsker!",
     "knownUsers": "kjente brukere",
@@ -129,7 +130,24 @@
     "appStarts": "programstart",
     "appStartsPerDay": "You open Discord about {{- value}} times per day!",
     "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "gjennomsnittstid"
+    "avgSessionTime": "gjennomsnittstid",
+    "receivedCalls": "received calls",
+    "topHour": "top hour",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
+    "commands": "{{- value}} commands"
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentiment analysis (experimental)",
+    "anger": "Anger",
+    "happiness": "Happiness"
   },
   "sheerNumbers": "Rene tall",
   "mostActiveDMs": "Mest aktive direktemeldinger",
@@ -137,5 +155,7 @@
   "mostActiveChannels": "Mest aktive kanaler",
   "discordHours": "Timene dine i Discord",
   "activityTime": "Aktivitet over tid",
-  "messageSentCount": "Antall meldinger sendt"
+  "messageSentCount": "Antall meldinger sendt",
+  "share": "Share",
+  "members": "{{- value}} members"
 }
