@@ -107,7 +107,7 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
         <div className="relative aspect-square w-10">
           <Image
             src={`/assets/contributors/${name}.png`}
-            alt={t("credits.avatarAlt", { name })}
+            alt={`${name}'s avatar`}
             fill
             className="rounded-full object-cover object-center"
           />
