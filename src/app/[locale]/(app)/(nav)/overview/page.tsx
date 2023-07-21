@@ -1,5 +1,3 @@
-import { useTranslation } from "~/i18n";
-import { PageProps } from "~/types";
 import DailySentMessages from "./_components/DailySentMessages";
 import PageHeader from "./_components/PageHeader";
 import SendingTimes from "./_components/SendingTimes";
@@ -8,14 +6,14 @@ import TopDMs from "./_components/TopDMs";
 import TopGuilds from "./_components/TopGuilds";
 import UsageStats from "./_components/UsageStats";
 import Profile from "./_components/Profile";
+import Share from "./_components/Share";
 
-export default async function Page({ params: { locale } }: PageProps) {
-  const { t } = await useTranslation(locale);
-
+export default function Page() {
   return (
     <>
       <PageHeader />
       <Profile />
+      <Share />
       <UsageStats />
       <TopDMs />
       <TopGuilds />
