@@ -205,14 +205,15 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
                     # voice channel logs
                     if event_type == 'join_voice_channel' or event_type == 'leave_voice_channel':
-                        voice_channel_logs.append({
-                            'timestamp': get_ts_string_parser(
-                                analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
-                            ).timestamp(),
-                            'event_type': event_type,
-                            'channel_id': analytics_line_json['channel_id'],
-                            'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
-                        })
+                        if 'channel_id' in analytics_line_json:
+                            voice_channel_logs.append({
+                                'timestamp': get_ts_string_parser(
+                                    analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
+                                ).timestamp(),
+                                'event_type': event_type,
+                                'channel_id': analytics_line_json['channel_id'],
+                                'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
+                            })
 
                     if event_type == 'session_start' or event_type == 'session_end':
                         if 'os' in analytics_line_json:
