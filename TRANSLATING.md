@@ -6,10 +6,10 @@ Translations can be found in the `/locales` directory. We use Crowdin to manage 
 
 Crowdin is the platform we use to manage translations.
 
-* Create a Crowdin account [here](https://crowdin.com/join).
-* Join the project [here](https://crowdin.com/project/dumpus-app).
-* Select the language you want to translate. If it's not available, please open an issue on GitHub.
-* You can now add support for your language!
+- Create a Crowdin account [here](https://crowdin.com/join).
+- Join the project [here](https://crowdin.com/project/dumpus-app).
+- Select the language you want to translate. If it's not available, please open an issue on GitHub.
+- You can now add support for your language!
 
 ## Adding translation strings
 
@@ -34,22 +34,6 @@ Import depends on the type of component/hook (server or client), it should mostl
 
 So how do I know which type it it? Pretty simple, if the file has the `"use client"` directive at the top, then it's a client component.
 
-#### Usage in server components
-
-> If you need to achieve this, please first open an issue or a discussion on GitHub.
-
-```tsx
-// ...
-import { useTranslation } from "~/i18n";
-import type { PageProps } from "~/types";
-
-export default async function Page({ params: { locale } }: PageProps) {
-  const { t } = await useTranslation(locale);
-
-  return <div>{t("myNewField")}</div>;
-}
-```
-
 #### Usage in client components
 
 ```tsx
@@ -73,5 +57,21 @@ export default function useMyNewField() {
   const { t } = useTranslation();
 
   return t("myNewField");
+}
+```
+
+#### Usage in server components
+
+> This is really unlikely. If you're in such situation, reach out to the maintainers.
+
+```tsx
+// ...
+import { useServerTranslation } from "~/i18n";
+import type { PageProps } from "~/types";
+
+export default async function Page({ params: { locale } }: PageProps) {
+  const { t } = await useServerTranslation(locale);
+
+  return <div>{t("myNewField")}</div>;
 }
 ```
