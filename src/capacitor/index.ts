@@ -44,11 +44,7 @@ async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
   }
 }
 
-export async function initCapacitor({
-  navigate,
-}: {
-  navigate: (url: string) => void;
-}) {
+export async function initCapacitor() {
   const supported = isCapacitorSupported();
   if (!supported) return;
 
@@ -83,7 +79,7 @@ export async function initCapacitor({
     const url = new URL(_url);
     const pathname = url.href.replace(url.origin, "");
     if (pathname !== "/") {
-      navigate(pathname);
+      window.location.href = pathname;
     }
   });
 

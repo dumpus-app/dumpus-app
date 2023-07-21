@@ -27,5 +27,5 @@ export default function ConnectivityHandler({
     );
   }
 
-  return <div className="contents">{children}</div>;
+  return <>{children}</>;
 }
