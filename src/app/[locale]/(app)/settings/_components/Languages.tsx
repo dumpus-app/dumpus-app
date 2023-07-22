@@ -3,7 +3,7 @@
 import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
-import i18next, { t } from "i18next";
+import i18next from "i18next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useRef, useState } from "react";
 import Section from "~/components/Section";
@@ -74,6 +74,7 @@ function LocaleSwitcher({
   open: boolean;
   setOpen: (v: boolean) => void;
 }) {
+  const { t } = useTranslation();
   const loadedRef = useRef(false);
   if (!loadedRef.current) {
     loadedRef.current = true;
