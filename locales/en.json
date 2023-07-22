@@ -157,6 +157,8 @@
     "reactionsAdded": "reactions added",
     "channelOpenings": "channel openings",
     "guildJoins": "guild joins",
+    "averageMessages" : "average messages sent per day" ,
+    "dayOppenings"  :    "Discord app openings per day" ,
     "commands": "{{- value}} commands"
   },
   "sendingTimeStats": {

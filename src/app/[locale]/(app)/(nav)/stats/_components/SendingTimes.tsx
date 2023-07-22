@@ -25,6 +25,7 @@ function Chart() {
 }
 
 function Stats() {
+  const {t} = useTranslation()
   const {
     statsData: { avgMessagesSentPerDay, avgOpeningCountPerDay },
   } = useSendingTimesData();
@@ -32,11 +33,11 @@ function Stats() {
   const data = [
     {
       value: formatNumber(avgMessagesSentPerDay),
-      label: "average messages sent per day",
+      label: t("stats.averageMessages"),
     },
     {
       value: formatNumber(avgOpeningCountPerDay),
-      label: "Discord app openings per day",
+      label: t("stats.dayOppenings"),
     },
   ];
 
