@@ -4,16 +4,7 @@ import { useTranslation } from "~/i18n/client";
 import { PageProps } from "~/types";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import Image from "next/image";
-
-const SLIDES = ["how", "trust", "share"].map((image) => ({
-  image: `/assets/${image}.png`,
-}));
-
-export function generateStaticParams() {
-  return SLIDES.map((_, i) => ({
-    slide: (i + 1).toString(),
-  }));
-}
+import { SLIDES } from "./_data/slides";
 
 export default function Page({
   params: { slide },
