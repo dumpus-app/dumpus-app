@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Button from "~/components/Button";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 
 const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
@@ -11,7 +12,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
     config.premium,
     ui.setShowInAppPurchasesDialog,
   ]);
-
+  const {t}  = useTranslation()
   return (
     <>
       <div
@@ -31,14 +32,14 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
             isMobile ? (premium ? "block" : "hidden") : "block"
           )}
         >
-          Load more
+          {t("top.DMs.loadMore")}
         </button>
         <Button
           variant="premium"
           onClick={() => setOpen(true)}
           className={clsx(isMobile ? (premium ? "hidden" : "block") : "hidden")}
         >
-          Unlock to view more!
+          {t("top.DMs.unlock")}
         </Button>
       </div>
     </>

@@ -8,6 +8,7 @@ import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import { Icon } from "~/types";
 import { colors } from "#root/tailwind.config";
 import Link from "../Link";
+import { useTranslation } from "~/i18n/client";
 
 export type Props = {
   title?: string;
@@ -34,6 +35,7 @@ export default function Header({
   children,
   wrapperClassName,
 }: Props) {
+  const {t} = useTranslation()
   const scrolled = useScrolled();
   const showTitle = revealTitleOnScroll ? scrolled : true;
   const showBorder = revealBorderOnScroll ? scrolled : false;
@@ -84,7 +86,7 @@ export default function Header({
               showTitle ? "opacity-100" : "opacity-0"
             )}
           >
-            {title}
+            {t(title)}
           </div>
         )}
         {rightSlot && <div className="absolute right-0">{rightSlot}</div>}

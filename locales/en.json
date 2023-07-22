@@ -239,6 +239,18 @@
     },
     "contributions": "{{- value}} contributions"
   },
+  "top" : {
+    "subNav" : {
+      "title"  : "Top"   ,
+     "DMs" : "DMs"  ,
+     "guilds" : "Guilds" ,
+     "channels": "Channels" 
+    } ,
+    "DMs" :{
+      "loadMore" : "Load more" ,
+      "unlock" : "Unlock to view more!"  
+    }
+  }  ,
   "sheerNumbers": "Sheer numbers",
   "mostActiveDMs": "Most active DMs",
   "mostActiveServers": "Most active servers",

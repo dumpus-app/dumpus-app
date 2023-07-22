@@ -9,21 +9,22 @@ import { useScrolled } from "~/hooks/use-layout";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import { Link as LinkType } from "~/types";
 import { colors } from "#root/tailwind.config";
+import { useTranslation } from "~/i18n/client";
 
 const links = [
   {
     href: "/top/dms",
-    name: "DMs",
+    name: "top.subNav.DMs",
     active: (str) => str.startsWith("/top/dms"),
   },
   {
     href: "/top/guilds",
-    name: "Guilds",
+    name: "top.subNav.guilds",
     active: (str) => str.startsWith("/top/guilds"),
   },
   {
     href: "/top/channels",
-    name: "Channels",
+    name: "top.subNav.channels",
     active: (str) => str.startsWith("/top/channels"),
   },
 ] satisfies Omit<LinkType, "icon">[];
@@ -33,6 +34,7 @@ export default function TopSelector({
 }: {
   desktop?: boolean;
 }) {
+  const {t} = useTranslation()
   const pathname = useI18nPathname();
   const scrolled = useScrolled();
   const setSafeAreaTopColor = useAppStore(({ ui }) => ui.setSafeAreaTopColor);
@@ -70,7 +72,7 @@ export default function TopSelector({
                 : "text-gray-400 hover:bg-gray-800"
             )}
           >
-            {link.name}
+            {t(link.name)}
           </Link>
         ))}
       </div>

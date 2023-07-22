@@ -10,7 +10,7 @@ import TopSelector from "./TopSelector";
 export default function PageHeader() {
   return (
     <Header
-      title="Top"
+      title="top"
       transparent
       revealBackgroundOnScroll
       // leftSlot={
