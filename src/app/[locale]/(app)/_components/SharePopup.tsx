@@ -15,7 +15,6 @@ import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
 import { useTranslation } from "~/i18n/client";
-import { t } from "i18next";
 
 function useImageData() {
   const data = useUserData();
@@ -107,6 +106,7 @@ function ShareButton({
 }
 
 export default function SharePopup() {
+  const { t } = useTranslation();
   const [open, setOpen, timeRange] = useAppStore(({ ui, config }) => [
     ui.showSharePopup,
     ui.setShowSharePopup,
