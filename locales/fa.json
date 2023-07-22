@@ -218,6 +218,27 @@
       "credits": "Credits"
     }
   },
+  "credits": {
+    "title": "Credits",
+    "back": "Back to settings",
+    "bugHunter": {
+      "title": "Bug Hunter",
+      "description": "Most important people to provide you with stable app."
+    },
+    "influencer": {
+      "title": "Influencer",
+      "description": "These people helped us to spread the word about the app."
+    },
+    "developer": {
+      "title": "Developer",
+      "description": "These people made direct contributions to the app's code."
+    },
+    "translator": {
+      "title": "Translator",
+      "description": "These people made the app available worldwide."
+    },
+    "contributions": "{{- value}} contributions"
+  },
   "sheerNumbers": "اعداد محض",
   "mostActiveDMs": "فعال ترین DM ها",
   "mostActiveServers": "فعال ترین سرور ها",
