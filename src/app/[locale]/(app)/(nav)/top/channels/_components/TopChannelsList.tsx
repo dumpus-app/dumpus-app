@@ -10,11 +10,12 @@ import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
+import { useTranslation } from "~/i18n/client";
 
 export default function TopChannelsList() {
   const { getData, count } = useTopChannelsData();
   const timeRange = useAppStore(({ config }) => config.timeRange);
-
+  const {t} = useTranslation()
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-channels", timeRange],
     queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
@@ -36,7 +37,7 @@ export default function TopChannelsList() {
             title={"#" + channel.channel_name}
             description={`${channel.guild_name} · ${formatNumber(
               channel.message_count
-            )} messages sent`}
+            )} ${t("stats.messagesSent")}`}
             leftSlot={
               <div
                 className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
