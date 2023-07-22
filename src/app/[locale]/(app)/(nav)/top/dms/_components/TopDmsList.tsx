@@ -11,12 +11,14 @@ import { avatarURLFallback } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
 import DiscordImage from "~/components/DiscordImage";
+import { useTranslation } from "~/i18n/client";
 
 function DMCard({
   dm,
 }: {
   dm: NonNullable<ReturnType<ReturnType<typeof useTopDMsData>["getData"]>>[0];
 }) {
+  const { t } = useTranslation();
   const data = useUserDetails({ userID: dm.dm_user_id });
 
   const username = dm.user_name;
@@ -28,7 +30,9 @@ function DMCard({
       href={`/top/dms/details?id=${dm.dm_user_id}`}
       rank={dm.rank}
       title={displayName}
-      description={`${formatNumber(dm.message_count)} messages sent`}
+      description={`${formatNumber(dm.message_count)} ${t(
+        "stats.messagesSent"
+      )}`}
       leftSlot={
         <div className="relative aspect-square w-10">
           <DiscordImage

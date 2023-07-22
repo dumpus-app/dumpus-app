@@ -14,6 +14,7 @@ import useGenerateImg from "~/hooks/use-generate-img";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
+import { useTranslation } from "~/i18n/client";
 
 function useImageData() {
   const data = useUserData();
@@ -84,6 +85,7 @@ function ShareButton({
   generating: boolean;
   promise?: GeneratePromise;
 }) {
+  const { t } = useTranslation();
   const canShare = !!navigator.share;
   const data = use(promise);
 
@@ -94,12 +96,17 @@ function ShareButton({
       onClick={onClick ? () => onClick(data) : undefined}
       disabled={generating}
     >
-      {generating ? "Generating..." : canShare ? "Share!" : "Download!"}
+      {generating
+        ? t("share.generating")
+        : canShare
+        ? t("share.title")
+        : t("share.download")}
     </Button>
   );
 }
 
 export default function SharePopup() {
+  const { t } = useTranslation();
   const [open, setOpen, timeRange] = useAppStore(({ ui, config }) => [
     ui.showSharePopup,
     ui.setShowSharePopup,
@@ -166,12 +173,11 @@ export default function SharePopup() {
                       as="h3"
                       className="text-lg font-bold text-white sm:text-2xl"
                     >
-                      Share your recap
+                      {t("share.recap")}
                     </Dialog.Title>
                     <div className="space-y-2 px-4 text-base text-gray-400">
                       <p className="mt-2 text-gray-400">
-                        Share your recap with your friends on Twitter,
-                        Instagram, Reddit, Discord...! :)
+                        {t("share.recapDescription")}
                       </p>
                     </div>
                   </div>
@@ -184,8 +190,8 @@ export default function SharePopup() {
                       // TODO: detect os as well
                       try {
                         await navigator.share({
-                          title: "Here is my Discord recap!",
-                          text: "Generated on https://dumpus.app, try it yourself!",
+                          title: t("share.popup.title"),
+                          text: t("share.popup.description"),
                           url: BASE_URL,
                           files: [file],
                         });

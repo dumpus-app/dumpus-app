@@ -12,7 +12,7 @@ export default function DailySentMessages({
 }) {
   const { t } = useTranslation();
   return (
-    <Section title="Messages sent per day">
+    <Section title={t("stats.titleMessagesSentPerDay")}>
       <SimpleBarChart
         data={data}
         className="px-2"

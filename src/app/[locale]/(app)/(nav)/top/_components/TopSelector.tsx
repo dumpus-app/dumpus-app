@@ -9,30 +9,32 @@ import { useScrolled } from "~/hooks/use-layout";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import { Link as LinkType } from "~/types";
 import { colors } from "#root/tailwind.config";
-
-const links = [
-  {
-    href: "/top/dms",
-    name: "DMs",
-    active: (str) => str.startsWith("/top/dms"),
-  },
-  {
-    href: "/top/guilds",
-    name: "Guilds",
-    active: (str) => str.startsWith("/top/guilds"),
-  },
-  {
-    href: "/top/channels",
-    name: "Channels",
-    active: (str) => str.startsWith("/top/channels"),
-  },
-] satisfies Omit<LinkType, "icon">[];
+import { useTranslation } from "~/i18n/client";
 
 export default function TopSelector({
   desktop = false,
 }: {
   desktop?: boolean;
 }) {
+  const { t } = useTranslation();
+
+  const links = [
+    {
+      href: "/top/dms",
+      name: t("stats.top.dms"),
+      active: (str: string) => str.startsWith("/top/dms"),
+    },
+    {
+      href: "/top/guilds",
+      name: t("stats.top.guilds"),
+      active: (str: string) => str.startsWith("/top/guilds"),
+    },
+    {
+      href: "/top/channels",
+      name: t("stats.top.channels"),
+      active: (str: string) => str.startsWith("/top/channels"),
+    },
+  ] as Omit<LinkType, "icon">[];
   const pathname = useI18nPathname();
   const scrolled = useScrolled();
   const setSafeAreaTopColor = useAppStore(({ ui }) => ui.setSafeAreaTopColor);

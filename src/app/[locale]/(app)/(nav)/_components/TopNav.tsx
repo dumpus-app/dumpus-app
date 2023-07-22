@@ -12,15 +12,17 @@ import PremiumBadge from "~/components/PremiumBadge";
 import { useAppStore } from "~/stores";
 import TopSelector from "../top/_components/TopSelector";
 import TimeSelector from "./TimeSelector";
+import { useTranslation } from "~/i18n/client";
 
 const settingsLink: LinkType = {
-  name: "Settings",
+  name: "settings",
   href: "/settings",
   active: (str) => str.startsWith("/settings"),
   icon: Cog6ToothIcon,
 };
 
 export default function TopNav() {
+  const { t } = useTranslation();
   const pathname = useI18nPathname();
   const premium = useAppStore(({ config }) => config.premium);
 
@@ -67,7 +69,13 @@ export default function TopNav() {
                   )}
                 >
                   <link.icon className="-ml-1 mr-1 h-6 w-6" />
-                  <span className="">{link.name}</span>
+                  <span className="">
+                    {t(
+                      `nav.${
+                        link.name as "overview" | "stats" | "top" | "settings"
+                      }`
+                    )}
+                  </span>
                 </Link>
               ))}
             </div>

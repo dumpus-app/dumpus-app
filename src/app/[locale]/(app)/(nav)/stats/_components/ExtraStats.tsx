@@ -55,51 +55,51 @@ export default function Stats() {
     <div className="grid grid-cols-2 gap-2 px-2 py-4 desktop-container sm:grid-cols-3 sm:py-8 md:grid-cols-4">
       <StatCard
         value={formatNumber(notificationClicked(), { notation: "standard" })}
-        label="notifications clicked"
+        label={t("stats.extra.clickedNotifications")}
       />
       <StatCard
         value={formatNumber(captchaServed(), { notation: "standard" })}
-        label="captcha completed"
+        label={t("stats.extra.completedCaptcha")}
       />
       <StatCard
         value={formatNumber(emailReceived(), { notation: "standard" })}
-        label="emails received"
+        label={t("stats.extra.receivedEmail")}
       />
       <StatCard
         value={formatNumber(loginSuccessful(), { notation: "standard" })}
-        label="logins successful"
+        label={t("stats.extra.successfulLogin")}
       />
       <StatCard
         value={formatNumber(userAvatarUpdated(), { notation: "standard" })}
-        label="avatar updates"
+        label={t("stats.extra.avatarUpdates")}
       />
       <StatCard
         value={formatNumber(appCrashed(), { notation: "standard" })}
-        label="crashes"
+        label={t("stats.extra.crashes")}
       />
       <StatCard
         value={formatNumber(oauth2Authorized(), { notation: "standard" })}
-        label="oauth2 authorized"
+        label={t("stats.extra.authorizedOauth2")}
       />
       <StatCard
         value={formatNumber(voiceMessageRecorded(), { notation: "standard" })}
-        label="voice messages recorded"
+        label={t("stats.extra.voiceMessagesRecorded")}
       />
       <StatCard
         value={formatNumber(messageReported(), { notation: "standard" })}
-        label="messages reported"
+        label={t("stats.extra.reportedMessages")}
       />
       <StatCard
         value={formatNumber(messageEdited(), { notation: "standard" })}
-        label="messages edited"
+        label={t("stats.extra.editedMessages")}
       />
       <StatCard
         value={formatNumber(nitroAds(), { notation: "standard" })}
-        label="seen nitro ads"
+        label={t("stats.extra.seenNitroAds")}
       />
       <StatCard
         value={formatDuration(timeSpentVoice())}
-        label="spent in voice channels"
+        label={t("stats.extra.spentInVoiceChannels")}
       />
     </div>
   );
