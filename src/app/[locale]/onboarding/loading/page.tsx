@@ -26,12 +26,11 @@ export default function Page() {
       <Error
         error={
           {
-            UNKNOWN_PACKAGE_ID: "This package is unknown.",
-            UNAUTHORIZED:
-              "You are not allowed to interact with this package data.",
-            INVALID_LINK: "Link invalid.",
-            UNKNOWN_ERROR: "An unknown error occured.",
-            EXPIRED_LINK: "Link expired.",
+            UNKNOWN_PACKAGE_ID: t("onboarding.loading.unknownPackageId"),
+            UNAUTHORIZED: t("onboarding.loading.unauthorized"),
+            INVALID_LINK: t("onboarding.loading.invalidLink"),
+            UNKNOWN_ERROR: t("onboarding.loading.unknownError"),
+            EXPIRED_LINK: t("onboarding.loading.expiredLink"),
           }[error]
         }
       />

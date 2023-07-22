@@ -43,7 +43,7 @@ export default function Page() {
         </Tab.List>
         <Tab.Panels className="mt-8 w-full">
           {data.map(({ os, steps }) => (
-            <Tab.Panel key={os} className="space-y-4">
+            <Tab.Panel key={os} className="space-y-4 focus:outline-none">
               {steps.map(({ name, image }, i) => (
                 <div
                   key={`${os}-${i}`}
