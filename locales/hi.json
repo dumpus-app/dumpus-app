@@ -138,6 +138,7 @@
   "stats": {
     "messagesSent": "संदेश भेज दिया गया",
     "messagesSentPerDay": "यह प्रति दिन लगभग {{- value}} संदेश है!",
+    "titleMessagesSentPerDay": "Messages sent per day",
     "totalMessagesSent": "total messages sent",
     "joinedServers": "सर्वर से जुड़े",
     "joinedServersDesc": "हमें एक वास्तविक डिस्कॉर्ड सर्वर एक्सप्लोरर मिल गया है!",
@@ -157,7 +158,28 @@
     "reactionsAdded": "reactions added",
     "channelOpenings": "channel openings",
     "guildJoins": "guild joins",
-    "commands": "{{- value}} commands"
+    "commands": "{{- value}} commands",
+    "top": {
+      "dms": "DMs",
+      "guilds": "Guilds",
+      "channels": "Channels",
+      "loadMore": "Load more",
+      "premium": "Unlock to view more"
+    },
+    "extra": {
+      "clickedNotifications": "notifications clicked",
+      "completedCaptcha": "captcha completed",
+      "receivedEmail": "emails received",
+      "successfulLogin": "logins successful",
+      "avatarUpdates": "avatar updates",
+      "crashes": "crashes",
+      "authorizedOauth2": "oauth2 authorized",
+      "voiceMessagesRecorded": "voice messages recorded",
+      "reportedMessages": "messages reported",
+      "editedMessages": "messages edited",
+      "seenNitroAds": "seen nitro ads",
+      "spentInVoiceChannels": "spent in voice channels"
+    }
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
@@ -166,7 +188,8 @@
   "sentimentAnalysis": {
     "title": "Sentiment analysis (experimental)",
     "anger": "Anger",
-    "happiness": "Happiness"
+    "happiness": "Happiness",
+    "score": "Active with score: {{- value}}"
   },
   "settings": {
     "title": "Settings",
@@ -239,6 +262,14 @@
     },
     "contributions": "{{- value}} contributions"
   },
+  "error": {
+    "title": "Surprising turn of events... Here is your path to recovery:",
+    "reload": "Reload",
+    "overview": "Overview",
+    "report": "Report on GitHub",
+    "noInternet": "No Internet Connection",
+    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
+  },
   "sheerNumbers": "निरी संख्याएं",
   "mostActiveDMs": "सबसे सक्रिय डीएम",
   "mostActiveServers": "सर्वाधिक सक्रिय सर्वर",
@@ -246,6 +277,29 @@
   "discordHours": "डिस्कॉर्ड पर आपका कुल समय",
   "activityTime": "समय के साथ गतिविधि",
   "messageSentCount": "संदेश भेजे गए गिनती",
-  "share": "Share",
-  "members": "{{- value}} members"
+  "share": {
+    "title": "Share",
+    "description": "Share your stats with your friends!",
+    "generating": "Generating...",
+    "download": "Download",
+    "recap": "Share your recap",
+    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "popup": {
+      "title": "Here is my Discord recap!",
+      "description": "Generated on https://dumpus.app, try it yourself!"
+    }
+  },
+  "exitingDemo": "Exiting...",
+  "exitDemo": "Exit demo and get started!",
+  "members": "{{- value}} members",
+  "nav": {
+    "overview": "Overview",
+    "top": "Top",
+    "stats": "Stats",
+    "settings": "Settings"
+  },
+  "topUsedBot": "Top used bots",
+  "topChannels": "Top channels",
+  "firstMessages": "Your first messages",
+  "relatedGuild": "Related guild"
 }
