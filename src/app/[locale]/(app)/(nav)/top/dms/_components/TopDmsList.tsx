@@ -30,7 +30,9 @@ function DMCard({
       href={`/top/dms/details?id=${dm.dm_user_id}`}
       rank={dm.rank}
       title={displayName}
-      description={`${formatNumber(dm.message_count)} ${t("stats.messagesSent")}`}
+      description={`${formatNumber(dm.message_count)} ${t(
+        "stats.messagesSent"
+      )}`}
       leftSlot={
         <div className="relative aspect-square w-10">
           <DiscordImage

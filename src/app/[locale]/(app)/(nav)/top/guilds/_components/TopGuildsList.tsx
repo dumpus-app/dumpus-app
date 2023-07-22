@@ -35,7 +35,9 @@ function GuildCard({
       href={`/top/guilds/details?id=${guild.guild_id}`}
       rank={guild.rank}
       title={guild.guild_name}
-      description={`${formatNumber(guild.message_count)} ${t("stats.messagesSent")}`}
+      description={`${formatNumber(guild.message_count)} ${t(
+        "stats.messagesSent"
+      )}`}
       leftSlot={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-10">

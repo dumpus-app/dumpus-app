@@ -57,7 +57,11 @@ export default function SentimentScore({ score }: { score: number }) {
                   "flex items-center justify-center first:rounded-l-full last:rounded-r-full",
                   color
                 )}
-                aria-label={active ? t("sentimentAnalysis.score", { value: score }) : undefined}
+                aria-label={
+                  active
+                    ? t("sentimentAnalysis.score", { value: score })
+                    : undefined
+                }
               >
                 {active && (
                   <div className="relative">

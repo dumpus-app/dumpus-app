@@ -4,7 +4,7 @@ import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import Button from "~/components/Button";
 import { VERSION } from "~/constants";
 import { NextErrorProps } from "~/types";
-import { useTranslation } from "~/i18n/client"
+import { useTranslation } from "~/i18n/client";
 
 export default function Error({ error, reset }: NextErrorProps) {
   const { t } = useTranslation();
@@ -16,13 +16,11 @@ export default function Error({ error, reset }: NextErrorProps) {
         <div className="mt-2 rounded-lg bg-gray-800 p-2 font-mono text-sm text-danger-500">
           {error.message}
         </div>
-        <p className="mt-8 text-gray-400">
-          {t("error.title")}
-        </p>
+        <p className="mt-8 text-gray-400">{t("error.title")}</p>
         <div className="mt-2 flex flex-col">
           <div className="grid grid-cols-2 gap-2">
             <Button size="sm" onClick={() => window.location.reload()}>
-            {t("error.reload")}
+              {t("error.reload")}
             </Button>
             <Button
               size="sm"
@@ -54,8 +52,7 @@ Stack: ${error.stack || "none"}
 - Platform: <complete>
 `)}`}
               target="_blank"
-            >
-            </a>
+            ></a>
           </Button>
         </div>
       </div>

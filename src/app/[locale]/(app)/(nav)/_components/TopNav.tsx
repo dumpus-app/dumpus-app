@@ -69,7 +69,13 @@ export default function TopNav() {
                   )}
                 >
                   <link.icon className="-ml-1 mr-1 h-6 w-6" />
-                  <span className="">{t(`nav.${link.name as "overview" | "stats" | "top" | "settings"}`)}</span>
+                  <span className="">
+                    {t(
+                      `nav.${
+                        link.name as "overview" | "stats" | "top" | "settings"
+                      }`
+                    )}
+                  </span>
                 </Link>
               ))}
             </div>
