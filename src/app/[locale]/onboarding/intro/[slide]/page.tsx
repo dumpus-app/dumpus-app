@@ -4,6 +4,7 @@ import { useTranslation } from "~/i18n/client";
 import { PageProps } from "~/types";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import Image from "next/image";
+<<<<<<< Updated upstream
 
 const SLIDES = ["how", "trust", "share"].map((e) => ({ image: e }));
 
@@ -12,6 +13,9 @@ export function generateStaticParams() {
     slide: (i + 1).toString(),
   }));
 }
+=======
+import { SLIDES } from "./_data/slides";
+>>>>>>> Stashed changes
 
 export default function Page({
   params: { slide },
