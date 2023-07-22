@@ -177,6 +177,45 @@
     "packageSwitch": {
       "title": "Switch Package",
       "description": "Generated on {{- date}}"
+    },
+    "packageDetails": {
+      "title": "Package Details",
+      "UPNKey": "UPN key",
+      "dateAdded": "Added on",
+      "packageID": "Package ID",
+      "discordUser": "Discord user",
+      "backendURL": "Backend URL"
+    },
+    "languages": {
+      "switch": "Switch language",
+      "title": "Languages",
+      "description": "{{- value}} available"
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
+      "loading": "Deleting...",
+      "quit": "Quit and reset"
+    },
+    "actions": {
+      "title": "Actions",
+      "notEnoughStorage": {
+        "title": "Can't add new package",
+        "description": "Not enough storage in app"
+      },
+      "deleting": "Deleting...",
+      "delete": "Delete current package",
+      "restoring": "Restoring...",
+      "restorePurchases": "Restore purchases"
+    },
+    "about": {
+      "title": "About",
+      "version": "Version",
+      "website": "Web application",
+      "community": "Community",
+      "contribute": "Contribute",
+      "contributors": "Project's contributors",
+      "credits": "Credits"
     }
   },
   "sheerNumbers": "Sheer numbers",
