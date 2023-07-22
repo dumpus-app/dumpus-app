@@ -29,29 +29,29 @@ export default function UsageStats() {
       ? null
       : {
           value: formatNumber(joinedGuilds(), { notation: "standard" }),
-          label: t("stats.joinedServers"),
+          label: "stats.joinedServers",
         },
     package_is_partial
       ? null
       : {
           value: formatNumber(receivedCalls(), { notation: "standard" }),
-          label: t("stats.receivedCalls"),
+          label: "stats.receivedCalls",
         },
     { value: formatHour(topHour()), label: t("stats.topHour") },
     {
       value: formatNumber(networkSize(), { notation: "standard" }),
-      label: t("stats.knownUsers"),
+      label: "stats.knownUsers",
     },
     package_is_partial
       ? null
       : {
           value: formatNumber(appStarted(), { notation: "standard" }),
-          label: t("stats.appStarted"),
+          label: "stats.appStarted",
         },
   ].filter((stat) => stat !== null) as any;
 
   return (
-    <Section title={t("sheerNumbers")} href="/stats">
+    <Section title="sheerNumbers" href="/stats">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {data.map((stat, i) => (

@@ -1,7 +1,6 @@
 "use client";
 
 import Section from "~/components/Section";
-import SimpleBarChart from "~/components/data/SimpleBarChart";
 import SimpleLineChart from "~/components/data/SimpleLineChart";
 import StatCard from "~/components/data/StatCard";
 import useSendingTimesData from "~/hooks/data/use-sending-times-data";

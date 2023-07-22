@@ -62,7 +62,7 @@ export default function TopGuilds() {
   const data = useTopGuildsData().getData({});
 
   return (
-    <Section title={t("mostActiveServers")} href="/top/guilds">
+    <Section title="mostActiveServers" href="/top/guilds">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((guild) => (

@@ -13,7 +13,7 @@ export default function TopChannels() {
   const data = useTopChannelsData().getData({});
 
   return (
-    <Section title={t("mostActiveChannels")} href="/top/channels">
+    <Section title="mostActiveChannels" href="/top/channels">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((channel) => (

@@ -63,7 +63,7 @@ export default function TopDMs() {
   })();
 
   return (
-    <Section title={t("mostActiveDMs")} href="/top/dms">
+    <Section title={"mostActiveDMs"} href="/top/dms">
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((dm) => (

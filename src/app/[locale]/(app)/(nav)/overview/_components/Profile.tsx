@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
 import { useNetworkState } from "react-use";
 import Button from "~/components/Button";
 import DiscordImage from "~/components/DiscordImage";
@@ -8,6 +9,7 @@ import useUserData from "~/hooks/data/use-user-data";
 import { useAppStore } from "~/stores";
 
 export default function Profile() {
+  const {t} = useTranslation()
   const userData = useUserData();
   const {
     package_owner_name,
@@ -51,7 +53,7 @@ export default function Profile() {
         className="absolute right-2 hidden sm:block"
         onClick={() => setOpen(true)}
       >
-        Share
+        {t('overview.share')}
       </Button>
     </ProfileHeader>
   );
