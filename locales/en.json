@@ -249,6 +249,11 @@
     "DMs" :{
       "loadMore" : "Load more" ,
       "unlock" : "Unlock to view more!"  
+    } , 
+    "channels" :{
+      "channelDetails"  : {
+        "dayMessages"  : "Messages sent per day"
+      }
     }
   }  ,
   "sheerNumbers": "Sheer numbers",
@@ -259,5 +264,6 @@
   "activityTime": "Activity over time",
   "messageSentCount": "Message sent count",
   "share": "Share",
+  "more" : "More"  ,
   "members": "{{- value}} members"
 }

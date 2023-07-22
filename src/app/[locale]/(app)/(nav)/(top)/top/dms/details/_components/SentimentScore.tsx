@@ -39,7 +39,7 @@ export default function SentimentScore({ score }: { score: number }) {
   ];
 
   return (
-    <Section title={t("sentimentAnalysis.title")}>
+    <Section title={"sentimentAnalysis.title"}>
       <div className="mx-2 space-y-2">
         <div className="flex items-center justify-between px-4 text-sm sm:px-6 sm:text-base">
           <div className="text-danger-500">{t("sentimentAnalysis.anger")}</div>
