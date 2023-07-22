@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Button from "~/components/Button";
 import { useAppStore, useSelectedPackage } from "~/stores";
+import { useTranslation } from "~/i18n/client";
 
 export default function ExitDemoBanner() {
+  const { t } = useTranslation();
   const deletePackage = useAppStore(({ config }) => config.deletePackage);
   const { package_id, id } = useSelectedPackage();
 
@@ -25,7 +27,7 @@ export default function ExitDemoBanner() {
       size="sm"
       className="rounded-none"
     >
-      {loading ? "Exiting..." : "Exit demo and get started!"}
+      {loading ? t("exitingDemo") : t("exitDemo")}
     </Button>
   );
 }
