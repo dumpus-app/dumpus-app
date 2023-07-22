@@ -30,7 +30,7 @@
     },
     "/": {
       "welcome": "Welcome to Dumpus",
-      "description": "Get detailed insights and stats for your Discord account",
+      "description": "$t(seo.description)",
       "step": "Step {{n}}",
       "steps": [
         "Briefing",
