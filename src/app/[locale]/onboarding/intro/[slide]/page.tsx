@@ -23,7 +23,7 @@ export default function Page({
 
   return (
     <div className="flex flex-col items-center	space-y-4 text-center">
-      <Image src={`/assets/${image}.png`} alt="" width={256} height={256} />
+      <Image src={image} alt="" width={256} height={256} />
       <h1 className="text-xl font-bold text-white">{title}</h1>
       <p className="text-gray-400">
         <RenderMarkdown content={description} />
