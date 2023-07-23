@@ -32,7 +32,7 @@ export default function useCopy() {
         icon: CheckCircleIcon,
       });
     }
-  }, [state, toast]);
+  }, [state, t, toast]);
 
   return copyToClipboard;
 }

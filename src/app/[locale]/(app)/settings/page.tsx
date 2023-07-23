@@ -1,3 +1,5 @@
+"use client";
+
 import PageHeader from "./_components/PageHeader";
 import About from "./_components/About";
 import PackageSwitch from "./_components/PackageSwitch";
