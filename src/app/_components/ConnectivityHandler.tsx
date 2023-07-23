@@ -2,12 +2,14 @@
 
 import { WifiIcon } from "@heroicons/react/24/solid";
 import useInternetConnection from "~/hooks/use-internet-connection";
+import { useTranslation } from "~/i18n/client";
 
 export default function ConnectivityHandler({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   const connected = useInternetConnection();
 
   if (!connected) {
@@ -16,11 +18,10 @@ export default function ConnectivityHandler({
         <WifiIcon className="mx-auto h-16 w-16 text-gray-400" />
         <div className="max-w-xs text-center">
           <h1 className="text-xl font-bold text-white">
-            No Internet Connection
+            {t("error.noInternet")}
           </h1>
           <p className="mt-2 text-gray-400">
-            Internet access is necessary to use the Dumpus app. Please reconnect
-            to the Internet to continue.
+            {t("error.noInternetDescription")}
           </p>
         </div>
       </div>

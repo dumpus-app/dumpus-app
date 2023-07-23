@@ -10,19 +10,19 @@ const { version } = packageJson;
 
 export const links = [
   {
-    name: "Overview",
+    name: "overview",
     href: "/overview",
     active: (str) => str.startsWith("/overview"),
     icon: ChartPieIcon,
   },
   {
-    name: "Top",
+    name: "top",
     href: "/top/dms",
     active: (str) => str.startsWith("/top"),
     icon: ArrowTrendingUpIcon,
   },
   {
-    name: "Stats",
+    name: "stats",
     href: "/stats",
     active: (str) => str.startsWith("/stats"),
     icon: ChartBarIcon,

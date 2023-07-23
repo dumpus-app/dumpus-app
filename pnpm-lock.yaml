@@ -6,23 +6,23 @@ settings:
 
 dependencies:
   "@capacitor/android":
-    specifier: ^5.0.3
-    version: 5.0.3(@capacitor/core@5.0.3)
+    specifier: ^5.2.2
+    version: 5.2.2(@capacitor/core@5.2.2)
   "@capacitor/app":
-    specifier: ^5.0.3
-    version: 5.0.3(@capacitor/core@5.0.3)
+    specifier: ^5.0.6
+    version: 5.0.6(@capacitor/core@5.2.2)
   "@capacitor/core":
-    specifier: ^5.0.3
-    version: 5.0.3
+    specifier: ^5.2.2
+    version: 5.2.2
   "@capacitor/ios":
     specifier: ^5.0.3
-    version: 5.0.3(@capacitor/core@5.0.3)
+    version: 5.0.3(@capacitor/core@5.2.2)
   "@capacitor/network":
-    specifier: ^5.0.4
-    version: 5.0.4(@capacitor/core@5.0.3)
+    specifier: ^5.0.6
+    version: 5.0.6(@capacitor/core@5.2.2)
   "@capacitor/status-bar":
     specifier: ^5.0.5
-    version: 5.0.5(@capacitor/core@5.0.3)
+    version: 5.0.5(@capacitor/core@5.2.2)
   "@headlessui/react":
     specifier: ^1.7.14
     version: 1.7.14(react-dom@18.2.0)(react@18.2.0)
@@ -34,7 +34,7 @@ dependencies:
     version: 3.1.0(react-hook-form@7.43.9)
   "@hugotomazi/capacitor-navigation-bar":
     specifier: ^2.0.1
-    version: 2.0.1(@capacitor/core@5.0.3)
+    version: 2.0.1(@capacitor/core@5.2.2)
   "@radix-ui/react-label":
     specifier: ^2.0.1
     version: 2.0.1(react-dom@18.2.0)(react@18.2.0)
@@ -67,7 +67,7 @@ dependencies:
     version: 10.4.14(postcss@8.4.25)
   capacitor-plugin-safe-area:
     specifier: ^2.0.5
-    version: 2.0.5(@capacitor/core@5.0.3)
+    version: 2.0.5(@capacitor/core@5.2.2)
   class-variance-authority:
     specifier: ^0.6.0
     version: 0.6.0(typescript@5.1.6)
@@ -173,8 +173,8 @@ dependencies:
 
 devDependencies:
   "@capacitor/cli":
-    specifier: ^5.0.3
-    version: 5.0.3
+    specifier: ^5.2.2
+    version: 5.2.2
   "@tailwindcss/typography":
     specifier: ^0.5.9
     version: 0.5.9(tailwindcss@3.3.2)
@@ -1883,32 +1883,32 @@ packages:
       to-fast-properties: 2.0.0
     dev: false
 
-  /@capacitor/android@5.0.3(@capacitor/core@5.0.3):
+  /@capacitor/android@5.2.2(@capacitor/core@5.2.2):
     resolution:
       {
-        integrity: sha512-jPN6JJUbN2cCrAjP+0Q4gIwIxleFVChZWh+/gsbDDfSpogdpZNwZnriUNxSRTZayL58tUzLHuxpJxY6hsddDrA==,
+        integrity: sha512-2kx5C2lJ/DSwPWS7fKvextWhg4AK3SQvQnHgp8+WX6SDYgphBNlGUh45N/qBoMeVM7lqjANJFGQDCk0FjimlWQ==,
+      }
+    peerDependencies:
+      "@capacitor/core": ^5.2.0
+    dependencies:
+      "@capacitor/core": 5.2.2
+    dev: false
+
+  /@capacitor/app@5.0.6(@capacitor/core@5.2.2):
+    resolution:
+      {
+        integrity: sha512-6ZXVdnNmaYILasC/RjQw+yfTmq2ZO7Q3v5lFcDVfq3PFGnybyYQh+RstBrYri+376OmXOXxBD7E6UxBhrMzXGA==,
       }
     peerDependencies:
       "@capacitor/core": ^5.0.0
     dependencies:
-      "@capacitor/core": 5.0.3
+      "@capacitor/core": 5.2.2
     dev: false
 
-  /@capacitor/app@5.0.3(@capacitor/core@5.0.3):
+  /@capacitor/cli@5.2.2:
     resolution:
       {
-        integrity: sha512-YqGWnD+O8wjNVyIctZCMkVqOr3RhxunLUBbmLpdRc66RzPN7xEk8GAwxY2YV/ehTL054mo3uqovpWvei7rYsEA==,
-      }
-    peerDependencies:
-      "@capacitor/core": ^5.0.0
-    dependencies:
-      "@capacitor/core": 5.0.3
-    dev: false
-
-  /@capacitor/cli@5.0.3:
-    resolution:
-      {
-        integrity: sha512-VPmd/uKSCYqeLgNTrG2wVaMoCX8lo2UuXFVwP54W4nXPyG6LsDuOKYytkBItTAJrI3KEXdZWyRFbXjIY48/m6g==,
+        integrity: sha512-h/cefX3sefLcmd4VI2h+fNIYKWH1QCUACWAH8bkdJ+aEL+x2xYbGlqeW6Belb3E2Uvu9OA+cz7YVDnNRcjyQyw==,
       }
     engines: { node: ">=16.0.0" }
     hasBin: true
@@ -1934,16 +1934,16 @@ packages:
       - supports-color
     dev: true
 
-  /@capacitor/core@5.0.3:
+  /@capacitor/core@5.2.2:
     resolution:
       {
-        integrity: sha512-VxzSoFvoiGDmvlKQMbg7ZZh+w3Z223630kZINDOsbs7UZr5gZws7+m26Y9Oc8n2miI737hE6qOf2VU4H/8Tytg==,
+        integrity: sha512-3jKECZC5+YD2rljMZm1e/K3AYyoxUmLDZCyofTPbRYPBSI0wJh5ZCkX+XIGzNM0o/Wokl3Voa1JB8xsLC0MPxA==,
       }
     dependencies:
       tslib: 2.5.0
     dev: false
 
-  /@capacitor/ios@5.0.3(@capacitor/core@5.0.3):
+  /@capacitor/ios@5.0.3(@capacitor/core@5.2.2):
     resolution:
       {
         integrity: sha512-4U+mfiT0x2oYEJN9NAxcYKdrK4szROMe8SgIiG2lXDG7t7FK1OY4BnB1euZc8c+49VcBSk9x2EiYQg5Nshi5iQ==,
@@ -1951,21 +1951,21 @@ packages:
     peerDependencies:
       "@capacitor/core": ^5.0.0
     dependencies:
-      "@capacitor/core": 5.0.3
+      "@capacitor/core": 5.2.2
     dev: false
 
-  /@capacitor/network@5.0.4(@capacitor/core@5.0.3):
+  /@capacitor/network@5.0.6(@capacitor/core@5.2.2):
     resolution:
       {
-        integrity: sha512-ELYVp5s4KzhFomjh/m/vxtH6h2xrrxZKHfkKxEPPH+IhW3Xn4L4bLjyKwipdsugyhJp31h2DjxcfYXY3aq/UzQ==,
+        integrity: sha512-E//cq9NEvFFiLyptK0ha4B8OytdWpSqvtUo5L2uiqcoADWUnl5d7aK45M09eyd347HchICeEdIkO31n6CNxyYA==,
       }
     peerDependencies:
       "@capacitor/core": ^5.0.0
     dependencies:
-      "@capacitor/core": 5.0.3
+      "@capacitor/core": 5.2.2
     dev: false
 
-  /@capacitor/status-bar@5.0.5(@capacitor/core@5.0.3):
+  /@capacitor/status-bar@5.0.5(@capacitor/core@5.2.2):
     resolution:
       {
         integrity: sha512-8ykkIbndeAaATrAYcr4CLSplTeR6CU15h8trXV3DgLXlFQAC6E/WJnoMy1QL61n5rHh725nixqwCTepcgGx/rw==,
@@ -1973,7 +1973,7 @@ packages:
     peerDependencies:
       "@capacitor/core": ^5.0.0
     dependencies:
-      "@capacitor/core": 5.0.3
+      "@capacitor/core": 5.2.2
     dev: false
 
   /@cspotcode/source-map-support@0.8.1:
@@ -2072,7 +2072,7 @@ packages:
       react-hook-form: 7.43.9(react@18.2.0)
     dev: false
 
-  /@hugotomazi/capacitor-navigation-bar@2.0.1(@capacitor/core@5.0.3):
+  /@hugotomazi/capacitor-navigation-bar@2.0.1(@capacitor/core@5.2.2):
     resolution:
       {
         integrity: sha512-Gq6vmAyOZLLHie/8wgGEs/V/aItJMXgivAcNItUDEfTpfXVAVbUdb0juOsXEqYgRCysksAmgHAEOg1WXE+L//Q==,
@@ -2080,7 +2080,7 @@ packages:
     peerDependencies:
       "@capacitor/core": ^4.0.1
     dependencies:
-      "@capacitor/core": 5.0.3
+      "@capacitor/core": 5.2.2
     dev: false
 
   /@humanwhocodes/config-array@0.11.10:
@@ -4130,7 +4130,7 @@ packages:
       }
     dev: false
 
-  /capacitor-plugin-safe-area@2.0.5(@capacitor/core@5.0.3):
+  /capacitor-plugin-safe-area@2.0.5(@capacitor/core@5.2.2):
     resolution:
       {
         integrity: sha512-Lg3P+/aW2/+C3gz2/xZFdfjgkOJ/ZSFTmZSxLaSY6lIudOTjwVpjoxhAyKUz1tc13Carjqdlq01yRrr++XOzAg==,
@@ -4138,7 +4138,7 @@ packages:
     peerDependencies:
       "@capacitor/core": ^5.0.0
     dependencies:
-      "@capacitor/core": 5.0.3
+      "@capacitor/core": 5.2.2
     dev: false
 
   /ccount@2.0.1:

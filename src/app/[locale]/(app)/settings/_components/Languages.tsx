@@ -74,6 +74,7 @@ function LocaleSwitcher({
   open: boolean;
   setOpen: (v: boolean) => void;
 }) {
+  const { t } = useTranslation();
   const loadedRef = useRef(false);
   if (!loadedRef.current) {
     loadedRef.current = true;
@@ -112,7 +113,7 @@ function LocaleSwitcher({
                     as="h3"
                     className="text-lg font-bold text-white"
                   >
-                    Switch language
+                    {t("settings.languages.switch")}
                   </Dialog.Title>
                   <div className="mt-2">
                     <LocalesList />
@@ -133,7 +134,7 @@ export default function Languages() {
 
   return (
     <>
-      <Section title="Languages">
+      <Section title={t("settings.languages.title")}>
         <div className="px-2">
           <DetailCard
             onClick={() => setOpen(true)}
@@ -142,7 +143,9 @@ export default function Languages() {
                 i18next.language
               )!
             }
-            description={`${locales.length} available`}
+            description={t("settings.languages.description", {
+              value: locales.length,
+            })}
             reverseTexts
             rightIcon={ChevronRightIcon}
           />

@@ -4,6 +4,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import { formatDate } from "~/utils/format";
+import { useTranslation } from "~/i18n/client";
 
 const DATA = [
   {
@@ -20,8 +21,9 @@ const DATA = [
 ].map((msg, i) => ({ ...msg, rank: i + 1 }));
 
 export default function FirstMessages() {
+  const { t } = useTranslation();
   return (
-    <Section title="Your first messages">
+    <Section title={t("firstMessages")}>
       <div className="grid grid-cols-1 gap-2 px-2">
         {DATA.map((msg) => (
           <DetailCard.WithRank

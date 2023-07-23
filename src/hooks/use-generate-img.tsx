@@ -16,25 +16,14 @@ async function getFontData(weight: number) {
   ).then((res) => res.arrayBuffer());
 }
 
-export default function useGenerateImg({
-  afterInit,
-}: {
-  afterInit: (
-    generate: (props: StaticShareImageProps) => Promise<{
-      svgURL: string;
-      file: File;
-    }>
-  ) => void;
-}) {
+export default function useGenerateImg() {
   const [status, setStatus] = useState<"idle" | "loading" | "initialized">(
     "idle"
   );
-  const [generating, setGenerating] = useState(false);
   const width = 1200;
   const height = 775;
 
   const generate = useCallback(async function (props: StaticShareImageProps) {
-    setGenerating(true);
     const fonts = (await Promise.all(
       [400, 500, 600, 700].map(async (weight) => ({
         name: "Rubik Latin",
@@ -71,7 +60,6 @@ export default function useGenerateImg({
     const svgURL = URL.createObjectURL(
       new Blob([pngBuffer], { type: "image/png" })
     );
-    setGenerating(false);
     return { svgURL, file };
   }, []);
 
@@ -85,7 +73,6 @@ export default function useGenerateImg({
     initSatori(yoga);
     await resvg.initWasm(fetch("/wasm/resvg.wasm"));
     setStatus("initialized");
-    afterInit(generate);
   }
 
   useMount(async () => await init());
@@ -96,6 +83,5 @@ export default function useGenerateImg({
     initialized: status === "initialized",
     width,
     height,
-    generating,
   };
 }

@@ -1,11 +1,13 @@
 "use client";
 
+import { useTranslation } from "~/i18n/client";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { useCopyToClipboard } from "react-use";
 import useToast from "~/hooks/use-toast";
 
 export default function useCopy() {
+  const { t } = useTranslation();
   const [state, copyToClipboard] = useCopyToClipboard();
   const toast = useToast();
 
@@ -14,7 +16,7 @@ export default function useCopy() {
       toast({
         id: "cant-copy",
         variant: "danger",
-        title: "Can't copy to clipboard",
+        title: t("settings.toasts.copyError"),
         description: state.error.message,
         icon: XCircleIcon,
       });
@@ -25,7 +27,7 @@ export default function useCopy() {
       }
       toast({
         id: sliced,
-        title: "Copied to clipboard!",
+        title: t("settings.toasts.copied"),
         description: sliced,
         icon: CheckCircleIcon,
       });
