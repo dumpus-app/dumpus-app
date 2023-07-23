@@ -63,7 +63,7 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
           );
         })}
       </div>
-      <Retry show={errorStep !== null} />
+      <Retry show={errorStep !== null} url="/onboarding/access/link/" />
     </>
   );
 }

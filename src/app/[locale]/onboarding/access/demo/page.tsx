@@ -1,13 +1,15 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
-import { useTranslation } from "~/i18n/client";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { shallow } from "zustand/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
+import Error from "../../loading/_components/Error";
 
 const packageID = "demo";
 const UPNKey = packageID;
@@ -17,29 +19,27 @@ export default function Page() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const [selectedID, getNextID] = useAppStore(({ config, database }) => [
-    config.selectedID,
-    database.getNextID,
-  ]);
+  const [selectedID, getNextID] = useAppStore(
+    ({ config, database }) => [config.selectedID, database.getNextID],
+    shallow
+  );
   const nextID = getNextID(selectedID);
   const { init } = useSQLInit();
   const api = usePackageAPI({});
 
-  const isInitializedRef = useRef(false);
+  const { data } = useQuery({
+    queryKey: ["demo", "data"],
+    queryFn: () => api.data({ packageID, UPNKey }),
+    staleTime: Infinity,
+  });
 
-  useEffect(() => {
-    if (isInitializedRef.current) return;
-    isInitializedRef.current = true;
-
-    api.data({ packageID, UPNKey }).then(({ data, errorMessageCode }) => {
-      if (errorMessageCode) {
-        // TODO: handle Error
-        return;
-      }
+  useQuery({
+    queryKey: ["demo", "redirect"],
+    queryFn: () => {
       init({
         id: nextID,
         initData: {
-          initialData: data,
+          initialData: data!.data!,
           packageLink,
           UPNKey,
           backendURL: DEFAULT_PACKAGE_API_URL,
@@ -47,8 +47,26 @@ export default function Page() {
       }).then(() => {
         router.replace(`/${i18next.language}/overview`);
       });
-    });
-  }, [api, init, nextID, router]);
+    },
+    staleTime: Infinity,
+    enabled: !!data?.data,
+  });
+
+  const error = data?.errorMessageCode || undefined;
+
+  if (error) {
+    return (
+      <Error
+        error={
+          {
+            UNKNOWN_PACKAGE_ID: t("onboarding.loading.unknownPackageId"),
+            UNAUTHORIZED: t("onboarding.loading.unauthorized"),
+          }[error]
+        }
+        url="/onboarding/access/"
+      />
+    );
+  }
 
   return (
     <div className="flex flex-col items-center space-y-4">

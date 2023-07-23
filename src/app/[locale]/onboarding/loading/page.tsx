@@ -33,6 +33,7 @@ export default function Page() {
             EXPIRED_LINK: t("onboarding.loading.expiredLink"),
           }[error]
         }
+        url="/onboarding/access/link/"
       />
     );
   }

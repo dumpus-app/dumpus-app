@@ -3,7 +3,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 import EmptyState from "~/components/EmptyState";
 import Retry from "./Retry";
 
-export default function Error({ error }: { error: string }) {
+export default function Error({ error, url }: { error: string; url: string }) {
   const { t } = useTranslation();
   return (
     <>
@@ -12,7 +12,7 @@ export default function Error({ error }: { error: string }) {
         title={t("onboarding.loading.error")}
         description={error}
       />
-      <Retry show={true} />
+      <Retry show={true} url={url} />
     </>
   );
 }

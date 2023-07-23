@@ -4,7 +4,7 @@ import { Transition } from "@headlessui/react";
 import i18next from "i18next";
 import Button from "~/components/Button";
 
-export default function Retry({ show }: { show: boolean }) {
+export default function Retry({ show, url }: { show: boolean; url: string }) {
   return (
     <Transition
       show={show}
@@ -16,7 +16,7 @@ export default function Retry({ show }: { show: boolean }) {
       leaveTo="transform scale-95 opacity-0"
     >
       <Button asChild>
-        <a href={`/${i18next.language}/onboarding/access/link/`}>Retry</a>
+        <a href={`/${i18next.language}${url}`}>Retry</a>
       </Button>
     </Transition>
   );
