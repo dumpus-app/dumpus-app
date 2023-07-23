@@ -16,6 +16,7 @@ import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
+import { Share } from "@capacitor/share";
 
 function useImageData() {
   const data = useUserData();
@@ -139,11 +140,11 @@ export default function SharePopup() {
                   onClick={async () => {
                     // TODO: detect os as well
                     try {
-                      await navigator.share({
+                      await Share.share({
                         title: "Here is my Discord recap!",
                         text: "Generated on https://dumpus.app, try it yourself!",
                         url: BASE_URL,
-                        files: [data!.file],
+                        // files: [data!.file],
                       });
                     } catch (err: DOMException | any) {
                       if (err.name === "AbortError") {
