@@ -3,6 +3,7 @@
 import pako from "pako";
 import { useRef } from "react";
 import initSqlJs from "sql.js";
+import { shallow } from "zustand/shallow";
 import { useAppStore } from "~/stores";
 import type { PackageData } from "~/types/sql";
 import { retrieveUint8Array, storeUint8Array } from "~/utils/localstorage";
@@ -30,7 +31,8 @@ export default function useSQLInit() {
       setPackage,
       setDB,
       setTimeRange,
-    })
+    }),
+    shallow
   );
 
   const isInitializedRef = useRef(false);

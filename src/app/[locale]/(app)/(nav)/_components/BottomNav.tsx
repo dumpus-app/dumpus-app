@@ -9,14 +9,15 @@ import { links } from "~/constants";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import TimeSelector from "./TimeSelector";
+import { shallow } from "zustand/shallow";
 
 export default function BottomNav() {
   const pathname = useI18nPathname();
   const [ref, { height }] = useMeasure<HTMLDivElement>();
-  const [setHeight, setSafeAreaBottomColor] = useAppStore(({ ui }) => [
-    ui.setBottomNavHeight,
-    ui.setSafeAreaBottomColor,
-  ]);
+  const [setHeight, setSafeAreaBottomColor] = useAppStore(
+    ({ ui }) => [ui.setBottomNavHeight, ui.setSafeAreaBottomColor],
+    shallow
+  );
 
   useEffect(() => {
     setHeight(height);
