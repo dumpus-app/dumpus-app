@@ -1,20 +1,21 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { Fragment, Suspense, use, useState } from "react";
+import { Fragment } from "react";
+import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
 import { BASE_URL } from "~/constants";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import useUserData from "~/hooks/data/use-user-data";
-import useDependencyChanged from "~/hooks/use-dependency-changed";
 import useGenerateImg from "~/hooks/use-generate-img";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
-import { useTranslation } from "~/i18n/client";
 
 function useImageData() {
   const data = useUserData();
@@ -55,78 +56,25 @@ function useImageData() {
   };
 }
 
-type GeneratePromise = ReturnType<
-  ReturnType<typeof useGenerateImg>["generate"]
->;
-
-function ShareImage({
-  promise = new Promise(() => {}),
-}: {
-  promise?: GeneratePromise;
-}) {
-  const { svgURL } = use(promise);
-
-  return (
-    <Image
-      src={svgURL}
-      alt={``}
-      fill
-      className="rounded-lg object-cover object-center"
-    />
-  );
-}
-
-function ShareButton({
-  onClick,
-  generating,
-  promise = new Promise(() => {}),
-}: {
-  onClick?: (data: Awaited<GeneratePromise>) => void;
-  generating: boolean;
-  promise?: GeneratePromise;
-}) {
-  const { t } = useTranslation();
-  const canShare = !!navigator.share;
-  const data = use(promise);
-
-  return (
-    <Button
-      variant="brand"
-      className="mt-4 w-full"
-      onClick={onClick ? () => onClick(data) : undefined}
-      disabled={generating}
-    >
-      {generating
-        ? t("share.generating")
-        : canShare
-        ? t("share.title")
-        : t("share.download")}
-    </Button>
-  );
-}
-
 export default function SharePopup() {
   const { t } = useTranslation();
-  const [open, setOpen, timeRange] = useAppStore(({ ui, config }) => [
-    ui.showSharePopup,
-    ui.setShowSharePopup,
-    config.timeRange,
-  ]);
+  const [open, setOpen] = useAppStore(
+    ({ ui }) => [ui.showSharePopup, ui.setShowSharePopup],
+    shallow
+  );
 
-  const [promise, setPromise] = useState<GeneratePromise>();
   const imageData = useImageData();
 
-  const { generate, width, height, initialized, generating } = useGenerateImg({
-    afterInit: (generate) => {
-      setPromise(generate(imageData));
-    },
+  const { generate, width, height, initialized } = useGenerateImg();
+
+  const { data, status } = useQuery({
+    queryKey: ["generate-share-img", imageData],
+    queryFn: () => generate(imageData),
+    staleTime: Infinity,
+    enabled: initialized,
   });
 
-  useDependencyChanged(() => {
-    if (!initialized) return;
-
-    setPromise(generate(imageData));
-  }, timeRange);
+  const canShare = !!navigator.share;
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -160,13 +108,16 @@ export default function SharePopup() {
                     className="relative w-full"
                     style={{ aspectRatio: `${width}/${height}` }}
                   >
-                    <Suspense
-                      fallback={
-                        <div className="h-full w-full rounded-lg bg-gray-800"></div>
-                      }
-                    >
-                      <ShareImage promise={promise} />
-                    </Suspense>
+                    {data ? (
+                      <Image
+                        src={data.svgURL}
+                        alt={``}
+                        fill
+                        className="rounded-lg object-cover object-center"
+                      />
+                    ) : (
+                      <div className="h-full w-full rounded-lg bg-gray-800"></div>
+                    )}
                   </div>
                   <div className="mt-2 text-center">
                     <Dialog.Title
@@ -182,37 +133,42 @@ export default function SharePopup() {
                     </div>
                   </div>
                 </div>
-                <Suspense fallback={<ShareButton generating={generating} />}>
-                  <ShareButton
-                    promise={promise}
-                    generating={generating}
-                    onClick={async ({ svgURL, file }) => {
-                      // TODO: detect os as well
-                      try {
-                        await navigator.share({
-                          title: t("share.popup.title"),
-                          text: t("share.popup.description"),
-                          url: BASE_URL,
-                          files: [file],
-                        });
-                      } catch (err: DOMException | any) {
-                        if (err.name === "AbortError") {
-                          // user aborted share intentionnally
-                          return;
-                        }
-                        console.error(err);
-                        const a = document.createElement("a");
-                        document.body.appendChild(a);
-                        a.setAttribute("style", "display: none");
-                        a.setAttribute("href", svgURL);
-                        a.download = "dumpus-share.png";
-                        a.click();
-                        a.remove();
+                <Button
+                  variant="brand"
+                  className="mt-4 w-full"
+                  onClick={async () => {
+                    // TODO: detect os as well
+                    try {
+                      await navigator.share({
+                        title: "Here is my Discord recap!",
+                        text: "Generated on https://dumpus.app, try it yourself!",
+                        url: BASE_URL,
+                        files: [data!.file],
+                      });
+                    } catch (err: DOMException | any) {
+                      if (err.name === "AbortError") {
+                        // user aborted share intentionnally
+                        return;
                       }
-                      setOpen(false);
-                    }}
-                  />
-                </Suspense>
+                      console.error(err);
+                      const a = document.createElement("a");
+                      document.body.appendChild(a);
+                      a.setAttribute("style", "display: none");
+                      a.setAttribute("href", data!.svgURL);
+                      a.download = "dumpus-share.png";
+                      a.click();
+                      a.remove();
+                    }
+                    setOpen(false);
+                  }}
+                  disabled={status !== "success"}
+                >
+                  {status !== "success"
+                    ? t("share.generating")
+                    : canShare
+                    ? t("share.title")
+                    : t("share.download")}
+                </Button>
               </Dialog.Panel>
             </Transition.Child>
           </div>
