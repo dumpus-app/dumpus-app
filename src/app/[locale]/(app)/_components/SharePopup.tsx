@@ -16,7 +16,7 @@ import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
-import { Share } from "@capacitor/share";
+import { Share } from "@capacitor/share"
 
 function useImageData() {
   const data = useUserData();
@@ -111,7 +111,7 @@ export default function SharePopup() {
                   >
                     {data ? (
                       <Image
-                        src={data.svgURL}
+                        src={data.svgURL?.toString() ?? ""}
                         alt={``}
                         fill
                         className="rounded-lg object-cover object-center"
@@ -144,7 +144,8 @@ export default function SharePopup() {
                         title: "Here is my Discord recap!",
                         text: "Generated on https://dumpus.app, try it yourself!",
                         url: BASE_URL,
-                        // files: [data!.file],
+                        dialogTitle: "Share your recap",
+                        files: [data?.file ?? ""],
                       });
                     } catch (err: DOMException | any) {
                       if (err.name === "AbortError") {
@@ -155,7 +156,7 @@ export default function SharePopup() {
                       const a = document.createElement("a");
                       document.body.appendChild(a);
                       a.setAttribute("style", "display: none");
-                      a.setAttribute("href", data!.svgURL);
+                      a.setAttribute("href", data?.file ?? "");
                       a.download = "dumpus-share.png";
                       a.click();
                       a.remove();

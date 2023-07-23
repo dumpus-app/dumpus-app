@@ -9,6 +9,7 @@ import initYoga from "yoga-wasm-web";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
+import { Filesystem, Directory } from "@capacitor/filesystem";
 
 async function getFontData(weight: number) {
   return await fetch(
@@ -56,11 +57,25 @@ export default function useGenerateImg() {
     });
     const pngBuffer = resvgJS.render().asPng();
 
-    const file = new File([pngBuffer], "image.png", { type: "image/png" });
-    const svgURL = URL.createObjectURL(
-      new Blob([pngBuffer], { type: "image/png" })
-    );
-    return { svgURL, file };
+    try {
+      const tempFilePath = `images/recap.png`;
+      const imageData = btoa(String.fromCharCode(...new Uint8Array(pngBuffer)));
+
+      let file = await Filesystem.writeFile({
+        data: imageData,
+        path: tempFilePath,
+        directory: Directory.Cache,
+        recursive: true,
+      });
+
+      return {
+        svgURL: `data:image/png;base64,${imageData}`,
+        file: file.uri,
+      };
+    } catch (error) {
+      console.error("Error storing file:", error);
+      return { svgURL: null };
+    }
   }, []);
 
   async function init() {
