@@ -16,7 +16,7 @@ import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
-import { Share } from "@capacitor/share"
+import { Share } from "@capacitor/share";
 
 function useImageData() {
   const data = useUserData();

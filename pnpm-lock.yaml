@@ -14,10 +14,10 @@ dependencies:
   "@capacitor/core":
     specifier: ^5.2.2
     version: 5.2.2
-  '@capacitor/filesystem':
+  "@capacitor/filesystem":
     specifier: ^5.1.1
     version: 5.1.1(@capacitor/core@5.2.2)
-  '@capacitor/ios':
+  "@capacitor/ios":
     specifier: ^5.0.3
     version: 5.0.3(@capacitor/core@5.2.2)
   "@capacitor/network":
@@ -1950,19 +1950,25 @@ packages:
     dev: false
 
   /@capacitor/filesystem@5.1.1(@capacitor/core@5.2.2):
-    resolution: {integrity: sha512-wq55joyYocsYI0f0UNoDE9TPxI0n4fx+PmejGR5JOYFzrnU8DqcSJ9EREAYAkkoOrmQHrB1vuN9F79XC0PuADw==}
+    resolution:
+      {
+        integrity: sha512-wq55joyYocsYI0f0UNoDE9TPxI0n4fx+PmejGR5JOYFzrnU8DqcSJ9EREAYAkkoOrmQHrB1vuN9F79XC0PuADw==,
+      }
     peerDependencies:
-      '@capacitor/core': ^5.1.1
+      "@capacitor/core": ^5.1.1
     dependencies:
-      '@capacitor/core': 5.2.2
+      "@capacitor/core": 5.2.2
     dev: false
 
   /@capacitor/ios@5.0.3(@capacitor/core@5.2.2):
-    resolution: {integrity: sha512-4U+mfiT0x2oYEJN9NAxcYKdrK4szROMe8SgIiG2lXDG7t7FK1OY4BnB1euZc8c+49VcBSk9x2EiYQg5Nshi5iQ==}
+    resolution:
+      {
+        integrity: sha512-4U+mfiT0x2oYEJN9NAxcYKdrK4szROMe8SgIiG2lXDG7t7FK1OY4BnB1euZc8c+49VcBSk9x2EiYQg5Nshi5iQ==,
+      }
     peerDependencies:
-      '@capacitor/core': ^5.0.0
+      "@capacitor/core": ^5.0.0
     dependencies:
-      '@capacitor/core': 5.2.2
+      "@capacitor/core": 5.2.2
     dev: false
 
   /@capacitor/network@5.0.6(@capacitor/core@5.2.2):
