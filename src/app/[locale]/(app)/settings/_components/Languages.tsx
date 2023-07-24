@@ -5,11 +5,25 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import i18next from "i18next";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useState } from "react";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import { useTranslation } from "~/i18n/client";
-import { locales } from "~/i18n/settings";
+import { locales as _locales } from "~/i18n/settings";
+import { capitalize } from "~/utils";
+
+const locales = _locales
+  .map((code) => ({
+    code,
+    display: capitalize(
+      new Intl.DisplayNames([code], { type: "language" }).of(code) || code
+    ),
+  }))
+  .sort((a, b) => a.display.localeCompare(b.display));
+
+function useCurrentLocale() {
+  return locales.find(({ code }) => code === i18next.language)!;
+}
 
 function LocalesList() {
   const pathname = usePathname() || "/";
@@ -20,21 +34,20 @@ function LocalesList() {
     <RadioGroup
       value={i18next.language}
       onChange={(v) => {
-        router.push(
-          (pathname + "?" + searchParams?.toString()).replace(
-            `/${i18next.language}`,
-            `/${v}`
-          )
+        const newPathname = (pathname + "?" + searchParams?.toString()).replace(
+          `/${i18next.language}`,
+          `/${v}`
         );
         i18next.changeLanguage(v);
+        router.replace(newPathname);
       }}
     >
       <RadioGroup.Label className="sr-only">Locales</RadioGroup.Label>
       <div className="space-y-2">
-        {locales.map((locale) => (
+        {locales.map(({ code, display }) => (
           <RadioGroup.Option
-            key={locale}
-            value={locale}
+            key={code}
+            value={code}
             className={({ checked, active }) =>
               clsx(
                 checked ? "border-transparent" : "border-gray-800",
@@ -49,9 +62,7 @@ function LocalesList() {
                   as="span"
                   className="font-medium text-gray-400"
                 >
-                  {new Intl.DisplayNames(["en"], { type: "language" }).of(
-                    locale
-                  )}
+                  {display}
                 </RadioGroup.Label>
                 <span
                   className={clsx(
@@ -77,11 +88,7 @@ function LocaleSwitcher({
   open: boolean;
   setOpen: (v: boolean) => void;
 }) {
-  const loadedRef = useRef(false);
-  if (!loadedRef.current) {
-    loadedRef.current = true;
-    i18next.loadLanguages(locales);
-  }
+  const { t } = useTranslation();
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -115,7 +122,7 @@ function LocaleSwitcher({
                     as="h3"
                     className="text-lg font-bold text-white"
                   >
-                    Switch language
+                    {t("settings.languages.switch")}
                   </Dialog.Title>
                   <div className="mt-2">
                     <LocalesList />
@@ -133,19 +140,18 @@ function LocaleSwitcher({
 export default function Languages() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
+  const currentLocale = useCurrentLocale();
 
   return (
     <>
-      <Section title="Languages">
+      <Section title={t("settings.languages.title")}>
         <div className="px-2">
           <DetailCard
             onClick={() => setOpen(true)}
-            title={
-              new Intl.DisplayNames(["en"], { type: "language" }).of(
-                i18next.language
-              )!
-            }
-            description={`${locales.length} available`}
+            title={currentLocale.display}
+            description={t("settings.languages.description", {
+              value: locales.length,
+            })}
             reverseTexts
             rightIcon={ChevronRightIcon}
           />

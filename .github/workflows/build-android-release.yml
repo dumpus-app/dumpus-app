@@ -78,6 +78,7 @@ jobs:
           asset_path: ./android/app/build/outputs/apk/release/app-release-apksigner-signed.apk
           asset_name: app-release-apksigner-signed.apk
           asset_content_type: application/vnd.android.package-archive
+        if: github.event_name == 'release'
 
       - name: Upload AAB Release Asset
         id: upload-aab-release-asset
@@ -89,3 +90,18 @@ jobs:
           asset_path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
           asset_name: app-release-signed.aab
           asset_content_type: application/vnd.android.package-archive
+        if: github.event_name == 'release'
+
+      - name: Archive APK as workflow artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release-apksigner-signed.apk
+          path: ./android/app/build/outputs/apk/release/app-release-apksigner-signed.apk
+        if: github.event_name != 'release'
+
+      - name: Archive AAB as workflow artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release-signed.aab
+          path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
+        if: github.event_name != 'release'

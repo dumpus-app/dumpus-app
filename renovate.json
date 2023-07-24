@@ -1,6 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base"],
+  "schedule": ["after 9pm on sunday"],
   "packageRules": [
     {
       "extends": "monorepo:nextjs",

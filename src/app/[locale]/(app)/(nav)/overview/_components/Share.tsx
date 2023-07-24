@@ -11,7 +11,7 @@ export default function Share() {
   return (
     <div className="px-2 py-4 sm:hidden">
       <Button type="button" onClick={() => setOpen(true)} className="w-full">
-        {t("share")}
+        {t("share.title")}
       </Button>
     </div>
   );

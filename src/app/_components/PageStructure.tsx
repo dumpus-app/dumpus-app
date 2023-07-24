@@ -3,7 +3,7 @@
 import i18next from "i18next";
 import { Rubik, JetBrains_Mono } from "next/font/google";
 import { CSSProperties } from "react";
-import Toaster from "~/components/Toaster";
+import Toaster from "./Toaster";
 import SafeArea from "./SafeArea";
 
 const sansFont = Rubik({ subsets: ["latin"] });

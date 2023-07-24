@@ -5,6 +5,7 @@ import { createDatabaseSlice, type DatabaseSlice } from "./database";
 import { createUISlice, type UISlice } from "./ui";
 import { createUsersCacheSlice, type UsersCacheSlice } from "./users-cache";
 import { migrateConfig, migrateUsersCache } from "./migrations";
+import { shallow } from "zustand/shallow";
 
 export { timeRanges } from "./config";
 export { DEFAULT_SAFE_AREA_INSET_COLOR } from "./ui";
@@ -30,10 +31,10 @@ export const useAppStore = create<BoundStore>()((...args) => ({
 }));
 
 export function useSelectedPackage() {
-  const [packages, selectedID] = useAppStore(({ config }) => [
-    config.packages,
-    config.selectedID,
-  ]);
+  const [packages, selectedID] = useAppStore(
+    ({ config }) => [config.packages, config.selectedID],
+    shallow
+  );
   const getSelectedPackage = useAppStore(
     ({ config }) => config.getSelectedPackage
   );
@@ -84,12 +85,8 @@ export function syncAppStore() {
 
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   const {
-    config: { setPremium, setPackage },
+    config: { setPremium },
   } = useAppStore.getState();
   // @ts-ignore
   window.setPremium = setPremium;
-  // @ts-ignore
-  window.cleanShareImage = (id: string) => {
-    setPackage(id, { shareImageData: undefined });
-  };
 }

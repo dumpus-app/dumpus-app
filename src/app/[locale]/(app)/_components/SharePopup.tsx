@@ -1,8 +1,10 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
+import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
 import { BASE_URL } from "~/constants";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
@@ -10,89 +12,67 @@ import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import useUserData from "~/hooks/data/use-user-data";
 import useGenerateImg from "~/hooks/use-generate-img";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
 
-export default function SharePopup() {
-  const [open, setOpen, generatingShareImage, setGeneratingShareImage] =
-    useAppStore(({ ui }) => [
-      ui.showSharePopup,
-      ui.setShowSharePopup,
-      ui.generatingShareImage,
-      ui.setGeneratingShareImage,
-    ]);
-
-  const { init, generate, width, height } = useGenerateImg();
-  const [url, setUrl] = useState<string>();
-  const [file, setFile] = useState<File>();
-
+function useImageData() {
   const data = useUserData();
   const { messageCount, totalSessionDuration, appStarted, networkSize } =
-    useUsageStatsData(true);
+    useUsageStatsData();
   const { getData: getDMsData } = useTopDMsData();
   const { getData: getGuildsData } = useTopGuildsData();
 
-  useEffect(() => {
-    if (!open || !generatingShareImage) return;
+  return {
+    user: {
+      displayName: data.package_owner_display_name,
+      avatarURL: data.package_owner_avatar_url.replace(/.webp|.gif/, ".png"),
+    },
+    stats: {
+      messagesSent: formatNumber(messageCount(), { notation: "standard" }),
+      timeSpent: formatDuration((totalSessionDuration() || 0) * 60_000),
+      appOpenings: formatNumber(appStarted(), { notation: "standard" }),
+      networkSize: formatNumber(networkSize(), { notation: "standard" }),
+    },
+    topDMS: (getDMsData({}) || []).slice(0, 3).map((dm) => {
+      return {
+        name: dm.user_name,
+        // TODO: get latest url
+        url: avatarURLFallback(dm.user_avatar_url, dm.dm_user_id).replace(
+          /.webp|.gif/,
+          ".png"
+        ),
+        count: formatNumber(dm.message_count),
+      };
+    }),
+    topGuilds: (getGuildsData({}) || []).slice(0, 3).map((guild) => {
+      return {
+        name: guild.guild_name,
+        url: "https://cdn.discordapp.com/embed/avatars/0.png",
+        count: formatNumber(guild.message_count),
+      };
+    }),
+  };
+}
 
-    async function gen() {
-      const { svgURL, file } = await generate({
-        user: {
-          displayName: data.package_owner_display_name,
-          avatarURL: data.package_owner_avatar_url.replace(
-            /.webp|.gif/,
-            ".png"
-          ),
-        },
-        stats: {
-          messagesSent: formatNumber(messageCount(), { notation: "standard" }),
-          timeSpent: formatDuration((totalSessionDuration() || 0) * 60_000),
-          appOpenings: formatNumber(appStarted(), { notation: "standard" }),
-          networkSize: formatNumber(networkSize(), { notation: "standard" }),
-        },
-        topDMS: (getDMsData({}) || []).slice(0, 3).map((dm) => {
-          return {
-            name: dm.user_name,
-            // TODO: get latest url
-            url: avatarURLFallback(dm.user_avatar_url, dm.dm_user_id).replace(
-              /.webp|.gif/,
-              ".png"
-            ),
-            count: formatNumber(dm.message_count),
-          };
-        }),
-        topGuilds: (getGuildsData({}) || []).slice(0, 3).map((guild) => {
-          return {
-            name: guild.guild_name,
-            url: "https://cdn.discordapp.com/embed/avatars/0.png",
-            count: formatNumber(guild.message_count),
-          };
-        }),
-      });
-      setUrl(svgURL);
-      setFile(file);
-      setGeneratingShareImage(false);
-    }
+export default function SharePopup() {
+  const { t } = useTranslation();
+  const [open, setOpen] = useAppStore(
+    ({ ui }) => [ui.showSharePopup, ui.setShowSharePopup],
+    shallow
+  );
 
-    init().then(() => {
-      gen();
-    });
-  }, [
-    appStarted,
-    data.package_owner_avatar_url,
-    data.package_owner_display_name,
-    generate,
-    generatingShareImage,
-    getDMsData,
-    getGuildsData,
-    init,
-    messageCount,
-    networkSize,
-    open,
-    setGeneratingShareImage,
-    totalSessionDuration,
-  ]);
+  const imageData = useImageData();
+
+  const { generate, width, height, initialized } = useGenerateImg();
+
+  const { data, status } = useQuery({
+    queryKey: ["generate-share-img", imageData],
+    queryFn: () => generate(imageData),
+    staleTime: Infinity,
+    enabled: initialized,
+  });
 
   const canShare = !!navigator.share;
 
@@ -128,9 +108,9 @@ export default function SharePopup() {
                     className="relative w-full"
                     style={{ aspectRatio: `${width}/${height}` }}
                   >
-                    {url ? (
+                    {data ? (
                       <Image
-                        src={url || ""}
+                        src={data.svgURL}
                         alt={``}
                         fill
                         className="rounded-lg object-cover object-center"
@@ -144,12 +124,11 @@ export default function SharePopup() {
                       as="h3"
                       className="text-lg font-bold text-white sm:text-2xl"
                     >
-                      Share your recap
+                      {t("share.recap")}
                     </Dialog.Title>
                     <div className="space-y-2 px-4 text-base text-gray-400">
                       <p className="mt-2 text-gray-400">
-                        Share your recap with your friends on Twitter,
-                        Instagram, Reddit, Discord...! :)
+                        {t("share.recapDescription")}
                       </p>
                     </div>
                   </div>
@@ -164,7 +143,7 @@ export default function SharePopup() {
                         title: "Here is my Discord recap!",
                         text: "Generated on https://dumpus.app, try it yourself!",
                         url: BASE_URL,
-                        files: [file!],
+                        files: [data!.file],
                       });
                     } catch (err: DOMException | any) {
                       if (err.name === "AbortError") {
@@ -175,20 +154,20 @@ export default function SharePopup() {
                       const a = document.createElement("a");
                       document.body.appendChild(a);
                       a.setAttribute("style", "display: none");
-                      a.setAttribute("href", url!);
+                      a.setAttribute("href", data!.svgURL);
                       a.download = "dumpus-share.png";
                       a.click();
                       a.remove();
                     }
                     setOpen(false);
                   }}
-                  disabled={generatingShareImage}
+                  disabled={status !== "success"}
                 >
-                  {generatingShareImage
-                    ? "Generating..."
+                  {status !== "success"
+                    ? t("share.generating")
                     : canShare
-                    ? "Share!"
-                    : "Download!"}
+                    ? t("share.title")
+                    : t("share.download")}
                 </Button>
               </Dialog.Panel>
             </Transition.Child>

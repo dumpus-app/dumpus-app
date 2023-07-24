@@ -2,10 +2,13 @@
 
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import Button from "~/components/Button";
-import { VERSION } from "~/constants";
+import { OS, VERSION } from "~/constants";
 import { NextErrorProps } from "~/types";
+import { useTranslation } from "~/i18n/client";
 
 export default function Error({ error, reset }: NextErrorProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="my-auto flex flex-col items-center space-y-4 px-2">
       <ExclamationTriangleIcon className="mx-auto h-16 w-16 text-danger-400" />
@@ -14,22 +17,11 @@ export default function Error({ error, reset }: NextErrorProps) {
         <div className="mt-2 rounded-lg bg-gray-800 p-2 font-mono text-sm text-danger-500">
           {error.message}
         </div>
-        <p className="mt-8 text-gray-400">
-          Surprising turn of events... Here is your path to recovery:
-        </p>
+        <p className="mt-8 text-gray-400">{t("error.title")}</p>
         <div className="mt-2 flex flex-col">
-          <div className="grid grid-cols-2 gap-2">
-            <Button size="sm" onClick={() => window.location.reload()}>
-              Reload
-            </Button>
-            <Button
-              size="sm"
-              variant="gray"
-              onClick={() => (window.location.href = "/")}
-            >
-              Overview
-            </Button>
-          </div>
+          <Button size="sm" variant="gray" onClick={() => reset()}>
+            {t("error.retry")}
+          </Button>
           <Button size="sm" className="mt-2" variant="danger">
             <a
               href={`https://github.com/dumpus-app/dumpus-app/issues/new?title=${encodeURIComponent(
@@ -48,12 +40,11 @@ Stack: ${error.stack || "none"}
 ## Infos
 
 - Location: ${window.location.href}
-- OS: <complete>
-- Platform: <complete>
+- Platform: ${OS}
 `)}`}
               target="_blank"
             >
-              Report on GitHub
+              {t("error.report")}
             </a>
           </Button>
         </div>

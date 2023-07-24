@@ -61,8 +61,9 @@ function BotCard({ bot }: { bot: Bot }) {
 }
 
 export default function TopUsedBots({ bots }: { bots: Bot[] }) {
+  const { t } = useTranslation();
   return (
-    <Section title="Top used bots">
+    <Section title={t("topUsedBot")}>
       <div className="grid grid-cols-2 gap-2 px-2">
         {bots.slice(0, 4).map((bot, i) => (
           <BotCard key={i} bot={bot} />

@@ -1,6 +1,9 @@
 import { getStorageKey } from "~/hooks/use-sql-init";
 import type { PackageData } from "~/types/sql";
 import { type CreateSlice } from ".";
+import { queryClient } from "~/utils/react-query";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import i18next from "i18next";
 
 export const timeRanges = ["4 weeks", "6 months", "Year", "Lifetime"] as const;
 
@@ -12,7 +15,6 @@ type Package = {
   UPNKey: string;
   dateAdded: string;
   backendURL: string;
-  shareImageData?: string;
 } & PackageData;
 
 type State = {
@@ -32,7 +34,10 @@ type Actions = {
   setSelectedID: (v: string | null) => void;
   setPackage: (id: Package["id"], v: Partial<Package>) => Package | null;
   addPackage: (pkg: Package) => void;
-  deletePackage: (id: Package["id"]) => void;
+  deletePackage: (opts: {
+    id: Package["id"];
+    router: AppRouterInstance;
+  }) => void;
   getSelectedPackage: (
     packages: State["packages"],
     selectedID: State["selectedID"]
@@ -87,7 +92,7 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
     set((state) => ({
       config: { ...state.config, packages: [...state.config.packages, pkg] },
     })),
-  deletePackage: (id) => {
+  deletePackage: ({ id, router }) => {
     localStorage.removeItem(getStorageKey(id));
 
     const { packages } = get().config;
@@ -104,7 +109,7 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
           goToOnboardingAccess: true,
         },
       }));
-      window.location.href = "/";
+      router.replace(`/${i18next.language}/onboarding/access/`);
     } else {
       set((state) => ({
         config: {
@@ -112,7 +117,8 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
           selectedID: packages[0].id,
         },
       }));
-      window.location.reload();
+      router.refresh();
     }
+    queryClient.clear();
   },
 });
