@@ -6,14 +6,14 @@ import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import { useAppStore } from "~/stores";
 import { formatDate } from "~/utils/format";
+import { shallow } from "zustand/shallow";
 
 export default function PackageSwitch() {
   const { t } = useTranslation();
-  const [setSelectedID, selectedID, packages] = useAppStore(({ config }) => [
-    config.setSelectedID,
-    config.selectedID,
-    config.packages,
-  ]);
+  const [setSelectedID, selectedID, packages] = useAppStore(
+    ({ config }) => [config.setSelectedID, config.selectedID, config.packages],
+    shallow
+  );
   const getUnselectedPackages = useAppStore(
     ({ config }) => config.getUnselectedPackages
   );

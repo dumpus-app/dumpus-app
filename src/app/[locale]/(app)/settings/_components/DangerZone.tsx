@@ -7,6 +7,7 @@ import Section from "~/components/Section";
 import packageAPI from "~/hooks/use-package-api";
 import { getStorageKey } from "~/hooks/use-sql-init";
 import { useAppStore } from "~/stores";
+import { shallow } from "zustand/shallow";
 
 export default function DangerZone() {
   const { t } = useTranslation();
@@ -15,7 +16,8 @@ export default function DangerZone() {
       config.reset,
       config.packages,
       setUsersCache,
-    ]
+    ],
+    shallow
   );
 
   const [loading, setLoading] = useState(false);

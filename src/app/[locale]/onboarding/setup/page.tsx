@@ -1,23 +1,32 @@
 "use client";
 
+import { Capacitor } from "@capacitor/core";
 import { Tab } from "@headlessui/react";
-import { useEffect, useState } from "react";
-import useOS from "~/hooks/use-os";
+import { useState } from "react";
 import { useTranslation } from "~/i18n/client";
-import useTranslationData from "./_hooks/use-translation-data";
 import StepImage from "./_components/StepImage";
+import useTranslationData from "./_hooks/use-translation-data";
+
+const OS = (() => {
+  switch (Capacitor.getPlatform()) {
+    case "android":
+      return "android";
+    case "ios":
+      return "ios";
+    case "web":
+    default:
+      return "desktop";
+  }
+})();
 
 export default function Page() {
   const { t } = useTranslation();
-  const os = useOS();
 
   const data = useTranslationData();
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  useEffect(() => {
-    setSelectedIndex(data.findIndex((e) => e.os === os));
-  }, [data, os]);
+  const [selectedIndex, setSelectedIndex] = useState(
+    data.findIndex((e) => e.os === OS)
+  );
 
   return (
     <div className="flex flex-col items-center space-y-8">

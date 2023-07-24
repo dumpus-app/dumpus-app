@@ -5,10 +5,12 @@ import { useEffect, useRef } from "react";
 import { PackageAPIUserResponse } from "~/types/package-api";
 import usePackageAPI from "./use-package-api";
 import { useAppStore, useSelectedPackage } from "~/stores";
+import { shallow } from "zustand/shallow";
 
 export default function useUserDetails({ userID }: { userID: string }) {
   const [usersCache, setUsersCache] = useAppStore(
-    ({ usersCache, setUsersCache }) => [usersCache, setUsersCache]
+    ({ usersCache, setUsersCache }) => [usersCache, setUsersCache],
+    shallow
   );
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });

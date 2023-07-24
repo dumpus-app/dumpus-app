@@ -2,7 +2,9 @@
 
 import i18next from "i18next";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useEffectOnce } from "react-use";
+import { shallow } from "zustand/shallow";
 import { VERSION } from "~/constants";
 import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
@@ -17,7 +19,7 @@ export default function LoadingScreen({
   children: React.ReactNode;
 }) {
   const [loading, setLoading] = useState(true);
-
+  const [shouldHaveDB, setShouldHaveDB] = useState(false);
   const { t } = useTranslation();
   const pathname = usePathname() || "/";
   const router = useRouter();
@@ -27,62 +29,65 @@ export default function LoadingScreen({
       config.selectedID,
       config.goToOnboardingAccess,
       database.db,
-    ]
+    ],
+    shallow
   );
+  const hasSelectedPackage = !!selectedID;
+
   const { init } = useSQLInit();
 
-  const redirectPath = `/${i18next.language}/onboarding`;
+  useEffectOnce(() => {
+    const redirectPath = `/${i18next.language}/onboarding`;
+    let mounted = true;
 
-  useEffect(() => {
-    if (!loading) return;
-
-    const hasSelectedPackage = !!selectedID;
-
-    if (["/", `/${i18next.language}/`].includes(pathname)) {
-      logger.info("/ or /:locale");
-      router.replace(`/${i18next.language}/overview`);
-      return;
-    }
-
-    if (pathname.startsWith(`/${i18next.language}/onboarding/`)) {
-      logger.info("onboarding");
-      if (!hasSelectedPackage && goToOnboardingAccess) {
-        logger.info("go to access");
-        router.replace(redirectPath + "/access");
+    async function handlePathname(pathname: string, hasDB: boolean) {
+      if (["/", `/${i18next.language}/`].includes(pathname)) {
+        logger.info("/ or /:locale");
+        return handlePathname(`/${i18next.language}/overview`, hasDB);
       }
+
+      if (pathname.startsWith(`/${i18next.language}/onboarding/`)) {
+        logger.info("onboarding");
+        if (!hasSelectedPackage && goToOnboardingAccess) {
+          logger.info("go to access");
+          pathname === `${redirectPath}/access`;
+        }
+        return pathname;
+      }
+
+      logger.info("no onboarding");
+      if (!hasSelectedPackage) {
+        logger.info("no package");
+        return handlePathname(`/${i18next.language}/onboarding/`, hasDB);
+      }
+
+      setShouldHaveDB(true);
+
+      if (hasDB) {
+        logger.info("has db");
+        return pathname;
+      }
+
+      logger.info("init db");
+      await init({ id: selectedID! });
+      return handlePathname(pathname, true);
+    }
+
+    (async () => {
+      const destination = await handlePathname(pathname, !!db);
       logger.info("continue");
-      setLoading(false);
-      return;
-    }
+      if (mounted) {
+        router.replace(destination);
+        setLoading(false);
+      }
+    })();
 
-    logger.info("no onboarding");
-    if (!hasSelectedPackage) {
-      logger.info("no package");
-      router.replace(`/${i18next.language}/onboarding/`);
-      return;
-    }
+    return () => {
+      mounted = false;
+    };
+  });
 
-    if (db) {
-      logger.info("has db");
-      logger.info("continue");
-      setLoading(false);
-      return;
-    }
-
-    logger.info("init db");
-    init({ id: selectedID! });
-  }, [
-    db,
-    goToOnboardingAccess,
-    init,
-    loading,
-    pathname,
-    redirectPath,
-    router,
-    selectedID,
-  ]);
-
-  if (loading)
+  if (loading || (!db && hasSelectedPackage && shouldHaveDB))
     return (
       <>
         <div className="my-auto flex flex-col items-center space-y-4">
