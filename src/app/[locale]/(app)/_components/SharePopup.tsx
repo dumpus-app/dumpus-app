@@ -122,7 +122,7 @@ export default function SharePopup() {
   );
 
   const os = useOS() || OS;
-  const canShare = os !== "web" && !!navigator.share;
+  const canShare = os === "web" ? "share" in navigator : true;
 
   const imageData = useImageData();
 
