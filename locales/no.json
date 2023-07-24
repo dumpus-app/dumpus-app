@@ -58,12 +58,12 @@
       "osDisplays": {
         "android": "Android",
         "ios": "iOS",
-        "desktop": "Desktop"
+        "desktop": "Datamaskin"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "Åpne Discord-innstillingene dine",
+        "privacy": "Åpne fanen \"Personvern og sikkerhet\"",
+        "request": "Trykk på \"Be om data\""
       }
     },
     "access": {
@@ -113,12 +113,33 @@
         "position": "posisjon",
         "waitingTime": "Anslått ventetid er",
         "useBackend": "Bruk min egen server"
-      }
+      },
+      "progress": {
+        "downloading": "Laster ned",
+        "analyzing": "Analyserer",
+        "processed": "Behandlet",
+        "loading": {
+          "title": "Vi laster inn dine data",
+          "description": "Vennligst vent..."
+        },
+        "loadingDemo": {
+          "title": "Vi laster ned demoen",
+          "description": "Vennligst vent..."
+        }
+      },
+      "error": "En feil oppstod...",
+      "unknownPackageId": "Denne pakken er ukjent.",
+      "unauthorized": "Du har ikke tillatelse til å utføre handlinger med disse pakkedataene.",
+      "invalidLink": "Lenken er ugyldig.",
+      "unknownError": "En ukjent feil oppstod.",
+      "expiredLink": "Lenken har utløpt."
     }
   },
   "stats": {
     "messagesSent": "meldinger sendt",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
+    "messagesSentPerDay": "Det er rundt {{- value}} meldinger hver dag!",
+    "titleMessagesSentPerDay": "Meldinger sendt per dag",
+    "totalMessagesSent": "totale meldinger sendt",
     "joinedServers": "servere lagt til",
     "joinedServersDesc": "Vi har en ekte Discord-server utforsker!",
     "knownUsers": "kjente brukere",
@@ -127,9 +148,126 @@
     "spentMoneyDesc_positive": "Det er mye penger...!",
     "spentMoneyDesc_empty": "Du er veldig sparsommelig!",
     "appStarts": "programstart",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "gjennomsnittstid"
+    "appStartsPerDay": "Du åpner Discord cirka {{- value}} ganger hver dag!",
+    "totalTimeSpent": "Du har brukt rundt {{- value}} timer på Discord",
+    "avgSessionTime": "gjennomsnittstid",
+    "receivedCalls": "anrop mottatt",
+    "topHour": "mest aktive time",
+    "appStarted": "Discord app startet",
+    "topChatHour": "mest aktive time for chat",
+    "reactionsAdded": "reaksjoner lagt til",
+    "channelOpenings": "kanaler åpnet",
+    "guildJoins": "Discord server innmeldinger",
+    "commands": "{{- value}} kommandoer",
+    "top": {
+      "dms": "DMs",
+      "guilds": "Servere",
+      "channels": "Kanaler",
+      "loadMore": "Last inn flere",
+      "premium": "Lås opp for å se mer"
+    },
+    "extra": {
+      "clickedNotifications": "notifikasjoner klikket",
+      "completedCaptcha": "captcha fullført",
+      "receivedEmail": "e-poster mottatt",
+      "successfulLogin": "vellykkede innlogginger",
+      "avatarUpdates": "profilbildeendringer",
+      "crashes": "krasj",
+      "authorizedOauth2": "oauth2 autoriseringer",
+      "voiceMessagesRecorded": "talemeldinger tatt opp",
+      "reportedMessages": "meldinger rapportert",
+      "editedMessages": "meldinger endret",
+      "seenNitroAds": "nitro annonser sett",
+      "spentInVoiceChannels": "brukt i talekanaler"
+    }
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "gjennomsnittlig meldinger sendt per dag",
+    "appOpeningsPerDay": "Discord app åpninger per dag"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentimentanalyse (eksperimentell)",
+    "anger": "Sinne",
+    "happiness": "Glede",
+    "score": "Aktiv med poengsum: {{- value}}"
+  },
+  "settings": {
+    "title": "Innstillinger",
+    "toasts": {
+      "copyError": "Kan ikke kopiere til utklippstavlen",
+      "copied": "Kopiert til utklippstavlen!"
+    },
+    "packageSwitch": {
+      "title": "Bytt pakke",
+      "description": "Generert den {{- date}}"
+    },
+    "packageDetails": {
+      "title": "Pakkedetaljer",
+      "UPNKey": "UPN nøkkel",
+      "dateAdded": "Lagt til den",
+      "packageID": "Pakke ID",
+      "discordUser": "Discord bruker",
+      "backendURL": "Backend-URL"
+    },
+    "languages": {
+      "switch": "Bytt språk",
+      "title": "Språk",
+      "description": "{{- value}} tilgjengelig"
+    },
+    "dangerZone": {
+      "title": "Faresonen",
+      "description": "Dataene dine vil bli slettet fra denne enheten og våre servere, men du kan fortsatt få tilgang til dem ved å bruke e-posten sendt av Discord. Takk for at du prøvde appen, gi oss gjerne en tilbakemelding på GitHub!",
+      "loading": "Sletter...",
+      "quit": "Avslutt og tilbakestill"
+    },
+    "actions": {
+      "title": "Handlinger",
+      "notEnoughStorage": {
+        "title": "Kan ikke legge til ny pakke",
+        "description": "Ikke nok lagringsplass i appen"
+      },
+      "deleting": "Sletter...",
+      "delete": "Slett gjeldende pakke",
+      "restoring": "Gjenoppretter...",
+      "restorePurchases": "Gjenopprett kjøp"
+    },
+    "about": {
+      "title": "Om",
+      "version": "Versjon",
+      "website": "Webapplikasjon",
+      "community": "Fellesskap",
+      "contribute": "Bidrag od medvirkning",
+      "contributors": "Prosjektets bidragsytere",
+      "credits": "Anerkjennelser"
+    }
+  },
+  "credits": {
+    "title": "Anerkjennelser",
+    "back": "Tilbake til innstillinger",
+    "bugHunter": {
+      "title": "Bug hunter",
+      "description": "De viktigste personene for å gi deg en stabil app."
+    },
+    "influencer": {
+      "title": "Påvirker",
+      "description": "Disse personene hjalp oss med å spre ordet om appen."
+    },
+    "developer": {
+      "title": "Utvikler",
+      "description": "Disse personene bidro direkte til appens kodebase."
+    },
+    "translator": {
+      "title": "Oversetter",
+      "description": "Disse personene gjorde appen tilgjengelig over hele verden."
+    },
+    "contributions": "{{- value}} bidrag"
+  },
+  "error": {
+    "title": "Overraskende rekke hendelser... Her er din vei til å gjenopprette:",
+    "retry": "Retry",
+    "report": "Rapporter på GitHub",
+    "noInternet": "Ingen internettforbindelse",
+    "noInternetDescription": " Internett-tilgang er nødvendig for å bruke Dumpus appen. Vennligst koble til internett på nytt for å fortsette."
   },
   "sheerNumbers": "Rene tall",
   "mostActiveDMs": "Mest aktive direktemeldinger",
@@ -137,5 +275,30 @@
   "mostActiveChannels": "Mest aktive kanaler",
   "discordHours": "Timene dine i Discord",
   "activityTime": "Aktivitet over tid",
-  "messageSentCount": "Antall meldinger sendt"
+  "messageSentCount": "Antall meldinger sendt",
+  "share": {
+    "title": "Del",
+    "description": "Del statistikken din med venner!",
+    "generating": "Genererer...",
+    "download": "Last ned",
+    "recap": "Del oppsummeringen din",
+    "recapDescription": "Del kortet ditt med vennene dine på Twitter, Instagram, Reddit, Discord...! :)",
+    "popup": {
+      "title": "Her er mitt Discord recap!",
+      "description": "Generert på https://dumpus.app, prøv det selv!"
+    }
+  },
+  "exitingDemo": "Avslutter...",
+  "exitDemo": "Avslutt demo og kom i gang!",
+  "members": "{{- value}} medlemmer",
+  "nav": {
+    "overview": "Oversikt",
+    "top": "Øverst",
+    "stats": "Statistikk",
+    "settings": "Innstillinger"
+  },
+  "topUsedBot": "Most brukte botter",
+  "topChannels": "Mest brukte kanaler",
+  "firstMessages": "Dine første meldinger",
+  "relatedGuild": "Relatert server"
 }

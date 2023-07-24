@@ -1,13 +1,14 @@
 "use client";
 
 import clsx from "clsx";
+import { shallow } from "zustand/shallow";
 import { timeRanges, useAppStore } from "~/stores";
 
 export default function TimeSelector() {
-  const [timeRange, setTimeRange] = useAppStore(({ config }) => [
-    config.timeRange,
-    config.setTimeRange,
-  ]);
+  const [timeRange, setTimeRange] = useAppStore(
+    ({ config }) => [config.timeRange, config.setTimeRange],
+    shallow
+  );
 
   return (
     <div className="border-t border-gray-800 bg-gray-900 sm:border-none sm:bg-transparent">

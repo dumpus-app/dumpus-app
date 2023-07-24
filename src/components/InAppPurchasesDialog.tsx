@@ -4,6 +4,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
 import { useMount } from "react-use";
+import { shallow } from "zustand/shallow";
 import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
@@ -19,10 +20,10 @@ const content = [
 ];
 
 export default function InAppPurchasesDialog() {
-  const [open, setOpen] = useAppStore(({ ui }) => [
-    ui.showInAppPurchasesDialog,
-    ui.setShowInAppPurchasesDialog,
-  ]);
+  const [open, setOpen] = useAppStore(
+    ({ ui }) => [ui.showInAppPurchasesDialog, ui.setShowInAppPurchasesDialog],
+    shallow
+  );
   const [supported, setSupported] = useState(false);
   const [product, setProduct] =
     useState<Awaited<ReturnType<typeof purchases.getProduct>>>();

@@ -80,7 +80,7 @@
           "backendURL": "Backend URL",
           "optional": "اختیاری",
           "backendURLHint": "URL سرور منبع باز میزبانی شده خودتان",
-          "notice": "با ادامه، شما با [خط‌مشی رازداری](privacy/) و [terms](terms/) ما موافقت می‌کنید.",
+          "notice": "با ادامه، شما با [خط‌مشی رازداری](privacy/) و [شرایط](terms/) ما موافقت می‌کنید.",
           "explore": "کاوش!",
           "errors": {
             "required": "الزامی",
@@ -113,12 +113,33 @@
         "position": "جایگاه",
         "waitingTime": "زمان تخمینی انتظار است",
         "useBackend": "از بک‌اند خودم استفاده کن"
-      }
+      },
+      "progress": {
+        "downloading": "Downloading",
+        "analyzing": "Analyzing",
+        "processed": "Processed",
+        "loading": {
+          "title": "We’re loading your data",
+          "description": "Please wait..."
+        },
+        "loadingDemo": {
+          "title": "We’re loading the demo",
+          "description": "Please wait..."
+        }
+      },
+      "error": "An error occurred...",
+      "unknownPackageId": "This package is unknown.",
+      "unauthorized": "You are not allowed to interact with this package data.",
+      "invalidLink": "Link invalid.",
+      "unknownError": "An unknown error occured.",
+      "expiredLink": "Link expired."
     }
   },
   "stats": {
     "messagesSent": "پیام ارسال شد",
     "messagesSentPerDay": "این تقریباً {{- value}} پیام در روز است!",
+    "titleMessagesSentPerDay": "Messages sent per day",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "سرور هایی که به آنها پیوستید",
     "joinedServersDesc": "ما یک کاوشگر سرور دیسکورد واقعی داریم!",
     "knownUsers": "کاربران شناخته شده",
@@ -129,7 +150,124 @@
     "appStarts": "برنامه در حال شروع است",
     "appStartsPerDay": "شما حدود {{- value}} بار در روز دیسکورد را باز می کنید!",
     "totalTimeSpent": "شما حدود {{- value}} را در دیسکورد هزینه کردید",
-    "avgSessionTime": "میانگین زمان جلسه"
+    "avgSessionTime": "میانگین زمان جلسه",
+    "receivedCalls": "received calls",
+    "topHour": "top hour",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
+    "commands": "{{- value}} commands",
+    "top": {
+      "dms": "DMs",
+      "guilds": "Guilds",
+      "channels": "Channels",
+      "loadMore": "Load more",
+      "premium": "Unlock to view more"
+    },
+    "extra": {
+      "clickedNotifications": "notifications clicked",
+      "completedCaptcha": "captcha completed",
+      "receivedEmail": "emails received",
+      "successfulLogin": "logins successful",
+      "avatarUpdates": "avatar updates",
+      "crashes": "crashes",
+      "authorizedOauth2": "oauth2 authorized",
+      "voiceMessagesRecorded": "voice messages recorded",
+      "reportedMessages": "messages reported",
+      "editedMessages": "messages edited",
+      "seenNitroAds": "seen nitro ads",
+      "spentInVoiceChannels": "spent in voice channels"
+    }
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
+  },
+  "sentimentAnalysis": {
+    "title": "Sentiment analysis (experimental)",
+    "anger": "Anger",
+    "happiness": "Happiness",
+    "score": "Active with score: {{- value}}"
+  },
+  "settings": {
+    "title": "Settings",
+    "toasts": {
+      "copyError": "Can't copy to clipboard",
+      "copied": "Copied to clipboard!"
+    },
+    "packageSwitch": {
+      "title": "Switch Package",
+      "description": "Generated on {{- date}}"
+    },
+    "packageDetails": {
+      "title": "Package Details",
+      "UPNKey": "UPN key",
+      "dateAdded": "Added on",
+      "packageID": "Package ID",
+      "discordUser": "Discord user",
+      "backendURL": "Backend URL"
+    },
+    "languages": {
+      "switch": "Switch language",
+      "title": "Languages",
+      "description": "{{- value}} available"
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
+      "loading": "Deleting...",
+      "quit": "Quit and reset"
+    },
+    "actions": {
+      "title": "Actions",
+      "notEnoughStorage": {
+        "title": "Can't add new package",
+        "description": "Not enough storage in app"
+      },
+      "deleting": "Deleting...",
+      "delete": "Delete current package",
+      "restoring": "Restoring...",
+      "restorePurchases": "Restore purchases"
+    },
+    "about": {
+      "title": "About",
+      "version": "Version",
+      "website": "Web application",
+      "community": "Community",
+      "contribute": "Contribute",
+      "contributors": "Project's contributors",
+      "credits": "Credits"
+    }
+  },
+  "credits": {
+    "title": "Credits",
+    "back": "Back to settings",
+    "bugHunter": {
+      "title": "Bug Hunter",
+      "description": "Most important people to provide you with stable app."
+    },
+    "influencer": {
+      "title": "Influencer",
+      "description": "These people helped us to spread the word about the app."
+    },
+    "developer": {
+      "title": "Developer",
+      "description": "These people made direct contributions to the app's code."
+    },
+    "translator": {
+      "title": "Translator",
+      "description": "These people made the app available worldwide."
+    },
+    "contributions": "{{- value}} contributions"
+  },
+  "error": {
+    "title": "Surprising turn of events... Here is your path to recovery:",
+    "retry": "Retry",
+    "report": "Report on GitHub",
+    "noInternet": "No Internet Connection",
+    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
   },
   "sheerNumbers": "اعداد محض",
   "mostActiveDMs": "فعال ترین DM ها",
@@ -137,5 +275,30 @@
   "mostActiveChannels": "فعال ترین کانال ها",
   "discordHours": "ساعت های دیسکورد شما",
   "activityTime": "فعالیت در طول زمان",
-  "messageSentCount": "تعداد پیام ارسال شده"
+  "messageSentCount": "تعداد پیام ارسال شده",
+  "share": {
+    "title": "Share",
+    "description": "Share your stats with your friends!",
+    "generating": "Generating...",
+    "download": "Download",
+    "recap": "Share your recap",
+    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "popup": {
+      "title": "Here is my Discord recap!",
+      "description": "Generated on https://dumpus.app, try it yourself!"
+    }
+  },
+  "exitingDemo": "Exiting...",
+  "exitDemo": "Exit demo and get started!",
+  "members": "{{- value}} members",
+  "nav": {
+    "overview": "Overview",
+    "top": "Top",
+    "stats": "Stats",
+    "settings": "Settings"
+  },
+  "topUsedBot": "Top used bots",
+  "topChannels": "Top channels",
+  "firstMessages": "Your first messages",
+  "relatedGuild": "Related guild"
 }

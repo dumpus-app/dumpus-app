@@ -1,9 +1,11 @@
+import { useTranslation } from "~/i18n/client";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { PackageAPIStatusResponse } from "~/types/package-api";
 import Retry from "./Retry";
 
 export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
+  const { t } = useTranslation();
   const { processingStep, isErrored } = data;
   /**
    * 0 Downloading
@@ -24,7 +26,11 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
 
   const errorStep = isErrored ? currentStep : null;
 
-  const steps = ["Downloading", "Analyzing", "Processed"];
+  const steps = [
+    t("onboarding.loading.progress.downloading"),
+    t("onboarding.loading.progress.analyzing"),
+    t("onboarding.loading.progress.processed"),
+  ];
 
   return (
     <>
@@ -57,7 +63,7 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
           );
         })}
       </div>
-      <Retry show={errorStep !== null} />
+      <Retry show={errorStep !== null} url="/onboarding/access/link/" />
     </>
   );
 }

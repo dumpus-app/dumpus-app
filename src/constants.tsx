@@ -3,31 +3,40 @@ import {
   ArrowTrendingUpIcon,
   ChartBarIcon,
   ChartPieIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import packageJson from "../package.json";
+import { Capacitor } from "@capacitor/core";
 
 const { version } = packageJson;
 
 export const links = [
   {
-    name: "Overview",
+    name: "overview",
     href: "/overview",
     active: (str) => str.startsWith("/overview"),
     icon: ChartPieIcon,
   },
   {
-    name: "Top",
+    name: "top",
     href: "/top/dms",
     active: (str) => str.startsWith("/top"),
     icon: ArrowTrendingUpIcon,
   },
   {
-    name: "Stats",
+    name: "stats",
     href: "/stats",
     active: (str) => str.startsWith("/stats"),
     icon: ChartBarIcon,
   },
-] satisfies Link[];
+  {
+    name: "settings",
+    href: "/settings",
+    active: (str) => str.startsWith("/settings"),
+    icon: Cog6ToothIcon,
+    desktop: true,
+  },
+] satisfies (Link & { desktop?: boolean })[];
 
 export const DEFAULT_PACKAGE_API_URL = "https://api.dumpus.app";
 
@@ -55,3 +64,5 @@ const _nodeEnv = (() => {
 })();
 
 export const VERSION = `v${version}-${process.env.NEXT_PUBLIC_DEPLOY_ENV} (${_nodeEnv})`;
+
+export const OS = Capacitor.getPlatform() as "android" | "ios" | "web";
