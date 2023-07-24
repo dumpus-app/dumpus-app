@@ -6,6 +6,8 @@ import { useCallback, useState } from "react";
 import { useMount } from "react-use";
 import satori, { Font, init as initSatori } from "satori/wasm";
 import initYoga from "yoga-wasm-web";
+import { create } from "zustand";
+import { shallow } from "zustand/shallow";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
@@ -16,12 +18,23 @@ async function getFontData(weight: number) {
   ).then((res) => res.arrayBuffer());
 }
 
-let _init = false;
+const useStore = create<{
+  _init: boolean;
+  setInit: (v: boolean) => void;
+}>((set) => ({
+  _init: false,
+  setInit: (v) => set({ _init: v }),
+}));
 
 export default function useGenerateImg() {
   const [status, setStatus] = useState<
     "idle" | "loading" | "initialized" | "error"
   >("idle");
+  const [_init, setInit] = useStore(
+    (state) => [state._init, state.setInit],
+    shallow
+  );
+
   const width = 1200;
   const height = 775;
 
@@ -43,7 +56,7 @@ export default function useGenerateImg() {
     } catch (err) {
       setStatus("error");
     }
-    _init = true;
+    setInit(true);
   }
 
   useMount(async () => await init());
