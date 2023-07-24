@@ -6,6 +6,7 @@ import AvatarCard from "~/components/data/AvatarCard";
 import type { Guild, GuildChannelsData } from "~/types/sql";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
+import { useTranslation } from "~/i18n/client";
 
 type Channel = Pick<
   GuildChannelsData,
@@ -17,8 +18,9 @@ type Channel = Pick<
   };
 
 export default function TopChannels({ channels }: { channels: Channel[] }) {
+  const { t } = useTranslation();
   return (
-    <Section title="Top channels">
+    <Section title={t("topChannels")}>
       <ScrollArea orientation="horizontal">
         <div className="flex">
           {channels.map((channel) => (

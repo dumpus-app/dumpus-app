@@ -12,6 +12,7 @@ import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 import LoadMore from "../../_components/LoadMore";
 import DiscordImage from "~/components/DiscordImage";
+import { useTranslation } from "~/i18n/client";
 
 function GuildCard({
   guild,
@@ -20,6 +21,7 @@ function GuildCard({
     ReturnType<ReturnType<typeof useTopGuildsData>["getData"]>
   >[0];
 }) {
+  const { t } = useTranslation();
   const { getGuild } = useWidgetAPI({});
 
   const { isSuccess, data } = useQuery({
@@ -33,7 +35,9 @@ function GuildCard({
       href={`/top/guilds/details?id=${guild.guild_id}`}
       rank={guild.rank}
       title={guild.guild_name}
-      description={`${formatNumber(guild.message_count)} messages sent`}
+      description={`${formatNumber(guild.message_count)} ${t(
+        "stats.messagesSent"
+      )}`}
       leftSlot={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-10">

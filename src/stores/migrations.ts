@@ -9,6 +9,12 @@ export const migrateConfig = (persistedState: unknown, version: number) => {
     }
     version++;
   }
+  if (version === 1) {
+    for (const pkg of config.packages) {
+      delete pkg.shareImageData;
+    }
+    version++;
+  }
 
   return persistedState as any;
 };

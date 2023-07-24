@@ -97,3 +97,9 @@ export function partitionArray<T>(
   array.forEach((e, i, arr) => (filter(e, i, arr) ? pass : fail).push(e));
   return [pass, fail] as const;
 }
+
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+export function capitalize(str: string) {
+  return str[0].toUpperCase() + str.slice(1);
+}

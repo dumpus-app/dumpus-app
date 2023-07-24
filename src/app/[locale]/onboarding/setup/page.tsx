@@ -1,23 +1,26 @@
 "use client";
 
 import { Tab } from "@headlessui/react";
-import { useEffect, useState } from "react";
-import useOS from "~/hooks/use-os";
+import { useState } from "react";
 import { useTranslation } from "~/i18n/client";
-import useTranslationData from "./_hooks/use-translation-data";
 import StepImage from "./_components/StepImage";
+import useTranslationData from "./_hooks/use-translation-data";
+import { OS } from "~/constants";
+import clsx from "clsx";
+
+const defaultOS = OS === "web" ? "desktop" : OS;
+
+const isiOS =
+  process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile" && defaultOS === "ios";
 
 export default function Page() {
   const { t } = useTranslation();
-  const os = useOS();
 
   const data = useTranslationData();
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-
-  useEffect(() => {
-    setSelectedIndex(data.findIndex((e) => e.os === os));
-  }, [data, os]);
+  const [selectedIndex, setSelectedIndex] = useState(
+    data.findIndex((e) => e.os === defaultOS)
+  );
 
   return (
     <div className="flex flex-col items-center space-y-8">
@@ -25,12 +28,17 @@ export default function Page() {
         <h1 className="text-xl font-bold text-white">
           {t("onboarding.setup.title")}
         </h1>
-        <p className="mt-2 text-gray-400">
+        <p className={clsx("mt-2 text-gray-400", isiOS && "hidden")}>
           {t("onboarding.setup.description")}
         </p>
       </div>
       <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-        <Tab.List className="flex justify-center space-x-2">
+        <Tab.List
+          className={clsx(
+            "justify-center space-x-2",
+            isiOS ? "hidden" : "flex"
+          )}
+        >
           {data.map(({ os, display, icon: Icon }) => (
             <Tab
               key={os}
@@ -43,7 +51,7 @@ export default function Page() {
         </Tab.List>
         <Tab.Panels className="mt-8 w-full">
           {data.map(({ os, steps }) => (
-            <Tab.Panel key={os} className="space-y-4">
+            <Tab.Panel key={os} className="space-y-4 focus:outline-none">
               {steps.map(({ name, image }, i) => (
                 <div
                   key={`${os}-${i}`}

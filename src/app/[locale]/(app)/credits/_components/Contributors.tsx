@@ -11,6 +11,7 @@ import {
 import Flag from "./Flag";
 import { partitionArray } from "~/utils";
 import Image from "next/image";
+import { useTranslation } from "~/i18n/client";
 
 type Contributor = {
   name: string;
@@ -84,6 +85,7 @@ function sortContributors() {
 const contributors = sortContributors();
 
 function ContributorCard({ contributor }: { contributor: Contributor }) {
+  const { t } = useTranslation();
   const {
     name,
     description,
@@ -96,12 +98,11 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
   return (
     <DetailCard
       title={name}
-      description={
-        description ||
-        `${
-          bugs + developer + (translation ? 1 : 0) + (influencer ? 1 : 0)
-        } contributions`
-      }
+      description={t("credits.contributions", {
+        value:
+          description ||
+          bugs + developer + (translation ? 1 : 0) + (influencer ? 1 : 0),
+      })}
       leftSlot={
         <div className="relative aspect-square w-10">
           <Image

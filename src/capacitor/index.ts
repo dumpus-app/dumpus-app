@@ -3,10 +3,12 @@
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
 import { purchasesSingleton } from "./purchases";
 import { isCapacitorSupported } from "./utils";
+import { OS } from "~/constants";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
 export const purchases = purchasesSingleton;
 
-async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
+async function handleSafeArea() {
   function setStyle(content: string) {
     const id = "capacitor-styles";
 
@@ -20,7 +22,7 @@ async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
     }
   }
 
-  if (isAndroid) {
+  if (OS === "android") {
     const { SafeArea } = await import("capacitor-plugin-safe-area");
 
     function handleInsets(insets: SafeAreaInsets["insets"]) {
@@ -35,7 +37,7 @@ async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
     await SafeArea.addListener("safeAreaChanged", ({ insets }) =>
       handleInsets(insets)
     );
-  } else if (isiOS) {
+  } else if (OS === "ios") {
     let styleContent = "";
     for (const key of ["top", "right", "bottom", "left"]) {
       styleContent += `--safe-area-${key}: env(safe-area-inset-${key});`;
@@ -44,20 +46,11 @@ async function handleSafeArea(isAndroid: boolean, isiOS: boolean) {
   }
 }
 
-export async function initCapacitor({
-  navigate,
-}: {
-  navigate: (url: string) => void;
-}) {
+export async function initCapacitor({ router }: { router: AppRouterInstance }) {
   const supported = isCapacitorSupported();
   if (!supported) return;
 
-  const { Capacitor } = await import("@capacitor/core");
-
-  const isAndroid = Capacitor.getPlatform() === "android";
-  const isiOS = Capacitor.getPlatform() === "ios";
-
-  await handleSafeArea(isAndroid, isiOS);
+  await handleSafeArea();
 
   const { App } = await import("@capacitor/app");
   const { StatusBar, Style } = await import("@capacitor/status-bar");
@@ -73,7 +66,7 @@ export async function initCapacitor({
   //     App.exitApp();
   //   }
   // });
-  if (isAndroid) {
+  if (OS === "android") {
     await StatusBar.setOverlaysWebView({ overlay: true });
     await NavigationBar.setTransparency({ isTransparent: true });
   }
@@ -83,7 +76,7 @@ export async function initCapacitor({
     const url = new URL(_url);
     const pathname = url.href.replace(url.origin, "");
     if (pathname !== "/") {
-      navigate(pathname);
+      router.replace(pathname);
     }
   });
 

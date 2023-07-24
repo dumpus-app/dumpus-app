@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import i18next from "i18next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { shallow } from "zustand/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
@@ -109,10 +110,10 @@ function useRedirect({
 }) {
   const router = useRouter();
   const { init } = useSQLInit();
-  const [selectedID, getNextID] = useAppStore(({ config, database }) => [
-    config.selectedID,
-    database.getNextID,
-  ]);
+  const [selectedID, getNextID] = useAppStore(
+    ({ config, database }) => [config.selectedID, database.getNextID],
+    shallow
+  );
 
   const nextID = getNextID(selectedID);
 
@@ -130,6 +131,7 @@ function useRedirect({
       }).then(() => {
         router.replace(`/${i18next.language}/overview`);
       });
+      return null;
     },
     enabled: !!initialData,
     staleTime: Infinity,

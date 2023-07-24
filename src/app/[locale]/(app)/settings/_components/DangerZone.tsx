@@ -1,19 +1,27 @@
 "use client";
 
+import i18next from "i18next";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import packageAPI from "~/hooks/use-package-api";
 import { getStorageKey } from "~/hooks/use-sql-init";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
+import { queryClient } from "~/utils/react-query";
 
 export default function DangerZone() {
+  const { t } = useTranslation();
+  const router = useRouter();
   const [reset, packages, setUsersCache] = useAppStore(
     ({ config, setUsersCache }) => [
       config.reset,
       config.packages,
       setUsersCache,
-    ]
+    ],
+    shallow
   );
 
   const [loading, setLoading] = useState(false);
@@ -33,17 +41,14 @@ export default function DangerZone() {
 
     reset();
     setUsersCache([]);
-    window.location.href = "/";
+    router.replace(`/${i18next.language}/onboarding/`);
+    queryClient.clear();
   }
 
   return (
-    <Section title="Danger zone">
+    <Section title={t("settings.dangerZone.title")}>
       <div className="grid grid-cols-1 gap-2 px-2">
-        <p className="text-gray-400">
-          Your data will be deleted from this device and our servers, but you
-          can still access it by using the email sent by Discord. Thanks for
-          trying the app, give us some feedback on GitHub!
-        </p>
+        <p className="text-gray-400">{t("settings.dangerZone.description")}</p>
         <Button asChild variant="danger">
           <button
             onClick={(e) => {
@@ -51,7 +56,9 @@ export default function DangerZone() {
             }}
             disabled={loading}
           >
-            {loading ? "Deleting..." : "Quit and reset"}
+            {loading
+              ? t("settings.dangerZone.loading")
+              : t("settings.dangerZone.quit")}
           </button>
         </Button>
       </div>

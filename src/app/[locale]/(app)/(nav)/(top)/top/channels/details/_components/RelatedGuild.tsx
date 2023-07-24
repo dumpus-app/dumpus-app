@@ -15,7 +15,7 @@ export default function RelatedGuild({ guild }: { guild: Guild }) {
   const { t } = useTranslation();
 
   return (
-    <Section title="Related Guild">
+    <Section title={t("relatedGuild")}>
       <div className="px-2">
         <DetailCard
           href={`/top/guilds/details?id=${guild.guild_id}`}

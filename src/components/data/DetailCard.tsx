@@ -15,6 +15,7 @@ export type Props = Omit<
   description: string;
   reverseTexts?: boolean;
   href?: URL | string;
+  disabled?: boolean;
 };
 
 export default function DetailCard({
@@ -26,6 +27,7 @@ export default function DetailCard({
   className,
   reverseTexts = false,
   href = "#",
+  disabled,
   onClick,
   ...rest
 }: Props) {
@@ -43,9 +45,10 @@ export default function DetailCard({
       {...rest}
       className={clsx(
         "flex items-center space-x-2 rounded-lg bg-gray-900 p-2 text-gray-400 transition-colors",
-        interactive
+        interactive && !disabled
           ? "cursor-pointer hover:bg-gray-800 hover:text-gray-300"
           : "cursor-default",
+        disabled && "pointer-events-none opacity-50",
         className
       )}
     >

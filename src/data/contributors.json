@@ -64,5 +64,10 @@
   {
     "name": "monwg",
     "translation": "ir"
+  },
+  {
+    "name": "mr-kayjaydee",
+    "bugs": 6,
+    "developer": 3
   }
 ]
