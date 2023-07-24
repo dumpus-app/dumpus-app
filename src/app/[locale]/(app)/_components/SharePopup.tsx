@@ -93,11 +93,15 @@ function useShare({ canShare }: { canShare: boolean }) {
         encoding: Encoding.UTF8,
       });
 
-      await Share.share({
-        ...sharedShareData,
-        dialogTitle: "Share your recap",
-        files: [file.uri],
-      });
+      try {
+        await Share.share({
+          ...sharedShareData,
+          dialogTitle: "Share your recap",
+          files: [file.uri],
+        });
+      } catch (err) {
+        console.warn("Sharing aborted");
+      }
 
       await Filesystem.deleteFile({ ...sharedOpts });
 
