@@ -9,10 +9,14 @@ import { formatDate } from "~/utils/format";
 import { shallow } from "zustand/shallow";
 import { useRouter } from "next/navigation";
 import i18next from "i18next";
+import { useState } from "react";
+import useSQLInit from "~/hooks/use-sql-init";
 
 export default function PackageSwitch() {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { init } = useSQLInit();
   const [setSelectedID, selectedID, packages] = useAppStore(
     ({ config }) => [config.setSelectedID, config.selectedID, config.packages],
     shallow
@@ -44,10 +48,15 @@ export default function PackageSwitch() {
               })}
               reverseTexts
               onClick={() => {
+                setLoading(true);
                 setSelectedID(id);
-                router.push(`/${i18next.language}/overview`);
+                init({ id }).then(() => {
+                  router.push(`/${i18next.language}/overview`);
+                  setLoading(false);
+                });
               }}
               rightIcon={ChevronRightIcon}
+              disabled={loading}
             />
           ))}
       </div>
