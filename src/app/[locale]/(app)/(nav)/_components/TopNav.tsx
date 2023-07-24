@@ -1,25 +1,17 @@
 "use client";
 
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import clsx from "clsx";
 import Image from "next/image";
 import Link from "~/components/Link";
-import type { Link as LinkType } from "~/types";
-import { links } from "~/constants";
-import clsx from "clsx";
-import { useI18nPathname } from "~/hooks/use-i18n";
-import Header from "~/components/layout/Header";
-import { ChevronLeftIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import PremiumBadge from "~/components/PremiumBadge";
+import Header from "~/components/layout/Header";
+import { links } from "~/constants";
+import { useI18nPathname } from "~/hooks/use-i18n";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import TopSelector from "../top/_components/TopSelector";
 import TimeSelector from "./TimeSelector";
-import { useTranslation } from "~/i18n/client";
-
-const settingsLink: LinkType = {
-  name: "settings",
-  href: "/settings",
-  active: (str) => str.startsWith("/settings"),
-  icon: Cog6ToothIcon,
-};
 
 export default function TopNav() {
   const { t } = useTranslation();
@@ -57,7 +49,7 @@ export default function TopNav() {
               </span>
             </Link>
             <div className="flex items-center space-x-2">
-              {[...links, settingsLink].map((link) => (
+              {links.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

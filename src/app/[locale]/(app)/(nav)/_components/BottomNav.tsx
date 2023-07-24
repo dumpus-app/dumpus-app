@@ -5,11 +5,13 @@ import { useEffect } from "react";
 import { useMeasure, useMount, useUnmount } from "react-use";
 import colors from "tailwindcss/colors";
 import Link from "~/components/Link";
-import { links } from "~/constants";
+import { links as _links } from "~/constants";
 import { useI18nPathname } from "~/hooks/use-i18n";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import TimeSelector from "./TimeSelector";
 import { shallow } from "zustand/shallow";
+
+const links = _links.filter((link) => !link.desktop);
 
 export default function BottomNav() {
   const pathname = useI18nPathname();

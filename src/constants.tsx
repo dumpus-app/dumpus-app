@@ -3,6 +3,7 @@ import {
   ArrowTrendingUpIcon,
   ChartBarIcon,
   ChartPieIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/solid";
 import packageJson from "../package.json";
 import { Capacitor } from "@capacitor/core";
@@ -28,7 +29,14 @@ export const links = [
     active: (str) => str.startsWith("/stats"),
     icon: ChartBarIcon,
   },
-] satisfies Link[];
+  {
+    name: "settings",
+    href: "/settings",
+    active: (str) => str.startsWith("/settings"),
+    icon: Cog6ToothIcon,
+    desktop: true,
+  },
+] satisfies (Link & { desktop?: boolean })[];
 
 export const DEFAULT_PACKAGE_API_URL = "https://api.dumpus.app";
 
