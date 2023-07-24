@@ -16,12 +16,33 @@ async function getFontData(weight: number) {
   ).then((res) => res.arrayBuffer());
 }
 
+let _init = false;
+
 export default function useGenerateImg() {
   const [status, setStatus] = useState<"idle" | "loading" | "initialized">(
     "idle"
   );
   const width = 1200;
   const height = 775;
+
+  async function init() {
+    if (status !== "idle") return;
+    if (_init) {
+      setStatus("initialized");
+      return;
+    }
+    setStatus("loading");
+
+    const yoga = await initYoga(
+      await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
+    );
+    initSatori(yoga);
+    await resvg.initWasm(fetch("/wasm/resvg.wasm"));
+    setStatus("initialized");
+    _init = true;
+  }
+
+  useMount(async () => await init());
 
   const generate = useCallback(async function (props: StaticShareImageProps) {
     const fonts = (await Promise.all(
@@ -62,20 +83,6 @@ export default function useGenerateImg() {
     );
     return { svgURL, file };
   }, []);
-
-  async function init() {
-    if (status !== "idle") return;
-    setStatus("loading");
-
-    const yoga = await initYoga(
-      await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
-    );
-    initSatori(yoga);
-    await resvg.initWasm(fetch("/wasm/resvg.wasm"));
-    setStatus("initialized");
-  }
-
-  useMount(async () => await init());
 
   return {
     init,
