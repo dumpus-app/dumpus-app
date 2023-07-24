@@ -107,6 +107,7 @@ function useShare({ canShare }: { canShare: boolean }) {
 
       return;
     }
+
     const a = document.createElement("a");
     document.body.appendChild(a);
     a.setAttribute("style", "display: none");
@@ -210,27 +211,20 @@ export default function SharePopup() {
                   onClick={data ? () => share(data) : undefined}
                   disabled={status !== "success"}
                 >
-                  {(() => {
-                    switch (generationStatus) {
-                      case "initialized":
-                        return (() => {
-                          switch (status) {
-                            case "success":
-                              return canShare
-                                ? t("share.title")
-                                : t("share.download");
-                            case "loading":
-                              return t("share.generating");
-                            case "error":
-                              return "An error occured";
-                          }
-                        })();
-                      case "error":
-                        return "An error occured";
-                      default:
-                        return t("share.generating");
-                    }
-                  })()}
+                  {
+                    {
+                      initialized: {
+                        success: canShare
+                          ? t("share.title")
+                          : t("share.download"),
+                        error: "An error occured",
+                        loading: t("share.generating"),
+                      }[status],
+                      error: "An error occured",
+                      idle: t("share.generating"),
+                      loading: t("share.generating"),
+                    }[generationStatus]
+                  }
                 </Button>
               </Dialog.Panel>
             </Transition.Child>
