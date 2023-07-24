@@ -61,9 +61,9 @@
         "desktop": "Desktop"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "Apri le impostazioni di Discord",
+        "privacy": "Apri la scheda \"Privacy e sicurezza\"",
+        "request": "Clicca su \"Voglio richiedere i miei dati\""
       }
     },
     "access": {
@@ -115,31 +115,31 @@
         "useBackend": "Usa il mio backend"
       },
       "progress": {
-        "downloading": "Downloading",
-        "analyzing": "Analyzing",
-        "processed": "Processed",
+        "downloading": "Download in corso...",
+        "analyzing": "Analizzando...",
+        "processed": "Processato",
         "loading": {
-          "title": "We’re loading your data",
-          "description": "Please wait..."
+          "title": "Stiamo caricando i tuoi dati",
+          "description": "Attendere prego..."
         },
         "loadingDemo": {
-          "title": "We’re loading the demo",
-          "description": "Please wait..."
+          "title": "Stiamo caricando la demo",
+          "description": "Attendere prego..."
         }
       },
-      "error": "An error occurred...",
-      "unknownPackageId": "This package is unknown.",
-      "unauthorized": "You are not allowed to interact with this package data.",
-      "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occured.",
-      "expiredLink": "Link expired."
+      "error": "Si è verificato un errore...",
+      "unknownPackageId": "Questo pacchetto è sconosciuto.",
+      "unauthorized": "Non hai il permesso di interagire con questo pacchetto dati.",
+      "invalidLink": "Link non valido.",
+      "unknownError": "Si è verificato un errore imprevisto.",
+      "expiredLink": "Link scaduto."
     }
   },
   "stats": {
     "messagesSent": "messaggi inviati",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
-    "titleMessagesSentPerDay": "Messages sent per day",
-    "totalMessagesSent": "total messages sent",
+    "messagesSentPerDay": "Sono all'incirca {{- value}} messaggi al giorno!",
+    "titleMessagesSentPerDay": "Messaggi inviati al giorno",
+    "totalMessagesSent": "messaggi inviati in totale",
     "joinedServers": "server aggiunti",
     "joinedServersDesc": "Abbiamo un vero esploratore di server Discord!",
     "knownUsers": "utenti conosciuti",
@@ -148,126 +148,126 @@
     "spentMoneyDesc_positive": "Sono un sacco di soldi...!",
     "spentMoneyDesc_empty": "Sei una persona tirchia!",
     "appStarts": "avvii dell'app",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
+    "appStartsPerDay": "Apri Discord circa {{- value}} volte al giorno!",
+    "totalTimeSpent": "Hai speso circa {{- value}} su Discord",
     "avgSessionTime": "tempo di sessione medio",
-    "receivedCalls": "received calls",
-    "topHour": "top hour",
-    "appStarted": "Discord app started",
-    "topChatHour": "top chat hour",
-    "reactionsAdded": "reactions added",
-    "channelOpenings": "channel openings",
-    "guildJoins": "guild joins",
-    "commands": "{{- value}} commands",
+    "receivedCalls": "chiamate ricevute",
+    "topHour": "ora migliore",
+    "appStarted": "Avvii di Discord",
+    "topChatHour": "ora migliore chat",
+    "reactionsAdded": "reazioni aggiunte",
+    "channelOpenings": "aperture canale",
+    "guildJoins": "join server",
+    "commands": "{{- value}} comandi",
     "top": {
-      "dms": "DMs",
-      "guilds": "Guilds",
-      "channels": "Channels",
-      "loadMore": "Load more",
-      "premium": "Unlock to view more"
+      "dms": "DM",
+      "guilds": "Server",
+      "channels": "Canali",
+      "loadMore": "Carica altro",
+      "premium": "Sblocca per vedere di più"
     },
     "extra": {
-      "clickedNotifications": "notifications clicked",
-      "completedCaptcha": "captcha completed",
-      "receivedEmail": "emails received",
-      "successfulLogin": "logins successful",
-      "avatarUpdates": "avatar updates",
-      "crashes": "crashes",
-      "authorizedOauth2": "oauth2 authorized",
-      "voiceMessagesRecorded": "voice messages recorded",
-      "reportedMessages": "messages reported",
-      "editedMessages": "messages edited",
-      "seenNitroAds": "seen nitro ads",
-      "spentInVoiceChannels": "spent in voice channels"
+      "clickedNotifications": "notifiche cliccate",
+      "completedCaptcha": "captcha completati",
+      "receivedEmail": "email ricevute",
+      "successfulLogin": "login avvenuti con successo",
+      "avatarUpdates": "aggiornamenti avatar",
+      "crashes": "crash",
+      "authorizedOauth2": "autorizzazioni oauth2",
+      "voiceMessagesRecorded": "messaggi vocali registrati",
+      "reportedMessages": "messaggi segnalati",
+      "editedMessages": "messaggi modificati",
+      "seenNitroAds": "pubblicità nitro viste",
+      "spentInVoiceChannels": "spesi nei canali vocali"
     }
   },
   "sendingTimeStats": {
-    "messagesSentPerDay": "average messages sent per day",
-    "appOpeningsPerDay": "Discord app openings per day"
+    "messagesSentPerDay": "media messaggi inviati al giorno",
+    "appOpeningsPerDay": "Avvii di Discord al giorno"
   },
   "sentimentAnalysis": {
-    "title": "Sentiment analysis (experimental)",
-    "anger": "Anger",
-    "happiness": "Happiness",
-    "score": "Active with score: {{- value}}"
+    "title": "Analisi del sentimento (sperimentale)",
+    "anger": "Rabbia",
+    "happiness": "Felicità",
+    "score": "Attivo con punteggio: {{- value}}"
   },
   "settings": {
-    "title": "Settings",
+    "title": "Impostazioni",
     "toasts": {
-      "copyError": "Can't copy to clipboard",
-      "copied": "Copied to clipboard!"
+      "copyError": "Impossibile copiare negli appunti",
+      "copied": "Copiato negli appunti!"
     },
     "packageSwitch": {
-      "title": "Switch Package",
-      "description": "Generated on {{- date}}"
+      "title": "Cambia Pacchetto",
+      "description": "Generato il {{- date}}"
     },
     "packageDetails": {
-      "title": "Package Details",
-      "UPNKey": "UPN key",
-      "dateAdded": "Added on",
-      "packageID": "Package ID",
-      "discordUser": "Discord user",
-      "backendURL": "Backend URL"
+      "title": "Dettagli Pacchetto",
+      "UPNKey": "Chiave UPN",
+      "dateAdded": "Aggiunto il",
+      "packageID": "ID Pacchetto",
+      "discordUser": "Utente Discord",
+      "backendURL": "URL Backend"
     },
     "languages": {
-      "switch": "Switch language",
-      "title": "Languages",
-      "description": "{{- value}} available"
+      "switch": "Cambia lingua",
+      "title": "Lingue",
+      "description": "{{- value}} disponibile"
     },
     "dangerZone": {
-      "title": "Danger Zone",
-      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
-      "loading": "Deleting...",
-      "quit": "Quit and reset"
+      "title": "Zona pericolosa",
+      "description": "I tuoi dati verranno eliminati da questo dispositivo e dai nostri server, ma puoi comunque accedervi utilizzando l'email inviata da Discord. Grazie per aver provato l'app, lasciaci qualche feedback su GitHub!",
+      "loading": "Cancellazione in corso...",
+      "quit": "Esci e resetta"
     },
     "actions": {
-      "title": "Actions",
+      "title": "Azioni",
       "notEnoughStorage": {
-        "title": "Can't add new package",
-        "description": "Not enough storage in app"
+        "title": "Impossibile aggiungere il pacchetto",
+        "description": "Spazio di archiviazione insufficiente"
       },
-      "deleting": "Deleting...",
-      "delete": "Delete current package",
-      "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases"
+      "deleting": "Cancellazione in corso...",
+      "delete": "Elimina il pacchetto attuale",
+      "restoring": "Ripristino in corso...",
+      "restorePurchases": "Ripristina gli acquisti"
     },
     "about": {
-      "title": "About",
-      "version": "Version",
-      "website": "Web application",
-      "community": "Community",
-      "contribute": "Contribute",
-      "contributors": "Project's contributors",
-      "credits": "Credits"
+      "title": "Informazioni",
+      "version": "Versione",
+      "website": "Applicazione web",
+      "community": "Comunità",
+      "contribute": "Contribuisci",
+      "contributors": "Contributori del progetto",
+      "credits": "Crediti"
     }
   },
   "credits": {
-    "title": "Credits",
-    "back": "Back to settings",
+    "title": "Crediti",
+    "back": "Torna a Impostazioni",
     "bugHunter": {
-      "title": "Bug Hunter",
-      "description": "Most important people to provide you with stable app."
+      "title": "Cacciatore di Bug",
+      "description": "Le persone più importanti per fornirti un'app stabile."
     },
     "influencer": {
       "title": "Influencer",
-      "description": "These people helped us to spread the word about the app."
+      "description": "Queste persone ci hanno aiutato a diffondere la parola sull'app."
     },
     "developer": {
-      "title": "Developer",
-      "description": "These people made direct contributions to the app's code."
+      "title": "Sviluppatore",
+      "description": "Queste persone hanno fatto contributi diretti al codice dell'app."
     },
     "translator": {
-      "title": "Translator",
-      "description": "These people made the app available worldwide."
+      "title": "Traduttore",
+      "description": "Queste persone hanno reso l'app disponibile in tutto il mondo."
     },
-    "contributions": "{{- value}} contributions"
+    "contributions": "{{- value}} contribuzioni"
   },
   "error": {
-    "title": "Surprising turn of events... Here is your path to recovery:",
+    "title": "Girata sorprendente degli eventi... Ecco il tuo percorso di recupero:",
     "retry": "Retry",
-    "report": "Report on GitHub",
-    "noInternet": "No Internet Connection",
-    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
+    "report": "Segnala su GitHub",
+    "noInternet": "Nessuna Connessione a Internet",
+    "noInternetDescription": " L'accesso a Internet è necessario per utilizzare l'app Dumpus. Si prega di riconnettersi a Internet per continuare."
   },
   "sheerNumbers": "Numeri puri",
   "mostActiveDMs": "DM più attivi",
@@ -277,28 +277,28 @@
   "activityTime": "Attività nel tempo",
   "messageSentCount": "Conteggio di messaggi inviati",
   "share": {
-    "title": "Share",
-    "description": "Share your stats with your friends!",
-    "generating": "Generating...",
-    "download": "Download",
-    "recap": "Share your recap",
-    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "title": "Condividi",
+    "description": "Condividi le tue statistiche con i tuoi amici!",
+    "generating": "Generazione in corso...",
+    "download": "Scarica",
+    "recap": "Condividi il tuo riepilogo",
+    "recapDescription": "Condividi il tuo riepilogo con i tuoi amici su Twitter, Instagram, Reddit, Discord...! :)",
     "popup": {
-      "title": "Here is my Discord recap!",
-      "description": "Generated on https://dumpus.app, try it yourself!"
+      "title": "Ecco il mio Riepilogo Discord!",
+      "description": "Generato su https://dumpus.app, prova tu stesso!"
     }
   },
-  "exitingDemo": "Exiting...",
-  "exitDemo": "Exit demo and get started!",
-  "members": "{{- value}} members",
+  "exitingDemo": "Uscendo...",
+  "exitDemo": "Esci dalla demo e inizia!",
+  "members": "{{- value}} membri",
   "nav": {
-    "overview": "Overview",
-    "top": "Top",
-    "stats": "Stats",
-    "settings": "Settings"
+    "overview": "Panoramica",
+    "top": "Classifica",
+    "stats": "Statistiche",
+    "settings": "Impostazioni"
   },
-  "topUsedBot": "Top used bots",
-  "topChannels": "Top channels",
-  "firstMessages": "Your first messages",
-  "relatedGuild": "Related guild"
+  "topUsedBot": "Bot più usati",
+  "topChannels": "Canali principali",
+  "firstMessages": "I tuoi primi messaggi",
+  "relatedGuild": "Server correlato"
 }
