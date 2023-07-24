@@ -40,10 +40,6 @@ export default function useGenerateImg() {
 
   async function init() {
     if (status !== "idle") return;
-    if (_init) {
-      setStatus("initialized");
-      return;
-    }
     setStatus("loading");
 
     try {
@@ -51,12 +47,14 @@ export default function useGenerateImg() {
         await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
       );
       initSatori(yoga);
-      await resvg.initWasm(fetch("/wasm/resvg.wasm"));
+      if (!_init) {
+        await resvg.initWasm(fetch("/wasm/resvg.wasm"));
+        setInit(true);
+      }
       setStatus("initialized");
     } catch (err) {
       setStatus("error");
     }
-    setInit(true);
   }
 
   useMount(async () => await init());
@@ -71,42 +69,38 @@ export default function useGenerateImg() {
       }))
     )) as Font[];
 
-    try {
-      const svg = await satori(<StaticShareImage {...props} />, {
-        width,
-        height,
-        fonts,
-        tailwindConfig: {
-          theme: {
-            colors,
-          },
+    const svg = await satori(<StaticShareImage {...props} />, {
+      width,
+      height,
+      fonts,
+      tailwindConfig: {
+        theme: {
+          colors,
         },
-      });
+      },
+    });
 
-      const resvgJS = new resvg.Resvg(svg, {
-        fitTo: {
-          mode: "width",
-          value: width,
-        },
-        dpi: 2,
-        shapeRendering: 2,
-        textRendering: 2,
-        imageRendering: 1,
-      });
-      const pngBuffer = resvgJS.render().asPng();
+    const resvgJS = new resvg.Resvg(svg, {
+      fitTo: {
+        mode: "width",
+        value: width,
+      },
+      dpi: 2,
+      shapeRendering: 2,
+      textRendering: 2,
+      imageRendering: 1,
+    });
+    const pngBuffer = resvgJS.render().asPng();
 
-      const webFile = new File([pngBuffer], "image.png", {
-        type: "image/png",
-      });
-      const imageData = btoa(String.fromCharCode(...new Uint8Array(pngBuffer)));
-      const url = URL.createObjectURL(
-        new Blob([pngBuffer], { type: "image/png" })
-      );
+    const webFile = new File([pngBuffer], "image.png", {
+      type: "image/png",
+    });
+    const imageData = btoa(String.fromCharCode(...new Uint8Array(pngBuffer)));
+    const url = URL.createObjectURL(
+      new Blob([pngBuffer], { type: "image/png" })
+    );
 
-      return { webFile, imageData, url };
-    } catch (err) {
-      throw new Error("Error calling satori", { cause: err });
-    }
+    return { webFile, imageData, url };
   }, []);
 
   return {
