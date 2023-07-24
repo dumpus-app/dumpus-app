@@ -4,6 +4,7 @@ import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
 import { purchasesSingleton } from "./purchases";
 import { isCapacitorSupported } from "./utils";
 import { OS } from "~/constants";
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
 export const purchases = purchasesSingleton;
 
@@ -45,7 +46,7 @@ async function handleSafeArea() {
   }
 }
 
-export async function initCapacitor() {
+export async function initCapacitor({ router }: { router: AppRouterInstance }) {
   const supported = isCapacitorSupported();
   if (!supported) return;
 
@@ -75,7 +76,7 @@ export async function initCapacitor() {
     const url = new URL(_url);
     const pathname = url.href.replace(url.origin, "");
     if (pathname !== "/") {
-      window.location.href = pathname;
+      router.replace(pathname);
     }
   });
 

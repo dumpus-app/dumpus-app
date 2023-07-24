@@ -131,6 +131,7 @@ function useRedirect({
       }).then(() => {
         router.replace(`/${i18next.language}/overview`);
       });
+      return null;
     },
     enabled: !!initialData,
     staleTime: Infinity,

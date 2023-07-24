@@ -7,9 +7,12 @@ import DetailCard from "~/components/data/DetailCard";
 import { useAppStore } from "~/stores";
 import { formatDate } from "~/utils/format";
 import { shallow } from "zustand/shallow";
+import { useRouter } from "next/navigation";
+import i18next from "i18next";
 
 export default function PackageSwitch() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [setSelectedID, selectedID, packages] = useAppStore(
     ({ config }) => [config.setSelectedID, config.selectedID, config.packages],
     shallow
@@ -42,7 +45,7 @@ export default function PackageSwitch() {
               reverseTexts
               onClick={() => {
                 setSelectedID(id);
-                window.location.href = "/";
+                router.push(`/${i18next.language}/overview`);
               }}
               rightIcon={ChevronRightIcon}
             />

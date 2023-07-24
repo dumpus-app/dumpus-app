@@ -4,9 +4,11 @@ import { useState } from "react";
 import Button from "~/components/Button";
 import { useAppStore, useSelectedPackage } from "~/stores";
 import { useTranslation } from "~/i18n/client";
+import { useRouter } from "next/navigation";
 
 export default function ExitDemoBanner() {
   const { t } = useTranslation();
+  const router = useRouter();
   const deletePackage = useAppStore(({ config }) => config.deletePackage);
   const { package_id, id } = useSelectedPackage();
 
@@ -15,7 +17,10 @@ export default function ExitDemoBanner() {
 
   async function handler() {
     setLoading(true);
-    deletePackage(id);
+    deletePackage({
+      id,
+      router,
+    });
   }
 
   if (!demo) return null;

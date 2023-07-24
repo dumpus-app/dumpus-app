@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslation } from "~/i18n/client";
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
@@ -9,14 +9,17 @@ import Link from "~/components/Link";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
 import useToast from "~/hooks/use-toast";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore, useSelectedPackage } from "~/stores";
 import {
   LOCALSTORAGE_MAX_CAPACITY,
   getLocalStorageSize,
 } from "~/utils/browser";
+import { queryClient } from "~/utils/react-query";
 
 export default function Actions() {
   const { t } = useTranslation();
+  const router = useRouter();
   const deletePackage = useAppStore(({ config }) => config.deletePackage);
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
@@ -35,7 +38,11 @@ export default function Actions() {
       });
     }
 
-    deletePackage(id);
+    deletePackage({
+      id,
+      router,
+    });
+    setLoading(false);
   }
 
   const toast = useToast();
@@ -62,7 +69,9 @@ export default function Actions() {
             }
           }}
         >
-          <Link href="/onboarding/access">Add a new package</Link>
+          <Link onClick={() => queryClient.clear()} href="/onboarding/access">
+            Add a new package
+          </Link>
         </Button>
         <Button asChild variant="danger">
           <button
