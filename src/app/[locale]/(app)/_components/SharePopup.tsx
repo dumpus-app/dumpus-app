@@ -1,22 +1,24 @@
 "use client";
 
+import { Directory, Filesystem } from "@capacitor/filesystem";
+import { Share } from "@capacitor/share";
 import { Dialog, Transition } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { Fragment } from "react";
 import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
-import { BASE_URL } from "~/constants";
+import { BASE_URL, OS } from "~/constants";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
 import useTopGuildsData from "~/hooks/data/use-top-guilds-data";
 import useUsageStatsData from "~/hooks/data/use-usage-stats-data";
 import useUserData from "~/hooks/data/use-user-data";
 import useGenerateImg from "~/hooks/use-generate-img";
+import useOS from "~/hooks/use-os";
 import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { avatarURLFallback } from "~/utils/discord";
 import { formatDuration, formatNumber } from "~/utils/format";
-import { Share } from "@capacitor/share";
 
 function useImageData() {
   const data = useUserData();
@@ -57,6 +59,61 @@ function useImageData() {
   };
 }
 
+function useShare({ canShare }: { canShare: boolean }) {
+  const filePath = "images/recap.png";
+  const sharedShareData = {
+    title: "Here is my Discord recap!",
+    text: "Generated on https://dumpus.app, try it yourself!",
+    url: BASE_URL,
+  };
+
+  async function share({
+    webFile,
+    imageData,
+    url,
+  }: Awaited<ReturnType<ReturnType<typeof useGenerateImg>["generate"]>>) {
+    if (canShare) {
+      if (OS === "web") {
+        await navigator.share({
+          ...sharedShareData,
+          files: [webFile],
+        });
+        return;
+      }
+
+      const sharedOpts = {
+        path: filePath,
+        directory: Directory.Cache,
+      };
+
+      const file = await Filesystem.writeFile({
+        data: imageData,
+        ...sharedOpts,
+        recursive: true,
+      });
+
+      await Share.share({
+        ...sharedShareData,
+        dialogTitle: "Share your recap",
+        files: [file.uri],
+      });
+
+      await Filesystem.deleteFile({ ...sharedOpts });
+
+      return;
+    }
+    const a = document.createElement("a");
+    document.body.appendChild(a);
+    a.setAttribute("style", "display: none");
+    a.setAttribute("href", url);
+    a.download = "dumpus-share.png";
+    a.click();
+    a.remove();
+  }
+
+  return share;
+}
+
 export default function SharePopup() {
   const { t } = useTranslation();
   const [open, setOpen] = useAppStore(
@@ -64,18 +121,26 @@ export default function SharePopup() {
     shallow
   );
 
+  const os = useOS() || OS;
+  const canShare = os !== "web" && !!navigator.share;
+
   const imageData = useImageData();
 
-  const { generate, width, height, initialized } = useGenerateImg();
+  const {
+    generate,
+    width,
+    height,
+    status: generationStatus,
+  } = useGenerateImg();
+
+  const share = useShare({ canShare });
 
   const { data, status } = useQuery({
     queryKey: ["generate-share-img", imageData],
     queryFn: () => generate(imageData),
     staleTime: Infinity,
-    enabled: initialized,
+    enabled: generationStatus === "initialized",
   });
-
-  const canShare = !!navigator.share;
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -111,13 +176,13 @@ export default function SharePopup() {
                   >
                     {data ? (
                       <Image
-                        src={data.svgURL?.toString() ?? ""}
+                        src={data.url}
                         alt={``}
                         fill
                         className="rounded-lg object-cover object-center"
                       />
                     ) : (
-                      <div className="h-full w-full rounded-lg bg-gray-800"></div>
+                      <div className="h-full w-full animate-pulse rounded-lg bg-gray-800"></div>
                     )}
                   </div>
                   <div className="mt-2 text-center">
@@ -137,39 +202,30 @@ export default function SharePopup() {
                 <Button
                   variant="brand"
                   className="mt-4 w-full"
-                  onClick={async () => {
-                    // TODO: detect os as well
-                    try {
-                      await Share.share({
-                        title: "Here is my Discord recap!",
-                        text: "Generated on https://dumpus.app, try it yourself!",
-                        url: BASE_URL,
-                        dialogTitle: "Share your recap",
-                        files: [data?.file ?? ""],
-                      });
-                    } catch (err: DOMException | any) {
-                      if (err.name === "AbortError") {
-                        // user aborted share intentionnally
-                        return;
-                      }
-                      console.error(err);
-                      const a = document.createElement("a");
-                      document.body.appendChild(a);
-                      a.setAttribute("style", "display: none");
-                      a.setAttribute("href", data?.file ?? "");
-                      a.download = "dumpus-share.png";
-                      a.click();
-                      a.remove();
-                    }
-                    setOpen(false);
-                  }}
+                  onClick={data ? () => share(data) : undefined}
                   disabled={status !== "success"}
                 >
-                  {status !== "success"
-                    ? t("share.generating")
-                    : canShare
-                    ? t("share.title")
-                    : t("share.download")}
+                  {(() => {
+                    switch (generationStatus) {
+                      case "initialized":
+                        return (() => {
+                          switch (status) {
+                            case "success":
+                              return canShare
+                                ? t("share.title")
+                                : t("share.download");
+                            case "loading":
+                              return t("share.generating");
+                            case "error":
+                              return "An error occured";
+                          }
+                        })();
+                      case "error":
+                        return "An error occured";
+                      default:
+                        return t("share.generating");
+                    }
+                  })()}
                 </Button>
               </Dialog.Panel>
             </Transition.Child>

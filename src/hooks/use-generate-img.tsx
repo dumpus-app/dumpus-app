@@ -9,7 +9,6 @@ import initYoga from "yoga-wasm-web";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
-import { Filesystem, Directory } from "@capacitor/filesystem";
 
 async function getFontData(weight: number) {
   return await fetch(
@@ -20,9 +19,9 @@ async function getFontData(weight: number) {
 let _init = false;
 
 export default function useGenerateImg() {
-  const [status, setStatus] = useState<"idle" | "loading" | "initialized">(
-    "idle"
-  );
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "initialized" | "error"
+  >("idle");
   const width = 1200;
   const height = 775;
 
@@ -34,12 +33,16 @@ export default function useGenerateImg() {
     }
     setStatus("loading");
 
-    const yoga = await initYoga(
-      await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
-    );
-    initSatori(yoga);
-    await resvg.initWasm(fetch("/wasm/resvg.wasm"));
-    setStatus("initialized");
+    try {
+      const yoga = await initYoga(
+        await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
+      );
+      initSatori(yoga);
+      await resvg.initWasm(fetch("/wasm/resvg.wasm"));
+      setStatus("initialized");
+    } catch (err) {
+      setStatus("error");
+    }
     _init = true;
   }
 
@@ -55,54 +58,48 @@ export default function useGenerateImg() {
       }))
     )) as Font[];
 
-    const svg = await satori(<StaticShareImage {...props} />, {
-      width,
-      height,
-      fonts,
-      tailwindConfig: {
-        theme: {
-          colors,
-        },
-      },
-    });
-
-    const resvgJS = new resvg.Resvg(svg, {
-      fitTo: {
-        mode: "width",
-        value: width,
-      },
-      dpi: 2,
-      shapeRendering: 2,
-      textRendering: 2,
-      imageRendering: 1,
-    });
-    const pngBuffer = resvgJS.render().asPng();
-
     try {
-      const tempFilePath = `images/recap.png`;
-      const imageData = btoa(String.fromCharCode(...new Uint8Array(pngBuffer)));
-
-      let file = await Filesystem.writeFile({
-        data: imageData,
-        path: tempFilePath,
-        directory: Directory.Cache,
-        recursive: true,
+      const svg = await satori(<StaticShareImage {...props} />, {
+        width,
+        height,
+        fonts,
+        tailwindConfig: {
+          theme: {
+            colors,
+          },
+        },
       });
 
-      return {
-        svgURL: `data:image/png;base64,${imageData}`,
-        file: file.uri,
-      };
-    } catch (error) {
-      console.error("Error storing file:", error);
-      return { svgURL: null };
+      const resvgJS = new resvg.Resvg(svg, {
+        fitTo: {
+          mode: "width",
+          value: width,
+        },
+        dpi: 2,
+        shapeRendering: 2,
+        textRendering: 2,
+        imageRendering: 1,
+      });
+      const pngBuffer = resvgJS.render().asPng();
+
+      const webFile = new File([pngBuffer], "image.png", {
+        type: "image/png",
+      });
+      const imageData = btoa(String.fromCharCode(...new Uint8Array(pngBuffer)));
+      const url = URL.createObjectURL(
+        new Blob([pngBuffer], { type: "image/png" })
+      );
+
+      return { webFile, imageData, url };
+    } catch (err) {
+      throw new Error("Error calling satori", { cause: err });
     }
   }, []);
 
   return {
     init,
     generate,
-    initialized: status === "initialized",
+    status,
     width,
     height,
   };
