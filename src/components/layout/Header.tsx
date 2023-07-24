@@ -46,13 +46,13 @@ export default function Header({
 
   useMount(() => {
     setSafeAreaTopColor(
-      showLightBackground() ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR
+      showLightBackground() ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR,
     );
   });
 
   useEffect(() => {
     setSafeAreaTopColor(
-      showLightBackground() ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR
+      showLightBackground() ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR,
     );
   }, [setSafeAreaTopColor, showLightBackground]);
 
@@ -65,7 +65,7 @@ export default function Header({
       className={clsx(
         "sticky top-safe-area-top-inset z-20 block transition-colors sm:hidden",
         showLightBackground() ? "bg-gray-900" : "bg-gray-950",
-        wrapperClassName
+        wrapperClassName,
       )}
     >
       <header
@@ -73,7 +73,7 @@ export default function Header({
           "flex h-12 items-center justify-center border-b px-2 py-2 transition-colors",
 
           showBorder ? "border-b-gray-800" : "border-b-transparent",
-          className
+          className,
         )}
       >
         {leftSlot && <div className="absolute left-0">{leftSlot}</div>}
@@ -81,7 +81,7 @@ export default function Header({
           <div
             className={clsx(
               "text-xl font-bold text-white transition-opacity",
-              showTitle ? "opacity-100" : "opacity-0"
+              showTitle ? "opacity-100" : "opacity-0",
             )}
           >
             {title}
@@ -106,7 +106,7 @@ function HeaderIcon({ icon: Icon, className, ...rest }: HeaderIconProps) {
     <Link
       className={clsx(
         "block p-2 text-gray-400 transition-colors hover:text-gray-300",
-        className
+        className,
       )}
       {...rest}
     >

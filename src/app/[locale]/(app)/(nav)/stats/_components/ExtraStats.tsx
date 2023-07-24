@@ -46,7 +46,7 @@ export default function Stats() {
   const { package_is_partial } = useSelectedPackage();
 
   console.log(
-    (usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os }))
+    (usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os })),
   );
 
   if (package_is_partial) return null;

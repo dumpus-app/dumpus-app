@@ -15,7 +15,7 @@ export default function useGuildData({ guildID }: { guildID: string }) {
   const topChannelsData = useTopGuildsData().getData({ offset: false });
 
   const hasData = !!topChannelsData?.find(
-    (guild) => guild.guild_id === guildID
+    (guild) => guild.guild_id === guildID,
   );
 
   function getGuild() {

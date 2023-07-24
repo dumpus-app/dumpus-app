@@ -8,7 +8,7 @@ import Methods from "./_components/Methods";
 export default function Page() {
   const { t } = useTranslation();
   const setGoToOnboardingAccess = useAppStore(
-    ({ config }) => config.setGoToOnboardingAccess
+    ({ config }) => config.setGoToOnboardingAccess,
   );
 
   useMount(() => {

@@ -35,7 +35,7 @@ async function handleSafeArea() {
 
     handleInsets((await SafeArea.getSafeAreaInsets()).insets);
     await SafeArea.addListener("safeAreaChanged", ({ insets }) =>
-      handleInsets(insets)
+      handleInsets(insets),
     );
   } else if (OS === "ios") {
     let styleContent = "";

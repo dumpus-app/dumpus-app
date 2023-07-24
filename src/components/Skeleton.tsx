@@ -5,7 +5,7 @@ type InternalProps = HTMLAttributes<HTMLDivElement>;
 
 const Skeleton = forwardRef<HTMLDivElement, InternalProps>(function Skeleton(
   { className, ...rest },
-  ref
+  ref,
 ) {
   return (
     <div

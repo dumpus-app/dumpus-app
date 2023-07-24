@@ -66,7 +66,7 @@ const ROUTE_PREFIX = "/onboarding";
 
 function getRouteData(
   pathname: string,
-  t: ReturnType<typeof useTranslation>["t"]
+  t: ReturnType<typeof useTranslation>["t"],
 ): RouteData {
   pathname = pathname.replace(ROUTE_PREFIX, "");
   if (pathname !== "/") {

@@ -41,7 +41,7 @@ export default function TopSelector({
 
   useEffect(() => {
     setSafeAreaTopColor(
-      scrolled ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR
+      scrolled ? colors.gray[900] : DEFAULT_SAFE_AREA_INSET_COLOR,
     );
   }, [scrolled, setSafeAreaTopColor]);
 
@@ -57,7 +57,7 @@ export default function TopSelector({
           ? "border-b-transparent"
           : scrolled
           ? "border-b-gray-800"
-          : "border-b-transparent"
+          : "border-b-transparent",
       )}
     >
       <div className="flex items-center space-x-1 px-1 py-1 sm:space-x-0 sm:p-0 md:space-x-1">
@@ -69,7 +69,7 @@ export default function TopSelector({
               "w-full rounded-lg py-1 text-center transition-colors sm:px-4",
               link.active(pathname)
                 ? "bg-gray-800 text-brand-300"
-                : "text-gray-400 hover:bg-gray-800"
+                : "text-gray-400 hover:bg-gray-800",
             )}
           >
             {link.name}

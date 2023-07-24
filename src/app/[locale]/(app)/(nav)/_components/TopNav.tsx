@@ -57,7 +57,7 @@ export default function TopNav() {
                     "flex w-full items-center rounded-lg px-4 py-2 transition-colors",
                     link.active(pathname)
                       ? "bg-gray-800 text-brand-300"
-                      : "text-gray-400 hover:bg-gray-800"
+                      : "text-gray-400 hover:bg-gray-800",
                   )}
                 >
                   <link.icon className="-ml-1 mr-1 h-6 w-6" />
@@ -65,7 +65,7 @@ export default function TopNav() {
                     {t(
                       `nav.${
                         link.name as "overview" | "stats" | "top" | "settings"
-                      }`
+                      }`,
                     )}
                   </span>
                 </Link>
@@ -80,7 +80,7 @@ export default function TopNav() {
                 "flex items-center px-2 desktop-container",
                 !showBack && !showTopLinks
                   ? "justify-center"
-                  : "justify-between"
+                  : "justify-between",
               )}
             >
               {showBack && (

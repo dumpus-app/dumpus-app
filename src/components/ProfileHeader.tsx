@@ -20,7 +20,7 @@ export default function ProfileHeader({
       <div
         className={clsx(
           "relative flex items-center justify-between px-2 py-8 desktop-container sm:flex-row-reverse sm:justify-end sm:py-16",
-          className
+          className,
         )}
       >
         <div className="sm:ml-4">

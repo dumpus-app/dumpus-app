@@ -45,7 +45,7 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
                 <Icon
                   className={clsx(
                     "h-6 w-6",
-                    hasError ? "text-danger-300" : "text-brand-300"
+                    hasError ? "text-danger-300" : "text-brand-300",
                   )}
                 />
               ) : (
@@ -54,7 +54,7 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
               <div
                 className={clsx(
                   "text-lg",
-                  valid ? "font-medium text-white" : "text-gray-400"
+                  valid ? "font-medium text-white" : "text-gray-400",
                 )}
               >
                 {step}

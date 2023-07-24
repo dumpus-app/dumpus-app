@@ -41,7 +41,7 @@ function useImageData() {
         // TODO: get latest url
         url: avatarURLFallback(dm.user_avatar_url, dm.dm_user_id).replace(
           /.webp|.gif/,
-          ".png"
+          ".png",
         ),
         count: formatNumber(dm.message_count),
       };
@@ -60,7 +60,7 @@ export default function SharePopup() {
   const { t } = useTranslation();
   const [open, setOpen] = useAppStore(
     ({ ui }) => [ui.showSharePopup, ui.setShowSharePopup],
-    shallow
+    shallow,
   );
 
   const imageData = useImageData();

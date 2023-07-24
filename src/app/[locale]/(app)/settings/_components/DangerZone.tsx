@@ -21,7 +21,7 @@ export default function DangerZone() {
       config.packages,
       setUsersCache,
     ],
-    shallow
+    shallow,
   );
 
   const [loading, setLoading] = useState(false);

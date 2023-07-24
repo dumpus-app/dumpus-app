@@ -10,8 +10,8 @@ export async function initI18next(locale: string) {
     .use(
       resourcesToBackend(
         // @ts-ignore
-        (language, namespace) => import(`#root/locales/${language}.json`)
-      )
+        (language, namespace) => import(`#root/locales/${language}.json`),
+      ),
     )
     .init(getOptions(locale));
   return i18nInstance;

@@ -84,7 +84,7 @@ export default function useToast() {
           </div>
         </Transition>
       ),
-      { duration: automaticallyDismiss ? 4000 : Infinity, style: {}, id }
+      { duration: automaticallyDismiss ? 4000 : Infinity, style: {}, id },
     );
   }
 

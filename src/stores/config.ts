@@ -40,11 +40,11 @@ type Actions = {
   }) => void;
   getSelectedPackage: (
     packages: State["packages"],
-    selectedID: State["selectedID"]
+    selectedID: State["selectedID"],
   ) => Package;
   getUnselectedPackages: (
     packages: State["packages"],
-    selectedID: State["selectedID"]
+    selectedID: State["selectedID"],
   ) => Package[];
 };
 

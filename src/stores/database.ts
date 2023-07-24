@@ -31,7 +31,7 @@ export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
   getNextID: (id) => (id ? `${parseInt(id) + 1}` : "0"),
   getTimeRangeDates: ({ timeRange, db }) => {
     const queryData = db?.exec(
-      "SELECT MIN(day) AS start, MAX(day) AS end FROM activity"
+      "SELECT MIN(day) AS start, MAX(day) AS end FROM activity",
     );
     const rawExtremityDates = queryData?.[0].values[0] as
       | [string, string]

@@ -21,7 +21,7 @@ const Label = React.forwardRef<
     ref={ref}
     className={clsx(
       "block text-sm leading-none text-gray-200 peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-      className
+      className,
     )}
     {...props}
   />
@@ -29,25 +29,25 @@ const Label = React.forwardRef<
 Label.displayName = LabelPrimitive.Root.displayName;
 
 function Form<TFieldValues extends FieldValues, TContext = any>(
-  props: FormProviderProps<TFieldValues, TContext>
+  props: FormProviderProps<TFieldValues, TContext>,
 ) {
   return <FormProvider {...props} />;
 }
 
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 > = {
   name: TName;
 };
 
 const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
+  {} as FormFieldContextValue,
 );
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
 }: ControllerProps<TFieldValues, TName>) => {
@@ -69,7 +69,7 @@ const Input = React.forwardRef<
       type={type}
       className={clsx(
         "w-full border-0 bg-transparent p-0 font-medium leading-3 text-white placeholder-gray-500 focus:outline-none focus:ring-0",
-        className
+        className,
       )}
       ref={ref}
       {...props}
@@ -89,7 +89,7 @@ const InputContainer = React.forwardRef<
       // ref={ref}
       className={clsx(
         "flex flex-col rounded-lg bg-gray-900 p-2.5 pb-2 transition-all focus-within:border-transparent focus-within:ring focus-within:ring-brand-800",
-        className
+        className,
       )}
       {...props}
     />
@@ -127,7 +127,7 @@ type FormItemContextValue = {
 };
 
 const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
+  {} as FormItemContextValue,
 );
 
 const FormItem = React.forwardRef<

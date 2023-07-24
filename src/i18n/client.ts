@@ -15,8 +15,8 @@ i18next
   .use(
     resourcesToBackend(
       // @ts-ignore
-      (language, namespace) => import(`#root/locales/${language}.json`)
-    )
+      (language, namespace) => import(`#root/locales/${language}.json`),
+    ),
   )
   .init({
     ...getOptions(),

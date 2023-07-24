@@ -12,7 +12,7 @@ import StaticShareImage, {
 
 async function getFontData(weight: number) {
   return await fetch(
-    `https://cdn.jsdelivr.net/npm/@fontsource/rubik/files/rubik-latin-${weight}-normal.woff`
+    `https://cdn.jsdelivr.net/npm/@fontsource/rubik/files/rubik-latin-${weight}-normal.woff`,
   ).then((res) => res.arrayBuffer());
 }
 
@@ -20,7 +20,7 @@ let _init = false;
 
 export default function useGenerateImg() {
   const [status, setStatus] = useState<"idle" | "loading" | "initialized">(
-    "idle"
+    "idle",
   );
   const width = 1200;
   const height = 775;
@@ -34,7 +34,7 @@ export default function useGenerateImg() {
     setStatus("loading");
 
     const yoga = await initYoga(
-      await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
+      await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer()),
     );
     initSatori(yoga);
     await resvg.initWasm(fetch("/wasm/resvg.wasm"));
@@ -51,7 +51,7 @@ export default function useGenerateImg() {
         data: await getFontData(weight),
         weight,
         style: "normal",
-      }))
+      })),
     )) as Font[];
 
     const svg = await satori(<StaticShareImage {...props} />, {
@@ -79,7 +79,7 @@ export default function useGenerateImg() {
 
     const file = new File([pngBuffer], "image.png", { type: "image/png" });
     const svgURL = URL.createObjectURL(
-      new Blob([pngBuffer], { type: "image/png" })
+      new Blob([pngBuffer], { type: "image/png" }),
     );
     return { svgURL, file };
   }, []);

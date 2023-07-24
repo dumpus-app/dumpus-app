@@ -25,7 +25,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(
   { params: { document } }: PageProps<{ document: string[] }>,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const { title } = documents.find(({ param }) => param === document[0])!;
 
@@ -39,7 +39,7 @@ export default async function Document({
 }: PageProps<{ document: string[] }>) {
   const content = await fs.readFile(
     path.join(process.cwd(), `./src/data/static/${document[0]}.md`),
-    "utf-8"
+    "utf-8",
   );
 
   return (

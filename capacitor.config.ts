@@ -3,22 +3,21 @@ import os, { NetworkInterfaceInfo } from "node:os";
 
 function localIpAddress() {
   const interfaces = Object.values(os.networkInterfaces()).filter(
-    (iface) => iface !== undefined
+    (iface) => iface !== undefined,
   ) as NetworkInterfaceInfo[][];
   const aliases = interfaces
     .filter((iface) =>
-      iface.some((alias) => alias.family === "IPv4" && !alias.internal)
+      iface.some((alias) => alias.family === "IPv4" && !alias.internal),
     )
     .map((iface) => {
       iface = iface.filter(
-        (alias) => alias.family === "IPv4" && !alias.internal
+        (alias) => alias.family === "IPv4" && !alias.internal,
       );
       return iface;
     })
     .flat();
-  const ipAddress = aliases.find(
-    (alias) => !alias.address.startsWith("172")
-  )?.address;
+  const ipAddress = aliases.find((alias) => !alias.address.startsWith("172"))
+    ?.address;
 
   if (!ipAddress) {
     throw new Error("No suitable network interface found.");

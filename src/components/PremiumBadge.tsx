@@ -6,7 +6,7 @@ export default function PremiumBadge({ className }: { className?: string }) {
     <div
       className={clsx(
         "inline-flex items-center rounded-full bg-yellow-300 px-2 py-0.5 text-sm font-medium text-gold-800",
-        className
+        className,
       )}
     >
       <SparklesIcon className="-ml-0.5 mr-1 h-3 w-3" />

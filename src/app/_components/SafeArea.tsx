@@ -6,7 +6,7 @@ import { shallow } from "zustand/shallow";
 export default function SafeArea({ children }: { children: React.ReactNode }) {
   const [topColor, bottomColor] = useAppStore(
     ({ ui }) => [ui.safeAreaTopColor, ui.safeAreaBottomColor],
-    shallow
+    shallow,
   );
 
   return (
