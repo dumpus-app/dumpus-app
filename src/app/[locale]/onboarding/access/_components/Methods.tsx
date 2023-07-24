@@ -11,7 +11,7 @@ export default function Methods() {
   const rawData = t("onboarding.access.methods", { returnObjects: true });
   const methods = (
     Object.keys(
-      rawData
+      rawData,
     ) as (keyof TypeOptions["resources"]["translation"]["onboarding"]["access"]["methods"])[]
   ).map((key) => {
     return { ...rawData[key], key, href: `/onboarding/access/${key}` };

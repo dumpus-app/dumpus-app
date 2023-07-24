@@ -12,7 +12,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(
   { params: { locale } }: PageProps,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const i18nextInstance = await initI18next(locale);
   const t = i18nextInstance.getFixedT(locale);

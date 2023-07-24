@@ -7,7 +7,7 @@ export default function Flag({ code }: { code: string }) {
       loading: () => (
         <div className="bg-gray-700" style={{ width: 32, height: 24 }} />
       ),
-    }
+    },
   );
   return (
     <div className="overflow-hidden rounded">

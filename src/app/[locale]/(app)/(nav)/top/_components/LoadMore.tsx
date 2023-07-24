@@ -12,7 +12,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
   const { t } = useTranslation();
   const [premium, setOpen] = useAppStore(
     ({ config, ui }) => [config.premium, ui.setShowInAppPurchasesDialog],
-    shallow
+    shallow,
   );
 
   return (
@@ -20,7 +20,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
       <div
         className={clsx(
           "relative",
-          isMobile ? (premium ? "hidden" : "block") : "hidden"
+          isMobile ? (premium ? "hidden" : "block") : "hidden",
         )}
       >
         <div className="absolute inset-0 top-auto h-16 bg-gradient-to-t from-gray-950 to-gray-950/0"></div>
@@ -31,7 +31,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
           onClick={() => loadMore()}
           className={clsx(
             "text-brand-300 hover:underline",
-            isMobile ? (premium ? "block" : "hidden") : "block"
+            isMobile ? (premium ? "block" : "hidden") : "block",
           )}
         >
           {t("stats.top.loadMore")}

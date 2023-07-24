@@ -18,7 +18,7 @@ export default function BottomNav() {
   const [ref, { height }] = useMeasure<HTMLDivElement>();
   const [setHeight, setSafeAreaBottomColor] = useAppStore(
     ({ ui }) => [ui.setBottomNavHeight, ui.setSafeAreaBottomColor],
-    shallow
+    shallow,
   );
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function BottomNav() {
                   "flex w-full flex-col items-center rounded-lg py-1 transition-colors",
                   link.active(pathname)
                     ? "bg-gray-800 text-brand-300"
-                    : "text-gray-400 hover:bg-gray-800"
+                    : "text-gray-400 hover:bg-gray-800",
                 )}
               >
                 <link.icon className="h-6 w-6" />

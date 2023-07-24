@@ -32,7 +32,7 @@ export default function PackageDetails() {
               formatDate(selectedPackage.dateAdded, {
                 hour: false,
                 minute: false,
-              })
+              }),
             )
           }
           title={formatDate(selectedPackage.dateAdded, {

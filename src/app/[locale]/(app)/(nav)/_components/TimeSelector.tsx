@@ -7,7 +7,7 @@ import { timeRanges, useAppStore } from "~/stores";
 export default function TimeSelector() {
   const [timeRange, setTimeRange] = useAppStore(
     ({ config }) => [config.timeRange, config.setTimeRange],
-    shallow
+    shallow,
   );
 
   return (
@@ -22,7 +22,7 @@ export default function TimeSelector() {
               "w-full rounded-lg py-1 transition-colors sm:whitespace-nowrap sm:px-4",
               time === timeRange
                 ? "bg-gray-800 text-brand-300"
-                : "text-gray-400 hover:bg-gray-800"
+                : "text-gray-400 hover:bg-gray-800",
             )}
           >
             {time}

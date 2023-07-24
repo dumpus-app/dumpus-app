@@ -24,7 +24,7 @@ export default function SimplePieChart({ data, className, legend }: Props) {
     <div
       className={clsx(
         "relative aspect-square h-48 overflow-hidden sm:h-72",
-        className
+        className,
       )}
     >
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">

@@ -21,7 +21,7 @@ export default function RelatedGuild({ guild }: { guild: Guild }) {
           href={`/top/guilds/details?id=${guild.guild_id}`}
           title={guild.guild_name}
           description={`${formatNumber(messagesCount)} ${t(
-            "stats.messagesSent"
+            "stats.messagesSent",
           )}`}
           leftSlot={
             <div

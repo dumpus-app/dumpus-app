@@ -31,7 +31,7 @@ function DMCard({
       rank={dm.rank}
       title={displayName}
       description={`${formatNumber(dm.message_count)} ${t(
-        "stats.messagesSent"
+        "stats.messagesSent",
       )}`}
       leftSlot={
         <div className="relative aspect-square w-10">

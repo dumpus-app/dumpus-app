@@ -12,7 +12,7 @@ export default function StatCard({ value, label, className }: Props) {
     <div
       className={clsx(
         "rounded-lg bg-gray-900 p-2 sm:min-w-[theme('spacing.32')] sm:p-4",
-        className
+        className,
       )}
     >
       {typeof value === "string" ? (

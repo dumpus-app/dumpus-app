@@ -25,7 +25,7 @@ export default function Error({ error, reset }: NextErrorProps) {
           <Button size="sm" className="mt-2" variant="danger">
             <a
               href={`https://github.com/dumpus-app/dumpus-app/issues/new?title=${encodeURIComponent(
-                "[In-app report] Triggered error boundary"
+                "[In-app report] Triggered error boundary",
               )}&body=${encodeURIComponent(`
 ## Error
 

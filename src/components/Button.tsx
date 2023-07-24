@@ -26,7 +26,7 @@ const buttonVariants = cva(
       variant: "brand",
       size: "md",
     },
-  }
+  },
 );
 
 type ButtonVariants = VariantProps<typeof buttonVariants>;
@@ -39,7 +39,7 @@ export interface ButtonProps
 
 export default forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   { asChild = false, variant, size, className, type = "button", ...props },
-  ref
+  ref,
 ) {
   const Comp = asChild ? Slot : "button";
 

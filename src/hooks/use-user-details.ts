@@ -10,7 +10,7 @@ import { shallow } from "zustand/shallow";
 export default function useUserDetails({ userID }: { userID: string }) {
   const [usersCache, setUsersCache] = useAppStore(
     ({ usersCache, setUsersCache }) => [usersCache, setUsersCache],
-    shallow
+    shallow,
   );
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });

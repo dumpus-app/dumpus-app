@@ -31,7 +31,7 @@ function sortContributors() {
   {
     const [priorityContributors, rest] = partitionArray(
       remainingContributors,
-      (c) => c.priority !== undefined
+      (c) => c.priority !== undefined,
     );
     remainingContributors = rest;
 
@@ -43,7 +43,7 @@ function sortContributors() {
   {
     const [devContributors, rest] = partitionArray(
       remainingContributors,
-      (c) => c.developer !== undefined
+      (c) => c.developer !== undefined,
     );
     remainingContributors = rest;
 
@@ -55,7 +55,7 @@ function sortContributors() {
   {
     const [bugContributors, rest] = partitionArray(
       remainingContributors,
-      (c) => c.bugs !== undefined
+      (c) => c.bugs !== undefined,
     );
     remainingContributors = rest;
 
@@ -67,7 +67,7 @@ function sortContributors() {
   {
     const [influencers, rest] = partitionArray(
       remainingContributors,
-      (c) => !!c.influencer
+      (c) => !!c.influencer,
     );
     remainingContributors = rest;
 

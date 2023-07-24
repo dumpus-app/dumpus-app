@@ -36,7 +36,7 @@ function StatCard({
     <div
       tw={clsx(
         "flex-1 bg-gray-800 flex items-start text-gray-300 rounded-lg p-4",
-        tw
+        tw,
       )}
     >
       {children}

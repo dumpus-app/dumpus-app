@@ -16,7 +16,7 @@ function mapScoreToRange(score: number): number {
 
   const scaledScore = (score - minScore) / (maxScore - minScore);
   const mappedOutput = Math.round(
-    minOutput + scaledScore * (maxOutput - minOutput)
+    minOutput + scaledScore * (maxOutput - minOutput),
   );
 
   return mappedOutput;
@@ -55,7 +55,7 @@ export default function SentimentScore({ score }: { score: number }) {
                 key={i}
                 className={clsx(
                   "flex items-center justify-center first:rounded-l-full last:rounded-r-full",
-                  color
+                  color,
                 )}
                 aria-label={
                   active

@@ -32,7 +32,7 @@ export default function useSQLInit() {
       setDB,
       setTimeRange,
     }),
-    shallow
+    shallow,
   );
 
   const isInitializedRef = useRef(false);
@@ -53,7 +53,7 @@ export default function useSQLInit() {
     isInitializedRef.current = true;
 
     const existingPackage = packages.find(
-      (pkg) => pkg.packageLink === initData?.packageLink
+      (pkg) => pkg.packageLink === initData?.packageLink,
     );
     if (existingPackage) {
       id = existingPackage.id;
@@ -75,7 +75,7 @@ export default function useSQLInit() {
     if (initData) {
       const dateAdded = new Date().toISOString();
       const packageData = resultAsList<PackageData>(
-        _db.exec("SELECT * FROM package_data LIMIT 1;")[0]
+        _db.exec("SELECT * FROM package_data LIMIT 1;")[0],
       )[0];
 
       const newPackage = {

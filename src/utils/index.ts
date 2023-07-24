@@ -22,7 +22,7 @@ const {
 
 export function concatTemplateStringArgs(
   strings: TemplateStringsArray,
-  expr: (string | number)[]
+  expr: (string | number)[],
 ) {
   let str = "";
   strings.forEach((s, i) => {
@@ -90,7 +90,7 @@ export function shuffleArray<T>(array: T[]) {
 
 export function partitionArray<T>(
   array: T[],
-  filter: (e: T, i: number, arr: T[]) => boolean
+  filter: (e: T, i: number, arr: T[]) => boolean,
 ) {
   const pass: T[] = [];
   const fail: T[] = [];

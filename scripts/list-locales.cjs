@@ -21,7 +21,7 @@ async function main() {
   await fsp.writeFile(
     path.resolve("./src/i18n/_locales.ts"),
     template,
-    "utf-8"
+    "utf-8",
   );
 }
 
