@@ -57,11 +57,11 @@ dependencies:
     specifier: 20.4.2
     version: 20.4.2
   "@types/react":
-    specifier: 18.2.14
-    version: 18.2.14
+    specifier: 18.2.15
+    version: 18.2.15
   "@types/react-dom":
-    specifier: 18.2.6
-    version: 18.2.6
+    specifier: 18.2.7
+    version: 18.2.7
   autoprefixer:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.25)
@@ -136,7 +136,7 @@ dependencies:
     version: 12.2.2(i18next@22.4.15)(react-dom@18.2.0)(react@18.2.0)
   react-markdown:
     specifier: ^8.0.7
-    version: 8.0.7(@types/react@18.2.14)(react@18.2.0)
+    version: 8.0.7(@types/react@18.2.15)(react@18.2.0)
   react-medium-image-zoom:
     specifier: ^5.1.6
     version: 5.1.6(react-dom@18.2.0)(react@18.2.0)
@@ -3297,19 +3297,19 @@ packages:
       }
     dev: false
 
-  /@types/react-dom@18.2.6:
+  /@types/react-dom@18.2.7:
     resolution:
       {
-        integrity: sha512-2et4PDvg6PVCyS7fuTc4gPoksV58bW0RwSxWKcPRcHZf0PRUGq03TKcD/rUHe3azfV6/5/biUBJw+HhCQjaP0A==,
+        integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==,
       }
     dependencies:
-      "@types/react": 18.2.14
+      "@types/react": 18.2.15
     dev: false
 
-  /@types/react@18.2.14:
+  /@types/react@18.2.15:
     resolution:
       {
-        integrity: sha512-A0zjq+QN/O0Kpe30hA1GidzyFjatVvrpIvWLxD+xv67Vt91TWWgco9IvrJBkeyHm1trGaFS/FSGqPlhyeZRm0g==,
+        integrity: sha512-oEjE7TQt1fFTFSbf8kkNuc798ahTUzn3Le67/PWjE8MAfYAD/qB7O8hSTcromLFqHCt9bcdOg5GXMokzTjJ5SA==,
       }
     dependencies:
       "@types/prop-types": 15.7.5
@@ -9472,7 +9472,7 @@ packages:
       }
     dev: false
 
-  /react-markdown@8.0.7(@types/react@18.2.14)(react@18.2.0):
+  /react-markdown@8.0.7(@types/react@18.2.15)(react@18.2.0):
     resolution:
       {
         integrity: sha512-bvWbzG4MtOU62XqBx3Xx+zB2raaFFsq4mYiAzfjXJMEz2sixgeAfraA3tvzULF02ZdOMUOKTBFFaZJDDrq+BJQ==,
@@ -9483,7 +9483,7 @@ packages:
     dependencies:
       "@types/hast": 2.3.4
       "@types/prop-types": 15.7.5
-      "@types/react": 18.2.14
+      "@types/react": 18.2.15
       "@types/unist": 2.0.6
       comma-separated-tokens: 2.0.3
       hast-util-whitespace: 2.0.1
