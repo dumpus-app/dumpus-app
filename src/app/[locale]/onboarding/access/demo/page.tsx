@@ -47,6 +47,7 @@ export default function Page() {
       }).then(() => {
         router.replace(`/${i18next.language}/overview`);
       });
+      return null;
     },
     staleTime: Infinity,
     enabled: !!data?.data,
