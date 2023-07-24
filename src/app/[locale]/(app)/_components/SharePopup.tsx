@@ -1,6 +1,6 @@
 "use client";
 
-import { Directory, Filesystem } from "@capacitor/filesystem";
+import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import { Dialog, Transition } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -90,6 +90,7 @@ function useShare({ canShare }: { canShare: boolean }) {
         data: imageData,
         ...sharedOpts,
         recursive: true,
+        encoding: Encoding.UTF8,
       });
 
       await Share.share({
