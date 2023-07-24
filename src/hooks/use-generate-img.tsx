@@ -11,6 +11,7 @@ import { shallow } from "zustand/shallow";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
+import { Uint8ArrayToString } from "~/utils/convert";
 
 async function getFontData(weight: number) {
   return await fetch(
@@ -95,7 +96,8 @@ export default function useGenerateImg() {
     const webFile = new File([pngBuffer], "image.png", {
       type: "image/png",
     });
-    const imageData = btoa(String.fromCharCode(...new Uint8Array(pngBuffer)));
+
+    const imageData = Uint8ArrayToString(pngBuffer);
     const url = URL.createObjectURL(
       new Blob([pngBuffer], { type: "image/png" })
     );
