@@ -5,6 +5,7 @@ import {
   ChartPieIcon,
 } from "@heroicons/react/24/solid";
 import packageJson from "../package.json";
+import { Capacitor } from "@capacitor/core";
 
 const { version } = packageJson;
 
@@ -55,3 +56,5 @@ const _nodeEnv = (() => {
 })();
 
 export const VERSION = `v${version}-${process.env.NEXT_PUBLIC_DEPLOY_ENV} (${_nodeEnv})`;
+
+export const OS = Capacitor.getPlatform() as "android" | "ios" | "web";

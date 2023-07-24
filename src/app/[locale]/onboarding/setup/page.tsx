@@ -1,23 +1,17 @@
 "use client";
 
-import { Capacitor } from "@capacitor/core";
 import { Tab } from "@headlessui/react";
 import { useState } from "react";
 import { useTranslation } from "~/i18n/client";
 import StepImage from "./_components/StepImage";
 import useTranslationData from "./_hooks/use-translation-data";
+import { OS } from "~/constants";
+import clsx from "clsx";
 
-const OS = (() => {
-  switch (Capacitor.getPlatform()) {
-    case "android":
-      return "android";
-    case "ios":
-      return "ios";
-    case "web":
-    default:
-      return "desktop";
-  }
-})();
+const defaultOS = OS === "web" ? "desktop" : OS;
+
+const isiOS =
+  process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile" && defaultOS === "ios";
 
 export default function Page() {
   const { t } = useTranslation();
@@ -25,7 +19,7 @@ export default function Page() {
   const data = useTranslationData();
 
   const [selectedIndex, setSelectedIndex] = useState(
-    data.findIndex((e) => e.os === OS)
+    data.findIndex((e) => e.os === defaultOS)
   );
 
   return (
@@ -34,12 +28,17 @@ export default function Page() {
         <h1 className="text-xl font-bold text-white">
           {t("onboarding.setup.title")}
         </h1>
-        <p className="mt-2 text-gray-400">
+        <p className={clsx("mt-2 text-gray-400", isiOS && "hidden")}>
           {t("onboarding.setup.description")}
         </p>
       </div>
       <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-        <Tab.List className="flex justify-center space-x-2">
+        <Tab.List
+          className={clsx(
+            "justify-center space-x-2",
+            isiOS ? "hidden" : "flex"
+          )}
+        >
           {data.map(({ os, display, icon: Icon }) => (
             <Tab
               key={os}
