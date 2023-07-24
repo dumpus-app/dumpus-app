@@ -14,10 +14,16 @@ dependencies:
   "@capacitor/core":
     specifier: ^5.2.2
     version: 5.2.2
+  "@capacitor/filesystem":
+    specifier: ^5.1.1
+    version: 5.1.1(@capacitor/core@5.2.2)
   "@capacitor/ios":
     specifier: ^5.0.3
     version: 5.0.3(@capacitor/core@5.2.2)
   "@capacitor/network":
+    specifier: ^5.0.6
+    version: 5.0.6(@capacitor/core@5.2.2)
+  "@capacitor/share":
     specifier: ^5.0.6
     version: 5.0.6(@capacitor/core@5.2.2)
   "@capacitor/status-bar":
@@ -1943,6 +1949,17 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /@capacitor/filesystem@5.1.1(@capacitor/core@5.2.2):
+    resolution:
+      {
+        integrity: sha512-wq55joyYocsYI0f0UNoDE9TPxI0n4fx+PmejGR5JOYFzrnU8DqcSJ9EREAYAkkoOrmQHrB1vuN9F79XC0PuADw==,
+      }
+    peerDependencies:
+      "@capacitor/core": ^5.1.1
+    dependencies:
+      "@capacitor/core": 5.2.2
+    dev: false
+
   /@capacitor/ios@5.0.3(@capacitor/core@5.2.2):
     resolution:
       {
@@ -1958,6 +1975,17 @@ packages:
     resolution:
       {
         integrity: sha512-E//cq9NEvFFiLyptK0ha4B8OytdWpSqvtUo5L2uiqcoADWUnl5d7aK45M09eyd347HchICeEdIkO31n6CNxyYA==,
+      }
+    peerDependencies:
+      "@capacitor/core": ^5.0.0
+    dependencies:
+      "@capacitor/core": 5.2.2
+    dev: false
+
+  /@capacitor/share@5.0.6(@capacitor/core@5.2.2):
+    resolution:
+      {
+        integrity: sha512-/dVOW7kcuuD7hWB9Z1drArIpEk+5JCoMnMrAs2c7CLp3q5PeaXNJjTkGr6RJ1OtMhsHyXc6DAFwQ4frFkmZsgw==,
       }
     peerDependencies:
       "@capacitor/core": ^5.0.0
