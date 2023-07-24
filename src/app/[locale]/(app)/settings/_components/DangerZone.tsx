@@ -1,16 +1,20 @@
 "use client";
 
-import { useTranslation } from "~/i18n/client";
+import i18next from "i18next";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import packageAPI from "~/hooks/use-package-api";
 import { getStorageKey } from "~/hooks/use-sql-init";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
-import { shallow } from "zustand/shallow";
+import { queryClient } from "~/utils/react-query";
 
 export default function DangerZone() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [reset, packages, setUsersCache] = useAppStore(
     ({ config, setUsersCache }) => [
       config.reset,
@@ -37,7 +41,8 @@ export default function DangerZone() {
 
     reset();
     setUsersCache([]);
-    window.location.href = "/";
+    router.replace(`/${i18next.language}/onboarding/`);
+    queryClient.clear();
   }
 
   return (
