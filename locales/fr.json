@@ -264,8 +264,7 @@
   },
   "error": {
     "title": "Surprising turn of events... Here is your path to recovery:",
-    "reload": "Reload",
-    "overview": "Overview",
+    "retry": "Retry",
     "report": "Report on GitHub",
     "noInternet": "No Internet Connection",
     "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
