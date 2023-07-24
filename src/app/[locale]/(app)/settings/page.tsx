@@ -10,6 +10,7 @@ import PackageDetails from "./_components/PackageDetails";
 import Actions from "./_components/Actions";
 
 export default function Page() {
+  throw new Error("ERROR");
   return (
     <>
       <TopNav />
