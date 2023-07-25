@@ -61,9 +61,9 @@
         "desktop": "Desktop"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "तपाइको Discord setting खोल्नुहोस्",
+        "privacy": "\"Privacy & Safety\" tab खोल्नुहोस्",
+        "request": "\"Request Data\" मा थिच्नुहोस"
       }
     },
     "access": {
@@ -115,31 +115,31 @@
         "useBackend": "मेरो आफ्नै backend प्रयोग गर"
       },
       "progress": {
-        "downloading": "Downloading",
-        "analyzing": "Analyzing",
-        "processed": "Processed",
+        "downloading": "डाउनलोड हुदैछ",
+        "analyzing": "विश्लेषण गरिंदै",
+        "processed": "Process भयो",
         "loading": {
-          "title": "We’re loading your data",
-          "description": "Please wait..."
+          "title": "हामी तपाईंको डाटा लोड गर्दैछौं",
+          "description": "कृपया पर्खनुहोस..."
         },
         "loadingDemo": {
-          "title": "We’re loading the demo",
-          "description": "Please wait..."
+          "title": "हामी डेमो लोड गर्दैछौं",
+          "description": "कृपया पर्खनुहोस..."
         }
       },
       "error": "An error occurred...",
-      "unknownPackageId": "This package is unknown.",
-      "unauthorized": "You are not allowed to interact with this package data.",
-      "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occured.",
-      "expiredLink": "Link expired."
+      "unknownPackageId": "यो प्याकेज id गलत छ।",
+      "unauthorized": "तपाईंलाई यो प्याकेज डाटासँग अन्तरक्रिया गर्ने अनुमति छैन।",
+      "invalidLink": "यो link गलत छ।",
+      "unknownError": "एउटा unknown error देखा पर्‍यो।",
+      "expiredLink": "यो link को म्याद सकियो।"
     }
   },
   "stats": {
     "messagesSent": "पठाइएको message हरु",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
-    "titleMessagesSentPerDay": "Messages sent per day",
-    "totalMessagesSent": "total messages sent",
+    "messagesSentPerDay": "यो भनेको अन्दाजी दिनको {{- value}} message हरु हो!",
+    "titleMessagesSentPerDay": "दैनिक message पठाइएको संख्या",
+    "totalMessagesSent": "कुल message पठाइएको संख्या",
     "joinedServers": "join भएका server हरु",
     "joinedServersDesc": "हामीले साचिकैको Discord सर्भर explorer पाएका छौं!",
     "knownUsers": "थाहा भएका प्रयोगकर्ताहरु",
@@ -148,126 +148,126 @@
     "spentMoneyDesc_positive": "त्यो धेरै पैसा हो...!",
     "spentMoneyDesc_empty": "तपाईं एक मितव्ययी व्यक्ति हुनुहुन्छ!",
     "appStarts": "app खोलेको",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
+    "appStartsPerDay": "तपाइ दिनको लगभग {{- value}} चोटी Discord खोल्नुहुन्छ!",
+    "totalTimeSpent": "तपाइले लगभग {{- value}} रुपिया Discord मा खर्च गर्नुभएको छ",
     "avgSessionTime": "औसत session समय",
-    "receivedCalls": "received calls",
-    "topHour": "top hour",
-    "appStarted": "Discord app started",
-    "topChatHour": "top chat hour",
-    "reactionsAdded": "reactions added",
-    "channelOpenings": "channel openings",
-    "guildJoins": "guild joins",
-    "commands": "{{- value}} commands",
+    "receivedCalls": "प्राप्त कलहरू",
+    "topHour": "एकदम सक्रिय hour",
+    "appStarted": "Discord app खोलिएको",
+    "topChatHour": "एकदम सक्रिय chat hour",
+    "reactionsAdded": "reaction हरु add गरिएको",
+    "channelOpenings": "च्यानल खोलिएको",
+    "guildJoins": "सर्भर join गरिएको",
+    "commands": "{{- value}} कमाण्डहरु",
     "top": {
       "dms": "DMs",
-      "guilds": "Guilds",
-      "channels": "Channels",
-      "loadMore": "Load more",
-      "premium": "Unlock to view more"
+      "guilds": "सर्भरहरु",
+      "channels": "च्यानलहरु",
+      "loadMore": "थप लोड गर्नुहोस्",
+      "premium": "थप हेर्न अनलक गर्नुहोस्"
     },
     "extra": {
-      "clickedNotifications": "notifications clicked",
-      "completedCaptcha": "captcha completed",
-      "receivedEmail": "emails received",
-      "successfulLogin": "logins successful",
-      "avatarUpdates": "avatar updates",
+      "clickedNotifications": "थिचिएको नोटिफिकेसनहरु",
+      "completedCaptcha": "पुरा गरिएका captcha हरु",
+      "receivedEmail": "प्राप्त गरिएका इमेलहरु",
+      "successfulLogin": "सफल भएका login हरु",
+      "avatarUpdates": "फेरिएका avatar हरु",
       "crashes": "crashes",
-      "authorizedOauth2": "oauth2 authorized",
-      "voiceMessagesRecorded": "voice messages recorded",
-      "reportedMessages": "messages reported",
-      "editedMessages": "messages edited",
-      "seenNitroAds": "seen nitro ads",
-      "spentInVoiceChannels": "spent in voice channels"
+      "authorizedOauth2": "authorize गरिएका OAuth2",
+      "voiceMessagesRecorded": "रेकर्ड गरिएका भोइस message हरु",
+      "reportedMessages": "रिपोर्ट गरिएका message हरु",
+      "editedMessages": "एडिट गरिएका message हरु",
+      "seenNitroAds": "जम्मा देखिएका nitro विज्ञापन",
+      "spentInVoiceChannels": "भोइस च्यानलमा बिताइएको समय"
     }
   },
   "sendingTimeStats": {
-    "messagesSentPerDay": "average messages sent per day",
-    "appOpeningsPerDay": "Discord app openings per day"
+    "messagesSentPerDay": "दैनिक message पठाइएको संख्या",
+    "appOpeningsPerDay": "दैनिक Discord app खोलिएको"
   },
   "sentimentAnalysis": {
-    "title": "Sentiment analysis (experimental)",
-    "anger": "Anger",
-    "happiness": "Happiness",
-    "score": "Active with score: {{- value}}"
+    "title": "भावना विश्लेषण (experimental)",
+    "anger": "रिस",
+    "happiness": "खुशी",
+    "score": "स्कोरसहित सक्रिय: {{- value}}"
   },
   "settings": {
-    "title": "Settings",
+    "title": "सेटिङ्हरू",
     "toasts": {
-      "copyError": "Can't copy to clipboard",
-      "copied": "Copied to clipboard!"
+      "copyError": "Clipboard मा copy गर्न सकिएन",
+      "copied": "clipboard मा copy गरियो!"
     },
     "packageSwitch": {
-      "title": "Switch Package",
-      "description": "Generated on {{- date}}"
+      "title": "Package फेर्नुहोस",
+      "description": "{{- date}} मा generate गरिएको"
     },
     "packageDetails": {
-      "title": "Package Details",
+      "title": "प्याकेजको विवरणहरू",
       "UPNKey": "UPN key",
-      "dateAdded": "Added on",
+      "dateAdded": "थपिएको",
       "packageID": "Package ID",
-      "discordUser": "Discord user",
+      "discordUser": "Discord प्रयोगकर्ता",
       "backendURL": "Backend URL"
     },
     "languages": {
-      "switch": "Switch language",
-      "title": "Languages",
-      "description": "{{- value}} available"
+      "switch": "भाषा बदल्नुहोस्",
+      "title": "भाषाहरु",
+      "description": "उपलब्ध {{- value}}"
     },
     "dangerZone": {
-      "title": "Danger Zone",
-      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
-      "loading": "Deleting...",
-      "quit": "Quit and reset"
+      "title": "डेन्जर जोन",
+      "description": "तपाईंको डाटा यो डिभाइस र हाम्रा सर्भरहरूबाट हटाइनेछ, तर तपाईं अझै पनि Discord द्वारा पठाइएको इमेल प्रयोग गरेर हेर्न सक्नुहुन्छ। App try गर्नुभएकोमा धन्यवाद, हामीलाई GitHub मा केही प्रतिक्रिया दिन नभुल्नुहोला!",
+      "loading": "Delete हुदै...",
+      "quit": "छोड्नुहोस् र रिसेट गर्नुहोस्"
     },
     "actions": {
-      "title": "Actions",
+      "title": "कार्यहरु",
       "notEnoughStorage": {
-        "title": "Can't add new package",
-        "description": "Not enough storage in app"
+        "title": "नयाँ Package add गर्न सकिएन",
+        "description": "App मा पर्याप्त storage छैन"
       },
-      "deleting": "Deleting...",
-      "delete": "Delete current package",
-      "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases"
+      "deleting": "Delete हुदै...",
+      "delete": "यो Package लाई डिलिट गर्नुहोस",
+      "restoring": "पुनर्स्थापना गरिदै...",
+      "restorePurchases": "खरीदहरू पुनर्स्थापित गर्नुहोस्"
     },
     "about": {
-      "title": "About",
-      "version": "Version",
+      "title": "बारेमा",
+      "version": "भर्जन",
       "website": "Web application",
-      "community": "Community",
-      "contribute": "Contribute",
-      "contributors": "Project's contributors",
-      "credits": "Credits"
+      "community": "कम्युनिटी",
+      "contribute": "योगदान गर्नुहोस्",
+      "contributors": "Project का योगदानकर्ताहरू",
+      "credits": "क्रेडिटहरू"
     }
   },
   "credits": {
-    "title": "Credits",
-    "back": "Back to settings",
+    "title": "क्रेडिटहरू",
+    "back": "सेटिङहरूमा फर्कनुहोस्",
     "bugHunter": {
       "title": "Bug Hunter",
-      "description": "Most important people to provide you with stable app."
+      "description": "तपाईलाई stable app प्रदान गर्न सबैभन्दा महत्त्वपूर्ण भूमिका खेल्ने व्यक्तिहरू।"
     },
     "influencer": {
       "title": "Influencer",
-      "description": "These people helped us to spread the word about the app."
+      "description": "यी व्यक्तिहरूले हामीलाई app को बारेमा शब्द फैलाउन मद्दत गरे।"
     },
     "developer": {
-      "title": "Developer",
-      "description": "These people made direct contributions to the app's code."
+      "title": "डेभलपर",
+      "description": "यी व्यक्तिहरूले app को कोडमा प्रत्यक्ष योगदान दिए।"
     },
     "translator": {
-      "title": "Translator",
-      "description": "These people made the app available worldwide."
+      "title": "अनुवादकर्ता",
+      "description": "यी व्यक्तिहरूले app लाई विश्वव्यापी रूपमा उपलब्ध गराए।"
     },
-    "contributions": "{{- value}} contributions"
+    "contributions": "{{- value}} योगदानहरू"
   },
   "error": {
-    "title": "Surprising turn of events... Here is your path to recovery:",
-    "retry": "Retry",
-    "report": "Report on GitHub",
-    "noInternet": "No Internet Connection",
-    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
+    "title": "आश्चर्यजनक घटना... recovery को लागि यहाँ थिच्नुहोस:",
+    "retry": "फेरि प्रयास गर्नुहोस्",
+    "report": "GitHub मा रिपोर्ट गर्नुहोस्",
+    "noInternet": "इन्टरनेट उपलब्ध छैन",
+    "noInternetDescription": " Dumpus app  प्रयोग गर्न इन्टरनेट उपलब्ध हुनु आवश्यक छ। कृपया इन्टरनेट पुन: जडान गर्नुहोस्।"
   },
   "sheerNumbers": "सरासर संख्याहरू",
   "mostActiveDMs": "एकदम सक्रिय DM हरु",
@@ -277,28 +277,28 @@
   "activityTime": "समय अनुसार तपाईको गतिविधि",
   "messageSentCount": "पठाइएको message संख्या",
   "share": {
-    "title": "Share",
-    "description": "Share your stats with your friends!",
-    "generating": "Generating...",
-    "download": "Download",
-    "recap": "Share your recap",
-    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "title": "अरुलाई पठाउनुहोस्",
+    "description": "साथीभाईहरुमाझ share गर्नुहोस!",
+    "generating": "जेनेरेट गरिदै...",
+    "download": "डाउनलोड गर्नुहोस",
+    "recap": "आफ्नो रिक्याप share गर्नुहोस्",
+    "recapDescription": "Twitter, Instagram, Reddit, Discord मा आफ्नो साथीहरु संग recap share गर्नुहोस्...! :)",
     "popup": {
-      "title": "Here is my Discord recap!",
-      "description": "Generated on https://dumpus.app, try it yourself!"
+      "title": "मेरो Discord recap यस्तो छ!",
+      "description": "यो https://dumpus.app बाट generate गरिएको हो!"
     }
   },
-  "exitingDemo": "Exiting...",
-  "exitDemo": "Exit demo and get started!",
-  "members": "{{- value}} members",
+  "exitingDemo": "बाहिर निस्किदै...",
+  "exitDemo": "डेमो बाहिर निस्कनुहोस् र सुरु गर्नुहोस्!",
+  "members": "{{- value}} सदस्यहरू",
   "nav": {
-    "overview": "Overview",
-    "top": "Top",
-    "stats": "Stats",
-    "settings": "Settings"
+    "overview": "सारांशमा",
+    "top": "धेरै",
+    "stats": "तथ्याङ्क",
+    "settings": "सेटिङ्हरू"
   },
-  "topUsedBot": "Top used bots",
-  "topChannels": "Top channels",
-  "firstMessages": "Your first messages",
-  "relatedGuild": "Related guild"
+  "topUsedBot": "धेरै प्रयोग गरिएका bot हरु",
+  "topChannels": "धेरै प्रयोग गरिएका channel हरु",
+  "firstMessages": "तपाइको पहिलो message",
+  "relatedGuild": "सम्बन्धित सर्भर"
 }
