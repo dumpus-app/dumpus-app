@@ -33,7 +33,7 @@
     "name": "thearchaeopteryx",
     "bugs": 2,
     "translation": "np",
-    "developer": 2
+    "developer": 3
   },
   {
     "name": "mariusbegby",
@@ -68,6 +68,26 @@
   {
     "name": "mr-kayjaydee",
     "bugs": 6,
-    "developer": 3
+    "developer": 4
+  },
+  {
+    "name": "klubuntu",
+    "translation": "pl"
+  },
+  {
+    "name": "mittelblut9",
+    "translation": "de"
+  },
+  {
+    "name": "ctwixty",
+    "translation": "fr"
+  },
+  {
+    "name": "geardung",
+    "translation": "ru"
+  },
+  {
+    "name": "hanshans135",
+    "translation": "tw"
   }
 ]
