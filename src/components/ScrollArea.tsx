@@ -2,7 +2,7 @@
 
 import * as ScrollAreaPrimitve from "@radix-ui/react-scroll-area";
 import { useRef } from "react";
-import useYScroller from "~/hooks/use-y-scroller";
+import useXScroller from "~/hooks/use-x-scroller";
 
 export type Props = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export type Props = {
 function ScrollArea({ children, orientation }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useYScroller(ref, {
+  useXScroller(ref, {
     enabled: orientation === 'horizontal'
   });
 

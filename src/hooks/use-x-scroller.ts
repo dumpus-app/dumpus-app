@@ -5,7 +5,7 @@ interface ScrollerOptions {
   scrollSpeed?: number;
 }
 
-export default function useYScroller<E extends HTMLElement>(
+export default function useXScroller<E extends HTMLElement>(
   ref: React.RefObject<E>,
   options?: ScrollerOptions,
 ) {
