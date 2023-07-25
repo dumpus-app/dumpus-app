@@ -16,7 +16,7 @@ const locales = _locales
   .map((code) => ({
     code,
     display: capitalize(
-      new Intl.DisplayNames([code], { type: "language" }).of(code) || code
+      new Intl.DisplayNames([code], { type: "language" }).of(code) || code,
     ),
   }))
   .sort((a, b) => a.display.localeCompare(b.display));
@@ -36,7 +36,7 @@ function LocalesList() {
       onChange={(v) => {
         const newPathname = (pathname + "?" + searchParams?.toString()).replace(
           `/${i18next.language}`,
-          `/${v}`
+          `/${v}`,
         );
         i18next.changeLanguage(v);
         router.replace(newPathname);
@@ -52,7 +52,7 @@ function LocalesList() {
               clsx(
                 checked ? "border-transparent" : "border-gray-800",
                 active ? "border-brand-700 ring-2 ring-brand-700" : "",
-                "relative block cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 focus:outline-none"
+                "relative block cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 focus:outline-none",
               )
             }
           >
@@ -68,7 +68,7 @@ function LocalesList() {
                   className={clsx(
                     active ? "border" : "border-2",
                     checked ? "border-brand-700" : "border-transparent",
-                    "pointer-events-none absolute -inset-px rounded-lg"
+                    "pointer-events-none absolute -inset-px rounded-lg",
                   )}
                   aria-hidden="true"
                 />

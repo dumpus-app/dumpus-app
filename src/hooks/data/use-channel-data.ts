@@ -9,7 +9,7 @@ export default function useChannelData({ channelID }: { channelID: string }) {
   const topChannelsData = useTopChannelsData().getData({ offset: false });
 
   const hasData = !!topChannelsData?.find(
-    (channel) => channel.channel_id === channelID
+    (channel) => channel.channel_id === channelID,
   );
 
   function getChannel() {

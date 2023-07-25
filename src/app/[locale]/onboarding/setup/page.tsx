@@ -19,7 +19,7 @@ export default function Page() {
   const data = useTranslationData();
 
   const [selectedIndex, setSelectedIndex] = useState(
-    data.findIndex((e) => e.os === defaultOS)
+    data.findIndex((e) => e.os === defaultOS),
   );
 
   return (
@@ -36,7 +36,7 @@ export default function Page() {
         <Tab.List
           className={clsx(
             "justify-center space-x-2",
-            isiOS ? "hidden" : "flex"
+            isiOS ? "hidden" : "flex",
           )}
         >
           {data.map(({ os, display, icon: Icon }) => (

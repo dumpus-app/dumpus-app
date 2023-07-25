@@ -49,14 +49,14 @@ export default function DetailCard({
           ? "cursor-pointer hover:bg-gray-800 hover:text-gray-300"
           : "cursor-default",
         disabled && "pointer-events-none opacity-50",
-        className
+        className,
       )}
     >
       {leftSlot && <div className="shrink-0">{leftSlot}</div>}
       <div
         className={clsx(
           "flex flex-1",
-          reverseTexts ? "flex-col-reverse" : "flex-col"
+          reverseTexts ? "flex-col-reverse" : "flex-col",
         )}
       >
         <div className="line-clamp-1 overflow-hidden text-ellipsis break-all font-semibold text-white">

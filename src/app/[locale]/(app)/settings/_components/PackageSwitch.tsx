@@ -19,10 +19,10 @@ export default function PackageSwitch() {
   const { init } = useSQLInit();
   const [setSelectedID, selectedID, packages] = useAppStore(
     ({ config }) => [config.setSelectedID, config.selectedID, config.packages],
-    shallow
+    shallow,
   );
   const getUnselectedPackages = useAppStore(
-    ({ config }) => config.getUnselectedPackages
+    ({ config }) => config.getUnselectedPackages,
   );
   const unselectedPackages = getUnselectedPackages(packages, selectedID);
 

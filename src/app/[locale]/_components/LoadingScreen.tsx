@@ -30,7 +30,7 @@ export default function LoadingScreen({
       config.goToOnboardingAccess,
       database.db,
     ],
-    shallow
+    shallow,
   );
   const hasSelectedPackage = !!selectedID;
 

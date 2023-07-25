@@ -9,7 +9,7 @@ const fallback = "N/A";
 
 export function formatNumber(
   n?: number | null,
-  { notation = "compact" }: { notation?: "standard" | "compact" } = {}
+  { notation = "compact" }: { notation?: "standard" | "compact" } = {},
 ) {
   if (n === undefined || n === null) return fallback;
 
@@ -20,7 +20,7 @@ export function formatNumber(
 
 export function formatMoney(
   n?: number | null,
-  { currency = "USD" }: { currency?: string } = {}
+  { currency = "USD" }: { currency?: string } = {},
 ) {
   if (n === undefined || n === null) return fallback;
 
@@ -57,7 +57,7 @@ export function formatDate(
     day?: boolean;
     hour?: boolean;
     minute?: boolean;
-  } = {}
+  } = {},
 ) {
   if (!date) return fallback;
 

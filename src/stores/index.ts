@@ -33,10 +33,10 @@ export const useAppStore = create<BoundStore>()((...args) => ({
 export function useSelectedPackage() {
   const [packages, selectedID] = useAppStore(
     ({ config }) => [config.packages, config.selectedID],
-    shallow
+    shallow,
   );
   const getSelectedPackage = useAppStore(
-    ({ config }) => config.getSelectedPackage
+    ({ config }) => config.getSelectedPackage,
   );
   return getSelectedPackage(packages, selectedID);
 }
@@ -51,8 +51,8 @@ const configStorage = create(
       storage: createJSONStorage(() => localStorage),
       version: 1,
       migrate: migrateConfig,
-    }
-  )
+    },
+  ),
 );
 
 const usersCacheStorage = create(
@@ -65,8 +65,8 @@ const usersCacheStorage = create(
       storage: createJSONStorage(() => localStorage),
       version: 0,
       migrate: migrateUsersCache,
-    }
-  )
+    },
+  ),
 );
 
 export function syncAppStore() {

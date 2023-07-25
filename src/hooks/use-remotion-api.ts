@@ -57,7 +57,7 @@ export default function useRemotionAPI({
       "message",
       (e: MessageEvent<{ status: RemotionAPIStatus }>) => {
         setStatus(e.data.status);
-      }
+      },
     );
 
     return status;

@@ -103,7 +103,7 @@ export default function Footer({ href, label }: Props) {
   const [open, setOpen] = useState(false);
   const pathname = useI18nPathname();
   const showGetDataLink = GET_DATA_LINK_PATHNAMES.includes(
-    normalizePathname(pathname)
+    normalizePathname(pathname),
   );
 
   return (

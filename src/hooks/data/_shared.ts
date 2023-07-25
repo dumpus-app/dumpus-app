@@ -17,7 +17,7 @@ export function useDataSources() {
       database.db,
       database.getTimeRangeDates,
     ],
-    shallow
+    shallow,
   );
 
   return { sql, ...getTimeRangeDates({ timeRange, db }) };

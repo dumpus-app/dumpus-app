@@ -36,7 +36,7 @@ function GuildCard({
       rank={guild.rank}
       title={guild.guild_name}
       description={`${formatNumber(guild.message_count)} ${t(
-        "stats.messagesSent"
+        "stats.messagesSent",
       )}`}
       leftSlot={
         isSuccess && data.error === undefined ? (

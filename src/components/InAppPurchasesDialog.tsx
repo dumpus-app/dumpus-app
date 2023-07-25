@@ -22,7 +22,7 @@ const content = [
 export default function InAppPurchasesDialog() {
   const [open, setOpen] = useAppStore(
     ({ ui }) => [ui.showInAppPurchasesDialog, ui.setShowInAppPurchasesDialog],
-    shallow
+    shallow,
   );
   const [supported, setSupported] = useState(false);
   const [product, setProduct] =
@@ -119,7 +119,7 @@ export default function InAppPurchasesDialog() {
                           <div className="text-3xl font-semibold text-white">
                             {formatMoney(
                               product.pricing!.priceMicros / 1_000_000,
-                              { currency: product.pricing!.currency }
+                              { currency: product.pricing!.currency },
                             )}
                           </div>
                           <div className="text-gray-400">one-time</div>

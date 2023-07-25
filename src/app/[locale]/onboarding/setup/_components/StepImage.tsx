@@ -25,7 +25,7 @@ export default function StepImage({
           alt={alt}
           onError={() => {
             setSrc((src) =>
-              src.replace(PREFIX + i18next.language, PREFIX + fallbackLocale)
+              src.replace(PREFIX + i18next.language, PREFIX + fallbackLocale),
             );
           }}
           fill

@@ -15,7 +15,7 @@ import { Uint8ArrayToString } from "~/utils/convert";
 
 async function getFontData(weight: number) {
   return await fetch(
-    `https://cdn.jsdelivr.net/npm/@fontsource/rubik/files/rubik-latin-${weight}-normal.woff`
+    `https://cdn.jsdelivr.net/npm/@fontsource/rubik/files/rubik-latin-${weight}-normal.woff`,
   ).then((res) => res.arrayBuffer());
 }
 
@@ -67,7 +67,7 @@ export default function useGenerateImg() {
         data: await getFontData(weight),
         weight,
         style: "normal",
-      }))
+      })),
     )) as Font[];
 
     const svg = await satori(<StaticShareImage {...props} />, {

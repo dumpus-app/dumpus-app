@@ -5,7 +5,7 @@ import NextLink from "next/link";
 import { ComponentProps } from "react";
 
 export default function Link(
-  props: ComponentProps<typeof NextLink> & { noI18n?: boolean }
+  props: ComponentProps<typeof NextLink> & { noI18n?: boolean },
 ) {
   const { href: _href, noI18n = false, ...rest } = props;
 

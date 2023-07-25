@@ -37,7 +37,7 @@ function useSchema() {
           interpolation: { escapeValue: false },
         }),
         path: ["discordLink"],
-      }
+      },
     )
     .refine(
       (data) => {
@@ -51,7 +51,7 @@ function useSchema() {
       {
         message: t("onboarding.access.methods.link.errors.emptyKey"),
         path: ["discordLink"],
-      }
+      },
     );
 
   return schema;
@@ -76,8 +76,8 @@ export default function LinkForm() {
       `/${
         i18next.language
       }/onboarding/loading/?packageLink=${encodeURIComponent(
-        discordLink
-      )}&backendURL=${encodeURIComponent(backendURL)}`
+        discordLink,
+      )}&backendURL=${encodeURIComponent(backendURL)}`,
     );
   }
 
@@ -117,7 +117,7 @@ export default function LinkForm() {
                   <ChevronDownIcon
                     className={clsx(
                       "ml-1 h-5 w-5 transition-transform duration-300 ease-in-out",
-                      open ? "rotate-180 transform" : ""
+                      open ? "rotate-180 transform" : "",
                     )}
                   />
                 </div>

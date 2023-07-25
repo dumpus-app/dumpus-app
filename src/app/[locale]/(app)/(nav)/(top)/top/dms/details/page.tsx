@@ -22,7 +22,7 @@ export default function Page() {
   const id = params.get("id")!;
 
   const { hasData, user, stats, dailySentMessages, sentimentScore } = useDMData(
-    { userID: id }
+    { userID: id },
   );
 
   const networkState = useNetworkState();

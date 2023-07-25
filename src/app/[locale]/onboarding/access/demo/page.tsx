@@ -21,7 +21,7 @@ export default function Page() {
 
   const [selectedID, getNextID] = useAppStore(
     ({ config, database }) => [config.selectedID, database.getNextID],
-    shallow
+    shallow,
   );
   const nextID = getNextID(selectedID);
   const { init } = useSQLInit();
