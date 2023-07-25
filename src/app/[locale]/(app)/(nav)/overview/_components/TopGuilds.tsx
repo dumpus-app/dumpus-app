@@ -10,8 +10,6 @@ import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
 import DiscordImage from "~/components/DiscordImage";
-import { useRef } from "react";
-import useScroller from "~/hooks/use-scroller";
 
 function GuildCard({
   guild,
@@ -63,14 +61,9 @@ export default function TopGuilds() {
   const { t } = useTranslation();
   const data = useTopGuildsData().getData({});
 
-  const cardsRef = useRef<HTMLDivElement>(null);
-  useScroller(cardsRef, {
-    orientation: "horizontal",
-  });
-
   return (
     <Section title={t("mostActiveServers")} href="/top/guilds">
-      <ScrollArea orientation="horizontal" ref={cardsRef}>
+      <ScrollArea orientation="horizontal">
         <div className="flex">
           {(data || []).map((guild) => (
             <GuildCard key={guild.rank} guild={guild} />
