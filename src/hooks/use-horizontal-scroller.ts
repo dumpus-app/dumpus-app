@@ -2,10 +2,13 @@ import { useEffect } from "react";
 
 export default function useHorizontalScroller<E extends HTMLElement>(
   ref: React.RefObject<E>,
-  { enabled = true, scrollSpeed = 1 } :{
+  {
+    enabled = true,
+    scrollSpeed = 1,
+  }: {
     enabled?: boolean;
     scrollSpeed?: number;
-  }
+  },
 ) {
   useEffect(() => {
     // return if it is disabled
@@ -15,7 +18,7 @@ export default function useHorizontalScroller<E extends HTMLElement>(
     const current = ref.current;
     if (!current) return;
 
-    const onMouseWheel = (event: WheelEvent) => {      
+    const onMouseWheel = (event: WheelEvent) => {
       event.preventDefault();
 
       current.scrollLeft += event.deltaY * scrollSpeed;
