@@ -15,7 +15,7 @@ function ScrollArea({ children, orientation }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useXScroller(ref, {
-    enabled: orientation === 'horizontal'
+    enabled: orientation === "horizontal",
   });
 
   return (

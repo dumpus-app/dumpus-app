@@ -19,7 +19,7 @@ export default function useXScroller<E extends HTMLElement>(
 
     const onMouseWheel = (ev: WheelEvent) => {
       const { scrollSpeed = 1 } = options ?? {};
-      
+
       ev.preventDefault();
 
       current.scrollLeft += ev.deltaY * scrollSpeed;
