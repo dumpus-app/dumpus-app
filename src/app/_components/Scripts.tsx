@@ -6,7 +6,9 @@ export default function Scripts() {
   return (
     <>
       {process.env.NODE_ENV === "production" &&
-        process.env.NEXT_PUBLIC_DEPLOY_ENV === "web" && (
+        process.env.NEXT_PUBLIC_DEPLOY_ENV === "web" &&
+        process.env.NEXT_PUBLIC_ANALYTICS_SRC &&
+        process.env.NEXT_PUBLIC_ANALYTICS_WEBSITE_ID && (
           <Script
             async
             defer
