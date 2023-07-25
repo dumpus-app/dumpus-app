@@ -5,6 +5,7 @@ import { Rubik, JetBrains_Mono } from "next/font/google";
 import { CSSProperties } from "react";
 import Toaster from "./Toaster";
 import SafeArea from "./SafeArea";
+import Scripts from "./Scripts";
 
 const sansFont = Rubik({ subsets: ["latin"] });
 const monoFont = JetBrains_Mono({ subsets: ["latin"] });
@@ -31,6 +32,7 @@ export default function PageStructure({
         <SafeArea>{children}</SafeArea>
         <Toaster />
       </body>
+      <Scripts />
     </html>
   );
 }
