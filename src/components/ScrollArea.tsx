@@ -1,8 +1,8 @@
 "use client";
 
 import * as ScrollAreaPrimitve from "@radix-ui/react-scroll-area";
-import { forwardRef, useRef } from "react";
-import useScroller from "~/hooks/use-scroller";
+import { useRef } from "react";
+import useYScroller from "~/hooks/use-y-scroller";
 
 export type Props = {
   children: React.ReactNode;
@@ -14,10 +14,8 @@ export type Props = {
 function ScrollArea({ children, orientation }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useScroller(ref, {
-    orientation: orientation ?? 'vertical',
-    // skip emulation since this is the default behavior
-    skip: orientation === 'vertical'
+  useYScroller(ref, {
+    enabled: orientation === 'horizontal'
   });
 
   return (
