@@ -15,9 +15,9 @@ function ScrollArea({ children, orientation }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useScroller(ref, {
-    orientation: orientation ?? 'vertical',
+    orientation: orientation ?? "vertical",
     // skip emulation since this is the default behavior
-    skip: orientation === 'vertical'
+    skip: orientation === "vertical",
   });
 
   return (
