@@ -5,7 +5,7 @@
   },
   "global": {
     "loading": {
-      "title": "Ładowanie…",
+      "title": "Loading...",
       "description": "Proszę czekać..."
     }
   },
@@ -14,7 +14,7 @@
       "/": "Zaczynajmy!",
       "/intro/1": "Rozumiem!",
       "/intro/2": "Świetnie!",
-      "/intro/3": "Zdobądź mój pakiet!",
+      "/intro/3": "Let's get my package!",
       "/setup": "Rozumiem!"
     },
     "shared": {
@@ -45,7 +45,7 @@
       },
       {
         "title": "Czy mogę zaufać Dumpusowi?",
-        "description": "Ten \"Pakiet danych\" jest bardzo wrażliwy. Dlatego każdy może przeczytać nasz kod i zobaczyć, co z nim robimy (100% open source). Chociaż oferujemy bezpłatny serwer przetwarzania, możesz użyć własnego serwera, aby zachować pełną kontrolę nad swoimi danymi."
+        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
       },
       {
         "title": "Udostępnij to swoim znajomym!",
@@ -63,7 +63,7 @@
       "steps": {
         "settings": "Otwórz swoje ustawienia Discord",
         "privacy": "Otwórz zakładkę \"Prywatność i bezpieczeństwo\"",
-        "request": "Kliknij na \"Zażądaj dane\""
+        "request": "Click on \"Request Data\""
       }
     },
     "access": {
@@ -139,25 +139,25 @@
     "messagesSent": "wysłanych wiadomości",
     "messagesSentPerDay": "To jest około {{- value}} wiadomości dziennie!",
     "titleMessagesSentPerDay": "Wiadomości wysyłanych dziennie",
-    "totalMessagesSent": "wszystkie wysłane wiadomości",
+    "totalMessagesSent": "total messages sent",
     "joinedServers": "dołączonych serwerów",
     "joinedServersDesc": "Mamy prawdziwego odkrywcę serwerów Discord!",
     "knownUsers": "znanych użytkowników",
     "knownUsersDesc": "No cóż, znasz wielu ludzi!",
-    "spentMoney": "wydano",
+    "spentMoney": "spent",
     "spentMoneyDesc_positive": "To jest dużo gotówki...!",
-    "spentMoneyDesc_empty": "Jesteś kłopotliwą osobą!",
-    "appStarts": "uruchomienia aplikacji",
+    "spentMoneyDesc_empty": "You're a thrifty person!",
+    "appStarts": "app starts",
     "appStartsPerDay": "Otwierasz Discorda {{- value}} razy dziennie",
     "totalTimeSpent": "Spędziłeś {{- value}} czasu na Discordzie",
-    "avgSessionTime": "średni czas sesji",
-    "receivedCalls": "odebrane połączenia",
+    "avgSessionTime": "avg. session time",
+    "receivedCalls": "received calls",
     "topHour": "najlepsza godzina",
-    "appStarted": "Aplikacja Discorda uruchomiona",
-    "topChatHour": "górna godzina czatu",
-    "reactionsAdded": "dodane reakcje",
-    "channelOpenings": "otwarte kanały",
-    "guildJoins": "dołączone serwery",
+    "appStarted": "Discord app started",
+    "topChatHour": "top chat hour",
+    "reactionsAdded": "reactions added",
+    "channelOpenings": "channel openings",
+    "guildJoins": "guild joins",
     "commands": "{{- value}} poleceń",
     "top": {
       "dms": "Wiadomości prywatnych",
@@ -167,23 +167,23 @@
       "premium": "Kliknij, by wyświetlić więcej"
     },
     "extra": {
-      "clickedNotifications": "kliknięte powiadomienia",
-      "completedCaptcha": "captcha ukończona",
-      "receivedEmail": "otrzymane e-maile",
-      "successfulLogin": "pomyślne logowania",
-      "avatarUpdates": "aktualizacje awatara",
+      "clickedNotifications": "notifications clicked",
+      "completedCaptcha": "captcha completed",
+      "receivedEmail": "emails received",
+      "successfulLogin": "logins successful",
+      "avatarUpdates": "avatar updates",
       "crashes": "awarie",
-      "authorizedOauth2": "autoryzowano oauth2",
-      "voiceMessagesRecorded": "nagrane wiadomości głosowe",
-      "reportedMessages": "zgłoszone wiadomości",
+      "authorizedOauth2": "oauth2 authorized",
+      "voiceMessagesRecorded": "voice messages recorded",
+      "reportedMessages": "messages reported",
       "editedMessages": "edytowane wiadomości",
-      "seenNitroAds": "zobaczone reklamy nitro",
-      "spentInVoiceChannels": "wydane w kanałach głosowych"
+      "seenNitroAds": "seen nitro ads",
+      "spentInVoiceChannels": "spent in voice channels"
     }
   },
   "sendingTimeStats": {
-    "messagesSentPerDay": "średnie wiadomości wysyłane dziennie",
-    "appOpeningsPerDay": "Dzienne otwarcia aplikacji Discord"
+    "messagesSentPerDay": "average messages sent per day",
+    "appOpeningsPerDay": "Discord app openings per day"
   },
   "sentimentAnalysis": {
     "title": "Analiza wrażliwości (eksperymentalna)",
@@ -215,7 +215,7 @@
       "description": "{{- value}} dostępne"
     },
     "dangerZone": {
-      "title": "Strefa niebezpieczeństwa",
+      "title": "Danger Zone",
       "description": "Twoje dane zostaną usunięte z tego urządzenia i naszych serwerów, ale nadal możesz mieć do nich dostęp, korzystając z wiadomości e-mail wysłanej przez Discorda. Dziękujemy za wypróbowanie aplikacji, przekaż nam swoją opinię na GitHub!",
       "loading": "Usuwanie...",
       "quit": "Zamknij i zresetuj"
@@ -250,17 +250,17 @@
     },
     "influencer": {
       "title": "Influencer",
-      "description": "Ci ludzie pomogli nam rozpowszechniać informacje o aplikacji."
+      "description": "These people helped us to spread the word about the app."
     },
     "developer": {
       "title": "Deweloper",
-      "description": "Ci ludzie wnieśli bezpośredni wkład w kod aplikacji."
+      "description": "These people made direct contributions to the app's code."
     },
     "translator": {
       "title": "Tłumacz",
-      "description": "Te osoby udostępniły aplikację na całym świecie."
+      "description": "These people made the app available worldwide."
     },
-    "contributions": "{{- value}} współtworcy"
+    "contributions": "{{- value}} contributions"
   },
   "error": {
     "title": "Nieoczekiwany obrót wydarzeń... Oto droga do odzyskania:",
@@ -289,11 +289,11 @@
     }
   },
   "exitingDemo": "Zamykanie...",
-  "exitDemo": "Wyjdź z demo i zacznij!",
+  "exitDemo": "Exit demo and get started!",
   "members": "{{- value}} użytkowników",
   "nav": {
     "overview": "Przegląd",
-    "top": "Najlepszy",
+    "top": "Top",
     "stats": "Statystyki",
     "settings": "Ustawienia"
   },
