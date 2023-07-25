@@ -11,16 +11,13 @@ export default function useHorizontalScroller<E extends HTMLElement>(
   },
 ) {
   useEffect(() => {
-    // return if it is disabled
     if (!enabled) return;
 
-    // return if ref is null
     const current = ref.current;
     if (!current) return;
 
     const onMouseWheel = (event: WheelEvent) => {
       event.preventDefault();
-
       current.scrollLeft += event.deltaY * scrollSpeed;
     };
 
