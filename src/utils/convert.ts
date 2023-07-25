@@ -1,9 +1,18 @@
 import LZString from "lz-string";
 
-export function stringToUint8Array(data: string) {
-  return new Uint8Array(JSON.parse(LZString.decompressFromUTF16(data)));
+export function stringToUint8Array(
+  data: string,
+  { decompress = true }: { decompress?: boolean } = {},
+) {
+  return new Uint8Array(
+    JSON.parse(decompress ? LZString.decompressFromUTF16(data) : data),
+  );
 }
 
-export function Uint8ArrayToString(data: Uint8Array) {
-  return LZString.compressToUTF16(JSON.stringify(Array.from(data)));
+export function Uint8ArrayToString(
+  data: Uint8Array,
+  { compress = true }: { compress?: boolean } = {},
+) {
+  const str = JSON.stringify(Array.from(data));
+  return compress ? LZString.compressToUTF16(str) : str;
 }

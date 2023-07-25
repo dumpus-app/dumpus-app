@@ -11,7 +11,6 @@ import { shallow } from "zustand/shallow";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
-import { Uint8ArrayToString } from "~/utils/convert";
 
 async function getFontData(weight: number) {
   return await fetch(
@@ -70,7 +69,7 @@ export default function useGenerateImg() {
       })),
     )) as Font[];
 
-    const svg = await satori(<StaticShareImage {...props} />, {
+    const svg = await satori(StaticShareImage(props), {
       width,
       height,
       fonts,
@@ -97,12 +96,26 @@ export default function useGenerateImg() {
       type: "image/png",
     });
 
-    const imageData = Uint8ArrayToString(pngBuffer);
-    const url = URL.createObjectURL(
-      new Blob([pngBuffer], { type: "image/png" }),
-    );
+    const blob = new Blob([pngBuffer], { type: "image/png" });
 
-    return { webFile, imageData, url };
+    async function base64FromBlob(blob: Blob): Promise<string> {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            resolve(reader.result);
+          } else {
+            reject("method did not return a string");
+          }
+        };
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    const url = await base64FromBlob(blob);
+
+    return { webFile, url };
   }, []);
 
   return {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
+import { Directory, Filesystem } from "@capacitor/filesystem";
 import { Share } from "@capacitor/share";
 import { Dialog, Transition } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
@@ -69,7 +69,6 @@ function useShare({ canShare }: { canShare: boolean }) {
 
   async function share({
     webFile,
-    imageData,
     url,
   }: Awaited<ReturnType<ReturnType<typeof useGenerateImg>["generate"]>>) {
     if (canShare) {
@@ -87,10 +86,9 @@ function useShare({ canShare }: { canShare: boolean }) {
       };
 
       const file = await Filesystem.writeFile({
-        data: imageData,
+        data: url,
         ...sharedOpts,
         recursive: true,
-        encoding: Encoding.UTF8,
       });
 
       try {
@@ -99,11 +97,11 @@ function useShare({ canShare }: { canShare: boolean }) {
           dialogTitle: "Share your recap",
           files: [file.uri],
         });
+
+        await Filesystem.deleteFile({ ...sharedOpts });
       } catch (err) {
         console.warn("Sharing aborted");
       }
-
-      await Filesystem.deleteFile({ ...sharedOpts });
 
       return;
     }
