@@ -4,11 +4,10 @@ import { ComputerDesktopIcon } from "@heroicons/react/24/solid";
 import i18next from "i18next";
 import { useMemo } from "react";
 import { SimpleIconsAndroid, SimpleIconsIos } from "~/components/icons";
-import { type OS } from "~/hooks/use-os";
 import { useTranslation } from "~/i18n/client";
 import type { Icon } from "~/types";
 
-const icons: Record<OS, Icon> = {
+const icons: Record<string, Icon> = {
   android: SimpleIconsAndroid,
   ios: SimpleIconsIos,
   desktop: ComputerDesktopIcon,
@@ -37,7 +36,7 @@ export default function useTranslationData() {
       const _data: Data = {
         os,
         display,
-        icon: icons[os as OS],
+        icon: icons[os as string],
         steps: [],
       };
       for (const [step, name] of Object.entries(steps)) {

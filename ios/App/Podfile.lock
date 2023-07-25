@@ -4,9 +4,13 @@ PODS:
   - CapacitorApp (5.0.6):
     - Capacitor
   - CapacitorCordova (5.0.3)
+  - CapacitorFilesystem (5.1.1):
+    - Capacitor
   - CapacitorNetwork (5.0.6):
     - Capacitor
   - CapacitorPluginSafeArea (2.0.5):
+    - Capacitor
+  - CapacitorShare (5.0.6):
     - Capacitor
   - CapacitorStatusBar (5.0.5):
     - Capacitor
@@ -19,8 +23,10 @@ DEPENDENCIES:
   - "Capacitor (from `../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.2.2/node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/.pnpm/@capacitor+app@5.0.6_@capacitor+core@5.2.2/node_modules/@capacitor/app`)"
   - "CapacitorCordova (from `../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.2.2/node_modules/@capacitor/ios`)"
+  - "CapacitorFilesystem (from `../../node_modules/.pnpm/@capacitor+filesystem@5.1.1_@capacitor+core@5.2.2/node_modules/@capacitor/filesystem`)"
   - "CapacitorNetwork (from `../../node_modules/.pnpm/@capacitor+network@5.0.6_@capacitor+core@5.2.2/node_modules/@capacitor/network`)"
   - "CapacitorPluginSafeArea (from `../../node_modules/.pnpm/capacitor-plugin-safe-area@2.0.5_@capacitor+core@5.2.2/node_modules/capacitor-plugin-safe-area`)"
+  - "CapacitorShare (from `../../node_modules/.pnpm/@capacitor+share@5.0.6_@capacitor+core@5.2.2/node_modules/@capacitor/share`)"
   - "CapacitorStatusBar (from `../../node_modules/.pnpm/@capacitor+status-bar@5.0.5_@capacitor+core@5.2.2/node_modules/@capacitor/status-bar`)"
   - CordovaPlugins (from `../capacitor-cordova-ios-plugins`)
   - "HugotomaziCapacitorNavigationBar (from `../../node_modules/.pnpm/@hugotomazi+capacitor-navigation-bar@2.0.1_@capacitor+core@5.2.2/node_modules/@hugotomazi/capacitor-navigation-bar`)"
@@ -32,10 +38,14 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/.pnpm/@capacitor+app@5.0.6_@capacitor+core@5.2.2/node_modules/@capacitor/app"
   CapacitorCordova:
     :path: "../../node_modules/.pnpm/@capacitor+ios@5.0.3_@capacitor+core@5.2.2/node_modules/@capacitor/ios"
+  CapacitorFilesystem:
+    :path: "../../node_modules/.pnpm/@capacitor+filesystem@5.1.1_@capacitor+core@5.2.2/node_modules/@capacitor/filesystem"
   CapacitorNetwork:
     :path: "../../node_modules/.pnpm/@capacitor+network@5.0.6_@capacitor+core@5.2.2/node_modules/@capacitor/network"
   CapacitorPluginSafeArea:
     :path: "../../node_modules/.pnpm/capacitor-plugin-safe-area@2.0.5_@capacitor+core@5.2.2/node_modules/capacitor-plugin-safe-area"
+  CapacitorShare:
+    :path: "../../node_modules/.pnpm/@capacitor+share@5.0.6_@capacitor+core@5.2.2/node_modules/@capacitor/share"
   CapacitorStatusBar:
     :path: "../../node_modules/.pnpm/@capacitor+status-bar@5.0.5_@capacitor+core@5.2.2/node_modules/@capacitor/status-bar"
   CordovaPlugins:
@@ -47,12 +57,14 @@ SPEC CHECKSUMS:
   Capacitor: 304a960e431f9e6f78556554ca71c41c1b2b9680
   CapacitorApp: 024e1b1bea5f883d79f6330d309bc441c88ad04a
   CapacitorCordova: def732a63679698df6fb392bbe6d269a0b61e937
+  CapacitorFilesystem: 38e85e56818420bed3f0aa1b77128f503a960821
   CapacitorNetwork: d80b3e79bef6ec37640ee2806c19771f07ff2d0c
   CapacitorPluginSafeArea: bfdd714827dbd89fb44fea286beec996e1b0c5c4
+  CapacitorShare: cd41743331cb71d217c029de54b681cbd91e0fcc
   CapacitorStatusBar: 540867ac3c63875b65bebd888f695de50a13a9a2
   CordovaPlugins: a041b932c1e92b3286e6f6b632c1ea9e1ea444f0
   HugotomaziCapacitorNavigationBar: 9220af908152f38caa3963b8de23c36bf43d2468
 
-PODFILE CHECKSUM: f22027e2360b524cf1e1f3f25a38658377e0c849
+PODFILE CHECKSUM: e1f1f12aec0ae51b2492011bf479c36604fc6074
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.12.1

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export type OS = "android" | "ios" | "desktop";
+export type OS = "android" | "ios" | "web";
 
 function getOS(): OS {
   const userAgent = window.navigator.userAgent;
@@ -13,7 +13,7 @@ function getOS(): OS {
   if (new RegExp(/(iphone|ipad|ipod)/, "i").test(userAgent)) {
     return "ios";
   }
-  return "desktop";
+  return "web";
 }
 
 export default function useOS() {
