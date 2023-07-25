@@ -33,7 +33,7 @@ export default function useGenerateImg() {
   >("idle");
   const [_init, setInit] = useStore(
     (state) => [state._init, state.setInit],
-    shallow
+    shallow,
   );
 
   const width = 1200;
@@ -45,7 +45,7 @@ export default function useGenerateImg() {
 
     try {
       const yoga = await initYoga(
-        await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer())
+        await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer()),
       );
       initSatori(yoga);
       if (!_init) {
@@ -99,7 +99,7 @@ export default function useGenerateImg() {
 
     const imageData = Uint8ArrayToString(pngBuffer);
     const url = URL.createObjectURL(
-      new Blob([pngBuffer], { type: "image/png" })
+      new Blob([pngBuffer], { type: "image/png" }),
     );
 
     return { webFile, imageData, url };
