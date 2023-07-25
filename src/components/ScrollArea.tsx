@@ -1,6 +1,8 @@
 "use client";
 
 import * as ScrollAreaPrimitve from "@radix-ui/react-scroll-area";
+import { useRef } from "react";
+import useHorizontalScroller from "~/hooks/use-horizontal-scroller";
 
 export type Props = {
   children: React.ReactNode;
@@ -9,13 +11,22 @@ export type Props = {
   >["orientation"];
 };
 
-export default function ScrollArea({ children, orientation }: Props) {
+function ScrollArea({ children, orientation }: Props) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useHorizontalScroller(ref, {
+    enabled: orientation === "horizontal",
+  });
+
   return (
     <ScrollAreaPrimitve.Root
       className="relative overflow-hidden"
       scrollHideDelay={150}
     >
-      <ScrollAreaPrimitve.Viewport className="h-full w-full rounded-[inherit]">
+      <ScrollAreaPrimitve.Viewport
+        className="h-full w-full rounded-[inherit]"
+        ref={ref}
+      >
         {children}
       </ScrollAreaPrimitve.Viewport>
       <ScrollAreaPrimitve.Scrollbar
@@ -28,6 +39,8 @@ export default function ScrollArea({ children, orientation }: Props) {
     </ScrollAreaPrimitve.Root>
   );
 }
+
+export default ScrollArea;
 
 function Spacer() {
   return <div className="w-2 shrink-0"></div>;
