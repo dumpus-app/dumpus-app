@@ -6,6 +6,8 @@ import { useCallback, useState } from "react";
 import { useMount } from "react-use";
 import satori, { Font, init as initSatori } from "satori/wasm";
 import initYoga from "yoga-wasm-web";
+import { create } from "zustand";
+import { shallow } from "zustand/shallow";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
@@ -16,30 +18,43 @@ async function getFontData(weight: number) {
   ).then((res) => res.arrayBuffer());
 }
 
-let _init = false;
+const useStore = create<{
+  _init: boolean;
+  setInit: (v: boolean) => void;
+}>((set) => ({
+  _init: false,
+  setInit: (v) => set({ _init: v }),
+}));
 
 export default function useGenerateImg() {
-  const [status, setStatus] = useState<"idle" | "loading" | "initialized">(
-    "idle",
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "initialized" | "error"
+  >("idle");
+  const [_init, setInit] = useStore(
+    (state) => [state._init, state.setInit],
+    shallow,
   );
+
   const width = 1200;
   const height = 775;
 
   async function init() {
     if (status !== "idle") return;
-    if (_init) {
-      setStatus("initialized");
-      return;
-    }
     setStatus("loading");
 
-    const yoga = await initYoga(
-      await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer()),
-    );
-    initSatori(yoga);
-    await resvg.initWasm(fetch("/wasm/resvg.wasm"));
-    setStatus("initialized");
-    _init = true;
+    try {
+      const yoga = await initYoga(
+        await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer()),
+      );
+      initSatori(yoga);
+      if (!_init) {
+        await resvg.initWasm(fetch("/wasm/resvg.wasm"));
+        setInit(true);
+      }
+      setStatus("initialized");
+    } catch (err) {
+      setStatus("error");
+    }
   }
 
   useMount(async () => await init());
@@ -54,7 +69,7 @@ export default function useGenerateImg() {
       })),
     )) as Font[];
 
-    const svg = await satori(<StaticShareImage {...props} />, {
+    const svg = await satori(StaticShareImage(props), {
       width,
       height,
       fonts,
@@ -77,17 +92,36 @@ export default function useGenerateImg() {
     });
     const pngBuffer = resvgJS.render().asPng();
 
-    const file = new File([pngBuffer], "image.png", { type: "image/png" });
-    const svgURL = URL.createObjectURL(
-      new Blob([pngBuffer], { type: "image/png" }),
-    );
-    return { svgURL, file };
+    const webFile = new File([pngBuffer], "image.png", {
+      type: "image/png",
+    });
+
+    const blob = new Blob([pngBuffer], { type: "image/png" });
+
+    async function base64FromBlob(blob: Blob): Promise<string> {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = reject;
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            resolve(reader.result);
+          } else {
+            reject("method did not return a string");
+          }
+        };
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    const url = await base64FromBlob(blob);
+
+    return { webFile, url };
   }, []);
 
   return {
     init,
     generate,
-    initialized: status === "initialized",
+    status,
     width,
     height,
   };

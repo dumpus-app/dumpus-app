@@ -1,3 +1,4 @@
+import { colors } from "#root/tailwind.config";
 import type { Metadata } from "next";
 import { BASE_URL, SITE_NAME } from "~/constants";
 
@@ -42,6 +43,7 @@ export function generateSEO({
       // Should be an empty string but Next doesn't let
       // us do such thing
       "darkreader-lock": "_",
+      "theme-color": colors.gray[950],
     },
   };
 }
