@@ -10,25 +10,32 @@ export type Props = {
   >["orientation"];
 };
 
-const ScrollArea = forwardRef<HTMLDivElement, Props>(({ children, orientation }: Props, ref) => {
-  return (
-    <ScrollAreaPrimitve.Root
-      className="relative overflow-hidden"
-      scrollHideDelay={150}
-    >
-      <ScrollAreaPrimitve.Viewport className="h-full w-full rounded-[inherit]" ref={ref}>
-        {children}
-      </ScrollAreaPrimitve.Viewport>
-      <ScrollAreaPrimitve.Scrollbar
-        orientation={orientation}
-        className="flex touch-none select-none p-0.5 transition-colors duration-[160ms] ease-out data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col no-hover:hidden"
+const ScrollArea = forwardRef<HTMLDivElement, Props>(
+  ({ children, orientation }: Props, ref) => {
+    return (
+      <ScrollAreaPrimitve.Root
+        className="relative overflow-hidden"
+        scrollHideDelay={150}
       >
-        <ScrollAreaPrimitve.Thumb className="relative flex-1 rounded-[10px] bg-gray-600 transition-colors before:absolute before:left-1/2 before:top-1/2 before:h-full before:min-h-[44px] before:w-full before:min-w-[44px] before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:cursor-pointer hover:bg-gray-500" />
-      </ScrollAreaPrimitve.Scrollbar>
-      <ScrollAreaPrimitve.Corner />
-    </ScrollAreaPrimitve.Root>
-  );
-}) as React.ForwardRefExoticComponent<Props & React.RefAttributes<HTMLDivElement>> & {
+        <ScrollAreaPrimitve.Viewport
+          className="h-full w-full rounded-[inherit]"
+          ref={ref}
+        >
+          {children}
+        </ScrollAreaPrimitve.Viewport>
+        <ScrollAreaPrimitve.Scrollbar
+          orientation={orientation}
+          className="flex touch-none select-none p-0.5 transition-colors duration-[160ms] ease-out data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col no-hover:hidden"
+        >
+          <ScrollAreaPrimitve.Thumb className="relative flex-1 rounded-[10px] bg-gray-600 transition-colors before:absolute before:left-1/2 before:top-1/2 before:h-full before:min-h-[44px] before:w-full before:min-w-[44px] before:-translate-x-1/2 before:-translate-y-1/2 before:content-[''] hover:cursor-pointer hover:bg-gray-500" />
+        </ScrollAreaPrimitve.Scrollbar>
+        <ScrollAreaPrimitve.Corner />
+      </ScrollAreaPrimitve.Root>
+    );
+  },
+) as React.ForwardRefExoticComponent<
+  Props & React.RefAttributes<HTMLDivElement>
+> & {
   Spacer: typeof Spacer;
 };
 

@@ -66,7 +66,7 @@ export default function TopDMs() {
   })();
 
   useScroller(cardsRef, {
-    orientation: 'horizontal',
+    orientation: "horizontal",
   });
 
   return (

@@ -65,7 +65,7 @@ export default function TopGuilds() {
 
   const cardsRef = useRef<HTMLDivElement>(null);
   useScroller(cardsRef, {
-    orientation: 'horizontal',
+    orientation: "horizontal",
   });
 
   return (

@@ -15,7 +15,7 @@ export default function TopChannels() {
   const data = useTopChannelsData().getData({});
   const cardsRef = useRef<HTMLDivElement>(null);
   useScroller(cardsRef, {
-    orientation: 'horizontal',
+    orientation: "horizontal",
   });
 
   return (
