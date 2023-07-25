@@ -7,14 +7,20 @@ import useTopChannelsData from "~/hooks/data/use-top-channels-data";
 import { useTranslation } from "~/i18n/client";
 import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
+import useScroller from "~/hooks/use-scroller";
+import { useRef } from "react";
 
 export default function TopChannels() {
   const { t } = useTranslation();
   const data = useTopChannelsData().getData({});
+  const cardsRef = useRef<HTMLDivElement>(null);
+  useScroller(cardsRef, {
+    orientation: 'horizontal',
+  });
 
   return (
     <Section title={t("mostActiveChannels")} href="/top/channels">
-      <ScrollArea orientation="horizontal">
+      <ScrollArea orientation="horizontal" ref={cardsRef}>
         <div className="flex">
           {(data || []).map((channel) => (
             <AvatarCard

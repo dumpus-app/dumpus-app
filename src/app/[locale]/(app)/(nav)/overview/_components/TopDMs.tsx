@@ -9,6 +9,8 @@ import useUserDetails from "~/hooks/use-user-details";
 import { avatarURLFallback } from "~/utils/discord";
 import { useTranslation } from "~/i18n/client";
 import DiscordImage from "~/components/DiscordImage";
+import { useRef } from "react";
+import useScroller from "~/hooks/use-scroller";
 
 function DMCard({
   dm,
@@ -48,6 +50,7 @@ export default function TopDMs() {
 
   const data = useTopDMsData().getData({});
   const networkState = useNetworkState();
+  const cardsRef = useRef<HTMLDivElement>(null);
 
   const size = (() => {
     switch (networkState.effectiveType) {
@@ -62,9 +65,13 @@ export default function TopDMs() {
     }
   })();
 
+  useScroller(cardsRef, {
+    orientation: 'horizontal',
+  });
+
   return (
     <Section title={t("mostActiveDMs")} href="/top/dms">
-      <ScrollArea orientation="horizontal">
+      <ScrollArea orientation="horizontal" ref={cardsRef}>
         <div className="flex">
           {(data || []).map((dm) => (
             <DMCard key={dm.rank} dm={dm} size={size} />

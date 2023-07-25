@@ -1,6 +1,7 @@
 "use client";
 
 import * as ScrollAreaPrimitve from "@radix-ui/react-scroll-area";
+import { forwardRef } from "react";
 
 export type Props = {
   children: React.ReactNode;
@@ -9,13 +10,13 @@ export type Props = {
   >["orientation"];
 };
 
-export default function ScrollArea({ children, orientation }: Props) {
+const ScrollArea = forwardRef<HTMLDivElement, Props>(({ children, orientation }: Props, ref) => {
   return (
     <ScrollAreaPrimitve.Root
       className="relative overflow-hidden"
       scrollHideDelay={150}
     >
-      <ScrollAreaPrimitve.Viewport className="h-full w-full rounded-[inherit]">
+      <ScrollAreaPrimitve.Viewport className="h-full w-full rounded-[inherit]" ref={ref}>
         {children}
       </ScrollAreaPrimitve.Viewport>
       <ScrollAreaPrimitve.Scrollbar
@@ -27,7 +28,13 @@ export default function ScrollArea({ children, orientation }: Props) {
       <ScrollAreaPrimitve.Corner />
     </ScrollAreaPrimitve.Root>
   );
-}
+}) as React.ForwardRefExoticComponent<Props & React.RefAttributes<HTMLDivElement>> & {
+  Spacer: typeof Spacer;
+};
+
+ScrollArea.displayName = "ScrollArea";
+
+export default ScrollArea;
 
 function Spacer() {
   return <div className="w-2 shrink-0"></div>;
