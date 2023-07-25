@@ -1,0 +1,304 @@
+{
+  "seo": {
+    "title": "Dumpus | Statistiken für Discord",
+    "description": "Erhalte detaillierte Einblicke und Statistiken über deinen Discord Account"
+  },
+  "global": {
+    "loading": {
+      "title": "Lädt…",
+      "description": "Bitte warten."
+    }
+  },
+  "onboarding": {
+    "routesLabels": {
+      "/": "Auf geht’s",
+      "/intro/1": "Alles klar!",
+      "/intro/2": "Großartig!",
+      "/intro/3": "Holen wir uns mein Paket!",
+      "/setup": "Fertig!"
+    },
+    "shared": {
+      "previous": "Zurück",
+      "trust": "Warum sollte ich der App vertrauen?",
+      "trustContent": [
+        "Dumpus ist 100% Open Source. Du kannst den Code auf [GitHub](https://github.com/dumpus-app/dumpus-app) lesen und sogar deinen eigenen Server hosten.",
+        "Wir haben auch eine komplett [client-side web app](https://ddpe.androz2091.fr) mit weniger Features, aber ohne externe API.",
+        "Die App funktioniert ohne das Speichern von Daten in der externen API. Wenn Du noch Fragen hast, kontaktiere uns unter contact@dumpus.app."
+      ],
+      "30DaysDelay": "Bitte beachte, dass es bis zu 30 Tage dauern kann, um die E-Mail zu erhalten. Hab ein wenig Geduld!",
+      "getData": "Wie erhalte ich meine Daten?"
+    },
+    "/": {
+      "welcome": "Willkommen bei Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Schritt {{n}}",
+      "steps": [
+        "Briefing",
+        "Daten anfordern",
+        "Neue Analyse"
+      ]
+    },
+    "slides": [
+      {
+        "title": "Wie funktioniert Dumpus?",
+        "description": "Discord protokolliert jede Aktion, die du auf deiner App ausführst, in deinem \"Datenpaket\". Dumpus analysiert dieses Paket, um Statistiken und Informationen über dein Konto zu generieren."
+      },
+      {
+        "title": "Kann ich Dumpus vertrauen?",
+        "description": "Dieses \"Data Package\" ist sehr sensibel, deshalb kann jeder unseren Code lesen und sehen, was wir damit machen (100% Open Source). Obwohl wir einen kostenlosen Verarbeitungsserver anbieten, kannst Du Deinen eigenen Server nutzen, um die volle Kontrolle über Deine Daten zu behalten."
+      },
+      {
+        "title": "Mit Freunden teilen!",
+        "description": "Statistiken sind zwar lustig zu sehen, aber es macht noch mehr Spaß, sie mit deinen Freunden zu vergleichen. Aus diesem Grund haben wir es uns leicht gemacht, deine Statistiken mit deinen Freunden zu teilen."
+      }
+    ],
+    "setup": {
+      "title": "Wie bekomme ich mein Datenpaket?",
+      "description": "Wähle ein Betriebssystem, um loszulegen.",
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "Desktop"
+      },
+      "steps": {
+        "settings": "Öffne deine Discord Einstellungen",
+        "privacy": "Öffne den \"Privatsphäre & Sicherheit\" Tab",
+        "request": "Klick auf \"Alle gesammelten Daten anfordern\""
+      }
+    },
+    "access": {
+      "title": "Datenpaket absenden",
+      "description": "Wähle deine bevorzugte Methode.",
+      "method": "{{n}} Methode",
+      "noPackageYet": "Keine Pakete verfügbar?",
+      "methods": {
+        "link": {
+          "title": "Gebe deinen Discord Link ein",
+          "description": "Den Link erhältst Du in der von Discord gesendeten E-Mail. Kopiere den Link, in dem Du auf **Du kannst ihn hier herunterladen** drückst.",
+          "discordLink": "Discord Link",
+          "advanced": "Erweitert",
+          "backendURL": "Backend URL",
+          "optional": "Optional",
+          "backendURLHint": "Deine eigene gehostete Open-Source-Server-URL",
+          "notice": "Indem du fortfährst, stimmst du unserer [Datenschutzrichtlinie](/privacy) und unseren [terms](/terms) zu.",
+          "explore": "Entdecke!",
+          "errors": {
+            "required": "Pflichtfeld",
+            "url": "Ungültige URL",
+            "startWith": "Link muss mit {{url}} beginnen",
+            "emptyKey": "UPN Schlüssel darf nicht leer sein"
+          }
+        },
+        "email": {
+          "title": "E-Mail übertragen (bald)",
+          "content": [
+            "Übertrage die von Discord erhaltene E-Mail auf **process@dumpus.app**. Wir senden dir einen Link, sobald alles fertig ist.",
+            "Bis bald!"
+          ]
+        },
+        "demo": {
+          "title": "Demo"
+        }
+      }
+    },
+    "loading": {
+      "queue": {
+        "title": "Du bist in der Warteschlange!",
+        "why": "Warum gibt es eine Warteschlange?",
+        "whyContent": [
+          "Dumpus ist ein kostenloser Service, und unser Server kann nicht mehr als ein paar Pakete gleichzeitig analysieren.",
+          "Deshalb haben wir eine Warteschlange, um sicherzustellen, dass jeder den Dienst nutzen kann.",
+          "Du kannst unseren API-Server selbst hosten, um die Warteschlange zu vermeiden."
+        ],
+        "position": "Position",
+        "waitingTime": "Geschätzte Wartezeit",
+        "useBackend": "Eigenes Backend verwenden"
+      },
+      "progress": {
+        "downloading": "Wird heruntergeladen",
+        "analyzing": "Wird analysiert",
+        "processed": "Verarbeitet",
+        "loading": {
+          "title": "Deine Daten werden geladen",
+          "description": "Bitte warten..."
+        },
+        "loadingDemo": {
+          "title": "Demo wird geladen",
+          "description": "Bitte warten..."
+        }
+      },
+      "error": "Ein Fehler ist aufgetreten",
+      "unknownPackageId": "Dieses Paket ist unbekannt.",
+      "unauthorized": "Du bist nicht berechtigt, mit diesen Paketdaten zu interagieren.",
+      "invalidLink": "Link ungültig.",
+      "unknownError": "Ein unbekannter Fehler ist aufgetreten.",
+      "expiredLink": "Link ist abgelaufen."
+    }
+  },
+  "stats": {
+    "messagesSent": "gesendete Nachrichten",
+    "messagesSentPerDay": "Das sind {{- value}} Nachrichten pro Tag!",
+    "titleMessagesSentPerDay": "Gesendete Nachrichten pro Tag",
+    "totalMessagesSent": "insgesamt gesendete Nachrichten",
+    "joinedServers": "Server beigetreten",
+    "joinedServersDesc": "Wir haben einen echten Discord Server Entdecker!",
+    "knownUsers": "bekannte Nutzer",
+    "knownUsersDesc": "Nun, Du kennst eine Menge Menschen!",
+    "spentMoney": "ausgegeben",
+    "spentMoneyDesc_positive": "Das ist eine Menge Geld...!",
+    "spentMoneyDesc_empty": "Du bist ein sparsamer Mensch!",
+    "appStarts": "App Öffnungen",
+    "appStartsPerDay": "Du öffnest Discord über {{- value}} mal pro Tag!",
+    "totalTimeSpent": "Du hast über {{- value}} auf Discord verbracht",
+    "avgSessionTime": "Ø Sitzungsdauer",
+    "receivedCalls": "empfangene Anrufe",
+    "topHour": "top Stunde",
+    "appStarted": "Discord App gestartet",
+    "topChatHour": "top Chat Stunde",
+    "reactionsAdded": "reaktionen hinzugefügt",
+    "channelOpenings": "kanalöffnungen",
+    "guildJoins": "Server Beitritte",
+    "commands": "{{- value}} Befehle",
+    "top": {
+      "dms": "DMs",
+      "guilds": "Server",
+      "channels": "Kanäle",
+      "loadMore": "Mehr laden",
+      "premium": "Zum Anzeigen freischalten"
+    },
+    "extra": {
+      "clickedNotifications": "angeklickte Benachrichtigungen",
+      "completedCaptcha": "Captcha abgeschlossen",
+      "receivedEmail": "Empfangene E-Mails",
+      "successfulLogin": "Anmeldung erfolgreich",
+      "avatarUpdates": "Profilbild Änderungen",
+      "crashes": "Abstürze",
+      "authorizedOauth2": "Oauth2 autorisiert",
+      "voiceMessagesRecorded": "Sprachnachrichten aufgezeichnet",
+      "reportedMessages": "gemeldete Nachrichten",
+      "editedMessages": "Nachrichten bearbeitet",
+      "seenNitroAds": "gesehene Nitro Werbung",
+      "spentInVoiceChannels": "in Sprachkanälen verbracht"
+    }
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "durchschnittlich verschickte Nachrichten pro Tag",
+    "appOpeningsPerDay": "Discord App Öffnungen pro Tag"
+  },
+  "sentimentAnalysis": {
+    "title": "Empfindungsanalyse (experimentell)",
+    "anger": "Ärger\n",
+    "happiness": "Freude",
+    "score": "Aktiv mit Punktzahl: {{- value}}"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "toasts": {
+      "copyError": "Fehler beim Kopieren",
+      "copied": "In die Zwischenablage kopiert!"
+    },
+    "packageSwitch": {
+      "title": "Paket wechseln",
+      "description": "Generiert am {{- date}}"
+    },
+    "packageDetails": {
+      "title": "Paketdetails",
+      "UPNKey": "UPN Schlüssel",
+      "dateAdded": "Hinzugefügt am",
+      "packageID": "Paket-ID",
+      "discordUser": "Discord Benutzer",
+      "backendURL": "Backend URL"
+    },
+    "languages": {
+      "switch": "Sprache wechseln",
+      "title": "Sprachen",
+      "description": "{{- value}} verfügbar"
+    },
+    "dangerZone": {
+      "title": "Gefahrenzone",
+      "description": "Deine Daten werden von diesem Gerät und unseren Servern gelöscht, aber du kannst immer noch darauf zugreifen, indem du die E-Mail von Discord verwendest. Danke, dass du die App ausprobiert hast, gib uns Feedback auf GitHub!",
+      "loading": "Wird gelöscht...",
+      "quit": "Schließen und zurücksetzen"
+    },
+    "actions": {
+      "title": "Aktionen",
+      "notEnoughStorage": {
+        "title": "Konnte kein neues Paket hinzufügen",
+        "description": "Nicht genügend Speicher in der App"
+      },
+      "deleting": "Wird gelöscht...",
+      "delete": "Aktuelles Paket löschen",
+      "restoring": "Wiederherstellen…",
+      "restorePurchases": "Käufe wiederherstellen"
+    },
+    "about": {
+      "title": "Infos",
+      "version": "Version",
+      "website": "Web-Anwendung",
+      "community": "Community",
+      "contribute": "Mitwirken",
+      "contributors": "Projektmitwirkende",
+      "credits": "Credits"
+    }
+  },
+  "credits": {
+    "title": "Credits",
+    "back": "Zurück zu den Einstellungen",
+    "bugHunter": {
+      "title": "Bug Jäger",
+      "description": "Die wichtigsten Leute, um dir eine stabile App zur Verfügung zu stellen."
+    },
+    "influencer": {
+      "title": "Influencer(in)",
+      "description": "Diese Leute haben uns geholfen, die App zu verbreiten."
+    },
+    "developer": {
+      "title": "Entwickler",
+      "description": "Diese Leute haben direkt zum Code der App beigetragen."
+    },
+    "translator": {
+      "title": "Übersetzer*in",
+      "description": "Diese Leute haben die App weltweit verfügbar gemacht."
+    },
+    "contributions": "{{- value}} Beiträge"
+  },
+  "error": {
+    "title": "Überraschende Wende der Ereignisse... Hier ist dein Weg zur Erholung:",
+    "retry": "Versuche es erneut",
+    "report": "Auf GitHub melden",
+    "noInternet": "Keine Internetverbindung",
+    "noInternetDescription": " Internetzugriff ist notwendig, um die Dumpus-App zu verwenden. Bitte verbinde dich mit dem Internet, um fortzufahren."
+  },
+  "sheerNumbers": "Leere Zahlen",
+  "mostActiveDMs": "Aktivste DMs",
+  "mostActiveServers": "Aktivster Server",
+  "mostActiveChannels": "Aktivster Kanäle",
+  "discordHours": "Deine Discord Stunden",
+  "activityTime": "Aktivitäten im Laufe der Zeit",
+  "messageSentCount": "Anzahl gesendeter Nachrichten",
+  "share": {
+    "title": "Teilen",
+    "description": "Teile deine Statistiken mit deinen Freunden!",
+    "generating": "Generiere...",
+    "download": "Herunterladen",
+    "recap": "Teile deinen recap",
+    "recapDescription": "Teile deinen Recap mit deinen Freunden auf Twitter, Instagram, Reddit, Discord...! :)",
+    "popup": {
+      "title": "Hier ist meine Discord Recap!",
+      "description": "Generiert auf https://dumpus.app, probiere es selbst!"
+    }
+  },
+  "exitingDemo": "Beenden...",
+  "exitDemo": "Demo beenden und loslegen!",
+  "members": "{{- value}} Mitglieder",
+  "nav": {
+    "overview": "Übersicht",
+    "top": "Top",
+    "stats": "Statistiken",
+    "settings": "Einstellungen"
+  },
+  "topUsedBot": "Meist verwendete Bots",
+  "topChannels": "Top Kanäle",
+  "firstMessages": "Deine ersten Nachrichten",
+  "relatedGuild": "Verwandte Server"
+}

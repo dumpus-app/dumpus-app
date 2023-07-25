@@ -1,0 +1,304 @@
+{
+  "seo": {
+    "title": "Dumpus | Statystyki dla Discorda",
+    "description": "Uzyskaj szczegółowe informacje i statystyki dla swojego konta Discord"
+  },
+  "global": {
+    "loading": {
+      "title": "Ładowanie…",
+      "description": "Proszę czekać..."
+    }
+  },
+  "onboarding": {
+    "routesLabels": {
+      "/": "Zaczynajmy!",
+      "/intro/1": "Rozumiem!",
+      "/intro/2": "Świetnie!",
+      "/intro/3": "Zdobądź mój pakiet!",
+      "/setup": "Rozumiem!"
+    },
+    "shared": {
+      "previous": "Poprzedni",
+      "trust": "Dlaczego mam ufać aplikacji?",
+      "trustContent": [
+        "Dumpus jest w 100% otwartym oprogramowaniem. Możesz sprawdzić kod na [GitHub](https://github.com/dumpus-app/dumpus-app), a nawet stworzyć swój własny serwer.",
+        "Mamy również ukończoną [aplikację internetową po stronie klienta](https://ddpe.androz2091.fr), z mniejszą ilością funkcji, ale bez zewnętrznych API.",
+        "Aplikacja działa bez żadnego odczytywania danych przechowywanych w zewnętrznym API. Jeśli masz jakieś pytania, skontaktuj się z nami pod adresem contact@dumpus.app."
+      ],
+      "30DaysDelay": "Pamiętaj, że otrzymanie wiadomości e-mail może zająć do 30 dni. Bądź cierpliwy!",
+      "getData": "Jak uzyskać moje dane?"
+    },
+    "/": {
+      "welcome": "Witamy w Dumpus",
+      "description": "$t(seo.description)",
+      "step": "Etap {{n}}",
+      "steps": [
+        "Odprawa",
+        "Poproś o swoje dane",
+        "Rozpocznij badanie"
+      ]
+    },
+    "slides": [
+      {
+        "title": "Jak działa Dumpus?",
+        "description": "Discord zapisuje każdą akcję, którą wykonujesz w swojej aplikacji w \"Pakiecie danych\". Dumpus analizuje ten pakiet, aby wygenerować statystyki i informacje o Twoim koncie."
+      },
+      {
+        "title": "Czy mogę zaufać Dumpusowi?",
+        "description": "Ten \"Pakiet danych\" jest bardzo wrażliwy. Dlatego każdy może przeczytać nasz kod i zobaczyć, co z nim robimy (100% open source). Chociaż oferujemy bezpłatny serwer przetwarzania, możesz użyć własnego serwera, aby zachować pełną kontrolę nad swoimi danymi."
+      },
+      {
+        "title": "Udostępnij to swoim znajomym!",
+        "description": "Chociaż statystyki są zabawne, to są jeszcze bardziej zabawne w porównaniu z Twoimi przyjaciółmi. Właśnie dlatego ułatwiliśmy dzielenie się swoimi statystykami ze znajomymi."
+      }
+    ],
+    "setup": {
+      "title": "Jak mogę uzyskać mój pakiet danych?",
+      "description": "Wybierz system operacyjny, aby zacząć.",
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "Komputer"
+      },
+      "steps": {
+        "settings": "Otwórz swoje ustawienia Discord",
+        "privacy": "Otwórz zakładkę \"Prywatność i bezpieczeństwo\"",
+        "request": "Kliknij na \"Zażądaj dane\""
+      }
+    },
+    "access": {
+      "title": "Prześlij swój pakiet danych",
+      "description": "Wybierz swoją ulubioną metodę",
+      "method": "Metoda {{n}}",
+      "noPackageYet": "Brak pakietu?",
+      "methods": {
+        "link": {
+          "title": "Wpisz swój link do Discorda",
+          "description": "Możesz otrzymać go w wiadomości e-mail otrzymanej od Discorda. Skopiuj link z przycisku nazwanego **Możesz go pobrać tutaj**.",
+          "discordLink": "Link do Discorda",
+          "advanced": "Zaawansowane",
+          "backendURL": "Adres URL backendu",
+          "optional": " (opcjonalnie)",
+          "backendURLHint": "Twój własny adres URL otwartego serwera",
+          "notice": "Kontynuując, zgadzasz się na naszą [politykę prywatności](/privacy) i nasze [warunki](/terms).",
+          "explore": "Odkrywaj",
+          "errors": {
+            "required": "Wymagane",
+            "url": "Nieprawidłowy adres URL",
+            "startWith": "Link musi zaczynać się od {{url}}",
+            "emptyKey": "Klucz UPN nie może być pusty"
+          }
+        },
+        "email": {
+          "title": "Przenieś e-mail (wkrótce)",
+          "content": [
+            "Przenieś wiadomość e-mail otrzymaną od Discorda na **process@dumpus.app**. Wyślemy Ci link, gdy będzie gotowy.",
+            "Do zobaczenia wkrótce!"
+          ]
+        },
+        "demo": {
+          "title": "Wersja demonstracyjna"
+        }
+      }
+    },
+    "loading": {
+      "queue": {
+        "title": "Jesteś w kolejce!",
+        "why": "Czemu jest kolejka?",
+        "whyContent": [
+          "Dumpus jest darmową usługą i nasz serwer nie może analizować więcej niż kilku pakietów jednocześnie.",
+          "Dlatego mamy kolejkę, aby upewnić się, że wszyscy mogą korzystać z tej usługi.",
+          "Możesz samodzielnie hostować nasz serwer API, aby pominąć kolejkę."
+        ],
+        "position": "pozycja",
+        "waitingTime": "Szacowany czas oczekiwania",
+        "useBackend": "Użyj własnego backendu"
+      },
+      "progress": {
+        "downloading": "Pobieranie",
+        "analyzing": "Analizowanie",
+        "processed": "Przetworzono",
+        "loading": {
+          "title": "Wczytujemy Twoje dane",
+          "description": "Proszę czekać..."
+        },
+        "loadingDemo": {
+          "title": "Wczytujemy demo",
+          "description": "Proszę czekać..."
+        }
+      },
+      "error": "Wystąpił błąd...",
+      "unknownPackageId": "Ten pakiet jest nieznany.",
+      "unauthorized": "Nie masz uprawnień, aby wchodzić w interakcje z tym pakietem.",
+      "invalidLink": "Link jest nieprawidłowy.",
+      "unknownError": "Wystąpił nieznany błąd.",
+      "expiredLink": "Link wygasł."
+    }
+  },
+  "stats": {
+    "messagesSent": "wysłanych wiadomości",
+    "messagesSentPerDay": "To jest około {{- value}} wiadomości dziennie!",
+    "titleMessagesSentPerDay": "Wiadomości wysyłanych dziennie",
+    "totalMessagesSent": "wszystkie wysłane wiadomości",
+    "joinedServers": "dołączonych serwerów",
+    "joinedServersDesc": "Mamy prawdziwego odkrywcę serwerów Discord!",
+    "knownUsers": "znanych użytkowników",
+    "knownUsersDesc": "No cóż, znasz wielu ludzi!",
+    "spentMoney": "wydano",
+    "spentMoneyDesc_positive": "To jest dużo gotówki...!",
+    "spentMoneyDesc_empty": "Jesteś kłopotliwą osobą!",
+    "appStarts": "uruchomienia aplikacji",
+    "appStartsPerDay": "Otwierasz Discorda {{- value}} razy dziennie",
+    "totalTimeSpent": "Spędziłeś {{- value}} czasu na Discordzie",
+    "avgSessionTime": "średni czas sesji",
+    "receivedCalls": "odebrane połączenia",
+    "topHour": "najlepsza godzina",
+    "appStarted": "Aplikacja Discorda uruchomiona",
+    "topChatHour": "górna godzina czatu",
+    "reactionsAdded": "dodane reakcje",
+    "channelOpenings": "otwarte kanały",
+    "guildJoins": "dołączone serwery",
+    "commands": "{{- value}} poleceń",
+    "top": {
+      "dms": "Wiadomości prywatnych",
+      "guilds": "Serwery",
+      "channels": "Kanały",
+      "loadMore": "Wczytaj więcej",
+      "premium": "Kliknij, by wyświetlić więcej"
+    },
+    "extra": {
+      "clickedNotifications": "kliknięte powiadomienia",
+      "completedCaptcha": "captcha ukończona",
+      "receivedEmail": "otrzymane e-maile",
+      "successfulLogin": "pomyślne logowania",
+      "avatarUpdates": "aktualizacje awatara",
+      "crashes": "awarie",
+      "authorizedOauth2": "autoryzowano oauth2",
+      "voiceMessagesRecorded": "nagrane wiadomości głosowe",
+      "reportedMessages": "zgłoszone wiadomości",
+      "editedMessages": "edytowane wiadomości",
+      "seenNitroAds": "zobaczone reklamy nitro",
+      "spentInVoiceChannels": "wydane w kanałach głosowych"
+    }
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "średnie wiadomości wysyłane dziennie",
+    "appOpeningsPerDay": "Dzienne otwarcia aplikacji Discord"
+  },
+  "sentimentAnalysis": {
+    "title": "Analiza wrażliwości (eksperymentalna)",
+    "anger": "Gniew",
+    "happiness": "Szczęście",
+    "score": "Aktywne z wynikiem: {{- value}}"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "toasts": {
+      "copyError": "Nie można skopiować do schowka",
+      "copied": "Skopiowano do schowka!"
+    },
+    "packageSwitch": {
+      "title": "Zmień pakiet",
+      "description": "Wygenerowano {{- date}}"
+    },
+    "packageDetails": {
+      "title": "Szczegóły pakietu",
+      "UPNKey": "Klucz UPN",
+      "dateAdded": "Dodano",
+      "packageID": "ID Pakietu",
+      "discordUser": "Użytkownik Discorda",
+      "backendURL": "Adres URL backendu"
+    },
+    "languages": {
+      "switch": "Zmień Język",
+      "title": "Języki",
+      "description": "{{- value}} dostępne"
+    },
+    "dangerZone": {
+      "title": "Strefa niebezpieczeństwa",
+      "description": "Twoje dane zostaną usunięte z tego urządzenia i naszych serwerów, ale nadal możesz mieć do nich dostęp, korzystając z wiadomości e-mail wysłanej przez Discorda. Dziękujemy za wypróbowanie aplikacji, przekaż nam swoją opinię na GitHub!",
+      "loading": "Usuwanie...",
+      "quit": "Zamknij i zresetuj"
+    },
+    "actions": {
+      "title": "Czynności",
+      "notEnoughStorage": {
+        "title": "Nie można dodać nowego pakietu",
+        "description": "Za mało miejsca w aplikacji"
+      },
+      "deleting": "Usuwanie...",
+      "delete": "Usuń aktualny pakiet",
+      "restoring": "Przywracanie...",
+      "restorePurchases": "Przywróć zakupy"
+    },
+    "about": {
+      "title": "O Aplikacji",
+      "version": "Wersja",
+      "website": "Aplikacja internetowa",
+      "community": "Społeczność",
+      "contribute": "Wesprzyj",
+      "contributors": "Współtwórcy projektu",
+      "credits": "Autorzy"
+    }
+  },
+  "credits": {
+    "title": "Autorzy",
+    "back": "Wróć do ustawień",
+    "bugHunter": {
+      "title": "Łowca błędów",
+      "description": "Najważniejsze osoby, które zapewniają ci stabilną aplikację."
+    },
+    "influencer": {
+      "title": "Influencer",
+      "description": "Ci ludzie pomogli nam rozpowszechniać informacje o aplikacji."
+    },
+    "developer": {
+      "title": "Deweloper",
+      "description": "Ci ludzie wnieśli bezpośredni wkład w kod aplikacji."
+    },
+    "translator": {
+      "title": "Tłumacz",
+      "description": "Te osoby udostępniły aplikację na całym świecie."
+    },
+    "contributions": "{{- value}} współtworcy"
+  },
+  "error": {
+    "title": "Nieoczekiwany obrót wydarzeń... Oto droga do odzyskania:",
+    "retry": "Powtórz",
+    "report": "Zgłoś błąd na GitHub",
+    "noInternet": "Brak połączenia z Internetem",
+    "noInternetDescription": " Dostęp do Internetu jest niezbędny, aby korzystać z aplikacji Dumpus. Połącz się ponownie z Internetem, aby kontynuować."
+  },
+  "sheerNumbers": "Numery skrzynek",
+  "mostActiveDMs": "Najbardziej aktywni użytkownicy",
+  "mostActiveServers": "Najbardziej aktywne serwery",
+  "mostActiveChannels": "Najbardziej aktywne kanały",
+  "discordHours": "Twoje godziny na Discordzie",
+  "activityTime": "Aktywność w czasie",
+  "messageSentCount": "Liczba wysłanych wiadomości",
+  "share": {
+    "title": "Udostępnij",
+    "description": "Udostępnij swoje statystyki znajomym!",
+    "generating": "Generowanie...",
+    "download": "Pobierz",
+    "recap": "Udostępnij swoje podsumowanie",
+    "recapDescription": "Udostępnij swoje podsumowanie znajomym na Twitterze, Instagramie, Reddit, Discordzie...! :)",
+    "popup": {
+      "title": "Oto moje podsumowanie z Discorda!",
+      "description": "Wygenerowano na https://dumpus.app, wypróbuj teraz!"
+    }
+  },
+  "exitingDemo": "Zamykanie...",
+  "exitDemo": "Wyjdź z demo i zacznij!",
+  "members": "{{- value}} użytkowników",
+  "nav": {
+    "overview": "Przegląd",
+    "top": "Najlepszy",
+    "stats": "Statystyki",
+    "settings": "Ustawienia"
+  },
+  "topUsedBot": "Najczęściej używane boty",
+  "topChannels": "Najlepsze kanały",
+  "firstMessages": "Twoje pierwsze wiadomości",
+  "relatedGuild": "Powiązany serwer"
+}

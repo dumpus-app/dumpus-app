@@ -1,0 +1,304 @@
+{
+  "seo": {
+    "title": "Dumpus | Discord的統計資料",
+    "description": "獲取您的 Discord 帳戶的詳細見解和統計數據"
+  },
+  "global": {
+    "loading": {
+      "title": "載入中...",
+      "description": "請稍候"
+    }
+  },
+  "onboarding": {
+    "routesLabels": {
+      "/": "開始吧",
+      "/intro/1": "了解",
+      "/intro/2": "太棒了！",
+      "/intro/3": "來取得我的包裹吧！",
+      "/setup": "了解"
+    },
+    "shared": {
+      "previous": "上一頁",
+      "trust": "為甚麼我要相信此app?",
+      "trustContent": [
+        "Dumpus 是 100% 開源的。您可以在 [GitHub](https://github.com/dumpus-app/dumpus-app) 上查看代碼，甚至可以託管在自己的服務器上",
+        "我們還有一個完全的 [客戶端 Web 應用程序](https://ddpe.androz2091.fr) ，功能較少，但沒有任何外部 API",
+        "該應用程序無需外部 API 上存儲任何可讀數據即可運行。如果您仍有任何疑問，請隨時通過 contact@dumpus.app 與我們聯繫。"
+      ],
+      "30DaysDelay": "請記住，最多可能需要 30 天才能收到電子郵件。要有耐心！",
+      "getData": "如何獲取我的資料?"
+    },
+    "/": {
+      "welcome": "歡迎來到 Dumpus",
+      "description": "$t(seo.description)",
+      "step": "第 {{n}} 步",
+      "steps": [
+        "Briefing",
+        "請求你的資料",
+        "開始分析"
+      ]
+    },
+    "slides": [
+      {
+        "title": "Dumpus 是如何工作的？",
+        "description": "Discord 會在“Data Package”中記錄您在其應用程序上執行的每個操作。 Dumpus 分析此資料包以生成有關您帳戶的統計資料和訊息。"
+      },
+      {
+        "title": "我可以相信 Dumpus 嗎?",
+        "description": "這個“Data Package”非常敏感。這就是為什麼任何人都可以閱讀我們的代碼並了解我們用它做什麼（100% 開源）。儘管我們提供免費的處理伺服器，但您可以使用自己的伺服器來完全控制您的數據。"
+      },
+      {
+        "title": "與您的朋友們分享!",
+        "description": "雖然統計數據看起來很有趣，但與朋友分享比較更有趣。這就是為什麼我們讓您可以輕鬆地與朋友分享您的統計數據。"
+      }
+    ],
+    "setup": {
+      "title": "何獲取我的數據包？",
+      "description": "選擇一個作業系統來開始",
+      "osDisplays": {
+        "android": "Android",
+        "ios": "iOS",
+        "desktop": "電腦版應用程式"
+      },
+      "steps": {
+        "settings": "打開您的 Discord 設置",
+        "privacy": "打開“隱私&安全”標籤",
+        "request": "點擊“請求資料”"
+      }
+    },
+    "access": {
+      "title": "提交您的數據包",
+      "description": "選擇您最喜歡的方法",
+      "method": "方法 {{n}}",
+      "noPackageYet": "還沒有包裹?",
+      "methods": {
+        "link": {
+          "title": "輸入你的Discord連結",
+          "description": "您可以在從 Discord 收到的電子郵件中獲取它。複製標題為“**您可以在此處下載**”的按鈕中的鏈接。",
+          "discordLink": "Discord 連結",
+          "advanced": "進階設定",
+          "backendURL": "後端網址",
+          "optional": "選用項",
+          "backendURLHint": "您自己託管的開源伺服器網址",
+          "notice": "繼續操作即表示您同意我們的 [隱私政策](/privacy) 和我們的 [條款](/terms)。",
+          "explore": "探索！",
+          "errors": {
+            "required": "必填",
+            "url": "無效的連結",
+            "startWith": "鏈接必須以{{url}}開頭",
+            "emptyKey": "UPN key不能為空"
+          }
+        },
+        "email": {
+          "title": "轉寄電子郵件（很快）",
+          "content": [
+            "將從 Discord 收到的電子郵件轉移到 **process@dumpus.app**。準備好後，我們會向您發送鏈接。",
+            "下次見!"
+          ]
+        },
+        "demo": {
+          "title": "演示"
+        }
+      }
+    },
+    "loading": {
+      "queue": {
+        "title": "您在隊列中！",
+        "why": "爲什麽要排隊？",
+        "whyContent": [
+          "Dumpus 是一項免費服務，我們的服務器無法同時分析多個包。",
+          "這就是為什麼我們要排隊，以確保每個人都可以使用該服務。",
+          "您可以自行託管我們的 API 服務器以避免排隊。"
+        ],
+        "position": "位置",
+        "waitingTime": "預計等待時間為",
+        "useBackend": "使用我自己的後端"
+      },
+      "progress": {
+        "downloading": "下載中",
+        "analyzing": "分析中...",
+        "processed": "處理",
+        "loading": {
+          "title": "我們正在加載您的數據",
+          "description": "請稍等..."
+        },
+        "loadingDemo": {
+          "title": "我們正在加載演示",
+          "description": "請稍等..."
+        }
+      },
+      "error": "發生了一個錯誤...",
+      "unknownPackageId": "未知的包裹",
+      "unauthorized": "您無權與此包數據進行交互",
+      "invalidLink": "鏈接無效",
+      "unknownError": "出現未知錯誤",
+      "expiredLink": "鏈接已過期"
+    }
+  },
+  "stats": {
+    "messagesSent": "已發送消息",
+    "messagesSentPerDay": "每天大約有 {{- value}} 條消息！",
+    "titleMessagesSentPerDay": "每天發送的消息數",
+    "totalMessagesSent": "發送的消息總數",
+    "joinedServers": "已加入過的伺服器",
+    "joinedServersDesc": "我們有一個真正的 Discord 伺服器瀏覽器！",
+    "knownUsers": "已知用戶",
+    "knownUsersDesc": "嗯，你認識很多人！",
+    "spentMoney": "花費",
+    "spentMoneyDesc_positive": "這是好大的一筆開銷...!",
+    "spentMoneyDesc_empty": "你真是個節儉的人啊！",
+    "appStarts": "啟動應用程式",
+    "appStartsPerDay": "您每天打開 Discord 約 {{- value}} 次！",
+    "totalTimeSpent": "您在 Discord 上花費了大約 {{- value}}",
+    "avgSessionTime": "平均會話時間",
+    "receivedCalls": "接到電話",
+    "topHour": "高峰時段",
+    "appStarted": "Discord 應用程序已啟動",
+    "topChatHour": "熱門聊天時間",
+    "reactionsAdded": "添加反應",
+    "channelOpenings": "打開頻道",
+    "guildJoins": "加入伺服器",
+    "commands": "{{- value}} 指令",
+    "top": {
+      "dms": "私訊",
+      "guilds": "伺服器",
+      "channels": "頻道",
+      "loadMore": "查看更多",
+      "premium": "解鎖查看更多"
+    },
+    "extra": {
+      "clickedNotifications": "點擊通知",
+      "completedCaptcha": "驗證碼已完成",
+      "receivedEmail": "收到的電子郵件",
+      "successfulLogin": "登入成功",
+      "avatarUpdates": "頭像更新",
+      "crashes": "崩潰",
+      "authorizedOauth2": "oauth2 授權",
+      "voiceMessagesRecorded": "已錄製的語音留言",
+      "reportedMessages": "報告的消息",
+      "editedMessages": "編輯訊息",
+      "seenNitroAds": "查看nitro廣告",
+      "spentInVoiceChannels": "花費時間在語音頻道上"
+    }
+  },
+  "sendingTimeStats": {
+    "messagesSentPerDay": "平均每天發送的訊息數",
+    "appOpeningsPerDay": "每日打開Discord 應用次數"
+  },
+  "sentimentAnalysis": {
+    "title": "情感分析（實驗）",
+    "anger": "憤怒",
+    "happiness": "幸福",
+    "score": "主動得分: {{- value}}"
+  },
+  "settings": {
+    "title": "設定",
+    "toasts": {
+      "copyError": "無法複製到剪貼板",
+      "copied": "已複製至剪貼簿！"
+    },
+    "packageSwitch": {
+      "title": "切換包裹",
+      "description": "生成於 {{- date}}"
+    },
+    "packageDetails": {
+      "title": "包裹詳情",
+      "UPNKey": "UPN key",
+      "dateAdded": "添加时间",
+      "packageID": "包裹ID",
+      "discordUser": "Discord 用戶",
+      "backendURL": "後端網址"
+    },
+    "languages": {
+      "switch": "切換語言",
+      "title": "語言",
+      "description": "{{- value}} 可用的"
+    },
+    "dangerZone": {
+      "title": "危險操作",
+      "description": "您的數據將從該設備和我們的伺服器中刪除，但您仍然可以使用 Discord 發送的電子郵件訪問這些數據。感謝您試用該應用程序，請在 GitHub 上給我們一些反饋！",
+      "loading": "刪除中⋯",
+      "quit": "退出並重置"
+    },
+    "actions": {
+      "title": "操作",
+      "notEnoughStorage": {
+        "title": "無法添加新的包裹",
+        "description": "應用程序存儲空間不足"
+      },
+      "deleting": "刪除中⋯",
+      "delete": "刪除當前包",
+      "restoring": "正在恢復...",
+      "restorePurchases": "恢復購買"
+    },
+    "about": {
+      "title": "關於",
+      "version": "版本",
+      "website": "Web 應用程式",
+      "community": "社群",
+      "contribute": "貢獻",
+      "contributors": "項目貢獻者",
+      "credits": "感謝"
+    }
+  },
+  "credits": {
+    "title": "感謝",
+    "back": "返回設定",
+    "bugHunter": {
+      "title": "蟲子獵人",
+      "description": "最重要的人為您提供穩定的應用程序"
+    },
+    "influencer": {
+      "title": "影響者",
+      "description": "這些人幫助我們傳播有關該應用程序的訊息"
+    },
+    "developer": {
+      "title": "開發者",
+      "description": "這些人對應用程序的代碼做出了直接貢獻"
+    },
+    "translator": {
+      "title": "翻譯者",
+      "description": "這些人使該應用程序在全球範圍內可用"
+    },
+    "contributions": "{{- value}} 項貢獻"
+  },
+  "error": {
+    "title": "事情發生了令人驚訝的轉變...這是您的康復之路：",
+    "retry": "重試",
+    "report": "透過 GitHub 反饋",
+    "noInternet": "沒有網路連線",
+    "noInternetDescription": "使用 Dumpus 應用程序需要訪問網路。請重新連接到網路以繼續。"
+  },
+  "sheerNumbers": "Sheer numbers",
+  "mostActiveDMs": "最活躍的私訊",
+  "mostActiveServers": "最活躍的伺服器",
+  "mostActiveChannels": "最活躍的頻道",
+  "discordHours": "您在 Discord 的時間",
+  "activityTime": "活躍時間",
+  "messageSentCount": "訊息發送數量",
+  "share": {
+    "title": "分享",
+    "description": "與您的朋友分享您的統計數據！",
+    "generating": "正在產生…",
+    "download": "下載",
+    "recap": "分享您的回顧",
+    "recapDescription": "在 Twitter、Instagram、Reddit、Discord 上與您的朋友分享您的回顧！ :)",
+    "popup": {
+      "title": "這是我的 Discord 回顧！",
+      "description": "在 https://dumpus.app 上生成，自己嘗試一下！"
+    }
+  },
+  "exitingDemo": "正在退出...",
+  "exitDemo": "退出演示並開始！",
+  "members": "{{- value}} 成員",
+  "nav": {
+    "overview": "概述",
+    "top": "排行",
+    "stats": "統計",
+    "settings": "設定"
+  },
+  "topUsedBot": "最常用的機器人",
+  "topChannels": "熱門頻道",
+  "firstMessages": "您的第一條消息",
+  "relatedGuild": "相關伺服器"
+}
