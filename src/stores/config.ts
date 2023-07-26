@@ -21,6 +21,10 @@ type State = {
   premium: boolean;
   timeRange: TimeRange;
   goToOnboardingAccess: boolean;
+  loadingData?: {
+    packageLink: string;
+    backendURL?: string;
+  };
   packages: Package[];
   selectedID: null | string;
 };
@@ -30,6 +34,7 @@ type Actions = {
   setPremium: (v: boolean) => void;
   setTimeRange: (v: TimeRange) => void;
   setGoToOnboardingAccess: (v: boolean) => void;
+  setLoadingData: (v: State["loadingData"]) => void;
   setPackages: (v: Package[]) => void;
   setSelectedID: (v: string | null) => void;
   setPackage: (id: Package["id"], v: Partial<Package>) => Package | null;
@@ -52,6 +57,7 @@ const initialState: State = {
   premium: false,
   timeRange: "Lifetime",
   goToOnboardingAccess: false,
+  loadingData: undefined,
   packages: [],
   selectedID: null,
 };
@@ -74,6 +80,8 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
     set((state) => ({ config: { ...state.config, timeRange: v } })),
   setGoToOnboardingAccess: (v) =>
     set((state) => ({ config: { ...state.config, goToOnboardingAccess: v } })),
+  setLoadingData: (v) =>
+    set((state) => ({ config: { ...state.config, loadingData: v } })),
   setPackages: (v) =>
     set((state) => ({ config: { ...state.config, packages: v } })),
   setSelectedID: (v) =>

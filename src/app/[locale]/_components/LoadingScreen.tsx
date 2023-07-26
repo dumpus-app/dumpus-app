@@ -24,10 +24,11 @@ export default function LoadingScreen({
   const pathname = usePathname() || "/";
   const router = useRouter();
 
-  const [selectedID, goToOnboardingAccess, db] = useAppStore(
+  const [selectedID, goToOnboardingAccess, loadingData, db] = useAppStore(
     ({ config, database }) => [
       config.selectedID,
       config.goToOnboardingAccess,
+      config.loadingData,
       database.db,
     ],
     shallow,
@@ -48,11 +49,20 @@ export default function LoadingScreen({
 
       if (pathname.startsWith(`/${i18next.language}/onboarding/`)) {
         logger.info("onboarding");
-        if (!hasSelectedPackage && goToOnboardingAccess) {
-          logger.info("go to access");
-          pathname === `${redirectPath}/access`;
+
+        if (!!loadingData) {
+          logger.info("go to loading");
+
+          const { packageLink, backendURL } = loadingData;
+          pathname = `${redirectPath}/loading/?packageLink=${encodeURIComponent(
+            packageLink,
+          )}&backendURL=${encodeURIComponent(backendURL || "")}`;
         }
         return pathname;
+      } else if (goToOnboardingAccess) {
+        logger.info("go to access");
+
+        pathname = `${redirectPath}/access`;
       }
 
       logger.info("no onboarding");
