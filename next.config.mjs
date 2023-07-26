@@ -24,6 +24,7 @@ const config = {
 
     return config;
   },
+  transpilePackages: ["satori"],
 };
 
 export default config;
