@@ -24,7 +24,6 @@ html {
   @apply overflow-y-scroll;
 }
 
-/* TODO: make this actually work */
-/* [id] {
-  @apply scroll-mt-20;
-} */
+[id] {
+  @apply scroll-mt-28;
+}

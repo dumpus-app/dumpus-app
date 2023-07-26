@@ -21,7 +21,7 @@ export default function DailySentMessages() {
   }));
 
   return (
-    <Section title={t("activityTime")} href="/stats#daily-sent-messages">
+    <Section title={t("activityTime")} href="/stats#activity-time">
       <SimpleBarChart
         data={data}
         className="px-2"
