@@ -9,6 +9,26 @@
       "description": "Please wait."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Upload one package every 30 days"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Let's go",
@@ -137,6 +157,7 @@
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "messages sent",
     "messagesSentPerDay": "That's about {{- value}} messages per day!",
     "titleMessagesSentPerDay": "Messages sent per day",
@@ -181,6 +202,16 @@
       "seenNitroAds": "seen nitro ads",
       "spentInVoiceChannels": "spent in voice channels"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
@@ -230,7 +261,8 @@
       "deleting": "Deleting...",
       "delete": "Delete current package",
       "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases"
+      "restorePurchases": "Restore purchases",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "About",
@@ -301,5 +333,12 @@
   "topUsedBot": "Top used bots",
   "topChannels": "Top channels",
   "firstMessages": "Your first messages",
-  "relatedGuild": "Related guild"
+  "relatedGuild": "Related guild",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }

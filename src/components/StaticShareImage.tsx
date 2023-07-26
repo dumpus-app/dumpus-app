@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslation } from "~/i18n/client";
 
 type ListElement = {
   name: string;
@@ -19,6 +20,7 @@ export type Props = {
   };
   topDMS: ListElement[];
   topGuilds: ListElement[];
+  t: ReturnType<typeof useTranslation>["t"];
 };
 
 function StatCard({
@@ -102,6 +104,7 @@ export default function StaticShareImage({
   stats,
   topDMS,
   topGuilds,
+  t,
 }: Props) {
   return (
     <div tw="h-full w-full flex flex-col bg-gray-950 text-gray-400">
@@ -118,7 +121,7 @@ export default function StaticShareImage({
               height={128}
             />
             <div tw="flex flex-col justify-center ml-4">
-              <div tw="text-gray-300 text-2xl">Stats for Discord</div>
+              <div tw="text-gray-300 text-2xl">{t("shareImage.title")}</div>
               <div tw="text-white font-bold text-6xl">{user.displayName}</div>
             </div>
           </div>
@@ -126,7 +129,7 @@ export default function StaticShareImage({
             <div tw="flex">
               <StatCard
                 value={stats.messagesSent}
-                label="number of messages you sent"
+                label={t("shareImage.messagesSent")}
                 tw="mr-4"
               >
                 <svg
@@ -141,7 +144,7 @@ export default function StaticShareImage({
               </StatCard>
               <StatCard
                 value={stats.timeSpent}
-                label="time spent online on Discord"
+                label={t("shareImage.timeSpent")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -161,7 +164,7 @@ export default function StaticShareImage({
             <div tw="flex mt-4">
               <StatCard
                 value={stats.appOpenings}
-                label="number of times you opened the app"
+                label={t("shareImage.appOpenings")}
                 tw="mr-4"
               >
                 <svg
@@ -180,7 +183,7 @@ export default function StaticShareImage({
               </StatCard>
               <StatCard
                 value={stats.networkSize}
-                label="number of users you talked with"
+                label={t("shareImage.talkedWith")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -195,12 +198,12 @@ export default function StaticShareImage({
             </div>
           </div>
           <div tw="flex mt-4">
-            <TopList title="Top DMs" elements={topDMS} tw="mr-4" />
-            <TopList title="Top Guilds" elements={topGuilds} />
+            <TopList title={t("shareImage.topDMS")} elements={topDMS} tw="mr-4" />
+            <TopList title={t("shareImage.topGuilds")} elements={topGuilds} />
           </div>
           <div tw="mt-auto flex justify-between items-center">
             <div tw="text-white flex text-xl">
-              <div>Get yours at</div>
+              <div>{t("shareImage.getYours")}</div>
               <div tw="text-brand-300 ml-2">dumpus.app</div>
             </div>
             {/* eslint-disable-next-line */}

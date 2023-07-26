@@ -1,7 +1,9 @@
 import { SparklesIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
+import { useTranslation } from "~/i18n/client";
 
 export default function PremiumBadge({ className }: { className?: string }) {
+  const { t } = useTranslation();
   return (
     <div
       className={clsx(
@@ -10,7 +12,7 @@ export default function PremiumBadge({ className }: { className?: string }) {
       )}
     >
       <SparklesIcon className="-ml-0.5 mr-1 h-3 w-3" />
-      <span>Premium</span>
+      <span>{t("premium.premium")}</span>
     </div>
   );
 }

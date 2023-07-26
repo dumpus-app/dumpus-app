@@ -56,6 +56,7 @@ function useImageData() {
         count: formatNumber(guild.message_count),
       };
     }),
+    t: useTranslation().t,
   };
 }
 

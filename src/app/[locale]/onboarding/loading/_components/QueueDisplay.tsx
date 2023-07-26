@@ -72,7 +72,7 @@ function QueueExplanationDialog({
                     className="w-full"
                     onClick={() => setOpen(false)}
                   >
-                    Got it!
+                    {t("onboarding.routesLabels./intro/1")}
                   </Button>
                 </div>
               </Dialog.Panel>
