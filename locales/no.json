@@ -132,7 +132,8 @@
       "unauthorized": "Du har ikke tillatelse til å utføre handlinger med disse pakkedataene.",
       "invalidLink": "Lenken er ugyldig.",
       "unknownError": "En ukjent feil oppstod.",
-      "expiredLink": "Lenken har utløpt."
+      "expiredLink": "Lenken har utløpt.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
