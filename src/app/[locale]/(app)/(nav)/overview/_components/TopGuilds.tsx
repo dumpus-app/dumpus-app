@@ -26,12 +26,21 @@ function GuildCard({
     staleTime: Infinity,
   });
 
+  const id = `guild-${guild.guild_id}`;
+
   return (
     <AvatarCard
+      id={id}
       name={guild.guild_name}
       messages={guild.message_count}
       rank={guild.rank}
-      href={`/top/guilds/details?id=${guild.guild_id}`}
+      href={{
+        pathname: "/top/guilds/details",
+        query: {
+          id: guild.guild_id,
+          redirect: `/overview#${id}`,
+        },
+      }}
       image={
         isSuccess && data.error === undefined ? (
           <div className="relative aspect-square w-full">

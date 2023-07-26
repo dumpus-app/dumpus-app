@@ -17,7 +17,7 @@ import { firstCharFromUnicode } from "~/utils";
 
 export default function Page() {
   const params = useSearchParams()!;
-  const channelID = params.get("channel_id")!;
+  const channelID = params.get("id")!;
 
   const { hasData, channel, guild, stats, dailySentMessages } = useChannelData({
     channelID,
@@ -55,7 +55,7 @@ export default function Page() {
           className="absolute right-2 top-4 hidden sm:block"
         />
       </ProfileHeader>
-      <RelatedGuild guild={guild} />
+      <RelatedGuild guild={guild} channelID={channel.channel_id} />
       {hasData ? (
         <>
           <Stats

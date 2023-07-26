@@ -10,7 +10,13 @@ import { firstCharFromUnicode } from "~/utils";
 import { iconColor } from "~/utils/discord";
 import { formatNumber } from "~/utils/format";
 
-export default function RelatedGuild({ guild }: { guild: Guild }) {
+export default function RelatedGuild({
+  guild,
+  channelID,
+}: {
+  guild: Guild;
+  channelID: string;
+}) {
   const { messagesCount } = useRelatedGuild({ guildID: guild.guild_id });
   const { t } = useTranslation();
 
@@ -18,7 +24,13 @@ export default function RelatedGuild({ guild }: { guild: Guild }) {
     <Section title={t("relatedGuild")}>
       <div className="px-2">
         <DetailCard
-          href={`/top/guilds/details?id=${guild.guild_id}`}
+          href={{
+            pathname: "/top/guilds/details",
+            query: {
+              id: guild.guild_id,
+              redirect: `/top/channels/details/?id=${channelID}`,
+            },
+          }}
           title={guild.guild_name}
           description={`${formatNumber(messagesCount)} ${t(
             "stats.messagesSent",
