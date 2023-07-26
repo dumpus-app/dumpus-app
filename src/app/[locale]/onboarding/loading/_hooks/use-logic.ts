@@ -101,12 +101,14 @@ function useRedirect({
   packageLink,
   UPNKey,
   backendURL,
+  afterInit,
 }: {
   packageID: string;
   initialData?: ArrayBuffer;
   packageLink: string;
   UPNKey: string;
   backendURL?: string;
+  afterInit: () => void;
 }) {
   const router = useRouter();
   const { init } = useSQLInit();
@@ -129,6 +131,7 @@ function useRedirect({
           backendURL: backendURL || DEFAULT_PACKAGE_API_URL,
         },
       }).then(() => {
+        afterInit();
         router.replace(`/${i18next.language}/overview`);
       });
       return null;
@@ -141,6 +144,7 @@ function useRedirect({
 export default function useLogic() {
   const { packageLink, backendURL, UPNKey } = useURLParams();
   const api = usePackageAPI({ baseURL: backendURL });
+  const setLoadingData = useAppStore(({ config }) => config.setLoadingData);
 
   const process = useProcess({
     api,
@@ -148,13 +152,24 @@ export default function useLogic() {
     enabled: !!packageLink,
   });
 
+  const processValid = !!process.data?.isAccepted;
   const packageID = process.data?.packageId;
+
+  useQuery({
+    queryKey: ["package-api", "save-state"],
+    queryFn: () => {
+      setLoadingData({ packageLink: packageLink!, backendURL });
+      return null;
+    },
+    staleTime: Infinity,
+    enabled: processValid,
+  });
 
   const status = useStatus({
     api,
     packageID: packageID || "",
     UPNKey: UPNKey || "",
-    enabled: !!process.data?.isAccepted,
+    enabled: processValid,
   });
 
   const data = useData({
@@ -170,6 +185,9 @@ export default function useLogic() {
     packageLink: packageLink || "",
     UPNKey: UPNKey || "",
     backendURL,
+    afterInit: () => {
+      setLoadingData(undefined);
+    },
   });
 
   const error =

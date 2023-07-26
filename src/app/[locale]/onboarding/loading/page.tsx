@@ -8,10 +8,15 @@ import QueueDisplay from "./_components/QueueDisplay";
 import useLogic from "./_hooks/use-logic";
 
 function Wrapper({ children }: { children: React.ReactNode }) {
+  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col items-center space-y-4">
       <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
       {children}
+      <p className="mt-4 text-gray-400">
+        {t("onboarding.loading.comeBackLater")}
+      </p>
     </div>
   );
 }
