@@ -132,7 +132,8 @@
       "unauthorized": "Nie masz uprawnień, aby wchodzić w interakcje z tym pakietem.",
       "invalidLink": "Link jest nieprawidłowy.",
       "unknownError": "Wystąpił nieznany błąd.",
-      "expiredLink": "Link wygasł."
+      "expiredLink": "Link wygasł.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
