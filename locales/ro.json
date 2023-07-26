@@ -61,9 +61,9 @@
         "desktop": "Desktop"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "Deschide setările Discord",
+        "privacy": "Deschide \"Confidențialitate și securitate\"",
+        "request": "Apasă pe \"Solicită Date\""
       }
     },
     "access": {
@@ -106,168 +106,169 @@
         "title": "Ești la coadă!",
         "why": "De ce este o coadă?",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "Dumpus este un serviciu gratuit, iar serverul nostru nu poate analiza mai mult de câteva pachete în același timp.",
+          "De aceea avem o coadă, pentru a ne asigura că toată lumea poate folosi serviciul.",
+          "Puteți găzdui singur serverul nostru API pentru a evita coada."
         ],
         "position": "poziție",
         "waitingTime": "Timpul de așteptare estimat este",
         "useBackend": "Folosește propriul meu backend"
       },
       "progress": {
-        "downloading": "Downloading",
-        "analyzing": "Analyzing",
-        "processed": "Processed",
+        "downloading": "Se descarcă",
+        "analyzing": "Se analizează",
+        "processed": "Procesat",
         "loading": {
-          "title": "We’re loading your data",
-          "description": "Please wait..."
+          "title": "Îți încărcăm datele",
+          "description": "Te rog să aștepți..."
         },
         "loadingDemo": {
-          "title": "We’re loading the demo",
-          "description": "Please wait..."
+          "title": "Se încarcă demo-ul",
+          "description": "Te rog să aștepți..."
         }
       },
-      "error": "An error occurred...",
-      "unknownPackageId": "This package is unknown.",
-      "unauthorized": "You are not allowed to interact with this package data.",
+      "error": "A apărut o eroare...",
+      "unknownPackageId": "Acest pachet este necunoscut.",
+      "unauthorized": "Nu ai voie să interacționezi cu datele acestui pachet.",
       "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occured.",
-      "expiredLink": "Link expired."
+      "unknownError": "O eroare necunoscută a avut loc.",
+      "expiredLink": "Link expirat.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
     "messagesSent": "mesaje trimise",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
-    "titleMessagesSentPerDay": "Messages sent per day",
-    "totalMessagesSent": "total messages sent",
-    "joinedServers": "joined servers",
+    "messagesSentPerDay": "Adică aproximativ {{- value}} mesaje pe zi!",
+    "titleMessagesSentPerDay": "Mesaje trimise pe zi",
+    "totalMessagesSent": "de mesaje trimise în total",
+    "joinedServers": "servere alăturate",
     "joinedServersDesc": "Avem un adevărat explorator de server Discord!",
     "knownUsers": "utilizatori cunoscuți",
     "knownUsersDesc": "Ei bine, cunoști o mulțime de oameni!",
     "spentMoney": "cheltuiți",
     "spentMoneyDesc_positive": "Sunt mulți bani...!",
     "spentMoneyDesc_empty": "Ești o persoană gospodărească!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
+    "appStarts": "pornește aplicația",
+    "appStartsPerDay": "Tu deschizi Discord de aproximativ {{- value}} ori pe zi!",
+    "totalTimeSpent": "Ai petrecut aproximativ {{- value}} pe Discord",
     "avgSessionTime": "timpul mediu de sesiune",
-    "receivedCalls": "received calls",
-    "topHour": "top hour",
-    "appStarted": "Discord app started",
-    "topChatHour": "top chat hour",
-    "reactionsAdded": "reactions added",
-    "channelOpenings": "channel openings",
-    "guildJoins": "guild joins",
-    "commands": "{{- value}} commands",
+    "receivedCalls": "apeluri primite",
+    "topHour": "ora de vârf",
+    "appStarted": "Aplicația Discord a început",
+    "topChatHour": "ora de vorbit de vârf",
+    "reactionsAdded": "reacții adăugate",
+    "channelOpenings": "deschideri de canal",
+    "guildJoins": "servere alăturate",
+    "commands": "{{- value}} comenzi",
     "top": {
       "dms": "DMs",
-      "guilds": "Guilds",
-      "channels": "Channels",
-      "loadMore": "Load more",
-      "premium": "Unlock to view more"
+      "guilds": "Servere",
+      "channels": "Canale",
+      "loadMore": "Încarcă mai mult",
+      "premium": "Deblochează să vezi mai mult"
     },
     "extra": {
-      "clickedNotifications": "notifications clicked",
-      "completedCaptcha": "captcha completed",
-      "receivedEmail": "emails received",
-      "successfulLogin": "logins successful",
-      "avatarUpdates": "avatar updates",
-      "crashes": "crashes",
-      "authorizedOauth2": "oauth2 authorized",
-      "voiceMessagesRecorded": "voice messages recorded",
-      "reportedMessages": "messages reported",
-      "editedMessages": "messages edited",
-      "seenNitroAds": "seen nitro ads",
-      "spentInVoiceChannels": "spent in voice channels"
+      "clickedNotifications": "notificări accesate",
+      "completedCaptcha": "captcha finalizat",
+      "receivedEmail": "email-uri primite",
+      "successfulLogin": "autentificări cu succes",
+      "avatarUpdates": "actualizări de avatar",
+      "crashes": "crash-uri",
+      "authorizedOauth2": "oauth2 autorizat",
+      "voiceMessagesRecorded": "mesajele vocale înregistrate",
+      "reportedMessages": "mesajele raportate",
+      "editedMessages": "mesajele editate",
+      "seenNitroAds": "de reclame nitro văzute",
+      "spentInVoiceChannels": "petrecute în canalele vocale"
     }
   },
   "sendingTimeStats": {
-    "messagesSentPerDay": "average messages sent per day",
-    "appOpeningsPerDay": "Discord app openings per day"
+    "messagesSentPerDay": "mesajele medii trimise pe zi",
+    "appOpeningsPerDay": "Deschideri ale aplicației Discord pe zi"
   },
   "sentimentAnalysis": {
     "title": "Sentiment analysis (experimental)",
-    "anger": "Anger",
-    "happiness": "Happiness",
-    "score": "Active with score: {{- value}}"
+    "anger": "Furie",
+    "happiness": "Fericire",
+    "score": "Activ cu scorul: {{- value}}"
   },
   "settings": {
-    "title": "Settings",
+    "title": "Setări",
     "toasts": {
-      "copyError": "Can't copy to clipboard",
-      "copied": "Copied to clipboard!"
+      "copyError": "Nu se poate copia în clipboard",
+      "copied": "Copiat în clipboard!"
     },
     "packageSwitch": {
-      "title": "Switch Package",
-      "description": "Generated on {{- date}}"
+      "title": "Schimbă pachetul",
+      "description": "Generat pe {{- date}}"
     },
     "packageDetails": {
-      "title": "Package Details",
-      "UPNKey": "UPN key",
-      "dateAdded": "Added on",
-      "packageID": "Package ID",
-      "discordUser": "Discord user",
+      "title": "Detalii Pachet",
+      "UPNKey": "Cheia UPN",
+      "dateAdded": "Adăugat pe",
+      "packageID": "ID-ul pachetului",
+      "discordUser": "Utilizator Discord",
       "backendURL": "Backend URL"
     },
     "languages": {
-      "switch": "Switch language",
-      "title": "Languages",
-      "description": "{{- value}} available"
+      "switch": "Schimbă limba",
+      "title": "Limbi",
+      "description": "{{- value}} valabile"
     },
     "dangerZone": {
-      "title": "Danger Zone",
-      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
-      "loading": "Deleting...",
-      "quit": "Quit and reset"
+      "title": "Zonă periculoasă",
+      "description": "Datele tale vor fi șterse de pe acest dispozitiv și de pe serverele noastre, dar le poți accesa în continuare folosind e-mailul trimis de Discord. Îți mulțumim că ai încercat aplicația, oferă-ne câteva feedback pe GitHub!",
+      "loading": "Se șterge...",
+      "quit": "Ieși și resetează"
     },
     "actions": {
-      "title": "Actions",
+      "title": "Acțiuni",
       "notEnoughStorage": {
-        "title": "Can't add new package",
-        "description": "Not enough storage in app"
+        "title": "Nu se poate adăuga un pachet nou",
+        "description": "Spațiu de stocare insuficient în aplicație"
       },
-      "deleting": "Deleting...",
-      "delete": "Delete current package",
-      "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases"
+      "deleting": "Se șterge...",
+      "delete": "Șterge pachetul curent",
+      "restoring": "Se restaurează...",
+      "restorePurchases": "Restabilește achizițiile"
     },
     "about": {
-      "title": "About",
-      "version": "Version",
-      "website": "Web application",
-      "community": "Community",
-      "contribute": "Contribute",
-      "contributors": "Project's contributors",
-      "credits": "Credits"
+      "title": "Despre",
+      "version": "Versiune",
+      "website": "Aplicație Web",
+      "community": "Comunitate",
+      "contribute": "Contribuie",
+      "contributors": "Contribuitorii proiectului",
+      "credits": "Credite"
     }
   },
   "credits": {
-    "title": "Credits",
-    "back": "Back to settings",
+    "title": "Credite",
+    "back": "Înapoi la setări",
     "bugHunter": {
-      "title": "Bug Hunter",
-      "description": "Most important people to provide you with stable app."
+      "title": "Vanator de bug-uri",
+      "description": "Cei mai importanți oameni pentru a-ți oferi o aplicație stabilă."
     },
     "influencer": {
       "title": "Influencer",
-      "description": "These people helped us to spread the word about the app."
+      "description": "Acești oameni ne-au ajutat să răspândim vestea despre aplicație."
     },
     "developer": {
-      "title": "Developer",
-      "description": "These people made direct contributions to the app's code."
+      "title": "Dezvoltator",
+      "description": "Acești oameni au contribuit direct la codul aplicației."
     },
     "translator": {
-      "title": "Translator",
-      "description": "These people made the app available worldwide."
+      "title": "Traducător",
+      "description": "Acești oameni au făcut aplicația disponibilă în întreaga lume."
     },
-    "contributions": "{{- value}} contributions"
+    "contributions": "{{- value}} contribuiri"
   },
   "error": {
-    "title": "Surprising turn of events... Here is your path to recovery:",
-    "retry": "Retry",
-    "report": "Report on GitHub",
-    "noInternet": "No Internet Connection",
-    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
+    "title": "Întorsătură surprinzătoare a evenimentelor... Iată calea ta spre recuperare:",
+    "retry": "Reîncearcă",
+    "report": "Raportează pe GitHub",
+    "noInternet": "Fără conexiune internet",
+    "noInternetDescription": " Accesul la internet este necesar pentru a utiliza aplicația Dumpus. Vă rugăm să vă reconectați la internet pentru a continua."
   },
   "sheerNumbers": "Cifre simple",
   "mostActiveDMs": "Cele mai active DM-uri",
@@ -277,28 +278,28 @@
   "activityTime": "Activitate de-a lungul timpului",
   "messageSentCount": "Număr de mesaje trimise",
   "share": {
-    "title": "Share",
-    "description": "Share your stats with your friends!",
-    "generating": "Generating...",
-    "download": "Download",
-    "recap": "Share your recap",
-    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "title": "Distribuie",
+    "description": "Împărtășește-ți statisticile cu prietenii tăi!",
+    "generating": "Se generează...",
+    "download": "Descarcă",
+    "recap": "Împărtășește-ți rezumatul",
+    "recapDescription": "Împărtășește-ți rezumatul prietenilor tăi de pe Twitter, Instagram, Reddit, Discord...! :)",
     "popup": {
-      "title": "Here is my Discord recap!",
-      "description": "Generated on https://dumpus.app, try it yourself!"
+      "title": "Iată rezumatul meu Discord!",
+      "description": "Generat pe https://dumpus.app, încearcă!"
     }
   },
-  "exitingDemo": "Exiting...",
-  "exitDemo": "Exit demo and get started!",
-  "members": "{{- value}} members",
+  "exitingDemo": "Ieșire...",
+  "exitDemo": "Ieși din demo și începe!",
+  "members": "{{- value}} membri",
   "nav": {
-    "overview": "Overview",
+    "overview": "Prezentare generală",
     "top": "Top",
-    "stats": "Stats",
-    "settings": "Settings"
+    "stats": "Statistici",
+    "settings": "Setări"
   },
-  "topUsedBot": "Top used bots",
-  "topChannels": "Top channels",
-  "firstMessages": "Your first messages",
+  "topUsedBot": "Cei mai folosiți boți",
+  "topChannels": "Cele mai bune canale",
+  "firstMessages": "Primele tale mesaje",
   "relatedGuild": "Related guild"
 }
