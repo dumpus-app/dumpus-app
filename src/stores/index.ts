@@ -83,10 +83,9 @@ export function syncAppStore() {
   });
 }
 
-if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
+if (typeof window !== "undefined") {
   const {
     config: { setPremium },
   } = useAppStore.getState();
-  // @ts-ignore
   window.setPremium = setPremium;
 }
