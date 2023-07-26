@@ -132,7 +132,8 @@
       "unauthorized": "您無權與此包數據進行交互",
       "invalidLink": "鏈接無效",
       "unknownError": "出現未知錯誤",
-      "expiredLink": "鏈接已過期"
+      "expiredLink": "鏈接已過期",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
