@@ -16,27 +16,37 @@ export default function TopChannels() {
     <Section title={t("mostActiveChannels")} href="/top/channels">
       <ScrollArea orientation="horizontal">
         <div className="flex">
-          {(data || []).map((channel) => (
-            <AvatarCard
-              key={channel.rank}
-              name={"#" + channel.channel_name}
-              messages={channel.message_count}
-              rank={channel.rank}
-              href={`/top/channels/details?channel_id=${channel.channel_id}`}
-              image={
-                <div
-                  className="relative flex aspect-square w-full items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950"
-                  style={{
-                    backgroundColor: iconColor(
-                      channel.guild_id + channel.channel_id,
-                    ),
-                  }}
-                >
-                  <div>{firstCharFromUnicode(channel.channel_name)}</div>
-                </div>
-              }
-            />
-          ))}
+          {(data || []).map((channel) => {
+            const id = `channel-${channel.channel_id}`;
+            return (
+              <AvatarCard
+                id={id}
+                key={channel.rank}
+                name={"#" + channel.channel_name}
+                messages={channel.message_count}
+                rank={channel.rank}
+                href={{
+                  pathname: "/top/channels/details",
+                  query: {
+                    id: channel.channel_id,
+                    redirect: `/overview#${id}`,
+                  },
+                }}
+                image={
+                  <div
+                    className="relative flex aspect-square w-full items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950"
+                    style={{
+                      backgroundColor: iconColor(
+                        channel.guild_id + channel.channel_id,
+                      ),
+                    }}
+                  >
+                    <div>{firstCharFromUnicode(channel.channel_name)}</div>
+                  </div>
+                }
+              />
+            );
+          })}
           <ScrollArea.Spacer />
         </div>
       </ScrollArea>

@@ -30,30 +30,41 @@ export default function TopChannelsList() {
   return (
     <div className="px-2 py-4 desktop-container sm:py-8">
       <div className="grid gap-2 sm:grid-cols-2">
-        {data.map((channel) => (
-          <DetailCard.WithRank
-            key={channel.rank}
-            href={`/top/channels/details?channel_id=${channel.channel_id}`}
-            rank={channel.rank}
-            title={"#" + channel.channel_name}
-            description={`${channel.guild_name} · ${formatNumber(
-              channel.message_count,
-            )} ${t("stats.messagesSent")}`}
-            leftSlot={
-              <div
-                className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
-                style={{
-                  backgroundColor: iconColor(
-                    channel.guild_id + channel.channel_id,
-                  ),
-                }}
-              >
-                <div>{firstCharFromUnicode(channel.channel_name)}</div>
-              </div>
-            }
-            rightIcon={ChevronRightIcon}
-          />
-        ))}
+        {data.map((channel) => {
+          const id = `channel-${channel.channel_id}`;
+
+          return (
+            <DetailCard.WithRank
+              id={id}
+              key={channel.rank}
+              href={{
+                pathname: "/top/channels/details",
+                query: {
+                  id: channel.channel_id,
+                  redirect: `/top/channels#${id}`,
+                },
+              }}
+              rank={channel.rank}
+              title={"#" + channel.channel_name}
+              description={`${channel.guild_name} · ${formatNumber(
+                channel.message_count,
+              )} ${t("stats.messagesSent")}`}
+              leftSlot={
+                <div
+                  className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
+                  style={{
+                    backgroundColor: iconColor(
+                      channel.guild_id + channel.channel_id,
+                    ),
+                  }}
+                >
+                  <div>{firstCharFromUnicode(channel.channel_name)}</div>
+                </div>
+              }
+              rightIcon={ChevronRightIcon}
+            />
+          );
+        })}
       </div>
       {data.length < count && <LoadMore loadMore={fetchNextPage} />}
     </div>
