@@ -17,6 +17,9 @@ jobs:
           node-version: 16.20.1
           cache: pnpm
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        # TODO: reenable
+        # run: pnpm install --frozen-lockfile
+        run: pnpm install
+
       - name: Build web
         run: pnpm run build

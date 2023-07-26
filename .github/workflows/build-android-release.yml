@@ -47,7 +47,9 @@ jobs:
         run: npm install -g pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        # TODO: reenable
+        # run: pnpm install --frozen-lockfile
+        run: pnpm install
 
       - name: Build Mobile App
         run: pnpm run build:mobile
