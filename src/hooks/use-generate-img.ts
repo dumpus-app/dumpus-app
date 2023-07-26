@@ -4,8 +4,7 @@ import { colors } from "#root/tailwind.config";
 import * as resvg from "@resvg/resvg-wasm";
 import { useCallback, useState } from "react";
 import { useMount } from "react-use";
-import satori, { Font, init as initSatori } from "satori/wasm";
-import initYoga from "yoga-wasm-web";
+import satori, { type Font } from "satori";
 import { create } from "zustand";
 import { shallow } from "zustand/shallow";
 import StaticShareImage, {
@@ -43,10 +42,6 @@ export default function useGenerateImg() {
     setStatus("loading");
 
     try {
-      const yoga = await initYoga(
-        await fetch("/wasm/yoga.wasm").then((res) => res.arrayBuffer()),
-      );
-      initSatori(yoga);
       if (!_init) {
         await resvg.initWasm(fetch("/wasm/resvg.wasm"));
         setInit(true);
