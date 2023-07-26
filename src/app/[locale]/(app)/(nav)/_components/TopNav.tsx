@@ -12,11 +12,15 @@ import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import TopSelector from "../top/_components/TopSelector";
 import TimeSelector from "./TimeSelector";
+import { shallow } from "zustand/shallow";
 
 export default function TopNav() {
   const { t } = useTranslation();
   const pathname = useI18nPathname();
-  const premium = useAppStore(({ config }) => config.premium);
+  const [premium, backLink] = useAppStore(
+    ({ config, ui }) => [config.premium, ui.redirectParam],
+    shallow,
+  );
 
   const showBack = pathname.includes("/details/");
   const showTopLinks = pathname.startsWith("/top") && !showBack;
@@ -84,16 +88,7 @@ export default function TopNav() {
               )}
             >
               {showBack && (
-                <Header.Icon
-                  href={`/top/${
-                    pathname.includes("/dms/")
-                      ? "dms"
-                      : pathname.includes("/channels/")
-                      ? "channels"
-                      : "guilds"
-                  }`}
-                  icon={ChevronLeftIcon}
-                />
+                <Header.Icon href={backLink} icon={ChevronLeftIcon} />
               )}
               {showTopLinks && <TopSelector desktop={true} />}
               <TimeSelector />

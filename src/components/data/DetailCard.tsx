@@ -14,7 +14,7 @@ export type Props = Omit<
   title: string | JSX.Element;
   description: string;
   reverseTexts?: boolean;
-  href?: URL | string;
+  href?: React.ComponentProps<typeof Link>["href"];
   disabled?: boolean;
 };
 

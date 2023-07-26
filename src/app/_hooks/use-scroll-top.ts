@@ -6,7 +6,7 @@ import { useEffect } from "react";
 export default function useScrollTop() {
   const pathname = usePathname();
   useEffect(() => {
-    const url = new URL(`http://localhost:3000${pathname}`);
+    const url = new URL(window.location.href);
     if (!url.hash) {
       window.document.scrollingElement?.scrollTo({
         left: 0,
