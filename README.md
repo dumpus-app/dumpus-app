@@ -6,7 +6,7 @@ You can join [our Discord server](https://androz2091.fr/discord) to keep up to d
 
 ## Download
 
-<a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./assets/playstore.png" hspace="10" height="100px" /></a>
+<a href='https://play.google.com/store/apps/details?id=app.dumpus.app&hl=fr&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="100px"/></a>
 <a href="#"><img src="./assets/appstore.png" height="100px" /></a>
 
 or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux builds](https://github.com/dumpus-app/dumpus-app/releases/latest).
