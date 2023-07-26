@@ -7,6 +7,7 @@ type State = {
   showInAppPurchasesDialog: boolean;
   safeAreaTopColor: string;
   safeAreaBottomColor: string;
+  redirectParam: string;
 };
 
 type Actions = {
@@ -15,6 +16,7 @@ type Actions = {
   setShowInAppPurchasesDialog: (v: boolean) => void;
   setSafeAreaTopColor: (v: string) => void;
   setSafeAreaBottomColor: (v: string) => void;
+  setRedirectParam: (v: string) => void;
 };
 
 export type UISlice = State & Actions;
@@ -27,6 +29,7 @@ export const createUISlice: CreateSlice<UISlice> = (set) => ({
   showInAppPurchasesDialog: false,
   safeAreaTopColor: DEFAULT_SAFE_AREA_INSET_COLOR,
   safeAreaBottomColor: DEFAULT_SAFE_AREA_INSET_COLOR,
+  redirectParam: "/",
   setBottomNavHeight: (bottomNavHeight) =>
     set((state) => ({ ui: { ...state.ui, bottomNavHeight } })),
   setShowSharePopup: (showSharePopup) =>
@@ -37,4 +40,6 @@ export const createUISlice: CreateSlice<UISlice> = (set) => ({
     set((state) => ({ ui: { ...state.ui, safeAreaTopColor } })),
   setSafeAreaBottomColor: (safeAreaBottomColor) =>
     set((state) => ({ ui: { ...state.ui, safeAreaBottomColor } })),
+  setRedirectParam: (redirectParam) =>
+    set((state) => ({ ui: { ...state.ui, redirectParam } })),
 });

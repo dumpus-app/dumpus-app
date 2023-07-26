@@ -23,12 +23,21 @@ function DMCard({
   const displayName = data?.display_name || username;
   const avatarURL = data?.avatar_url || dm.user_avatar_url;
 
+  const id = `dm-${dm.dm_user_id}`;
+
   return (
     <AvatarCard
+      id={id}
       name={displayName}
       messages={dm.message_count}
       rank={dm.rank}
-      href={`/top/dms/details?id=${dm.dm_user_id}`}
+      href={{
+        pathname: "/top/dms/details",
+        query: {
+          id: dm.dm_user_id,
+          redirect: `/overview#${id}`,
+        },
+      }}
       image={
         <div className="relative aspect-square w-full">
           <DiscordImage

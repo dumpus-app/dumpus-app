@@ -5,7 +5,6 @@ import { useEffect } from "react";
 
 export default function useScrollTop() {
   const pathname = usePathname();
-
   useEffect(() => {
     const url = new URL(window.location.href);
     if (!url.hash) {

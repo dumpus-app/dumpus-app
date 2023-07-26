@@ -1,14 +1,16 @@
 "use client";
 
+import type { ComponentProps } from "react";
 import Link from "../Link";
 import { formatNumber } from "~/utils/format";
 
 export type Props = {
-  href: string;
+  href: ComponentProps<typeof Link>["href"];
   image: React.ReactNode;
   name: string;
   messages: number;
   rank: number;
+  id?: string;
 };
 
 export default function AvatarCard({
@@ -17,9 +19,11 @@ export default function AvatarCard({
   name,
   messages,
   rank,
+  id,
 }: Props) {
   return (
     <Link
+      id={id}
       href={href}
       className="ml-2 flex w-24 shrink-0 flex-col rounded-lg p-2 transition-colors hover:bg-gray-900 sm:w-36"
     >

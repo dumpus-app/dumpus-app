@@ -30,9 +30,17 @@ function GuildCard({
     staleTime: Infinity,
   });
 
+  const id = `guild-${guild.guild_id}`;
+
   return (
     <DetailCard.WithRank
-      href={`/top/guilds/details?id=${guild.guild_id}`}
+      href={{
+        pathname: "/top/guilds/details",
+        query: {
+          id: guild.guild_id,
+          redirect: `/top/guilds#${id}`,
+        },
+      }}
       rank={guild.rank}
       title={guild.guild_name}
       description={`${formatNumber(guild.message_count)} ${t(

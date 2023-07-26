@@ -17,7 +17,13 @@ type Channel = Pick<
     rank: number;
   };
 
-export default function TopChannels({ channels }: { channels: Channel[] }) {
+export default function TopChannels({
+  guildID,
+  channels,
+}: {
+  guildID: string;
+  channels: Channel[];
+}) {
   const { t } = useTranslation();
   return (
     <Section title={t("topChannels")}>
@@ -29,7 +35,14 @@ export default function TopChannels({ channels }: { channels: Channel[] }) {
               name={"#" + channel.channel_name}
               messages={channel.message_count}
               rank={channel.rank}
-              href={`/top/channels/details?channel_id=${channel.channel_id}`}
+              // href={`/top/channels/details?channel_id=${channel.channel_id}`}
+              href={{
+                pathname: "/top/channels/details",
+                query: {
+                  id: channel.channel_id,
+                  redirect: `/top/guilds/details?id=${guildID}`,
+                },
+              }}
               image={
                 <div
                   className="relative flex aspect-square w-full items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950"

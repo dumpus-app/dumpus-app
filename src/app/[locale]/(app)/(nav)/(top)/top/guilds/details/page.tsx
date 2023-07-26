@@ -46,7 +46,7 @@ export default function Page() {
           />
           {/* TODO: handle no data */}
           <TopUsedBots bots={topBots || []} />
-          <TopChannels channels={topChannels || []} />
+          <TopChannels guildID={guild.guild_id} channels={topChannels || []} />
           {/* TODO: implement */}
           {/* <FirstMessages /> */}
           <DailySentMessages data={dailySentMessages || []} />
