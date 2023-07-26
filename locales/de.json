@@ -132,7 +132,8 @@
       "unauthorized": "Du bist nicht berechtigt, mit diesen Paketdaten zu interagieren.",
       "invalidLink": "Link ungültig.",
       "unknownError": "Ein unbekannter Fehler ist aufgetreten.",
-      "expiredLink": "Link ist abgelaufen."
+      "expiredLink": "Link ist abgelaufen.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
