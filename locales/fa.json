@@ -132,7 +132,8 @@
       "unauthorized": "You are not allowed to interact with this package data.",
       "invalidLink": "Link invalid.",
       "unknownError": "An unknown error occured.",
-      "expiredLink": "Link expired."
+      "expiredLink": "Link expired.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
