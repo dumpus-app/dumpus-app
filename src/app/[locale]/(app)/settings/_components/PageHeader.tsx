@@ -3,12 +3,11 @@
 import { useTranslation } from "~/i18n/client";
 import Header from "~/components/layout/Header";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
-import { useSearchParams } from "next/navigation";
+import useRedirectParam from "~/hooks/use-redirect-param";
 
 export default function PageHeader() {
   const { t } = useTranslation();
-  const searchParams = useSearchParams();
-  const href = searchParams?.get("redirect") || "/overview";
+  const href = useRedirectParam("/overview");
 
   return (
     <Header
