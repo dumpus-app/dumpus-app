@@ -40,6 +40,8 @@ export default function InAppPurchasesDialog() {
       emitter.on("purchases:transaction:approved", ({ key, product }) => {
         if (key === "supporter") {
           setPremium(true);
+          // Prevent duplicated toasts
+          if (!open) return;
           toast({
             title: "You're an Early Supporter",
             description: "Thanks for supporting us!",
