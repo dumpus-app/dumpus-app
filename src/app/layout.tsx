@@ -7,6 +7,7 @@ import PageStructure from "./_components/PageStructure";
 import "./_css/globals.css";
 import Providers from "./providers";
 import { useCapacitor } from "~/capacitor/hooks";
+import useScrollTop from "./_hooks/use-scroll-top";
 
 export default function RootLayout({
   children,
@@ -15,6 +16,7 @@ export default function RootLayout({
 }) {
   useCapacitor();
   const init = useStoreInit();
+  useScrollTop();
 
   return (
     <Providers>
