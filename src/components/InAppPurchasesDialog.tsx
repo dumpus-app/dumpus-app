@@ -120,21 +120,27 @@ export default function InAppPurchasesDialog() {
                               { currency: product.pricing!.currency },
                             )}
                           </div>
-                          <div className="text-gray-400">{t("premium.oneTime")}</div>
+                          <div className="text-gray-400">
+                            {t("premium.oneTime")}
+                          </div>
                         </div>
                       </div>
                       <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
                         <div className="flex items-center justify-between">
-                          <div className="text-lg text-gray-50">{t("premium.supporter")}</div>
+                          <div className="text-lg text-gray-50">
+                            {t("premium.supporter")}
+                          </div>
                           <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
-                          {t("premium.soon")}
+                            {t("premium.soon")}
                           </div>
                         </div>
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
                             3.29$
                           </div>
-                          <div className="text-gray-400">{t("premium.oneTime")}</div>
+                          <div className="text-gray-400">
+                            {t("premium.oneTime")}
+                          </div>
                         </div>
                       </div>
                     </div>

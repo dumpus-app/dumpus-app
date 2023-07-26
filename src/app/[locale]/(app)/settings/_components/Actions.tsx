@@ -70,7 +70,7 @@ export default function Actions() {
           }}
         >
           <Link onClick={() => queryClient.clear()} href="/onboarding/access">
-          {t("settings.actions.addPackage")}
+            {t("settings.actions.addPackage")}
           </Link>
         </Button>
         <Button asChild variant="danger">

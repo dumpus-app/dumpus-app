@@ -198,7 +198,11 @@ export default function StaticShareImage({
             </div>
           </div>
           <div tw="flex mt-4">
-            <TopList title={t("shareImage.topDMS")} elements={topDMS} tw="mr-4" />
+            <TopList
+              title={t("shareImage.topDMS")}
+              elements={topDMS}
+              tw="mr-4"
+            />
             <TopList title={t("shareImage.topGuilds")} elements={topGuilds} />
           </div>
           <div tw="mt-auto flex justify-between items-center">
