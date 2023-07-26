@@ -62,6 +62,9 @@ function BotCard({ bot }: { bot: Bot }) {
 
 export default function TopUsedBots({ bots }: { bots: Bot[] }) {
   const { t } = useTranslation();
+
+  if (bots.length === 0) return null;
+
   return (
     <Section title={t("topUsedBot")}>
       <div className="grid grid-cols-2 gap-2 px-2">
