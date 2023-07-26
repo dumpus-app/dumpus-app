@@ -132,7 +132,8 @@
       "unauthorized": "तपाईंलाई यो प्याकेज डाटासँग अन्तरक्रिया गर्ने अनुमति छैन।",
       "invalidLink": "यो link गलत छ।",
       "unknownError": "एउटा unknown error देखा पर्‍यो।",
-      "expiredLink": "यो link को म्याद सकियो।"
+      "expiredLink": "यो link को म्याद सकियो।",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
