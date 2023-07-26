@@ -9,7 +9,7 @@
     "dev:mobile": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=mobile \"pnpm dev:shared\"",
     "dev:desktop": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=desktop \"pnpm dev:shared\"",
     "dev:tauri": "tauri dev",
-    "build:shared": "pnpm script:list-locales && next build",
+    "build:shared": "rimraf .next dist && pnpm script:list-locales && next build",
     "build": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=web \"pnpm build:shared\"",
     "build:mobile": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=mobile \"pnpm build:shared\"",
     "build:desktop": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=desktop \"pnpm build:shared\"",
@@ -97,6 +97,7 @@
     "postcss-import": "^15.1.0",
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.0",
+    "rimraf": "^5.0.1",
     "serve": "^14.2.0"
   }
 }
