@@ -132,7 +132,8 @@
       "unauthorized": "Взаимодействие с данными этого пакета запрещено.",
       "invalidLink": "Ссылка недействительна.",
       "unknownError": "Произошла неизвестная ошибка.",
-      "expiredLink": "Ссылка истекла."
+      "expiredLink": "Ссылка истекла.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
