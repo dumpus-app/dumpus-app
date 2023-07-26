@@ -132,7 +132,8 @@
       "unauthorized": "Non hai il permesso di interagire con questo pacchetto dati.",
       "invalidLink": "Link non valido.",
       "unknownError": "Si è verificato un errore imprevisto.",
-      "expiredLink": "Link scaduto."
+      "expiredLink": "Link scaduto.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
