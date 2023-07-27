@@ -63,7 +63,7 @@ export default function Page() {
 
   return (
     <Wrapper>
-      <Progress data={status.data} />
+      <Progress data={status.data} importing={data.status === "success"} />
     </Wrapper>
   );
 }
