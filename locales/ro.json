@@ -299,6 +299,12 @@
     "stats": "Statistici",
     "settings": "Setări"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "Cei mai folosiți boți",
   "topChannels": "Cele mai bune canale",
   "firstMessages": "Primele tale mesaje",
