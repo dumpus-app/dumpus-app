@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "डाउनलोड हुदैछ",
         "analyzing": "विश्लेषण गरिंदै",
-        "processed": "Process भयो",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "हामी तपाईंको डाटा लोड गर्दैछौं",
           "description": "कृपया पर्खनुहोस..."
