@@ -5,7 +5,7 @@ import { queryClient } from "~/utils/react-query";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import i18next from "i18next";
 
-export const timeRanges = ["4 weeks", "6 months", "Year", "Lifetime"] as const;
+export const timeRanges = ["4weeks", "6months", "year", "lifetime"] as const;
 
 export type TimeRange = (typeof timeRanges)[number];
 
@@ -55,7 +55,7 @@ type Actions = {
 
 const initialState: State = {
   premium: false,
-  timeRange: "Lifetime",
+  timeRange: "lifetime",
   goToOnboardingAccess: false,
   loadingData: undefined,
   packages: [],

@@ -92,7 +92,7 @@ export default function useSQLInit() {
         addPackage(newPackage);
       }
       setSelectedID(id);
-      setTimeRange("Lifetime");
+      setTimeRange("lifetime");
     }
     setDB(_db);
   }
