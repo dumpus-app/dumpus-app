@@ -299,6 +299,12 @@
     "stats": "Статистики",
     "settings": "Настройки"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "Больше всего использовано ботов",
   "topChannels": "Больше всего использовано каналов",
   "firstMessages": "Ваши первые сообщения",
