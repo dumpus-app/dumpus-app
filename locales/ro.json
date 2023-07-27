@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "Se descarcă",
         "analyzing": "Se analizează",
-        "processed": "Procesat",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "Îți încărcăm datele",
           "description": "Te rog să aștepți..."
