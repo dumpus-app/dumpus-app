@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "İndiriliyor",
         "analyzing": "Analiz ediliyor",
-        "processed": "İşlendi",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "Verilerinizi yüklüyoruz",
           "description": "Lütfen bekleyin..."
