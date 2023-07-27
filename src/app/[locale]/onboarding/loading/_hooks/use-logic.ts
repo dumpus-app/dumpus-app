@@ -196,5 +196,11 @@ export default function useLogic() {
     data.data?.errorMessageCode ||
     null;
 
+  useEffect(() => {
+    if (error) {
+      setLoadingData(undefined);
+    }
+  }, [error, setLoadingData]);
+
   return { process, status, data, error };
 }
