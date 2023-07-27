@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import { shallow } from "zustand/shallow";
+import { useTranslation } from "~/i18n/client";
 import { timeRanges, useAppStore } from "~/stores";
 
 export default function TimeSelector() {
@@ -9,6 +10,7 @@ export default function TimeSelector() {
     ({ config }) => [config.timeRange, config.setTimeRange],
     shallow,
   );
+  const { t } = useTranslation();
 
   return (
     <div className="border-t border-gray-800 bg-gray-900 sm:border-none sm:bg-transparent">
@@ -25,7 +27,7 @@ export default function TimeSelector() {
                 : "text-gray-400 hover:bg-gray-800",
             )}
           >
-            {time}
+            {t(`timeRanges.${time}`)}
           </button>
         ))}
       </div>
