@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "下載中",
         "analyzing": "分析中...",
-        "processed": "處理",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "我們正在加載您的數據",
           "description": "請稍等..."
