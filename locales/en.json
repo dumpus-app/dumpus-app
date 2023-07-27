@@ -151,7 +151,7 @@
       "unknownPackageId": "This package is unknown.",
       "unauthorized": "You are not allowed to interact with this package data.",
       "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occured.",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "Link expired.",
       "comeBackLater": "You can close and come back later."
     }
@@ -296,6 +296,7 @@
     "contributions": "{{- value}} contributions"
   },
   "error": {
+    "error":"An error occurred...",
     "title": "Surprising turn of events... Here is your path to recovery:",
     "retry": "Retry",
     "report": "Report on GitHub",
@@ -319,7 +320,8 @@
     "popup": {
       "title": "Here is my Discord recap!",
       "description": "Generated on https://dumpus.app, try it yourself!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Exiting...",
   "exitDemo": "Exit demo and get started!",
@@ -340,5 +342,6 @@
   "notFound": {
     "title": "Not found",
     "description": "The page you are looking for doesn't exist."
-  }
+  },
+  "gotIt": "Got it!"
 }

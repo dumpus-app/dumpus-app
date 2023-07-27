@@ -84,7 +84,7 @@ function TrustDialog({
                     className="w-full"
                     onClick={() => setOpen(false)}
                   >
-                    {t("onboarding.routesLabels./intro/1")}
+                    {t("gotIt")}
                   </Button>
                 </div>
               </Dialog.Panel>
