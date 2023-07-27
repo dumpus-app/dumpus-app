@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": " Dumpus | Discord İstatistikleri",
+    "title": "Dumpus | Stats for Discord",
     "description": "Discord hesabınız için ayrıntılı bilgiler ve istatistikler alın"
   },
   "global": {
@@ -25,7 +25,7 @@
         "Ayrıca, daha az özellik içeren ancak herhangi bir harici API içermeyen tamamen [istemci-tarafı web uygulamamıza](https://ddpe.androz2091.fr) sahibiz.",
         "Uygulama, harici API'de saklanan herhangi bir okunabilir veri olmadan çalışıyor. Hala herhangi bir sorunuz varsa, contact@dumpus.app adresinden bizimle iletişime geçmekten çekinmeyin."
       ],
-      "30DaysDelay": "E-postayı almanın 30 güne kadar sürebileceğini unutmayın. Sabırlı ol!",
+      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
       "getData": "Verilerimi nasıl alabilirim?"
     },
     "/": {
