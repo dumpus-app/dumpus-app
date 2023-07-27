@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "Laster ned",
         "analyzing": "Analyserer",
-        "processed": "Behandlet",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "Vi laster inn dine data",
           "description": "Vennligst vent..."
