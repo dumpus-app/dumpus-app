@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "Wird heruntergeladen",
         "analyzing": "Wird analysiert",
-        "processed": "Verarbeitet",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "Deine Daten werden geladen",
           "description": "Bitte warten..."
