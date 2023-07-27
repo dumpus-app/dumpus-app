@@ -299,6 +299,12 @@
     "stats": "तथ्याङ्क",
     "settings": "सेटिङ्हरू"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "धेरै प्रयोग गरिएका bot हरु",
   "topChannels": "धेरै प्रयोग गरिएका channel हरु",
   "firstMessages": "तपाइको पहिलो message",
