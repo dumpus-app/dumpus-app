@@ -46,7 +46,8 @@
         "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
       ],
       "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "getData": "How to get my data?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Welcome to Dumpus",
@@ -342,6 +343,5 @@
   "notFound": {
     "title": "Not found",
     "description": "The page you are looking for doesn't exist."
-  },
-  "gotIt": "Got it!"
+  }
 }
