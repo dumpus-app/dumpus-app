@@ -117,7 +117,8 @@
       "progress": {
         "downloading": "Downloading",
         "analyzing": "Analyzing",
-        "processed": "Processed",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "We’re loading your data",
           "description": "Please wait..."
