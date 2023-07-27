@@ -299,6 +299,12 @@
     "stats": "統計",
     "settings": "設定"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "最常用的機器人",
   "topChannels": "熱門頻道",
   "firstMessages": "您的第一條消息",
