@@ -8,15 +8,11 @@ import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
 import { useAppStore } from "~/stores";
 import { formatMoney } from "~/utils/format";
-
-// TODO: extract to i18n
-const content = [
-  "Supporter role on Discord",
-  "Up to 100+ DMs leaderboard",
-  "Upload one package every 30 days",
-];
+import { useTranslation } from "~/i18n/client";
 
 export default function InAppPurchasesDialog() {
+  const { t } = useTranslation();
+  const content = t("premium.content", { returnObjects: true }) as string[];
   const [open, setOpen] = useAppStore(
     ({ ui }) => [ui.showInAppPurchasesDialog, ui.setShowInAppPurchasesDialog],
     shallow,
@@ -68,7 +64,7 @@ export default function InAppPurchasesDialog() {
                       as="h3"
                       className="text-lg font-bold text-white sm:text-2xl"
                     >
-                      Support us
+                      {t("premium.supportUs")}
                     </Dialog.Title>
                     <div className="mt-2 w-full space-y-2 text-left text-base text-gray-400">
                       {content.map((p, i) => (
@@ -84,10 +80,10 @@ export default function InAppPurchasesDialog() {
                       <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
                         <div className="flex items-center justify-between">
                           <div className="text-lg text-gray-50">
-                            Early supporter
+                            {t("premium.earlySupporter")}
                           </div>
                           <div className="rounded-full bg-success-400 px-2 py-0.5 text-sm text-gray-950">
-                            60% off
+                            {t("premium.reduction")}
                           </div>
                         </div>
                         <div className="mt-1 flex items-end justify-between">
@@ -97,27 +93,33 @@ export default function InAppPurchasesDialog() {
                               { currency: products[0].pricing!.currency },
                             )}
                           </div>
-                          <div className="text-gray-400">one-time</div>
+                          <div className="text-gray-400">
+                            {t("premium.oneTime")}
+                          </div>
                         </div>
                       </div>
                       <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
                         <div className="flex items-center justify-between">
-                          <div className="text-lg text-gray-50">Supporter</div>
+                          <div className="text-lg text-gray-50">
+                            {t("premium.supporter")}
+                          </div>
                           <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
-                            Soon
+                            {t("premium.soon")}
                           </div>
                         </div>
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
-                            3.29€
+                            3.29$
                           </div>
-                          <div className="text-gray-400">one-time</div>
+                          <div className="text-gray-400">
+                            {t("premium.oneTime")}
+                          </div>
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="mt-4 text-center font-mono text-danger-400">
-                      Payments not supported
+                      {t("premium.notSupported")}
                     </div>
                   )}
                 </div>
@@ -128,17 +130,17 @@ export default function InAppPurchasesDialog() {
                   disabled={!supported || !hasProducts || loading}
                 >
                   {loading
-                    ? "Loading..."
+                    ? t("global.loading.title")
                     : supported && hasProducts
-                    ? "Proceed"
-                    : "Unavailable"}
+                    ? t("premium.proceed")
+                    : t("premium.unavailable")}
                 </Button>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
                   className="-mb-2 mt-1 w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
                 >
-                  Maybe later
+                  {t("premium.maybeLater")}
                 </button>
               </Dialog.Panel>
             </Transition.Child>

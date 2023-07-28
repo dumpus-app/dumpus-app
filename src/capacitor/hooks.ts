@@ -7,10 +7,12 @@ import { initCapacitor } from "~/capacitor";
 import useToast from "~/hooks/use-toast";
 import { useAppStore } from "~/stores";
 import { createLogger } from "~/utils/logger";
+import { useTranslation } from "~/i18n/client";
 
 const logger = createLogger({ tag: "Capacitor init" });
 
 export function useCapacitor() {
+  const { t } = useTranslation();
   const router = useRouter();
   const initPurchases = useAppStore(({ purchases }) => purchases.init);
   const toast = useToast();
@@ -23,8 +25,8 @@ export function useCapacitor() {
       await initPurchases({
         notify: (key) =>
           toast({
-            title: "You're an Early Supporter",
-            description: "Thanks for supporting us!",
+            title: t("premium.success"),
+            description: t("premium.thanks"),
             icon: CheckBadgeIcon,
             id: key,
           }),

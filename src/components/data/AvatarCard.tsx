@@ -3,6 +3,7 @@
 import type { ComponentProps } from "react";
 import Link from "../Link";
 import { formatNumber } from "~/utils/format";
+import { useTranslation } from "~/i18n/client";
 
 export type Props = {
   href: ComponentProps<typeof Link>["href"];
@@ -21,6 +22,7 @@ export default function AvatarCard({
   rank,
   id,
 }: Props) {
+  const { t } = useTranslation();
   return (
     <Link
       id={id}
@@ -33,7 +35,9 @@ export default function AvatarCard({
         <span className="font-bold text-white">{name}</span>
       </div>
       <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-400 sm:text-lg">
-        {formatNumber(messages)} messages
+        {t("stats.messages", {
+          value: formatNumber(messages),
+        })}
       </div>
     </Link>
   );

@@ -56,6 +56,7 @@ function useImageData() {
         count: formatNumber(guild.message_count),
       };
     }),
+    t: useTranslation().t,
   };
 }
 
@@ -215,10 +216,10 @@ export default function SharePopup() {
                         success: canShare
                           ? t("share.title")
                           : t("share.download"),
-                        error: "An error occured",
+                        error: t("share.error"),
                         loading: t("share.generating"),
                       }[status],
-                      error: "An error occured",
+                      error: t("share.error"),
                       idle: t("share.generating"),
                       loading: t("share.generating"),
                     }[generationStatus]

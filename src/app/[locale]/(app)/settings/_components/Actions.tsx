@@ -76,7 +76,7 @@ export default function Actions() {
           }}
         >
           <Link onClick={() => queryClient.clear()} href="/onboarding/access">
-            Add a new package
+            {t("settings.actions.addPackage")}
           </Link>
         </Button>
         <Button asChild variant="danger">

@@ -4790,6 +4790,7 @@ packages:
       {
         integrity: sha512-2EZLisiZQ+7m4wwur/qiYJRniHX4K5Tc9w93MT3AS0WS1u5kaZ4FKXlOTBhOjc+CgEgPiGY+fX1yWD8UwpEqUA==,
       }
+    dev: false
 
   /css-box-shadow@1.0.0-3:
     resolution:

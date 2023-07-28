@@ -84,7 +84,7 @@ function TrustDialog({
                     className="w-full"
                     onClick={() => setOpen(false)}
                   >
-                    Got it!
+                    {t("onboarding.shared.gotIt")}
                   </Button>
                 </div>
               </Dialog.Panel>
