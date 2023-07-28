@@ -9,6 +9,26 @@
       "description": "Proszę czekać..."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Zaczynajmy!",
@@ -26,7 +46,8 @@
         "Aplikacja działa bez żadnego odczytywania danych przechowywanych w zewnętrznym API. Jeśli masz jakieś pytania, skontaktuj się z nami pod adresem contact@dumpus.app."
       ],
       "30DaysDelay": "Pamiętaj, że otrzymanie wiadomości e-mail może zająć do 30 dni. Bądź cierpliwy!",
-      "getData": "Jak uzyskać moje dane?"
+      "getData": "Jak uzyskać moje dane?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Witamy w Dumpus",
@@ -132,12 +153,13 @@
       "unknownPackageId": "Ten pakiet jest nieznany.",
       "unauthorized": "Nie masz uprawnień, aby wchodzić w interakcje z tym pakietem.",
       "invalidLink": "Link jest nieprawidłowy.",
-      "unknownError": "Wystąpił nieznany błąd.",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "Link wygasł.",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "wysłanych wiadomości",
     "messagesSentPerDay": "To jest około {{- value}} wiadomości dziennie!",
     "titleMessagesSentPerDay": "Wiadomości wysyłanych dziennie",
@@ -182,6 +204,16 @@
       "seenNitroAds": "seen nitro ads",
       "spentInVoiceChannels": "spent in voice channels"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
@@ -231,7 +263,8 @@
       "deleting": "Usuwanie...",
       "delete": "Usuń aktualny pakiet",
       "restoring": "Przywracanie...",
-      "restorePurchases": "Przywróć zakupy"
+      "restorePurchases": "Przywróć zakupy",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "O Aplikacji",
@@ -265,6 +298,7 @@
     "contributions": "{{- value}} contributions"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "Nieoczekiwany obrót wydarzeń... Oto droga do odzyskania:",
     "retry": "Powtórz",
     "report": "Zgłoś błąd na GitHub",
@@ -288,7 +322,8 @@
     "popup": {
       "title": "Oto moje podsumowanie z Discorda!",
       "description": "Wygenerowano na https://dumpus.app, wypróbuj teraz!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Zamykanie...",
   "exitDemo": "Exit demo and get started!",
@@ -308,5 +343,12 @@
   "topUsedBot": "Najczęściej używane boty",
   "topChannels": "Najlepsze kanały",
   "firstMessages": "Twoje pierwsze wiadomości",
-  "relatedGuild": "Powiązany serwer"
+  "relatedGuild": "Powiązany serwer",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
