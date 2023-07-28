@@ -9,6 +9,26 @@
       "description": "Te rog să aștepți."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Să începem",
@@ -26,7 +46,8 @@
         "Aplicația funcționează fără date care pot fi citite stocate pe API-ul extern. Dacă mai aveți întrebări, nu ezitați să ne contactați la contact@dumpus.app."
       ],
       "30DaysDelay": "Rețineți că poate dura până la 30 de zile pentru a primi e-mailul. Fii răbdător!",
-      "getData": "Cum să îmi obțin datele?"
+      "getData": "Cum să îmi obțin datele?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Bun venit la Dumbus",
@@ -132,12 +153,13 @@
       "unknownPackageId": "Acest pachet este necunoscut.",
       "unauthorized": "Nu ai voie să interacționezi cu datele acestui pachet.",
       "invalidLink": "Link invalid.",
-      "unknownError": "O eroare necunoscută a avut loc.",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "Link expirat.",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "mesaje trimise",
     "messagesSentPerDay": "Adică aproximativ {{- value}} mesaje pe zi!",
     "titleMessagesSentPerDay": "Mesaje trimise pe zi",
@@ -182,6 +204,16 @@
       "seenNitroAds": "de reclame nitro văzute",
       "spentInVoiceChannels": "petrecute în canalele vocale"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "mesajele medii trimise pe zi",
@@ -231,7 +263,8 @@
       "deleting": "Se șterge...",
       "delete": "Șterge pachetul curent",
       "restoring": "Se restaurează...",
-      "restorePurchases": "Restabilește achizițiile"
+      "restorePurchases": "Restabilește achizițiile",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "Despre",
@@ -265,6 +298,7 @@
     "contributions": "{{- value}} contribuiri"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "Întorsătură surprinzătoare a evenimentelor... Iată calea ta spre recuperare:",
     "retry": "Reîncearcă",
     "report": "Raportează pe GitHub",
@@ -288,7 +322,8 @@
     "popup": {
       "title": "Iată rezumatul meu Discord!",
       "description": "Generat pe https://dumpus.app, încearcă!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Ieșire...",
   "exitDemo": "Ieși din demo și începe!",
@@ -308,5 +343,12 @@
   "topUsedBot": "Cei mai folosiți boți",
   "topChannels": "Cele mai bune canale",
   "firstMessages": "Primele tale mesaje",
-  "relatedGuild": "Related guild"
+  "relatedGuild": "Related guild",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
