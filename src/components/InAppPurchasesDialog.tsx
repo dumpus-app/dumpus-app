@@ -24,7 +24,7 @@ export default function InAppPurchasesDialog() {
   const hasProducts = products.length > 0;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-
+  
   async function onPurchase() {
     setLoading(true);
     await products[0]!.getOffer()!.order();
@@ -130,10 +130,10 @@ export default function InAppPurchasesDialog() {
                   disabled={!supported || !hasProducts || loading}
                 >
                   {loading
-                    ? "Loading..."
+                    ? t("global.loading.title")
                     : supported && hasProducts
-                    ? "Proceed"
-                    : "Unavailable"}
+                    ?  t("premium.proceed")
+                    : t("premium.unavailable")}
                 </Button>
                 <button
                   type="button"
