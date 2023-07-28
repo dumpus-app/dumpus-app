@@ -9,6 +9,26 @@
       "description": "Пожалуйста подождите."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Погнали",
@@ -26,7 +46,8 @@
         "Это приложение работает без хранения читаемых данных, хранящихся на внешнем API. Если у вас остались вопросы, вы можете обратиться на email: contact@dumpus.app."
       ],
       "30DaysDelay": "Помните, что данные придут через 30 дней. Будьте терпеливыми!",
-      "getData": "Где мне найти мои данные?"
+      "getData": "Где мне найти мои данные?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Добро пожаловать в Dumpus",
@@ -132,12 +153,13 @@
       "unknownPackageId": "Этот пакет неизвестен.",
       "unauthorized": "Взаимодействие с данными этого пакета запрещено.",
       "invalidLink": "Ссылка недействительна.",
-      "unknownError": "Произошла неизвестная ошибка.",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "Ссылка истекла.",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "отправленных сообщений",
     "messagesSentPerDay": "Это примерно {{- value}} сообщений в день!",
     "titleMessagesSentPerDay": "Количество сообщений в день",
@@ -182,6 +204,16 @@
       "seenNitroAds": "видел нитро рекламу",
       "spentInVoiceChannels": "потрачено в голосовых каналов"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "в среднем в день отправляется сообщений",
@@ -231,7 +263,8 @@
       "deleting": "Удаление...",
       "delete": "Удалить текущий Пакет",
       "restoring": "Восстановление...",
-      "restorePurchases": "Восстановить покупки"
+      "restorePurchases": "Восстановить покупки",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "Об Dumpus",
@@ -265,6 +298,7 @@
     "contributions": "{{- value}} неравнодушных"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "Неожиданный поворот событий... Вот ваш путь к восстановлению:",
     "retry": "Попробовать снова",
     "report": "Зарепортить в GitHub",
@@ -288,7 +322,8 @@
     "popup": {
       "title": "Вот мой обзор по Discord!",
       "description": "Создан в https://dumpus.app, попробуй сам!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Выходим...",
   "exitDemo": "Выход из демо и начало работы!",
@@ -308,5 +343,12 @@
   "topUsedBot": "Больше всего использовано ботов",
   "topChannels": "Больше всего использовано каналов",
   "firstMessages": "Ваши первые сообщения",
-  "relatedGuild": "Родственный сервер"
+  "relatedGuild": "Родственный сервер",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
