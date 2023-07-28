@@ -22,6 +22,7 @@ export const migrateConfig = (persistedState: unknown, version: number) => {
       Year: "year",
       Lifetime: "lifetime",
     }[config.timeRange];
+    version++;
   }
 
   return persistedState as any;
