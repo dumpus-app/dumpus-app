@@ -9,6 +9,26 @@
       "description": "Lütfen bekleyin."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Haydi gidelim",
@@ -26,7 +46,8 @@
         "Uygulama, harici API'de saklanan herhangi bir okunabilir veri olmadan çalışıyor. Hala herhangi bir sorunuz varsa, contact@dumpus.app adresinden bizimle iletişime geçmekten çekinmeyin."
       ],
       "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "Verilerimi nasıl alabilirim?"
+      "getData": "Verilerimi nasıl alabilirim?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Dumpus'a Hoş Geldiniz",
@@ -132,12 +153,13 @@
       "unknownPackageId": "Bu paket bilinmiyor.",
       "unauthorized": "Bu paket verileriyle etkileşime girmenize izin verilmiyor.",
       "invalidLink": "Bağlantı geçersiz.",
-      "unknownError": "Bilinmeyen bir hata oluştu.",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "Bağlantının süresi doldu.",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "mesaj gönderildi",
     "messagesSentPerDay": "Bu, günde yaklaşık {{- value}} mesaj demek!",
     "titleMessagesSentPerDay": "Günlük gönderilen mesajlar",
@@ -182,6 +204,16 @@
       "seenNitroAds": "nitro reklamı görüldü",
       "spentInVoiceChannels": "ses kanalında harcandı"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "ortalama günde gönderilen mesaj sayısı",
@@ -231,7 +263,8 @@
       "deleting": "Siliniyor...",
       "delete": "Delete current package",
       "restoring": "Geri yükleniyor...",
-      "restorePurchases": "Satın alımları geri yükle"
+      "restorePurchases": "Satın alımları geri yükle",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "Hakkında",
@@ -265,6 +298,7 @@
     "contributions": "{{- value}} katkı"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "Şaşırtıcı olaylar... İşte kurtarma yolunuz:",
     "retry": "Tekrar Dene",
     "report": "Github'da bildir",
@@ -288,7 +322,8 @@
     "popup": {
       "title": "İşte Discord özetim!",
       "description": "https://dumpus.app üzerinde oluşturuldu, kendiniz deneyin!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Çıkılıyor...",
   "exitDemo": "Demodan çıkın ve başlayın!",
@@ -308,5 +343,12 @@
   "topUsedBot": "En çok kullanılan botlar",
   "topChannels": "En iyi kanallar",
   "firstMessages": "İlk mesajların",
-  "relatedGuild": "İlgili Sunucu"
+  "relatedGuild": "İlgili Sunucu",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
