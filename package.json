@@ -1,6 +1,6 @@
 {
   "name": "dumpus-app",
-  "version": "0.0.18",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "android:dev": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",

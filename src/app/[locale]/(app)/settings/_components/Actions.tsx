@@ -3,7 +3,7 @@
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { purchases } from "~/capacitor";
+import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
 import Link from "~/components/Link";
 import Section from "~/components/Section";
@@ -20,7 +20,13 @@ import { queryClient } from "~/utils/react-query";
 export default function Actions() {
   const { t } = useTranslation();
   const router = useRouter();
-  const deletePackage = useAppStore(({ config }) => config.deletePackage);
+  const [deletePackage, restorePurchases] = useAppStore(
+    ({ config, purchases }) => [
+      config.deletePackage,
+      purchases.restorePurchases,
+    ],
+    shallow,
+  );
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });
 
@@ -90,7 +96,7 @@ export default function Actions() {
             variant="premium"
             onClick={async () => {
               setLoading(true);
-              await purchases.restorePurchases();
+              await restorePurchases();
               setLoading(false);
             }}
             disabled={loading}

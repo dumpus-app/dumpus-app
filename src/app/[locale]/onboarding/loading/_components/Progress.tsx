@@ -1,18 +1,26 @@
 import { useTranslation } from "~/i18n/client";
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import clsx from "clsx";
 import { PackageAPIStatusResponse } from "~/types/package-api";
 import Retry from "./Retry";
 
-export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
+export default function Progress({
+  data,
+  importing,
+}: {
+  data: PackageAPIStatusResponse;
+  importing: boolean;
+}) {
   const { t } = useTranslation();
   const { processingStep, isErrored } = data;
   /**
    * 0 Downloading
    * 1 Analyzing
-   * 2 Setup DB
+   * 2 Processing
+   * 3 Import DB
    */
   const currentStep = (() => {
+    if (importing) return 3;
+
     switch (processingStep) {
       case "LOCKED":
       case "DOWNLOADING":
@@ -29,36 +37,53 @@ export default function Progress({ data }: { data: PackageAPIStatusResponse }) {
   const steps = [
     t("onboarding.loading.progress.downloading"),
     t("onboarding.loading.progress.analyzing"),
-    t("onboarding.loading.progress.processed"),
+    t("onboarding.loading.progress.processing"),
+    t("onboarding.loading.progress.importing"),
   ];
 
   return (
     <>
       <div className="space-y-2">
         {steps.map((step, i) => {
-          const valid = currentStep >= i;
           const hasError = i === errorStep;
-          const Icon = hasError ? XCircleIcon : CheckCircleIcon;
+          const status = hasError
+            ? "error"
+            : currentStep < i
+            ? "inactive"
+            : currentStep === i
+            ? "current"
+            : "active";
+
           return (
             <div key={i} className="flex items-center space-x-2">
-              {valid ? (
-                <Icon
-                  className={clsx(
-                    "h-6 w-6",
-                    hasError ? "text-danger-300" : "text-brand-300",
-                  )}
-                />
-              ) : (
-                <div className="ml-[2.5px] h-5 w-5 rounded-full border-2 border-gray-400" />
+              {status === "error" && (
+                <>
+                  <XCircleIcon className="h-6 w-6 text-danger-300" />
+                  <div className="text-lg font-medium text-white">{step}</div>
+                </>
               )}
-              <div
-                className={clsx(
-                  "text-lg",
-                  valid ? "font-medium text-white" : "text-gray-400",
-                )}
-              >
-                {step}
-              </div>
+              {status === "active" && (
+                <>
+                  <CheckCircleIcon className="h-6 w-6 text-brand-300" />
+                  <div className="text-lg font-medium text-white">{step}</div>
+                </>
+              )}
+              {status === "inactive" && (
+                <>
+                  <div className="ml-[2.5px] h-5 w-5 rounded-full border-2 border-gray-400" />
+                  <div className="text-lg font-medium text-gray-400">
+                    {step}
+                  </div>
+                </>
+              )}
+              {status === "current" && (
+                <>
+                  <div className="ml-[2.5px] h-5 w-5 animate-pulse rounded-full border-2 border-gray-400" />
+                  <div className="animate-pulse text-lg font-medium text-gray-400">
+                    {step}
+                  </div>
+                </>
+              )}
             </div>
           );
         })}

@@ -10,11 +10,14 @@ import { useI18nPathname } from "~/hooks/use-i18n";
 import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
 import TimeSelector from "./TimeSelector";
 import { shallow } from "zustand/shallow";
+import { useTranslation } from "~/i18n/client";
 
 const links = _links.filter((link) => !link.desktop);
 
 export default function BottomNav() {
   const pathname = useI18nPathname();
+  const { t } = useTranslation();
+
   const [ref, { height }] = useMeasure<HTMLDivElement>();
   const [setHeight, setSafeAreaBottomColor] = useAppStore(
     ({ ui }) => [ui.setBottomNavHeight, ui.setSafeAreaBottomColor],
@@ -56,7 +59,13 @@ export default function BottomNav() {
                 )}
               >
                 <link.icon className="h-6 w-6" />
-                <span className="mt-1">{link.name}</span>
+                <span className="mt-1">
+                  {t(
+                    `nav.${
+                      link.name as "overview" | "stats" | "top" | "settings"
+                    }`,
+                  )}
+                </span>
               </Link>
             ))}
           </div>

@@ -1,15 +1,12 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
-import { useMount } from "react-use";
 import { shallow } from "zustand/shallow";
-import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
 import { useAppStore } from "~/stores";
-import { emitter } from "~/utils/emitter";
 import { formatMoney } from "~/utils/format";
 import { useTranslation } from "~/i18n/client";
 
@@ -20,43 +17,19 @@ export default function InAppPurchasesDialog() {
     ({ ui }) => [ui.showInAppPurchasesDialog, ui.setShowInAppPurchasesDialog],
     shallow,
   );
-  const [supported, setSupported] = useState(false);
-  const [product, setProduct] =
-    useState<Awaited<ReturnType<typeof purchases.getProduct>>>();
-  const setPremium = useAppStore(({ config }) => config.setPremium);
+  const [supported, products] = useAppStore(
+    ({ purchases }) => [purchases.supported, purchases.products],
+    shallow,
+  );
+  const hasProducts = products.length > 0;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-
-  useMount(async () => {
-    const initializeDialog = async () => {
-      setSupported(true);
-      const product = await purchases.getProduct("supporter");
-      setProduct(product);
-      console.log({ product });
-      emitter.on("purchases:transaction:approved", ({ key, product }) => {
-        if (key === "supporter") {
-          setPremium(true);
-          // Prevent duplicated toasts
-          if (!open) return;
-          toast({
-            title: t("premium.success"),
-            description: t("premium.thanks"),
-            icon: CheckBadgeIcon,
-            id: key,
-          });
-          setOpen(false);
-        }
-      });
-    };
-    // the plugin can be initialized BEFORE this component is mounted
-    if (purchases.initialized) {
-      await initializeDialog();
-    } else {
-      emitter.on("purchases:initialized", async () => {
-        await initializeDialog();
-      });
-    }
-  });
+  
+  async function onPurchase() {
+    setLoading(true);
+    await products[0]!.getOffer()!.order();
+    setLoading(false);
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -102,7 +75,7 @@ export default function InAppPurchasesDialog() {
                       ))}
                     </div>
                   </div>
-                  {supported && product ? (
+                  {supported && hasProducts ? (
                     <div className="mt-4 grid grid-cols-1 gap-2">
                       <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
                         <div className="flex items-center justify-between">
@@ -116,8 +89,8 @@ export default function InAppPurchasesDialog() {
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
                             {formatMoney(
-                              product.pricing!.priceMicros / 1_000_000,
-                              { currency: product.pricing!.currency },
+                              products[0].pricing!.priceMicros / 1_000_000,
+                              { currency: products[0].pricing!.currency },
                             )}
                           </div>
                           <div className="text-gray-400">
@@ -153,18 +126,14 @@ export default function InAppPurchasesDialog() {
                 <Button
                   variant="brand"
                   className="mt-4 w-full"
-                  onClick={async () => {
-                    setLoading(true);
-                    await product!.getOffer()!.order();
-                    setLoading(false);
-                  }}
-                  disabled={!supported || !product || loading}
+                  onClick={onPurchase}
+                  disabled={!supported || !hasProducts || loading}
                 >
                   {loading
-                    ? t("global.loading.title")
-                    : supported && product
-                    ? t("premium.proceed")
-                    : t("premium.unavailable")}
+                    ? "Loading..."
+                    : supported && hasProducts
+                    ? "Proceed"
+                    : "Unavailable"}
                 </Button>
                 <button
                   type="button"

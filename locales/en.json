@@ -138,7 +138,8 @@
       "progress": {
         "downloading": "Downloading",
         "analyzing": "Analyzing",
-        "processed": "Processed",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "We’re loading your data",
           "description": "Please wait..."
@@ -332,6 +333,12 @@
     "top": "Top",
     "stats": "Stats",
     "settings": "Settings"
+  },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
   },
   "topUsedBot": "Top used bots",
   "topChannels": "Top channels",

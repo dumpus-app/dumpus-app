@@ -1,12 +1,9 @@
 "use client";
 
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
-import { purchasesSingleton } from "./purchases";
 import { isCapacitorSupported } from "./utils";
 import { OS } from "~/constants";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
-
-export const purchases = purchasesSingleton;
 
 async function handleSafeArea() {
   function setStyle(content: string) {
@@ -79,8 +76,6 @@ export async function initCapacitor({ router }: { router: AppRouterInstance }) {
       router.replace(pathname);
     }
   });
-
-  await purchases.init();
 
   return () => {
     App.removeAllListeners();

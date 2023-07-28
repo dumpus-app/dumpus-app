@@ -57,12 +57,12 @@ export default function LoadingScreen({
           pathname = `${redirectPath}/loading/?packageLink=${encodeURIComponent(
             packageLink,
           )}&backendURL=${encodeURIComponent(backendURL || "")}`;
+        } else if (goToOnboardingAccess) {
+          logger.info("go to access");
+
+          pathname = `${redirectPath}/access`;
         }
         return pathname;
-      } else if (goToOnboardingAccess) {
-        logger.info("go to access");
-
-        pathname = `${redirectPath}/access`;
       }
 
       logger.info("no onboarding");

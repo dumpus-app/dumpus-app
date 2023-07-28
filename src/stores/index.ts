@@ -1,11 +1,16 @@
 import { create, type StateCreator } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import {
+  createJSONStorage,
+  persist,
+  subscribeWithSelector,
+} from "zustand/middleware";
 import { createConfigSlice, type ConfigSlice } from "./config";
 import { createDatabaseSlice, type DatabaseSlice } from "./database";
 import { createUISlice, type UISlice } from "./ui";
 import { createUsersCacheSlice, type UsersCacheSlice } from "./users-cache";
 import { migrateConfig, migrateUsersCache } from "./migrations";
 import { shallow } from "zustand/shallow";
+import { createPurchasesSlice, type PurchasesSlice } from "./purchases";
 
 export { timeRanges } from "./config";
 export { DEFAULT_SAFE_AREA_INSET_COLOR } from "./ui";
@@ -14,21 +19,25 @@ type BoundStore = {
   ui: UISlice;
   config: ConfigSlice;
   database: DatabaseSlice;
+  purchases: PurchasesSlice;
 } & UsersCacheSlice;
 
 export type CreateSlice<TSlice extends {}> = StateCreator<
   BoundStore,
-  [],
+  [["zustand/subscribeWithSelector", never]],
   [],
   TSlice
 >;
 
-export const useAppStore = create<BoundStore>()((...args) => ({
-  ui: createUISlice(...args),
-  config: createConfigSlice(...args),
-  ...createUsersCacheSlice(...args),
-  database: createDatabaseSlice(...args),
-}));
+export const useAppStore = create<BoundStore>()(
+  subscribeWithSelector((...args) => ({
+    ui: createUISlice(...args),
+    config: createConfigSlice(...args),
+    ...createUsersCacheSlice(...args),
+    database: createDatabaseSlice(...args),
+    purchases: createPurchasesSlice(...args),
+  })),
+);
 
 export function useSelectedPackage() {
   const [packages, selectedID] = useAppStore(
@@ -49,7 +58,7 @@ const configStorage = create(
     {
       name: "config",
       storage: createJSONStorage(() => localStorage),
-      version: 1,
+      version: 2,
       migrate: migrateConfig,
     },
   ),
