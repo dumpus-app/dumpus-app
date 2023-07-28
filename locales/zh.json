@@ -9,6 +9,26 @@
       "description": "請稍候"
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "開始吧",
@@ -26,7 +46,8 @@
         "該應用程序無需外部 API 上存儲任何可讀數據即可運行。如果您仍有任何疑問，請隨時通過 contact@dumpus.app 與我們聯繫。"
       ],
       "30DaysDelay": "請記住，最多可能需要 30 天才能收到電子郵件。要有耐心！",
-      "getData": "如何獲取我的資料?"
+      "getData": "如何獲取我的資料?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "歡迎來到 Dumpus",
@@ -132,12 +153,13 @@
       "unknownPackageId": "未知的包裹",
       "unauthorized": "您無權與此包數據進行交互",
       "invalidLink": "鏈接無效",
-      "unknownError": "出現未知錯誤",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "鏈接已過期",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "已發送消息",
     "messagesSentPerDay": "每天大約有 {{- value}} 條消息！",
     "titleMessagesSentPerDay": "每天發送的消息數",
@@ -182,6 +204,16 @@
       "seenNitroAds": "查看nitro廣告",
       "spentInVoiceChannels": "花費時間在語音頻道上"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "平均每天發送的訊息數",
@@ -231,7 +263,8 @@
       "deleting": "刪除中⋯",
       "delete": "刪除當前包",
       "restoring": "正在恢復...",
-      "restorePurchases": "恢復購買"
+      "restorePurchases": "恢復購買",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "關於",
@@ -265,6 +298,7 @@
     "contributions": "{{- value}} 項貢獻"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "事情發生了令人驚訝的轉變...這是您的康復之路：",
     "retry": "重試",
     "report": "透過 GitHub 反饋",
@@ -288,7 +322,8 @@
     "popup": {
       "title": "這是我的 Discord 回顧！",
       "description": "在 https://dumpus.app 上生成，自己嘗試一下！"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "正在退出...",
   "exitDemo": "退出演示並開始！",
@@ -308,5 +343,12 @@
   "topUsedBot": "最常用的機器人",
   "topChannels": "熱門頻道",
   "firstMessages": "您的第一條消息",
-  "relatedGuild": "相關伺服器"
+  "relatedGuild": "相關伺服器",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
