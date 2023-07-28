@@ -9,6 +9,26 @@
       "description": "कृपया पर्खनुहोस."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "सुरु गरौँ",
@@ -26,7 +46,8 @@
         "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
       ],
       "30DaysDelay": "यो इमेल प्राप्त गर्न तपाइलाई ३० दिन सम्म लाग्न सक्छ। कृपया धैर्य गर्नुहोला!",
-      "getData": "How to get my data?"
+      "getData": "How to get my data?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Welcome to Dumpus",
@@ -132,12 +153,13 @@
       "unknownPackageId": "यो प्याकेज id गलत छ।",
       "unauthorized": "तपाईंलाई यो प्याकेज डाटासँग अन्तरक्रिया गर्ने अनुमति छैन।",
       "invalidLink": "यो link गलत छ।",
-      "unknownError": "एउटा unknown error देखा पर्‍यो।",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "यो link को म्याद सकियो।",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "पठाइएको message हरु",
     "messagesSentPerDay": "यो भनेको अन्दाजी दिनको {{- value}} message हरु हो!",
     "titleMessagesSentPerDay": "दैनिक message पठाइएको संख्या",
@@ -182,6 +204,16 @@
       "seenNitroAds": "जम्मा देखिएका nitro विज्ञापन",
       "spentInVoiceChannels": "भोइस च्यानलमा बिताइएको समय"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "दैनिक message पठाइएको संख्या",
@@ -231,7 +263,8 @@
       "deleting": "Delete हुदै...",
       "delete": "यो Package लाई डिलिट गर्नुहोस",
       "restoring": "पुनर्स्थापना गरिदै...",
-      "restorePurchases": "खरीदहरू पुनर्स्थापित गर्नुहोस्"
+      "restorePurchases": "खरीदहरू पुनर्स्थापित गर्नुहोस्",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "बारेमा",
@@ -265,6 +298,7 @@
     "contributions": "{{- value}} योगदानहरू"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "आश्चर्यजनक घटना... recovery को लागि यहाँ थिच्नुहोस:",
     "retry": "फेरि प्रयास गर्नुहोस्",
     "report": "GitHub मा रिपोर्ट गर्नुहोस्",
@@ -288,7 +322,8 @@
     "popup": {
       "title": "मेरो Discord recap यस्तो छ!",
       "description": "यो https://dumpus.app बाट generate गरिएको हो!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "बाहिर निस्किदै...",
   "exitDemo": "डेमो बाहिर निस्कनुहोस् र सुरु गर्नुहोस्!",
@@ -308,5 +343,12 @@
   "topUsedBot": "धेरै प्रयोग गरिएका bot हरु",
   "topChannels": "धेरै प्रयोग गरिएका channel हरु",
   "firstMessages": "तपाइको पहिलो message",
-  "relatedGuild": "सम्बन्धित सर्भर"
+  "relatedGuild": "सम्बन्धित सर्भर",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
