@@ -24,7 +24,7 @@ export default function InAppPurchasesDialog() {
   const hasProducts = products.length > 0;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
-  
+
   async function onPurchase() {
     setLoading(true);
     await products[0]!.getOffer()!.order();
