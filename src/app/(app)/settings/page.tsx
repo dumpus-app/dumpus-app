@@ -1,13 +1,13 @@
 "use client";
 
-import PageHeader from "./_components/PageHeader";
-import About from "./_components/About";
-import PackageSwitch from "./_components/PackageSwitch";
-import LocaleSwitch from "~/components/LocaleSwitch";
-import DangerZone from "./_components/DangerZone";
 import TopNav from "../(nav)/_components/TopNav";
-import PackageDetails from "./_components/PackageDetails";
+import About from "./_components/About";
 import Actions from "./_components/Actions";
+import DangerZone from "./_components/DangerZone";
+import Languages from "./_components/Languages";
+import PackageDetails from "./_components/PackageDetails";
+import PackageSwitch from "./_components/PackageSwitch";
+import PageHeader from "./_components/PageHeader";
 
 export default function Page() {
   return (
@@ -19,7 +19,7 @@ export default function Page() {
       <Actions />
       <PackageSwitch />
       <div className="flex flex-col desktop-container sm:flex-row sm:space-x-2 sm:px-2">
-        <LocaleSwitch />
+        <Languages />
         <DangerZone />
       </div>
     </>

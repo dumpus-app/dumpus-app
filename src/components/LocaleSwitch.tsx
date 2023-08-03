@@ -5,7 +5,6 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import i18next from "i18next";
 import { Fragment, useState } from "react";
-import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import { useTranslation } from "~/i18n/client";
 import { locales as _locales } from "~/i18n/settings";
@@ -128,26 +127,29 @@ function LocaleSwitchDialog({
   );
 }
 
-export default function LocaleSwitch() {
+export default function LocaleSwitch({
+  description,
+}: {
+  description?: (localesAmount: number) => string;
+}) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const currentLocale = useCurrentLocale();
 
   return (
     <>
-      <Section title={t("settings.languages.title")}>
-        <div className="px-2">
-          <DetailCard
-            onClick={() => setOpen(true)}
-            title={currentLocale.display}
-            description={t("settings.languages.description", {
-              value: locales.length,
-            })}
-            reverseTexts
-            rightIcon={ChevronRightIcon}
-          />
-        </div>
-      </Section>
+      <DetailCard
+        onClick={() => setOpen(true)}
+        title={currentLocale.display}
+        description={
+          description
+            ? description(locales.length)
+            : t("onboarding./.selectFavoriteLanguage")
+        }
+        reverseTexts
+        rightIcon={ChevronRightIcon}
+        className="w-full"
+      />
       <LocaleSwitchDialog open={open} setOpen={setOpen} />
     </>
   );
