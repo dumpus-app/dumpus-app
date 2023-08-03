@@ -1,12 +1,12 @@
 "use client";
 
 import clsx from "clsx";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useMeasure, useMount, useUnmount } from "react-use";
 import colors from "tailwindcss/colors";
 import { shallow } from "zustand/shallow";
-import Link from "~/components/Link";
 import { links as _links } from "~/constants";
 import { useTranslation } from "~/i18n/client";
 import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";

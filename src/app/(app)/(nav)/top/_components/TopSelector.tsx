@@ -2,10 +2,10 @@
 
 import { colors } from "#root/tailwind.config";
 import clsx from "clsx";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useUnmount } from "react-use";
-import Link from "~/components/Link";
 import { useScrolled } from "~/hooks/use-layout";
 import { useTranslation } from "~/i18n/client";
 import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";

@@ -1,10 +1,10 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Fragment, useState } from "react";
 import Button from "~/components/Button";
-import Link from "~/components/Link";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import { useTranslation } from "~/i18n/client";
 

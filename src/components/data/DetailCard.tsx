@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import Link from "../Link";
+import Link from "next/link";
 import { Icon } from "~/types";
 
 export type Props = Omit<

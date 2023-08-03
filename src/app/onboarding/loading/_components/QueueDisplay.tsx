@@ -1,9 +1,9 @@
 "use client";
 
-import { Transition, Dialog } from "@headlessui/react";
+import { Dialog, Transition } from "@headlessui/react";
+import Link from "next/link";
 import { Fragment, useState } from "react";
 import Button from "~/components/Button";
-import Link from "~/components/Link";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import { ESTIMATED_QUEUE_DURATION } from "~/constants";
 import { useTranslation } from "~/i18n/client";

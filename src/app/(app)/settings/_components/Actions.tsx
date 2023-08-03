@@ -1,11 +1,11 @@
 "use client";
 
 import { XCircleIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { shallow } from "zustand/shallow";
 import Button from "~/components/Button";
-import Link from "~/components/Link";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
 import useToast from "~/hooks/use-toast";

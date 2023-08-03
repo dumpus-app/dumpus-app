@@ -60,7 +60,6 @@ export default function Profile({
       <Header.Icon
         href={discordLink}
         target="_blank"
-        noI18n
         icon={SimpleIconsDiscord}
         className="absolute right-2 top-4 hidden sm:block"
       />

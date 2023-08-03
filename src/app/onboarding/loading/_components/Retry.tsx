@@ -1,8 +1,8 @@
 "use client";
 
 import { Transition } from "@headlessui/react";
+import Link from "next/link";
 import Button from "~/components/Button";
-import Link from "~/components/Link";
 import { queryClient } from "~/utils/react-query";
 
 export default function Retry({ show, url }: { show: boolean; url: string }) {
@@ -17,7 +17,7 @@ export default function Retry({ show, url }: { show: boolean; url: string }) {
       leaveTo="transform scale-95 opacity-0"
     >
       <Button asChild>
-        <Link href={url} noI18n onClick={() => queryClient.clear()}>
+        <Link href={url} onClick={() => queryClient.clear()}>
           Retry
         </Link>
       </Button>

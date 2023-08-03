@@ -24,7 +24,6 @@ export default function PageHeader({
         <Header.Icon
           href={discordLink}
           target="_blank"
-          noI18n
           icon={SimpleIconsDiscord}
         />
       }

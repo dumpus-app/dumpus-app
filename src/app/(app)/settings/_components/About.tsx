@@ -37,7 +37,6 @@ export default function About() {
         />
         <DetailCard
           href={BASE_URL}
-          noI18n
           target="_blank"
           title={new URL(BASE_URL).hostname}
           description={t("settings.about.website")}
@@ -47,7 +46,6 @@ export default function About() {
         />
         <DetailCard
           href="https://androz2091.fr/discord"
-          noI18n
           target="_blank"
           title="Discord"
           description={t("settings.about.community")}
@@ -57,7 +55,6 @@ export default function About() {
         />
         <DetailCard
           href="https://github.com/dumpus-app/dumpus-app"
-          noI18n
           target="_blank"
           title="GitHub"
           description={t("settings.about.contribute")}
