@@ -53,9 +53,6 @@ dependencies:
   '@resvg/resvg-wasm':
     specifier: ^2.4.1
     version: 2.4.1
-  '@shuding/opentype.js':
-    specifier: ^1.3.5
-    version: 1.3.5
   '@svgr/webpack':
     specifier: ^8.0.1
     version: 8.0.1
@@ -92,18 +89,6 @@ dependencies:
   crc-32:
     specifier: ^1.2.2
     version: 1.2.2
-  css-background-parser:
-    specifier: ^0.1.0
-    version: 0.1.0
-  css-box-shadow:
-    specifier: 1.0.0-3
-    version: 1.0.0-3
-  css-to-react-native:
-    specifier: ^3.2.0
-    version: 3.2.0
-  escape-html:
-    specifier: ^1.0.3
-    version: 1.0.3
   eslint:
     specifier: 8.44.0
     version: 8.44.0
@@ -122,9 +107,6 @@ dependencies:
   i18next-resources-to-backend:
     specifier: ^1.1.3
     version: 1.1.3
-  linebreak:
-    specifier: ^1.1.0
-    version: 1.1.0
   lz-string:
     specifier: ^1.5.0
     version: 1.5.0
@@ -140,15 +122,9 @@ dependencies:
   pako:
     specifier: ^2.1.0
     version: 2.1.0
-  parse-css-color:
-    specifier: ^0.2.1
-    version: 0.2.1
   postcss:
     specifier: 8.4.25
     version: 8.4.25
-  postcss-value-parser:
-    specifier: ^4.2.0
-    version: 4.2.0
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -191,9 +167,6 @@ dependencies:
   typescript:
     specifier: 5.1.6
     version: 5.1.6
-  yoga-wasm-web:
-    specifier: ^0.3.3
-    version: 0.3.3
   zod:
     specifier: ^3.21.4
     version: 3.21.4
@@ -2140,15 +2113,6 @@ packages:
 
   /@rushstack/eslint-patch@1.2.0:
     resolution: {integrity: sha512-sXo/qW2/pAcmT43VoRKOJbDOfV3cYpq3szSVfIThQXNt+E4DfKj361vaAt3c88U5tPUxzEswam7GW48PJqtKAg==}
-    dev: false
-
-  /@shuding/opentype.js@1.3.5:
-    resolution: {integrity: sha512-aVcavo4JXqplGUnn9gRsdC2TGG2+umdy99Xhjtg809sIzTUncfNPnMO/v0XPog1oKH2P4LhgtZ9Nxbzncqj+2g==}
-    engines: {node: '>= 8.0.0'}
-    hasBin: true
-    dependencies:
-      fflate: 0.7.4
-      string.prototype.codepointat: 0.2.1
     dev: false
 
   /@shuding/opentype.js@1.4.0-beta.0:
