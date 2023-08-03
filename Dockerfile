@@ -9,8 +9,6 @@ WORKDIR /app
 
 # Copy package.json and pnpm-lock.yaml from the host to the container
 COPY package.json pnpm-lock.yaml ./
-# Copy dependencies overrides
-COPY overrides ./overrides
 
 # Copy scripts and locales
 COPY scripts ./scripts
