@@ -19,6 +19,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
         # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
@@ -34,21 +39,17 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
-      - name: Sync node version and setup cache
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: "19.9.0"
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+          node-version: 20.4.0
+          cache: pnpm
 
       - name: Install frontend dependencies
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        # TODO: reenable
-        # run: pnpm install --frozen-lockfile
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Build the app
+      - name: Build app
         uses: tauri-apps/tauri-action@v0
 
         env:
