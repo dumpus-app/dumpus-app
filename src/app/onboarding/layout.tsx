@@ -1,10 +1,10 @@
 "use client";
 
-import type { PageProps, Rename } from "~/types";
-import Header, { type Props as HeaderProps } from "./_components/Header";
-import Footer, { type Props as FooterProps } from "./_components/Footer";
-import { useI18nPathname } from "~/hooks/use-i18n";
+import { usePathname } from "next/navigation";
 import { useTranslation } from "~/i18n/client";
+import type { PageProps, Rename } from "~/types";
+import Footer, { type Props as FooterProps } from "./_components/Footer";
+import Header, { type Props as HeaderProps } from "./_components/Header";
 
 type RouteData = Rename<HeaderProps, "href", "previous"> &
   Rename<FooterProps, "href", "next">;
@@ -90,7 +90,7 @@ function getRouteData(
 export default function Layout({
   children,
 }: PageProps<{}, { children: React.ReactNode }>) {
-  const pathname = useI18nPathname();
+  const pathname = usePathname();
   const { t } = useTranslation();
 
   const { next, label, progress, previous } = getRouteData(pathname, t);

@@ -3,20 +3,20 @@
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { shallow } from "zustand/shallow";
 import Link from "~/components/Link";
 import PremiumBadge from "~/components/PremiumBadge";
 import Header from "~/components/layout/Header";
 import { links } from "~/constants";
-import { useI18nPathname } from "~/hooks/use-i18n";
 import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import TopSelector from "../top/_components/TopSelector";
 import TimeSelector from "./TimeSelector";
-import { shallow } from "zustand/shallow";
 
 export default function TopNav() {
   const { t } = useTranslation();
-  const pathname = useI18nPathname();
+  const pathname = usePathname();
   const [premium, backLink] = useAppStore(
     ({ config, ui }) => [config.premium, ui.redirectParam],
     shallow,

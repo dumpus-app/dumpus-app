@@ -1,12 +1,12 @@
 "use client";
 
+import { Dialog, Transition } from "@headlessui/react";
+import { usePathname } from "next/navigation";
+import { Fragment, useState } from "react";
 import Button from "~/components/Button";
 import Link from "~/components/Link";
-import { useTranslation } from "~/i18n/client";
-import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
 import RenderMarkdown from "~/components/RenderMarkdown";
-import { useI18nPathname } from "~/hooks/use-i18n";
+import { useTranslation } from "~/i18n/client";
 
 const GET_DATA_LINK_PATHNAMES = [
   "/access",
@@ -101,7 +101,7 @@ export type Props = { href: string | null; label: string | null };
 export default function Footer({ href, label }: Props) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
-  const pathname = useI18nPathname();
+  const pathname = usePathname();
   const showGetDataLink = GET_DATA_LINK_PATHNAMES.includes(
     normalizePathname(pathname),
   );

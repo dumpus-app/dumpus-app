@@ -1,15 +1,15 @@
 "use client";
 
+import { colors } from "#root/tailwind.config";
 import clsx from "clsx";
+import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useUnmount } from "react-use";
 import Link from "~/components/Link";
-import { useI18nPathname } from "~/hooks/use-i18n";
 import { useScrolled } from "~/hooks/use-layout";
-import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
-import { Link as LinkType } from "~/types";
-import { colors } from "#root/tailwind.config";
 import { useTranslation } from "~/i18n/client";
+import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";
+import { Link as LinkType } from "~/types";
 
 export default function TopSelector({
   desktop = false,
@@ -35,7 +35,7 @@ export default function TopSelector({
       active: (str: string) => str.startsWith("/top/channels"),
     },
   ] as Omit<LinkType, "icon">[];
-  const pathname = useI18nPathname();
+  const pathname = usePathname();
   const scrolled = useScrolled();
   const setSafeAreaTopColor = useAppStore(({ ui }) => ui.setSafeAreaTopColor);
 
