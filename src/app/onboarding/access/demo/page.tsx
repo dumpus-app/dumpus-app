@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import i18next from "i18next";
 import { useRouter } from "next/navigation";
 import { shallow } from "zustand/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
@@ -45,7 +44,7 @@ export default function Page() {
           backendURL: DEFAULT_PACKAGE_API_URL,
         },
       }).then(() => {
-        router.replace(`/${i18next.language}/overview`);
+        router.replace("/overview/");
       });
       return null;
     },

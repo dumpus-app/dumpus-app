@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import LocaleSwitch from "~/components/LocaleSwitch";
 import { useTranslation } from "~/i18n/client";
 
 export default function Page() {
@@ -25,6 +26,7 @@ export default function Page() {
       </div>
       {/* TODO: delete? */}
       {/* <Steps /> */}
+      <LocaleSwitch />
     </div>
   );
 }

@@ -1,16 +1,15 @@
 "use client";
 
-import { useTranslation } from "~/i18n/client";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { shallow } from "zustand/shallow";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
+import useSQLInit from "~/hooks/use-sql-init";
+import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { formatDate } from "~/utils/format";
-import { shallow } from "zustand/shallow";
-import { useRouter } from "next/navigation";
-import i18next from "i18next";
-import { useState } from "react";
-import useSQLInit from "~/hooks/use-sql-init";
 
 export default function PackageSwitch() {
   const { t } = useTranslation();
@@ -51,7 +50,7 @@ export default function PackageSwitch() {
                 setLoading(true);
                 setSelectedID(id);
                 init({ id }).then(() => {
-                  router.push(`/${i18next.language}/overview`);
+                  router.push("/overview/");
                   setLoading(false);
                 });
               }}

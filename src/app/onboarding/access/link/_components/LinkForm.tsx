@@ -7,7 +7,6 @@ import Form from "~/components/Form";
 import Button from "~/components/Button";
 import { Disclosure, Transition } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import i18next from "i18next";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import { useTranslation } from "~/i18n/client";
@@ -73,9 +72,7 @@ export default function LinkForm() {
 
   function onSubmit({ discordLink, backendURL }: Schema) {
     router.push(
-      `/${
-        i18next.language
-      }/onboarding/loading/?packageLink=${encodeURIComponent(
+      `/onboarding/loading/?packageLink=${encodeURIComponent(
         discordLink,
       )}&backendURL=${encodeURIComponent(backendURL)}`,
     );

@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { shallow } from "zustand/shallow";
@@ -41,7 +40,7 @@ export default function DangerZone() {
 
     reset();
     setUsersCache([]);
-    router.replace(`/${i18next.language}/onboarding/`);
+    router.replace("/onboarding/");
     queryClient.clear();
   }
 

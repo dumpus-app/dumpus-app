@@ -1,7 +1,6 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import i18next from "i18next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { shallow } from "zustand/shallow";
@@ -132,7 +131,7 @@ function useRedirect({
         },
       }).then(() => {
         afterInit();
-        router.replace(`/${i18next.language}/overview`);
+        router.replace("/overview");
       });
       return null;
     },

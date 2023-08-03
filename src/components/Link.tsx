@@ -11,17 +11,18 @@ export default function Link(
 
   // Handle href
   let href = _href;
-  const prefix = `/${i18next.language}`;
-  if (!noI18n && typeof href === "string") {
-    href = prefix + href;
-  }
-  if (
-    !noI18n &&
-    typeof href === "object" &&
-    !href.pathname?.startsWith(prefix)
-  ) {
-    href.pathname = prefix + href.pathname;
-  }
+  // TODO: remove component
+  // const prefix = `/${i18next.language}`;
+  // if (!noI18n && typeof href === "string") {
+  //   href = prefix + href;
+  // }
+  // if (
+  //   !noI18n &&
+  //   typeof href === "object" &&
+  //   !href.pathname?.startsWith(prefix)
+  // ) {
+  //   href.pathname = prefix + href.pathname;
+  // }
 
   return <NextLink href={href} {...rest} />;
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import i18next from "i18next";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
@@ -38,29 +37,28 @@ export default function LoadingScreen({
   const { init } = useSQLInit();
 
   useEffectOnce(() => {
-    const redirectPath = `/${i18next.language}/onboarding`;
     let mounted = true;
 
     async function handlePathname(pathname: string, hasDB: boolean) {
-      if (["/", `/${i18next.language}/`].includes(pathname)) {
-        logger.info("/ or /:locale");
-        return handlePathname(`/${i18next.language}/overview`, hasDB);
+      if (pathname === "/") {
+        logger.info("/ (root)");
+        return handlePathname("/overview", hasDB);
       }
 
-      if (pathname.startsWith(`/${i18next.language}/onboarding/`)) {
+      if (pathname.startsWith("/onboarding/")) {
         logger.info("onboarding");
 
         if (!!loadingData) {
           logger.info("go to loading");
 
           const { packageLink, backendURL } = loadingData;
-          pathname = `${redirectPath}/loading/?packageLink=${encodeURIComponent(
+          pathname = `/onboarding/loading/?packageLink=${encodeURIComponent(
             packageLink,
           )}&backendURL=${encodeURIComponent(backendURL || "")}`;
         } else if (goToOnboardingAccess) {
           logger.info("go to access");
 
-          pathname = `${redirectPath}/access`;
+          pathname = "/onboarding/access";
         }
         return pathname;
       }
@@ -68,7 +66,7 @@ export default function LoadingScreen({
       logger.info("no onboarding");
       if (!hasSelectedPackage) {
         logger.info("no package");
-        return handlePathname(`/${i18next.language}/onboarding/`, hasDB);
+        return handlePathname("/onboarding/", hasDB);
       }
 
       setShouldHaveDB(true);

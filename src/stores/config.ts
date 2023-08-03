@@ -1,9 +1,8 @@
+import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 import { getStorageKey } from "~/hooks/use-sql-init";
 import type { PackageData } from "~/types/sql";
-import { type CreateSlice } from ".";
 import { queryClient } from "~/utils/react-query";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
-import i18next from "i18next";
+import { type CreateSlice } from ".";
 
 export const timeRanges = ["4weeks", "6months", "year", "lifetime"] as const;
 
@@ -117,7 +116,7 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
           goToOnboardingAccess: true,
         },
       }));
-      router.replace(`/${i18next.language}/onboarding/access/`);
+      router.replace("/onboarding/access/");
     } else {
       set((state) => ({
         config: {

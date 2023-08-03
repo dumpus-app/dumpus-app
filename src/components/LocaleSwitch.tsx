@@ -4,7 +4,6 @@ import { Dialog, RadioGroup, Transition } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import clsx from "clsx";
 import i18next from "i18next";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useState } from "react";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
@@ -25,21 +24,13 @@ function useCurrentLocale() {
   return locales.find(({ code }) => code === i18next.language)!;
 }
 
-function LocalesList() {
-  const pathname = usePathname() || "/";
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
+function LocalesList({ close }: { close: () => void }) {
   return (
     <RadioGroup
       value={i18next.language}
       onChange={(v) => {
-        const newPathname = (pathname + "?" + searchParams?.toString()).replace(
-          `/${i18next.language}`,
-          `/${v}`,
-        );
         i18next.changeLanguage(v);
-        router.replace(newPathname);
+        close();
       }}
     >
       <RadioGroup.Label className="sr-only">Locales</RadioGroup.Label>
@@ -81,7 +72,7 @@ function LocalesList() {
   );
 }
 
-function LocaleSwitcher({
+function LocaleSwitchDialog({
   open,
   setOpen,
 }: {
@@ -125,7 +116,7 @@ function LocaleSwitcher({
                     {t("settings.languages.switch")}
                   </Dialog.Title>
                   <div className="mt-2">
-                    <LocalesList />
+                    <LocalesList close={() => setOpen(false)} />
                   </div>
                 </div>
               </Dialog.Panel>
@@ -137,7 +128,7 @@ function LocaleSwitcher({
   );
 }
 
-export default function Languages() {
+export default function LocaleSwitch() {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const currentLocale = useCurrentLocale();
@@ -157,7 +148,7 @@ export default function Languages() {
           />
         </div>
       </Section>
-      <LocaleSwitcher open={open} setOpen={setOpen} />
+      <LocaleSwitchDialog open={open} setOpen={setOpen} />
     </>
   );
 }
