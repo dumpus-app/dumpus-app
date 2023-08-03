@@ -17,9 +17,7 @@ COPY locales ./locales
 RUN mkdir -p src/i18n
 
 # Install dependencies
-# TODO: reenable
-# RUN pnpm install --frozen-lockfile
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Copy the rest of the application files
 COPY . .
