@@ -13,7 +13,6 @@ You can join [our Discord server](https://androz2091.fr/discord) to keep up to d
 <img src="./assets/appstore.svg" height="90px" />
 </a>
 
-
 or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux builds](https://github.com/dumpus-app/dumpus-app/releases/latest).
 
 ## Screenshots
