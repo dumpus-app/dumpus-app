@@ -28,7 +28,10 @@ platform :ios do
           key_filepath: "./AuthKey.p8",
           in_house: false, # optional but may be required if using match/sigh
         )
-        upload_to_testflight(api_key: api_key, changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!")
+        upload_to_testflight(
+          api_key: api_key,
+          changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!"
+        )
     end
     lane :prod do
         setup_ci

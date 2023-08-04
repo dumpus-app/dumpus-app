@@ -62,8 +62,7 @@ jobs:
         run: |
           export LC_ALL=fr_FR.UTF-8
           export LANG=fr_FR.UTF-8
-          bundle exec fastlane set_release_version 
-          bundle exec fastlane prod
+          bundle exec fastlane beta
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }},
