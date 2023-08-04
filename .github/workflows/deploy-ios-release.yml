@@ -27,6 +27,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build Mobile App
+        run: pnpm run build:mobile
+
+      - name: Sync iOS files
+        run: pnpm cap sync ios
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
