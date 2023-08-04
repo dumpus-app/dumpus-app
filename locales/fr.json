@@ -57,7 +57,8 @@
         "Briefing",
         "Demandez vos données",
         "Démarrez l'analyse"
-      ]
+      ],
+      "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
