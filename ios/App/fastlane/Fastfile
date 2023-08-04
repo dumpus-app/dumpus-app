@@ -17,11 +17,15 @@ default_platform(:ios)
 
 platform :ios do
     desc "Push a new beta build to TestFlight"
+    lane :buildtest do
+      setup_ci
+      match(type: "appstore")
+      build_app(workspace: "App.xcworkspace", scheme: "App") # Change name of workspace
+    end
     lane :beta do
-        
         setup_ci
-        match(type: "appstore")
-        build_app(workspace: "Runner.xcworkspace", scheme: "Runner") # Change name of workspace
+        match(type: "development")
+        build_app(workspace: "App.xcworkspace", scheme: "App") # Change name of workspace
         api_key = app_store_connect_api_key(
           key_id: ENV["APP_STORE_API_KEY_ID"],
           issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
@@ -36,7 +40,7 @@ platform :ios do
     lane :prod do
         setup_ci
         match(type: "appstore")
-        build_app(workspace: "Runner.xcworkspace", scheme: "Runner") # Change name of workspace
+        build_app(workspace: "App.xcworkspace", scheme: "App") # Change name of workspace
         api_key = app_store_connect_api_key(
             key_id: ENV["APP_STORE_API_KEY_ID"],
             issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
