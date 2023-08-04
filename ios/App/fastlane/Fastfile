@@ -30,18 +30,13 @@ platform :ios do
           key_id: ENV["APP_STORE_API_KEY_ID"],
           issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
           key_filepath: "./AuthKey.p8",
-          in_house: false, # optional but may be required if using match/sigh
-          duration: 1200
-        )
-        print(api_key.to_s[0..3])
-        sigh(
-          api_key: api_key,
-          adhoc: true,
-          force: true
+          in_house: false # optional but may be required if using match/sigh
         )
         upload_to_testflight(
           api_key: api_key,
-          changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!"
+          changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!",
+          skip_waiting_for_build_processing: true,
+          apple_id: ENV["APP_STORE_APP_APPLE_ID"]
         )
     end
     lane :prod do
@@ -52,8 +47,7 @@ platform :ios do
             key_id: ENV["APP_STORE_API_KEY_ID"],
             issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
             key_filepath: "./AuthKey.p8",
-            in_house: false, # optional but may be required if using match/sigh
-            duration: 1200
+            in_house: false # optional but may be required if using match/sigh
         )
         sigh(
           api_key: api_key,
@@ -65,7 +59,8 @@ platform :ios do
           force: true, # Set to true to skip verification of HTML preview
           skip_metadata: true,# pass a specific value to the iTMSTransporter -itc_provider option
           submit_for_review: false,
-          precheck_include_in_app_purchases: false
+          precheck_include_in_app_purchases: false,
+          apple_id: ENV["APP_STORE_APP_APPLE_ID"]
         )
     end
     lane :test do
