@@ -45,7 +45,7 @@ jobs:
           APP_KEYS_SECRET_PASSPHRASE: ${{ secrets.APP_KEYS_SECRET_PASSPHRASE }}
 
       - name: Install Pods
-        working-directory: ios
+        working-directory: ios/App
         run: |
           pod install
 
@@ -57,7 +57,7 @@ jobs:
         working-directory: ios/App/fastlane
 
       - name: Upload to App Store
-        working-directory: ios
+        working-directory: ios/App
         run: |
           export LC_ALL=fr_FR.UTF-8
           export LANG=fr_FR.UTF-8
