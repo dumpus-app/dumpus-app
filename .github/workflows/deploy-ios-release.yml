@@ -26,16 +26,16 @@ jobs:
     
       - name: Setup SSH Keys and known_hosts for fastlane match
         run: |
-            SSH_PATH="$HOME/.ssh"
-            mkdir -p "$SSH_PATH"
-            touch "$SSH_PATH/known_hosts"    
-            echo "$SSH_PRIVATE_KEY" > "$SSH_PATH/id_rsa"    
-            chmod 700 "$SSH_PATH"
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-            chmod 600 "$SSH_PATH/known_hosts"
-            chmod 600 "$SSH_PATH/id_rsa"    
-            eval $(ssh-agent)
-            ssh-add "$SSH_PATH/id_rsa"
+          SSH_PATH="$HOME/.ssh"
+          mkdir -p "$SSH_PATH"
+          touch "$SSH_PATH/known_hosts"    
+          echo "$SSH_PRIVATE_KEY" > "$SSH_PATH/id_rsa"    
+          chmod 700 "$SSH_PATH"
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"    
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
@@ -46,7 +46,6 @@ jobs:
 
       - name: Install Pods
         working-directory: ios
-
         run: |
           pod install
       
@@ -65,8 +64,8 @@ jobs:
           bundle exec fastlane beta
         env:
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-          APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }},
-          APP_STORE_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }},
-          APP_STORE_API_KEY: ${{ secrets.APP_STORE_API_KEY }},
+          APP_STORE_API_KEY_ID: ${{ secrets.APP_STORE_API_KEY_ID }}
+          APP_STORE_API_KEY_ISSUER_ID: ${{ secrets.APP_STORE_API_KEY_ISSUER_ID }}
+          APP_STORE_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
           FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: ${{ secrets.FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD }}
