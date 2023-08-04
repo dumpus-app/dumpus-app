@@ -31,6 +31,12 @@ platform :ios do
           issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
           key_filepath: "./AuthKey.p8",
           in_house: false, # optional but may be required if using match/sigh
+          duration: 500
+        )
+        sigh(
+          api_key: api_key,
+          adhoc: true,
+          force: true
         )
         upload_to_testflight(
           api_key: api_key,
@@ -46,6 +52,12 @@ platform :ios do
             issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
             key_filepath: "./AuthKey.p8",
             in_house: false, # optional but may be required if using match/sigh
+            duration: 500
+        )
+        sigh(
+          api_key: api_key,
+          adhoc: true,
+          force: true
         )
         upload_to_app_store(
           api_key: api_key,
