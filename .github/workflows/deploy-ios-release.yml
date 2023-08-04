@@ -54,7 +54,7 @@ jobs:
           gem install bundler:2.0.2
           bundle config path vendor/bundle
           bundle install
-        working-directory: ios/fastlane
+        working-directory: ios/App/fastlane
 
       - name: Upload to App Store
         working-directory: ios
