@@ -6,8 +6,13 @@ You can join [our Discord server](https://androz2091.fr/discord) to keep up to d
 
 ## Download
 
-<a href='https://play.google.com/store/apps/details?id=app.dumpus.app&hl=fr&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height="100px"/></a>
-<a href="https://apps.apple.com/us/app/discord-chat-talk-hangout/id985746746?itsct=apps_box_badge&amp;itscg=30200" style="display: inline-block; overflow: hidden; border-radius: 13px; width: 250px; height: 83px;"><img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83&amp;releaseDate=1432166400" alt="Download on the App Store" style="border-radius: 13px; width: 250px; height: 67px;"></a>
+<a href="https://play.google.com/store/apps/details?id=app.dumpus.app" target="_blank">
+<img src="./assets/playstore.svg" height="90px" />
+</a>
+<a href="https://apps.apple.com/fr/app/discord-discute-partage/id985746746" target="_blank">
+<img src="./assets/appstore.svg" height="90px" />
+</a>
+
 
 or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux builds](https://github.com/dumpus-app/dumpus-app/releases/latest).
 
