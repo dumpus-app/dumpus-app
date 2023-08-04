@@ -23,8 +23,8 @@ platform :ios do
         match(type: "appstore")
         build_app(workspace: "Runner.xcworkspace", scheme: "Runner") # Change name of workspace
         api_key = app_store_connect_api_key(
-          key_id: ENV["IOS_AUTHKEY_ID"],
-          issuer_id: ENV["IOS_AUTHKEY_ISSUER_ID"],
+          key_id: ENV["APP_STORE_API_KEY_ID"],
+          issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
           key_filepath: "./AuthKey.p8",
           in_house: false, # optional but may be required if using match/sigh
         )
@@ -35,8 +35,8 @@ platform :ios do
         match(type: "appstore")
         build_app(workspace: "Runner.xcworkspace", scheme: "Runner") # Change name of workspace
         api_key = app_store_connect_api_key(
-            key_id: ENV["IOS_AUTHKEY_ID"],
-            issuer_id: ENV["IOS_AUTHKEY_ISSUER_ID"],
+            key_id: ENV["APP_STORE_API_KEY_ID"],
+            issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
             key_filepath: "./AuthKey.p8",
             in_house: false, # optional but may be required if using match/sigh
         )
@@ -50,8 +50,8 @@ platform :ios do
     end
     lane :test do
         api_key = app_store_connect_api_key(
-          key_id: ENV["IOS_AUTHKEY_ID"],
-          issuer_id: ENV["IOS_AUTHKEY_ISSUER_ID"],
+          key_id: ENV["APP_STORE_API_KEY_ID"],
+          issuer_id: ENV["APP_STORE_API_KEY_ISSUER_ID"],
           key_filepath: "./AuthKey.p8",
           in_house: false, # optional but may be required if using match/sigh
         )
