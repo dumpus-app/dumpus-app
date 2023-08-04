@@ -9,7 +9,7 @@ You can join [our Discord server](https://androz2091.fr/discord) to keep up to d
 <a href="https://play.google.com/store/apps/details?id=app.dumpus.app" target="_blank">
 <img src="./assets/playstore.svg" height="90px" />
 </a>
-<a href="https://apps.apple.com/fr/app/discord-discute-partage/id985746746" target="_blank">
+<a href="https://apps.apple.com/us/app/dumpus-stats-for-discord/id6450952260" target="_blank">
 <img src="./assets/appstore.svg" height="90px" />
 </a>
 
