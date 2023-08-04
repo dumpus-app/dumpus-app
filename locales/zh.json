@@ -57,7 +57,8 @@
         "Briefing",
         "請求你的資料",
         "開始分析"
-      ]
+      ],
+      "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
