@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -22,8 +22,8 @@ jobs:
       - name: Select Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
         with:
-         xcode-version: latest-stable
-    
+          xcode-version: latest-stable
+
       - name: Setup SSH Keys and known_hosts for fastlane match
         run: |
           SSH_PATH="$HOME/.ssh"
@@ -42,18 +42,18 @@ jobs:
       - name: Decrypt iOS keys
         run: sh ./.github/scripts/decrypt_ios_keys.sh
         env:
-          ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.APP_KEYS_SECRET_PASSPHRASE }}  
+          ANDROID_KEYS_SECRET_PASSPHRASE: ${{ secrets.APP_KEYS_SECRET_PASSPHRASE }}
 
       - name: Install Pods
         working-directory: ios
         run: |
           pod install
-      
+
       - name: Download bundle dependencies
         run: |
           gem install bundler:2.0.2
           bundle config path vendor/bundle
-          bundle install   
+          bundle install
         working-directory: ios/fastlane
 
       - name: Upload to App Store
