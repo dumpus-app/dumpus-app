@@ -24,6 +24,8 @@ jobs:
           node-version: 20.5.0
           cache: pnpm
 
+      - uses: jongwooo/next-cache@v1
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
