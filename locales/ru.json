@@ -57,7 +57,8 @@
         "Инструктаж",
         "Запрос ваших данных",
         "Начала анализа"
-      ]
+      ],
+      "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
