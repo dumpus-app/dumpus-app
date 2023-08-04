@@ -37,7 +37,7 @@ export const createPurchasesSlice: CreateSlice<PurchasesSlice> = (
     }
 
     if (get().purchases.initialized) return;
-    if (!isCapacitorSupported) {
+    if (!isCapacitorSupported()) {
       return finish();
     }
 

@@ -1,9 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import type { ComponentProps } from "react";
-import Link from "../Link";
-import { formatNumber } from "~/utils/format";
 import { useTranslation } from "~/i18n/client";
+import { formatNumber } from "~/utils/format";
 
 export type Props = {
   href: ComponentProps<typeof Link>["href"];

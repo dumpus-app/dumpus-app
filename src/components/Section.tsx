@@ -1,4 +1,4 @@
-import Link from "~/components/Link";
+import Link from "next/link";
 import { useTranslation } from "~/i18n/client";
 
 export type Props = {
