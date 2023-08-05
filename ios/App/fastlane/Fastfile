@@ -30,13 +30,18 @@ platform :ios do
           key_id: ENV["APP_STORE_KEY_ID"],
           issuer_id: ENV["APP_STORE_KEY_ISSUER_ID"],
           key_content: ENV["APP_STORE_API_KEY"],
-          in_house: false # optional but may be required if using match/sigh
+          in_house: false, # optional but may be required if using match/sigh
+          duration: 500
         )
+        print(lane_context[SharedValues::APP_STORE_CONNECT_API_KEY])
         upload_to_testflight(
           api_key: api_key,
           changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!",
           skip_waiting_for_build_processing: true,
-          apple_id: ENV["APP_STORE_APP_APPLE_ID"]
+          skip_submission: true,
+          apple_id: ENV["APP_STORE_APP_APPLE_ID"],
+          app_identifier: ENV["APP_STORE_APP_ID"],
+          team_id: ENV["APP_STORE_TEAM_ID"],
         )
     end
     lane :prod do
@@ -54,8 +59,7 @@ platform :ios do
           force: true, # Set to true to skip verification of HTML preview
           skip_metadata: true,# pass a specific value to the iTMSTransporter -itc_provider option
           submit_for_review: false,
-          precheck_include_in_app_purchases: false,
-          username: ENV["FASTLANE_USER"]
+          precheck_include_in_app_purchases: false
         )
     end
     lane :test do
