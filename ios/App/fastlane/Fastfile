@@ -49,13 +49,14 @@ platform :ios do
             key_filepath: "./AuthKey.p8",
             in_house: false # optional but may be required if using match/sigh
         )
+        sleep(5) # This will pause the script for 5 seconds
         upload_to_app_store(
           api_key: api_key,
           force: true, # Set to true to skip verification of HTML preview
           skip_metadata: true,# pass a specific value to the iTMSTransporter -itc_provider option
           submit_for_review: false,
           precheck_include_in_app_purchases: false,
-          app_identifier: ENV["APP_STORE_APP_APPLE_ID"]
+          username: ENV["FASTLANE_USER"]
         )
     end
     lane :test do
