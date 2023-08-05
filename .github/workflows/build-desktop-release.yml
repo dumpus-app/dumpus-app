@@ -45,8 +45,9 @@ jobs:
           node-version: 20.5.0
           cache: pnpm
 
+      - uses: jongwooo/next-cache@v1
+
       - name: Install frontend dependencies
-        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install --frozen-lockfile
 
       - name: Build app
