@@ -59,7 +59,9 @@ platform :ios do
           force: true, # Set to true to skip verification of HTML preview
           skip_metadata: true,# pass a specific value to the iTMSTransporter -itc_provider option
           submit_for_review: false,
-          precheck_include_in_app_purchases: false
+          precheck_include_in_app_purchases: false,
+          app_identifier: ENV["APP_STORE_APP_IDENTIFIER"],
+          team_id: ENV["APP_STORE_TEAM_ID"]
         )
     end
     lane :test do
