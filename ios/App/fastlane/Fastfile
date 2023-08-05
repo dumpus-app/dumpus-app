@@ -40,7 +40,7 @@ platform :ios do
           skip_waiting_for_build_processing: true,
           skip_submission: true,
           apple_id: ENV["APP_STORE_APP_APPLE_ID"],
-          app_identifier: ENV["APP_STORE_APP_ID"],
+          app_identifier: ENV["APP_STORE_APP_IDENTIFIER"],
           team_id: ENV["APP_STORE_TEAM_ID"],
         )
     end
