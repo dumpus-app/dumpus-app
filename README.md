@@ -7,7 +7,7 @@ You can join [our Discord server](https://androz2091.fr/discord) to keep up to d
 ## Download
 
 <a href="https://play.google.com/store/apps/details?id=app.dumpus.app"><img src="./assets/playstore.png" hspace="10" height="100px" /></a>
-<a href="#"><img src="./assets/appstore.png" height="100px" /></a>
+<a href="https://apps.apple.com/us/app/dumpus-stats-for-discord/id6450952260"><img src="./assets/appstore.png" height="100px" /></a>
 
 or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux builds](https://github.com/dumpus-app/dumpus-app/releases/latest).
 
