@@ -1,9 +1,10 @@
 "use client";
 
+import { App } from "@capacitor/app";
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
-import { isCapacitorSupported } from "./utils";
-import { OS } from "~/constants";
 import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import { OS } from "~/constants";
+import { isCapacitorSupported } from "./utils";
 
 async function handleSafeArea() {
   function setStyle(content: string) {
@@ -49,7 +50,6 @@ export async function initCapacitor({ router }: { router: AppRouterInstance }) {
 
   await handleSafeArea();
 
-  const { App } = await import("@capacitor/app");
   const { StatusBar, Style } = await import("@capacitor/status-bar");
   const { NavigationBar } = await import(
     "@hugotomazi/capacitor-navigation-bar"

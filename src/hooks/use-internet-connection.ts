@@ -1,5 +1,6 @@
 "use client";
 
+import { App } from "@capacitor/app";
 import { useEffect, useState } from "react";
 import { Network } from "@capacitor/network";
 
@@ -7,12 +8,19 @@ export default function useInternetConnection() {
   const [connected, setConnected] = useState(true);
 
   useEffect(() => {
-    Network.addListener("networkStatusChange", ({ connected }) => {
-      setConnected(connected);
-    });
+    const unsub: (() => void)[] = [
+      Network.addListener("networkStatusChange", ({ connected }) => {
+        setConnected(connected);
+      }).remove,
+      App.addListener("appStateChange", async () => {
+        setConnected((await Network.getStatus()).connected);
+      }).remove,
+    ];
 
     return () => {
-      Network.removeAllListeners();
+      for (const fn of unsub) {
+        fn();
+      }
     };
   }, []);
 
