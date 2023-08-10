@@ -12,7 +12,7 @@ const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 export default function BuyPremium({ className }: { className?: string }) {
   const { t } = useTranslation();
   const [premium, setOpen] = useAppStore(
-    ({ config, ui }) => [config.packages, ui.setShowInAppPurchasesDialog],
+    ({ config, ui }) => [config.premium, ui.setShowInAppPurchasesDialog],
     shallow,
   );
 
