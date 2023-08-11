@@ -2,7 +2,7 @@
 FROM node:20.4.0-alpine
 
 # Install PNPM
-RUN npm install -g pnpm
+RUN corepack enable
 
 # Create application directory and move there
 WORKDIR /app
