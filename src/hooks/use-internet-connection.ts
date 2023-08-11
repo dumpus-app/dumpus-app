@@ -8,18 +8,25 @@ export default function useInternetConnection() {
   const [connected, setConnected] = useState(true);
 
   useEffect(() => {
-    const unsub: (() => void)[] = [
-      Network.addListener("networkStatusChange", ({ connected }) => {
-        setConnected(connected);
-      }).remove,
-      App.addListener("appStateChange", async () => {
+    const removeFunctions: (() => void)[] = [];
+
+    (async () => {
+      const networkListener = await Network.addListener(
+        "networkStatusChange",
+        ({ connected }) => {
+          setConnected(connected);
+        },
+      );
+      removeFunctions.push(networkListener.remove);
+      const appListener = await App.addListener("appStateChange", async () => {
         setConnected((await Network.getStatus()).connected);
-      }).remove,
-    ];
+      });
+      removeFunctions.push(appListener.remove);
+    })();
 
     return () => {
-      for (const fn of unsub) {
-        fn();
+      for (const remove of removeFunctions) {
+        remove();
       }
     };
   }, []);
