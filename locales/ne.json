@@ -11,6 +11,7 @@
   },
   "premium": {
     "premium": "Premium",
+    "buy": "Buy Premium",
     "success": "You're an Early Supporter",
     "thanks": "Thanks for supporting us!",
     "supportUs": "Support us!",
