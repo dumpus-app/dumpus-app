@@ -131,12 +131,7 @@ export default function SharePopup() {
 
   const imageData = useImageData();
 
-  const {
-    generate,
-    width,
-    height,
-    status: generationStatus,
-  } = useGenerateImg();
+  const { generate, width, height } = useGenerateImg();
 
   const share = useShare({ canShare });
 
@@ -144,7 +139,6 @@ export default function SharePopup() {
     queryKey: ["generate-share-img", imageData],
     queryFn: () => generate(imageData),
     staleTime: Infinity,
-    enabled: generationStatus === "initialized",
   });
 
   return (
@@ -212,17 +206,12 @@ export default function SharePopup() {
                 >
                   {
                     {
-                      initialized: {
-                        success: canShare
-                          ? t("share.title")
-                          : t("share.download"),
-                        error: t("share.error"),
-                        loading: t("share.generating"),
-                      }[status],
+                      success: canShare
+                        ? t("share.title")
+                        : t("share.download"),
                       error: t("share.error"),
-                      idle: t("share.generating"),
                       loading: t("share.generating"),
-                    }[generationStatus]
+                    }[status]
                   }
                 </Button>
               </Dialog.Panel>
