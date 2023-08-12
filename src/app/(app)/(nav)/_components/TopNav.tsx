@@ -13,6 +13,7 @@ import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import TopSelector from "../top/_components/TopSelector";
 import TimeSelector from "./TimeSelector";
+import BuyPremium from "~/components/BuyPremium";
 
 export default function TopNav() {
   const { t } = useTranslation();
@@ -48,8 +49,12 @@ export default function TopNav() {
               <span className="relative text-2xl font-bold uppercase text-white">
                 Dumpus
                 {premium && (
-                  <PremiumBadge className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border-2 border-gray-900 text-xs capitalize" />
+                  <PremiumBadge
+                    text={t("premium.premium")}
+                    className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border-2 border-gray-900 text-xs capitalize"
+                  />
                 )}
+                <BuyPremium className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-gray-900 text-xs" />
               </span>
             </Link>
             <div className="flex items-center space-x-2">
