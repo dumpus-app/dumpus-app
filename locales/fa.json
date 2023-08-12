@@ -10,23 +10,24 @@
     }
   },
   "premium": {
-    "premium": "Premium",
-    "success": "You're an Early Supporter",
-    "thanks": "Thanks for supporting us!",
-    "supportUs": "Support us!",
-    "earlySupporter": "Early Supporter",
-    "reduction": "60% off",
-    "oneTime": "one-time",
-    "supporter": "Supporter",
-    "soon": "Soon",
-    "notSupported": "Payments not supported",
-    "maybeLater": "Maybe later",
-    "proceed": "Proceed",
-    "unavailable": "Unavailable",
+    "premium": "نسخه ویژه",
+    "buy": "Buy Premium",
+    "success": "شما یک حامی اولیه هستید",
+    "thanks": "تشکر برای حمایت از ما!",
+    "supportUs": "از ما حمایت کنید!",
+    "earlySupporter": "حامی اولیه",
+    "reduction": "60% تخفیف",
+    "oneTime": "یک‌ باره",
+    "supporter": "حامی",
+    "soon": "به زودی",
+    "notSupported": "فرایند پرداخت ها پشتیبانی نمی‌شود",
+    "maybeLater": "شاید بعدا",
+    "proceed": "ادامه دادن",
+    "unavailable": "غیر قابل دسترس",
     "content": [
-      "Supporter role on Discord",
-      "Up to 100+ DMs leaderboard",
-      "Early access to new features"
+      "وظیفه حامی در دیسکورد",
+      "بیش از 100+ جدول DM ها",
+      "دسترسی زود هنگام به ویژگی های جدید"
     ]
   },
   "onboarding": {
@@ -42,12 +43,12 @@
       "trust": "چرا باید به این برنامه اعتماد کنم؟",
       "trustContent": [
         "دامپوس %100 متن باز و غیر رمزگذاری شده است. شما میتوانید کد را در (https://github.com/dumpus-app/dumpus-app)[گیتهاب] بخوانید، و حتی سرور خود را میزبانی کنید.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
+        "ما همچنین یک (https://ddpe.androz2091.fr)[برنامه وب سمت مشتری] کاملاً داریم، با امکانات کمتر اما بدون هیچ گونه API خارجی.",
         "این برنامه بدون هیچ داده قابل خواندن ذخیره شده در رابط برنامه نویسی کاربردی خارجی کار میکند."
       ],
       "30DaysDelay": "لطفا به یاد داشته باشید که بیش از 30 روز طول میکشد تا ایمیل را دریافت کنید. صبور باشید!",
       "getData": "چطور داده های خود را دریافت کنم؟",
-      "gotIt": "Got it!"
+      "gotIt": "فهمیدم!"
     },
     "/": {
       "welcome": "به دامپوس خوش آمدید!",
@@ -58,7 +59,7 @@
         "اطلاعات خود را درخواست کنید",
         "تحلیل و بررسی را شروع کنید"
       ],
-      "selectFavoriteLanguage": "Select your favorite language"
+      "selectFavoriteLanguage": "زبان محبوب تان را انتخاب كنيد"
     },
     "slides": [
       {
@@ -137,34 +138,34 @@
         "useBackend": "از بک‌اند خودم استفاده کن"
       },
       "progress": {
-        "downloading": "Downloading",
-        "analyzing": "Analyzing",
-        "processing": "Processing",
-        "importing": "Importing",
+        "downloading": "درحال بارگیری",
+        "analyzing": "در حال تحلیل و بررسی",
+        "processing": "در حال پردازش",
+        "importing": "در حال وارد کردن",
         "loading": {
-          "title": "We’re loading your data",
-          "description": "Please wait..."
+          "title": "در حال بارگذاری داده هایتان هستیم",
+          "description": "لطفا صبر کنید..."
         },
         "loadingDemo": {
-          "title": "We’re loading the demo",
-          "description": "Please wait..."
+          "title": "در حال بارگذاری نسخه نمایشی هستیم",
+          "description": "لطفا صبر کنید..."
         }
       },
-      "error": "An error occurred...",
-      "unknownPackageId": "This package is unknown.",
-      "unauthorized": "You are not allowed to interact with this package data.",
-      "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occurred.",
-      "expiredLink": "Link expired.",
-      "comeBackLater": "You can close and come back later."
+      "error": "خطایی رخ داد...",
+      "unknownPackageId": "این بسته نامشخص است.",
+      "unauthorized": "شما مجاز به تعامل با داده های این بسته نیستید.",
+      "invalidLink": "پیوند نامعتبر است.",
+      "unknownError": "خطایی ناشناخته رخ داده است.",
+      "expiredLink": "لینک منقضی شده.",
+      "comeBackLater": "می توانید ببندید و بعداً برگردید."
     }
   },
   "stats": {
-    "messages": "{{- value}} messages",
+    "messages": "{{- value}} پیام ها",
     "messagesSent": "پیام ارسال شد",
     "messagesSentPerDay": "این تقریباً {{- value}} پیام در روز است!",
-    "titleMessagesSentPerDay": "Messages sent per day",
-    "totalMessagesSent": "total messages sent",
+    "titleMessagesSentPerDay": "پیام فرستاده شده در روز",
+    "totalMessagesSent": "مجموع پیام های فرستاده شده",
     "joinedServers": "سرور هایی که به آنها پیوستید",
     "joinedServersDesc": "ما یک کاوشگر سرور دیسکورد واقعی داریم!",
     "knownUsers": "کاربران شناخته شده",
@@ -176,135 +177,135 @@
     "appStartsPerDay": "شما حدود {{- value}} بار در روز دیسکورد را باز می کنید!",
     "totalTimeSpent": "شما حدود {{- value}} را در دیسکورد هزینه کردید",
     "avgSessionTime": "میانگین زمان جلسه",
-    "receivedCalls": "received calls",
-    "topHour": "top hour",
-    "appStarted": "Discord app started",
-    "topChatHour": "top chat hour",
-    "reactionsAdded": "reactions added",
-    "channelOpenings": "channel openings",
-    "guildJoins": "guild joins",
-    "commands": "{{- value}} commands",
+    "receivedCalls": "تماس های دریافت شده",
+    "topHour": "بهترین ساعت",
+    "appStarted": "دیسکورد راه‌ اندازی شد",
+    "topChatHour": "بهترین ساعت چت",
+    "reactionsAdded": "واکنش ها اضافه شده (اضافه شد)",
+    "channelOpenings": "باز کردن های کانال",
+    "guildJoins": "پیوستن های سرور",
+    "commands": "{{- value}} فرمان ها",
     "top": {
-      "dms": "DMs",
-      "guilds": "Guilds",
-      "channels": "Channels",
-      "loadMore": "Load more",
-      "premium": "Unlock to view more"
+      "dms": "پیام های مستقیم",
+      "guilds": "سرور ها (صنف ها)",
+      "channels": "کانال‌ها",
+      "loadMore": "بیشتر بارگذاری کن",
+      "premium": "برای مشاهده بیشتر باز کنید"
     },
     "extra": {
-      "clickedNotifications": "notifications clicked",
-      "completedCaptcha": "captcha completed",
-      "receivedEmail": "emails received",
-      "successfulLogin": "logins successful",
-      "avatarUpdates": "avatar updates",
-      "crashes": "crashes",
-      "authorizedOauth2": "oauth2 authorized",
-      "voiceMessagesRecorded": "voice messages recorded",
-      "reportedMessages": "messages reported",
-      "editedMessages": "messages edited",
-      "seenNitroAds": "seen nitro ads",
-      "spentInVoiceChannels": "spent in voice channels"
+      "clickedNotifications": "اعلان کلیک شده",
+      "completedCaptcha": "captcha تکمیل شده",
+      "receivedEmail": "ایمیل (رایانامه) دریافت شده",
+      "successfulLogin": "ورود موفقیت آمیز",
+      "avatarUpdates": "بروز شدن های آواتار",
+      "crashes": "از کار افتادن ها",
+      "authorizedOauth2": "بار به oauth2 اجازه داده شد",
+      "voiceMessagesRecorded": "پیام صوتی های ضبط شده",
+      "reportedMessages": "پیام های گزارش شده",
+      "editedMessages": "پیام ویرایش شده",
+      "seenNitroAds": "تبلیغات دیده شده نیترو",
+      "spentInVoiceChannels": "در کانال صوتی صرف شد"
     }
   },
   "shareImage": {
-    "title": "Stats for Discord",
-    "topDMS": "Top DMs",
-    "topGuilds": "Top guilds",
-    "getYours": "Get yours at",
-    "talkedWith": "number of users you talked with",
-    "messagesSent": "number of messages you sent",
-    "timeSpent": "time spent on Discord",
-    "appOpenings": "number of times you opened the app"
+    "title": "آمار برای دیسکورد",
+    "topDMS": "برترین DM ها",
+    "topGuilds": "برترین سرور ها",
+    "getYours": "مال خود را بگیرید از",
+    "talkedWith": "تعداد کاربرانی که شما با آنها صحبت کرده اید",
+    "messagesSent": "تعداد پیام های ارسال شده توسط شما",
+    "timeSpent": "زمان صرف شده در دیسکورد",
+    "appOpenings": "تعداد دفعاتی که برنامه را باز کردید"
   },
   "sendingTimeStats": {
-    "messagesSentPerDay": "average messages sent per day",
-    "appOpeningsPerDay": "Discord app openings per day"
+    "messagesSentPerDay": "متوسطه پیام های فرستاده شده در روز",
+    "appOpeningsPerDay": "باز کردن های برنامه دیسکورد در روز"
   },
   "sentimentAnalysis": {
-    "title": "Sentiment analysis (experimental)",
-    "anger": "Anger",
-    "happiness": "Happiness",
-    "score": "Active with score: {{- value}}"
+    "title": "تحلیل احساسات (تجربی)",
+    "anger": "عصبانیت",
+    "happiness": "خوشحالی",
+    "score": "فعال با امتیاز: {{- value}}"
   },
   "settings": {
-    "title": "Settings",
+    "title": "تنظیمات",
     "toasts": {
-      "copyError": "Can't copy to clipboard",
-      "copied": "Copied to clipboard!"
+      "copyError": "نمی توان به بریده‌دادن کپی کرد",
+      "copied": "در بریده‌دان رونوشت شد!"
     },
     "packageSwitch": {
-      "title": "Switch Package",
-      "description": "Generated on {{- date}}"
+      "title": "عوض کردن بسته",
+      "description": "ایجاد شده در {{- date}}"
     },
     "packageDetails": {
-      "title": "Package Details",
-      "UPNKey": "UPN key",
-      "dateAdded": "Added on",
-      "packageID": "Package ID",
-      "discordUser": "Discord user",
-      "backendURL": "Backend URL"
+      "title": "جزئیات بسته",
+      "UPNKey": "کلید UPN",
+      "dateAdded": "اضافه شده در",
+      "packageID": "شناسه بسته",
+      "discordUser": "کاربر دیسکورد",
+      "backendURL": "پیوند باطنی"
     },
     "languages": {
-      "switch": "Switch language",
-      "title": "Languages",
-      "description": "{{- value}} available"
+      "switch": "تغییر زبان",
+      "title": "زبان ها",
+      "description": "{{- value}} موجود است"
     },
     "dangerZone": {
-      "title": "Danger Zone",
-      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
-      "loading": "Deleting...",
-      "quit": "Quit and reset"
+      "title": "محدوده خطر",
+      "description": "داده های شما از این دستگاه و سرورهای ما حذف خواهد شد، اما همچنان می توانید با استفاده از ایمیل ارسال شده توسط دیسکورد به آن دسترسی داشته باشید. از اینکه برنامه را امتحان کردید متشکریم، در مورد به ما در گیتهاب بازخورد بدهید!",
+      "loading": "درحال حذف...",
+      "quit": "خروج و تنظیم مجدد"
     },
     "actions": {
-      "title": "Actions",
+      "title": "اقدامات",
       "notEnoughStorage": {
-        "title": "Can't add new package",
-        "description": "Not enough storage in app"
+        "title": "نمی توان بسته جدید اضافه کرد",
+        "description": "فضای ذخیره سازی برنامه کافی نیست"
       },
-      "deleting": "Deleting...",
-      "delete": "Delete current package",
-      "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases",
-      "addPackage": "Add a new package"
+      "deleting": "درحال حذف...",
+      "delete": "پاک کردن بسته فعلی",
+      "restoring": "درحال بازیابی...",
+      "restorePurchases": "بازیابی خرید ها",
+      "addPackage": "افزودن بسته جدید"
     },
     "about": {
-      "title": "About",
-      "version": "Version",
-      "website": "Web application",
-      "community": "Community",
-      "contribute": "Contribute",
-      "contributors": "Project's contributors",
-      "credits": "Credits"
+      "title": "درباره",
+      "version": "نسخه",
+      "website": "برنامه وب",
+      "community": "انجمن",
+      "contribute": "مشارکت",
+      "contributors": "مشارکت کنندگان پروژه",
+      "credits": "سازندگان"
     }
   },
   "credits": {
-    "title": "Credits",
-    "back": "Back to settings",
+    "title": "سازندگان",
+    "back": "بازگشت به تنظیمات",
     "bugHunter": {
-      "title": "Bug Hunter",
-      "description": "Most important people to provide you with stable app."
+      "title": "شکارچی اشکالات برنامه",
+      "description": "مهم ترین افراد برای ارائه برنامه پایدار به شما."
     },
     "influencer": {
-      "title": "Influencer",
-      "description": "These people helped us to spread the word about the app."
+      "title": "اینفلوئنسر",
+      "description": "این افراد به ما کمک کردند تا اخبار مربوط به اپلیکیشن را منتشر کنیم."
     },
     "developer": {
-      "title": "Developer",
-      "description": "These people made direct contributions to the app's code."
+      "title": "توسعه‌دهنده",
+      "description": "این افراد به طور مستقیم به کد برنامه کمک کردند."
     },
     "translator": {
-      "title": "Translator",
-      "description": "These people made the app available worldwide."
+      "title": "مترجم",
+      "description": "این افراد این اپلیکیشن را در سراسر جهان در دسترس قرار دادند."
     },
-    "contributions": "{{- value}} contributions"
+    "contributions": "{{- value}} مشارکت ها"
   },
   "error": {
-    "error": "An error occurred...",
-    "title": "Surprising turn of events... Here is your path to recovery:",
-    "retry": "Retry",
-    "report": "Report on GitHub",
-    "noInternet": "No Internet Connection",
-    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
+    "error": "خطایی رخ داد...",
+    "title": "چرخش شگفت انگیز از وقایع... در اینجا مسیر شما برای بازیابی است:",
+    "retry": "تلاش مجدد",
+    "report": "گزارش در گیتهاب",
+    "noInternet": "بدون اتصال اینترنت",
+    "noInternetDescription": " دسترسی به اینترنت برای استفاده از برنامه دامپوس ضروری است. لطفاً برای ادامه دوباره به اینترنت وصل شوید."
   },
   "sheerNumbers": "اعداد محض",
   "mostActiveDMs": "فعال ترین DM ها",
@@ -314,42 +315,42 @@
   "activityTime": "فعالیت در طول زمان",
   "messageSentCount": "تعداد پیام ارسال شده",
   "share": {
-    "title": "Share",
-    "description": "Share your stats with your friends!",
-    "generating": "Generating...",
-    "download": "Download",
-    "recap": "Share your recap",
-    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "title": "اشتراک گذاری",
+    "description": "آمار خود را با دوستان خود به اشتراک بگذارید!",
+    "generating": "در حال تولید...",
+    "download": "بارگیری (دانلود)",
+    "recap": "خلاصه خود را به اشتراک بگذارید",
+    "recapDescription": "خلاصه خود را با دوستان خود در توییتر، اینستاگرام، ردیت، دیسکورد... به اشتراک بگذارید! :)",
     "popup": {
-      "title": "Here is my Discord recap!",
-      "description": "Generated on https://dumpus.app, try it yourself!"
+      "title": "این خلاصه دیسکورد من است!",
+      "description": "تولید شده در https://dumpus.app، خودتان آن را امتحان کنید!"
     },
-    "error": "An error occurred..."
+    "error": "خطایی رخ داد..."
   },
-  "exitingDemo": "Exiting...",
-  "exitDemo": "Exit demo and get started!",
-  "members": "{{- value}} members",
+  "exitingDemo": "در حال خروج...",
+  "exitDemo": "از نسخه ی نمایشی خارج شوید و شروع کنید!",
+  "members": "{{- value}} اعضا",
   "nav": {
-    "overview": "Overview",
-    "top": "Top",
-    "stats": "Stats",
-    "settings": "Settings"
+    "overview": "بررسی اجمالی",
+    "top": "محبوب‌ترین",
+    "stats": "آمار",
+    "settings": "تنظیمات"
   },
   "timeRanges": {
-    "4weeks": "4 weeks",
-    "6months": "6 months",
-    "year": "Year",
-    "lifetime": "Lifetime"
+    "4weeks": "۴ هفته",
+    "6months": "6 ماه",
+    "year": "سال",
+    "lifetime": "دائمی"
   },
-  "topUsedBot": "Top used bots",
-  "topChannels": "Top channels",
-  "firstMessages": "Your first messages",
-  "relatedGuild": "Related guild",
-  "more": "More",
-  "noData": "No data available",
-  "noDataTip": "Select another time range to view data",
+  "topUsedBot": "ربات های پر استفاده",
+  "topChannels": "کانال های برتر",
+  "firstMessages": "اولین پیام های شما",
+  "relatedGuild": "سرور (صنف) مرتبط",
+  "more": "بیشتر",
+  "noData": "داده ای موجود نیست",
+  "noDataTip": "برای دیدن داده ها از یک رنج زمانی دیگر استفاده کنید",
   "notFound": {
-    "title": "Not found",
-    "description": "The page you are looking for doesn't exist."
+    "title": "یافت نشد",
+    "description": "ظاهرا صفحه‌ای که به دنبال آن هستید وجود ندارد."
   }
 }
