@@ -53,7 +53,7 @@ def count_sentiments(contents):
     sentiments = []
     for content in contents:
         if not content:
-            return
+            continue
         score = sia.polarity_scores(str(content))["compound"]
         if score != 0:
             sentiments.append(score)
