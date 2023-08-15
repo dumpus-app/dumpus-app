@@ -377,13 +377,15 @@ def read_analytics_file(package_status_id, package_id, link, session):
         Read messages.
         '''
 
+        namelist = zip.namelist()
+
         read_channel_times = []
         read_csv_times = []
         read_json_times = []
         compute_times = []
         compute_1_times = []
         compute_2_times = []
-        channel_json_files = [file_name for file_name in zip.namelist() if file_name.startswith('messages/') and file_name.endswith('channel.json')]
+        channel_json_files = [file_name for file_name in namelist if file_name.startswith('messages/') and file_name.endswith('channel.json')]
         for channel_json_file in channel_json_files:
             read_time_start = time.time()
             channel_content = zip.open(channel_json_file)
@@ -397,6 +399,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
             # new package includes 'c' before the channel id
             is_new_package = channel_json_file.startswith('messages/c')
             read_time_start = time.time()
+            ch_msgs_file_name = f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv'
+            if ch_msgs_file_name not in namelist:
+                continue
             message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv')
             read_time_diff = time.time() - read_time_start
             read_channel_times.append(read_time_diff)
