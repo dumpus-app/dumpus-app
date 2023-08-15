@@ -397,50 +397,56 @@ def read_analytics_file(package_status_id, package_id, link, session):
             # new package includes 'c' before the channel id
             is_new_package = channel_json_file.startswith('messages/c')
             read_time_start = time.time()
-            message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv')
-            read_time_diff = time.time() - read_time_start
-            read_channel_times.append(read_time_diff)
-            read_time_start = time.time()
-            cols_to_use = ['Contents', 'Timestamp']
-            message_csv = pd.read_csv(message_content, usecols=cols_to_use)
-            read_time_diff = time.time() - read_time_start
-            read_csv_times.append(read_time_diff)
-            compute_time_start = time.time()
-            compute_1_time_start = time.time()
-            message_csv['Timestamp'] = pd.to_datetime(message_csv['Timestamp'], format="mixed").apply(lambda x: x.timestamp())
-            message_csv.rename(columns={'Contents': 'content', 'Timestamp': 'timestamp'}, inplace=True)
-            messages = message_csv.to_dict('records')
-            messages.sort(key=lambda message: message['timestamp'])
-            compute_1_time_diff = time.time() - compute_1_time_start
-            compute_1_times.append(compute_1_time_diff)
-           #print(f'Channel {channel_id} has {len(messages)} messages')
-            compute_2_time_start = time.time()
-            if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
-                dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
-                dms_channels_data.append({
-                    'channel_id': channel_id,
-                    'dm_user_id': dm_user_id,
-                    # TODO : get username from user_id
-                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
-                    'sentiment_score': count_sentiments(map(lambda message: message['content'], messages)),
-                    'total_message_count': len(messages),
-                    # make sure content exists
-                    'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
-                })
+            try:
+                message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv')
+                read_time_diff = time.time() - read_time_start
+                read_channel_times.append(read_time_diff)
+                read_time_start = time.time()
+                cols_to_use = ['Contents', 'Timestamp']
+                message_csv = pd.read_csv(message_content, usecols=cols_to_use)
+                read_time_diff = time.time() - read_time_start
+                read_csv_times.append(read_time_diff)
+                compute_time_start = time.time()
+                compute_1_time_start = time.time()
+                message_csv['Timestamp'] = pd.to_datetime(message_csv['Timestamp'], format="mixed").apply(lambda x: x.timestamp())
+                message_csv.rename(columns={'Contents': 'content', 'Timestamp': 'timestamp'}, inplace=True)
+                messages = message_csv.to_dict('records')
+                messages.sort(key=lambda message: message['timestamp'])
+                compute_1_time_diff = time.time() - compute_1_time_start
+                compute_1_times.append(compute_1_time_diff)
+            #print(f'Channel {channel_id} has {len(messages)} messages')
+                compute_2_time_start = time.time()
+                if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
+                    dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
+                    dms_channels_data.append({
+                        'channel_id': channel_id,
+                        'dm_user_id': dm_user_id,
+                        # TODO : get username from user_id
+                        'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
+                        'sentiment_score': count_sentiments(map(lambda message: message['content'], messages)),
+                        'total_message_count': len(messages),
+                        # make sure content exists
+                        'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
+                    })
 
-            elif 'guild' in channel_json:
-                guild_channels_data.append({
-                    'guild_id': channel_json['guild']['id'],
-                    'guild_name': channel_json['guild']['name'],
-                    'channel_id': channel_id,
-                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
-                    'total_message_count': len(messages),
-                    'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
-                })
-            compute_2_time_diff = time.time() - compute_2_time_start
-            compute_2_times.append(compute_2_time_diff)
-            compute_time_diff = time.time() - compute_time_start
-            compute_times.append(compute_time_diff)
+                elif 'guild' in channel_json:
+                    guild_channels_data.append({
+                        'guild_id': channel_json['guild']['id'],
+                        'guild_name': channel_json['guild']['name'],
+                        'channel_id': channel_id,
+                        'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
+                        'total_message_count': len(messages),
+                        'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
+                    })
+                compute_2_time_diff = time.time() - compute_2_time_start
+                compute_2_times.append(compute_2_time_diff)
+                compute_time_diff = time.time() - compute_time_start
+                compute_times.append(compute_time_diff)
+            except KeyError:
+                print(f'Channel {channel_id} has no messages')
+            except Exception as e:
+                print(f'Channel {channel_id} has an error')
+                print(e)
 
         print(f'Channel messages data: {time.time() - start}')
         print(f'Average channel read time: {sum(read_channel_times) / len(read_channel_times)}')
