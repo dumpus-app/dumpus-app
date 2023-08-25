@@ -31,7 +31,10 @@ function useImageData() {
     user: {
       displayName: data.package_owner_display_name,
       // TODO: temp fix. Source probably in `useUserData`
-      avatarURL: (data.package_owner_avatar_url || "").replace(/.webp|.gif/, ".png"),
+      avatarURL: (data.package_owner_avatar_url || "").replace(
+        /.webp|.gif/,
+        ".png",
+      ),
     },
     stats: {
       messagesSent: formatNumber(messageCount(), { notation: "standard" }),
