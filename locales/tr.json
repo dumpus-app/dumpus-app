@@ -1,12 +1,12 @@
 {
   "seo": {
-    "title": "Dumpus | Stats for Discord",
-    "description": "Get detailed insights and stats for your Discord account"
+    "title": "Dumpus | Discord İçin İstatikler",
+    "description": "Discord hesabın için detaylı verilere eriş"
   },
   "global": {
     "loading": {
-      "title": "Loading...",
-      "description": "Please wait."
+      "title": "Yükleniyor...",
+      "description": "Lütfen bekle."
     }
   },
   "premium": {
@@ -32,179 +32,179 @@
   },
   "onboarding": {
     "routesLabels": {
-      "/": "Let's go",
-      "/intro/1": "Got it!",
-      "/intro/2": "Awesome!",
-      "/intro/3": "Let's get my package!",
-      "/setup": "Got it!"
+      "/": "Hadi bakalım",
+      "/intro/1": "Anlaşıldı!",
+      "/intro/2": "Harika!",
+      "/intro/3": "Hadi verilerime ulaşalım!",
+      "/setup": "Anlaşıldı!"
     },
     "shared": {
-      "previous": "Previous",
-      "trust": "Why should I trust the app?",
+      "previous": "Önceki",
+      "trust": "Bu uygulamaya neden güveneyim?",
       "trustContent": [
-        "Dumpus is 100% open source. You can read the code on [GitHub](https://github.com/dumpus-app/dumpus-app), and even host your own server.",
-        "We also have a completely [client-side web app](https://ddpe.androz2091.fr), with less features but without any external API.",
-        "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
+        "Dumpus %100 açık kaynağa sahiptir. [GitHub](https://github.com/dumpus-app/dumpus-app)'da kodu okuyabilir, hatta kendi sunucunu kurabilirsin.",
+        "Tamamen [sitede](https://ddpe.androz2091.fr) çalışan, daha az özelliklerle ama dışardan bir API'ya gerek duymayan bir uygulamamız var.",
+        "Uygulama API tarafından okunamayacak şekilde verileri saklayarak çalışmaktadır. Eğer hâlâ yeni sorularınız varsa, bize contact@dumpus.app üzerinden rahatlıkla ulaşabilirsiniz."
       ],
-      "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?",
+      "30DaysDelay": "Bir mail almanızın 30 güne kadar sürebileceğini unutmayınız. Sabırlı olun!",
+      "getData": "Verilerimi nasıl alabilirim?",
       "gotIt": "Got it!"
     },
     "/": {
-      "welcome": "Welcome to Dumpus",
+      "welcome": "Dumpus'a hoşgeldin",
       "description": "$t(seo.description)",
-      "step": "Step {{n}}",
+      "step": "Adım {{n}}",
       "steps": [
-        "Briefing",
-        "Request your data",
-        "Start the analysis"
+        "Bilgilendiriliyor",
+        "Verilerin isteniyor",
+        "Analize başlanıyor"
       ],
       "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
-        "title": "How does Dumpus work?",
-        "description": "Discord records every action you perform on their app in your \"Data Package\". Dumpus analyzes this package to generate statistics and information about your account."
+        "title": "Dumpus nasıl çalışır?",
+        "description": "Discord uygulamasında yaptığın her eylemi \"Veri Paketi\"nde tutmaktadır. Dumpus bu paketi inceleyerek hesabın hakkında istatikler ve bilgilendirmeler oluşturur."
       },
       {
-        "title": "Can I trust Dumpus?",
-        "description": "This \"Data Package\" is very sensitive. That's why anyone can read our code and see what we do with it (100% open source). Although we offer a free processing server, you can use your own server to keep full control over your data."
+        "title": "Dumpus'a güvenebilir miyim?",
+        "description": "Bu \"Veri Paketi\" oldukça hassastır. Bu yüzden herkes yazılımımızın (%100 açık) kaynak kodlarını okuyup bu paketle ne yaptığımızı görebilir. Ücretsiz bir veri işleme sunucusu sunsakta kendi sunucu kullanarak verini tamamen kontrol altına alabilirsin."
       },
       {
-        "title": "Share it with your friends!",
-        "description": "While statistics are funny to see, they are even more fun to compare with your friends. That is why we have made it easy to share your stats with your friends."
+        "title": "Arkadaşlarınla paylaş!",
+        "description": "İstatikleri görmek eğlenceli ve komik olsada, arkadaşlarınla karşılaştırmak daha eğlencelidir. Bu yüzden istatiklerini arkadaşlarınla paylaşabilmeni kolaylaştırdık."
       }
     ],
     "setup": {
-      "title": "How do I get my data package?",
-      "description": "Select an operating system to get started.",
+      "title": "Veri paketime nasıl erişebilirim?",
+      "description": "Başlamak için bir işletme sistemi seç.",
       "osDisplays": {
         "android": "Android",
         "ios": "iOS",
-        "desktop": "Desktop"
+        "desktop": "Masaüstü"
       },
       "steps": {
-        "settings": "Open your Discord settings",
-        "privacy": "Open the \"Privacy & Safety\" tab",
-        "request": "Click on \"Request Data\""
+        "settings": "Discord ayarlarını aç",
+        "privacy": "\"Gizlilik ve Güvenlik\" sekmesini aç",
+        "request": "\"Tüm Verilerimi iste\" düğmesine tıkla"
       }
     },
     "access": {
-      "title": "Submit your Data Package",
-      "description": "Choose your favorite method.",
-      "method": "Method {{n}}",
-      "noPackageYet": "No package yet?",
+      "title": "Veri Paketini gönder",
+      "description": "Favori yöntemini seç.",
+      "method": "Yöntem {{n}}",
+      "noPackageYet": "Henüz paketin yok mu?",
       "methods": {
         "link": {
-          "title": "Enter your Discord link",
-          "description": "You can get it in the email received from Discord. Copy the link from the button entitled **You can download it here**.",
+          "title": "Discord linkini gir",
+          "description": "Discord tarafından gönderilmiş mail tarafından alabilirsin. **You can download it here** yazan düğmeden linki kopyalabilirsin.",
           "discordLink": "Discord link",
-          "advanced": "Advanced",
+          "advanced": "Gelişmiş",
           "backendURL": "Backend URL",
-          "optional": "optional",
-          "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
-          "explore": "Explore!",
+          "optional": "opsiyonel",
+          "backendURLHint": "Kendi açık kaynaklı sunucunun URL'si",
+          "notice": "Devam ederek, [Gizlilik Politikasına](/privacy) ve [şartlarımıza](/terms) uyacağına onaylamış olursun.",
+          "explore": "Keşfet!",
           "errors": {
-            "required": "Required",
-            "url": "Invalid URL",
-            "startWith": "Link must start with {{url}}",
-            "emptyKey": "UPN key can't be empty"
+            "required": "Gerekli",
+            "url": "Geçersiz URL",
+            "startWith": "Link {{url}} ile başlamalı",
+            "emptyKey": "UPN anahtarı boş olamaz"
           }
         },
         "email": {
-          "title": "Transfer the email (soon)",
+          "title": "Maili transfer et (yakında)",
           "content": [
-            "Transfer the email received from Discord to **process@dumpus.app**. We'll send you a link when it's ready.",
-            "See you soon!"
+            "Discord'dan aldığın maili **process@dumpus.app** transfer et. Hazır olduğunda sana bir link göndereceğiz.",
+            "Yakında görüşürüz!"
           ]
         },
         "demo": {
-          "title": "Demo"
+          "title": "Ön Gösterim"
         }
       }
     },
     "loading": {
       "queue": {
-        "title": "You're in the queue!",
-        "why": "Why is there a queue?",
+        "title": "Sıradasın!",
+        "why": "Neden bir sıra var?",
         "whyContent": [
-          "Dumpus is a free service, and our server can't analyze more than a few packages at the same time.",
-          "That's why we have a queue, to make sure everyone can use the service.",
-          "You can self-host our API server to avoid the queue."
+          "Dumpus ücrestiz bir serviş ve sunucularımız bir kaç tane veriden fazlasını aynı anda analiz edemez.",
+          "Herkesin bu servisi kullanabileceğinden emin olmak için bir sıramız var.",
+          "Sıradan kurtulmak için kendine ait API'yı kullanabilirsin."
         ],
-        "position": "position",
-        "waitingTime": "Estimated waiting time is",
-        "useBackend": "Use my own backend"
+        "position": "mevki",
+        "waitingTime": "Hesaplanan bekleme süresi",
+        "useBackend": "Kendi backendimi kullan"
       },
       "progress": {
-        "downloading": "Downloading",
-        "analyzing": "Analyzing",
+        "downloading": "İndiriliyor",
+        "analyzing": "Analiz ediliyor",
         "processing": "Processing",
         "importing": "Importing",
         "loading": {
-          "title": "We’re loading your data",
-          "description": "Please wait..."
+          "title": "Verini yüklüyoruz",
+          "description": "Lütfen bekle..."
         },
         "loadingDemo": {
-          "title": "We’re loading the demo",
-          "description": "Please wait..."
+          "title": "Ön gösterim yükleniyor",
+          "description": "Lütfen bekle..."
         }
       },
-      "error": "An error occurred...",
-      "unknownPackageId": "This package is unknown.",
-      "unauthorized": "You are not allowed to interact with this package data.",
-      "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occurred.",
-      "expiredLink": "Link expired.",
+      "error": "Bir hata oluştu...",
+      "unknownPackageId": "Bu paket bilinmiyor.",
+      "unauthorized": "Bu veri paketi ile etkileşime girmen yasak.",
+      "invalidLink": "Link geçersiz.",
+      "unknownError": "Bilinmeyen bir hata oluştu.",
+      "expiredLink": "Linkin süresi bitmiş.",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
     "messages": "{{- value}} messages",
-    "messagesSent": "messages sent",
-    "messagesSentPerDay": "That's about {{- value}} messages per day!",
-    "titleMessagesSentPerDay": "Messages sent per day",
-    "totalMessagesSent": "total messages sent",
-    "joinedServers": "joined servers",
-    "joinedServersDesc": "We've got a real Discord server explorer!",
-    "knownUsers": "known users",
-    "knownUsersDesc": "Well, you know a lot of people!",
-    "spentMoney": "spent",
-    "spentMoneyDesc_positive": "That's a lot of cash...!",
-    "spentMoneyDesc_empty": "You're a thrifty person!",
-    "appStarts": "app starts",
-    "appStartsPerDay": "You open Discord about {{- value}} times per day!",
-    "totalTimeSpent": "You spent about {{- value}} on Discord",
-    "avgSessionTime": "avg. session time",
-    "receivedCalls": "received calls",
-    "topHour": "top hour",
-    "appStarted": "Discord app started",
-    "topChatHour": "top chat hour",
-    "reactionsAdded": "reactions added",
-    "channelOpenings": "channel openings",
-    "guildJoins": "guild joins",
-    "commands": "{{- value}} commands",
+    "messagesSent": "gönderilmiş mesajlar",
+    "messagesSentPerDay": "Bu yaklaşık olarak günde {{- value}} mesaj yapar!",
+    "titleMessagesSentPerDay": "Bir günde gönderilmiş mesajlar",
+    "totalMessagesSent": "gönderilmiş tüm mesajlar",
+    "joinedServers": "katılılan sunucular",
+    "joinedServersDesc": "Gerçek bir Discord sunucusu keşfedicimiz var!",
+    "knownUsers": "bilinen kullanıcılar",
+    "knownUsersDesc": "Pekala, bir sürü kullanıcı biliyorsun!",
+    "spentMoney": "harcandı",
+    "spentMoneyDesc_positive": "Bu baya bi para...!",
+    "spentMoneyDesc_empty": "Tutumlu birisisin!",
+    "appStarts": "uygulama başlatmalar",
+    "appStartsPerDay": "Günlük olarak Discord'u {{- value}} defa açıyorsun!",
+    "totalTimeSpent": "Discord'a yaklaşık {{- value}} vakit harcadın",
+    "avgSessionTime": "ortalama oturum süresi",
+    "receivedCalls": "gelen aramalar",
+    "topHour": "en yüksek saat",
+    "appStarted": "Discord uygulaması başlatıldı",
+    "topChatHour": "en yüksek konuşma saati",
+    "reactionsAdded": "eklenen tepkiler",
+    "channelOpenings": "açılan kanallar",
+    "guildJoins": "sunucuya girmeler",
+    "commands": "{{- value}} komut",
     "top": {
-      "dms": "DMs",
-      "guilds": "Guilds",
-      "channels": "Channels",
-      "loadMore": "Load more",
-      "premium": "Unlock to view more"
+      "dms": "DMler",
+      "guilds": "Sunucular",
+      "channels": "Kanallar",
+      "loadMore": "Daha fazlasını yükle",
+      "premium": "Daha fazlasını görmek için aç"
     },
     "extra": {
-      "clickedNotifications": "notifications clicked",
-      "completedCaptcha": "captcha completed",
-      "receivedEmail": "emails received",
-      "successfulLogin": "logins successful",
-      "avatarUpdates": "avatar updates",
-      "crashes": "crashes",
-      "authorizedOauth2": "oauth2 authorized",
-      "voiceMessagesRecorded": "voice messages recorded",
-      "reportedMessages": "messages reported",
-      "editedMessages": "messages edited",
-      "seenNitroAds": "seen nitro ads",
-      "spentInVoiceChannels": "spent in voice channels"
+      "clickedNotifications": "bildirimlere tıklandı",
+      "completedCaptcha": "captcha tamamlandı",
+      "receivedEmail": "mail alındı",
+      "successfulLogin": "başarılı girişler",
+      "avatarUpdates": "avatarı değiştirmeler",
+      "crashes": "çökmeler",
+      "authorizedOauth2": "yetkililendirilmiş oauth2'lar",
+      "voiceMessagesRecorded": "kaydedilmiş sesli mesajlar",
+      "reportedMessages": "bildirilen mesajlar",
+      "editedMessages": "düzenlenen mesajlar",
+      "seenNitroAds": "görülen nitro reklamları",
+      "spentInVoiceChannels": "ses kanalında harcanan vakit"
     }
   },
   "shareImage": {
@@ -218,123 +218,123 @@
     "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
-    "messagesSentPerDay": "average messages sent per day",
-    "appOpeningsPerDay": "Discord app openings per day"
+    "messagesSentPerDay": "ortalama günde mesaj gönderimi",
+    "appOpeningsPerDay": "ortalama günde Discord'un açılması"
   },
   "sentimentAnalysis": {
-    "title": "Sentiment analysis (experimental)",
-    "anger": "Anger",
-    "happiness": "Happiness",
-    "score": "Active with score: {{- value}}"
+    "title": "Duyarlılık analizi (deneysel)",
+    "anger": "Kızgınlık",
+    "happiness": "Mutluluk",
+    "score": "Aktif skor: {{- value}}"
   },
   "settings": {
-    "title": "Settings",
+    "title": "Ayarlar",
     "toasts": {
-      "copyError": "Can't copy to clipboard",
-      "copied": "Copied to clipboard!"
+      "copyError": "Panoya kopyalanamadı",
+      "copied": "Panoya kopyalandı!"
     },
     "packageSwitch": {
-      "title": "Switch Package",
-      "description": "Generated on {{- date}}"
+      "title": "Paketi Değiştir",
+      "description": "oluşturma tarihi {{- date}}"
     },
     "packageDetails": {
-      "title": "Package Details",
-      "UPNKey": "UPN key",
-      "dateAdded": "Added on",
-      "packageID": "Package ID",
-      "discordUser": "Discord user",
+      "title": "Paket Detayları",
+      "UPNKey": "UPN anahtarı",
+      "dateAdded": "Eklendi",
+      "packageID": "Paket ID'si",
+      "discordUser": "Discord kullanıcısı",
       "backendURL": "Backend URL"
     },
     "languages": {
-      "switch": "Switch language",
-      "title": "Languages",
-      "description": "{{- value}} available"
+      "switch": "Dil Değiştir",
+      "title": "Diller",
+      "description": "{{- value}} kullanılabilir dil"
     },
     "dangerZone": {
-      "title": "Danger Zone",
-      "description": "Your data will be deleted from this device and our servers, but you can still access it by using the email sent by Discord. Thanks for trying the app, give us some feedback on GitHub!",
-      "loading": "Deleting...",
-      "quit": "Quit and reset"
+      "title": "Tehlike Bölgesi",
+      "description": "Verin cihazından ve sunucularımızdan silinecek ama Discord'un gönderdiğin mailden hâlâ erişebilirsin. Uygulamayı kullandığın için teşekkürler. Github üzerinden bize geri bildirimde bulun!",
+      "loading": "Siliniyor...",
+      "quit": "Çık ve sıfırla"
     },
     "actions": {
-      "title": "Actions",
+      "title": "Eylemler",
       "notEnoughStorage": {
-        "title": "Can't add new package",
-        "description": "Not enough storage in app"
+        "title": "Yeni paket eklenemiyor",
+        "description": "Uygulamada yeteri yer yok"
       },
-      "deleting": "Deleting...",
-      "delete": "Delete current package",
-      "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases",
+      "deleting": "Siliniyor...",
+      "delete": "Mevcut paket siliniyor",
+      "restoring": "Geri Yükleniyor...",
+      "restorePurchases": "Satın alımları geri yükle",
       "addPackage": "Add a new package"
     },
     "about": {
-      "title": "About",
-      "version": "Version",
-      "website": "Web application",
-      "community": "Community",
-      "contribute": "Contribute",
-      "contributors": "Project's contributors",
-      "credits": "Credits"
+      "title": "Hakkında",
+      "version": "Versiyon",
+      "website": "Web uygulaması",
+      "community": "Topluluk",
+      "contribute": "Katkı Yap",
+      "contributors": "Projeye katkı yapanlar",
+      "credits": "Kredi"
     }
   },
   "credits": {
-    "title": "Credits",
-    "back": "Back to settings",
+    "title": "Kredi",
+    "back": "Ayarlara dön",
     "bugHunter": {
-      "title": "Bug Hunter",
-      "description": "Most important people to provide you with stable app."
+      "title": "Hata Avlayıcısı",
+      "description": "Uygulamayı stabil sunmak için en önemli insanlar."
     },
     "influencer": {
       "title": "Influencer",
-      "description": "These people helped us to spread the word about the app."
+      "description": "Bu kişiler uygulamayı dünyanın 4 bir yanında duyurmamıza yardım etti."
     },
     "developer": {
-      "title": "Developer",
-      "description": "These people made direct contributions to the app's code."
+      "title": "Geliştirici",
+      "description": "Bu kişiler uygulamanın yazılımına doğrudan katkıda bulundu."
     },
     "translator": {
-      "title": "Translator",
-      "description": "These people made the app available worldwide."
+      "title": "Çevirmenler",
+      "description": "Bu kişiler uygulamayı dünya çapında kullanılabilir hale getirdi."
     },
-    "contributions": "{{- value}} contributions"
+    "contributions": "{{- value}} adet katkı"
   },
   "error": {
     "error": "An error occurred...",
-    "title": "Surprising turn of events... Here is your path to recovery:",
-    "retry": "Retry",
-    "report": "Report on GitHub",
-    "noInternet": "No Internet Connection",
-    "noInternetDescription": " Internet access is necessary to use the Dumpus app. Please reconnect to the Internet to continue."
+    "title": "Sürpriz bir olay... Kurtarmak için adımlar:",
+    "retry": "Tekrar Dene",
+    "report": "GitHub üzerinden bildir",
+    "noInternet": "İnternet Bağlantısı Yok",
+    "noInternetDescription": "İnternet bağlantısı Dumpuss uygulamasını kullanmak için gereklidir. Devam etmek için lütfen internete bağlanınız."
   },
-  "sheerNumbers": "Sheer numbers",
-  "mostActiveDMs": "Most active DMs",
-  "mostActiveServers": "Most active servers",
-  "mostActiveChannels": "Most active channels",
-  "discordHours": "Your Discord hours",
-  "activityTime": "Activity over time",
-  "messageSentCount": "Message sent count",
+  "sheerNumbers": "Düpedüz sayılar",
+  "mostActiveDMs": "En aktif DMler",
+  "mostActiveServers": "En aktif sunucular",
+  "mostActiveChannels": "En aktif kanallar",
+  "discordHours": "Discord saatlerin",
+  "activityTime": "Bir süre zarfnda aktiviteler",
+  "messageSentCount": "Gönderilen mesaj sayısı",
   "share": {
-    "title": "Share",
-    "description": "Share your stats with your friends!",
-    "generating": "Generating...",
-    "download": "Download",
-    "recap": "Share your recap",
-    "recapDescription": "Share your recap with your friends on Twitter, Instagram, Reddit, Discord...! :)",
+    "title": "Paylaş",
+    "description": "Verilerini arkadaşlarınla paylaş!",
+    "generating": "Oluşturuluyor...",
+    "download": "İndir",
+    "recap": "Özetini paylaş",
+    "recapDescription": "Özetini arkadaşlarınla; Twitter'da, Instagram'da, Reddit'de, Discord'da vb. yerlerde paylaş! :)",
     "popup": {
-      "title": "Here is my Discord recap!",
-      "description": "Generated on https://dumpus.app, try it yourself!"
+      "title": "İşte Discord özetim!",
+      "description": "Oluşturulan yer https://dumpus.app, kendinde dene!"
     },
     "error": "An error occurred..."
   },
-  "exitingDemo": "Exiting...",
-  "exitDemo": "Exit demo and get started!",
-  "members": "{{- value}} members",
+  "exitingDemo": "Çıkılıyor...",
+  "exitDemo": "Ön gösterimden çık ve kullanmaya başla!",
+  "members": "{{- value}} üye",
   "nav": {
-    "overview": "Overview",
-    "top": "Top",
-    "stats": "Stats",
-    "settings": "Settings"
+    "overview": "Genel Bakış",
+    "top": "En Üst",
+    "stats": "Veriler",
+    "settings": "Ayarlar"
   },
   "timeRanges": {
     "4weeks": "4 weeks",
@@ -342,10 +342,10 @@
     "year": "Year",
     "lifetime": "Lifetime"
   },
-  "topUsedBot": "Top used bots",
-  "topChannels": "Top channels",
-  "firstMessages": "Your first messages",
-  "relatedGuild": "Related guild",
+  "topUsedBot": "En çok kullanılan botlar",
+  "topChannels": "En üstteki kanallar",
+  "firstMessages": "İlk mesajların",
+  "relatedGuild": "İlgili sunucu",
   "more": "More",
   "noData": "No data available",
   "noDataTip": "Select another time range to view data",
