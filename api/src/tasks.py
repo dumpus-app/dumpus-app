@@ -88,6 +88,14 @@ def download_file(package_status_id, package_id, link, session):
 
     return path
 
+def remove_file(package_id):
+    path = get_package_zip_path(package_id)
+    if os.path.exists(path):
+        os.remove(path)
+        print(f'Removed file {path}')
+    else:
+        print(f'File {path} does not exist')
+
 def read_analytics_file(package_status_id, package_id, link, session):
     update_step(package_status_id, package_id, 'ANALYZING', session)
     update_progress(package_status_id, package_id, 0, session)
@@ -821,4 +829,5 @@ def handle_package(package_status_id, package_id, link):
         })
         session.commit()
     finally:
+        remove_file(package_id)
         session.close()
