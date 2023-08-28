@@ -1,82 +1,62 @@
 Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.
 
 
-I will provide a description for each column based on the code provided above and some common database knowledge:
+The code is creating a SQLite database and filling it with information from various sources, including:
 
-**DM_CHANNEL_DATA table**
+- Direct Messages (DMs) channels
+- Guild channels
+- Activity data (such as messages sent, guild joined, app opened, etc.)
+- Guild data
+- Payments data
+- Voice session data, etc.
+
+It's also performing various activities like grouping data per hour, inserting into different database tables, and updating necessary fields.
+
+Below is the documentation for tables in SQLite database:
+
+**activity table**
+
 |Column|Description|
 |---|---|
-|channel_id|Unique identifier of a DM channel.|
-|dm_user_id|Unique identifier of a USER in a DM channel.|
-|user_name|The username of a user in a DM channel.|
-|display_name|The display name of a user in a DM channel.|
-|user_avatar_url|The URL of the avatar of a user in a DM channel.|
-|total_message_count|The total number of messages in a DM channel.|
-|total_voice_channel_duration|The total duration of voice activity in a DM channel.|
-|sentiment_score|The sentiment score of conversation in a DM channel.|
+|event_name|This column stores the name of the event occurred, could be message_sent, guild_joined, app_opened etc.|
+|day|This column stores the date in format 'Y-m-d' (like 2021-12-31) when the event occurred|
+|hour|This column stores hour of the day ranging from 0-23 when the event occurred |
+|occurence_count|This column stores the count of the events occurred|
+|associated_channel_id|This column stores the id of the channel associated with that event|
+|associated_guild_id|This column stores the id of the guild associated with that event|
+|associated_user_id|This column stores the id of the user associated with that event|
+|extra_field_1|This column stores extra information related to the specific event. It can be various things depending on the event type|
+|extra_field_2|Another column for storing extra information related to the specific event, the information changes depending on the event type|
 
-**GUILD_CHANNELS_DATA table**
+**dm_channels_data table**
+
 |Column|Description|
 |---|---|
-|channel_id|Unique identifier of a guild channel.|
-|guild_id|Unique identifier of a guild.|
-|channel_name|The name of a guild channel.|
-|total_message_count|The total number of messages in a guild channel.|
-|total_voice_channel_duration|The total duration of voice activity in a guild channel.|
+|channel_id|This column stores the id of the channel|
+|dm_user_id|This column stores the id of the user who is in direct message with current user|
+|user_name|This column stores the discord username of the user|
+|display_name|This column stores the display name of the user, if available|
+|user_avatar_url|This column stores the avatar URL of the user, if available|
+|total_message_count|This column stores the total count of the messages in the DM|
+|total_voice_channel_duration|This column stores the total duration (in minutes) spent by the user in voice channels|
+|sentiment_score|This column stores the sentiment score of the messages, this is a numerical score to quantify the sentiment analysis outcome|
 
-**ACTIVITY table**
+**guild_channels_data table**
+
 |Column|Description|
 |---|---|
-|event_name|The name of the event.|
-|day|The day on which the event occurred.|
-|hour|The hour at which the event occurred.|
-|occurence_count|The number of occurrences of the event.|
-|associated_channel_id|The channel associated with the event.|
-|associated_guild_id|The guild associated with the event.|
-|associated_user_id|The user associated with the event.|
-|extra_field_1|Extra field for flexibility in data storage.|
-|extra_field_2|Extra field for flexibility in data storage.|
+|channel_id|This column stores the id of the guild channel|
+|guild_id|This column stores the id of the guild|
+|channel_name|This column stores the name of the channel within the guild|
+|total_message_count|This column stores the total count messages sent within the guild channel|
+|total_voice_channel_duration|This column stores the total duration (in minutes) spent by the users in the voice channels of the guild|
 
-**GUILDS table**
+**guilds table**
+
 |Column|Description|
 |---|---|
-|guild_id|Unique identifier of a guild.|
-|guild_name|The name of a guild.|
-|total_message_count|The total number of messages in a guild.|
+|guild_id|This column stores the id of the guild|
+|guild_name|This column stores the name of the guild|
+|total_message_count|This column stores the total count messages sent within the guild|
 
-**PAYMENTS table**
-|Column|Description|
-|---|---|
-|payment_id|Unique identifier of a payment.|
-|payment_date|The date on which the payment was made.|
-|payment_amount|The amount of the payment.|
-|payment_currency|The currency of the payment.|
-|payment_description|The description of the payment.|
-
-**VOICE_SESSIONS table**
-|Column|Description|
-|---|---|
-|channel_id|Unique identifier of a voice channel.|
-|guild_id|Unique identifier of a guild.|
-|duration_mins|The duration of the voice session in minutes.|
-|started_date|The date when the voice session started.|
-|ended_date|The date when the voice session ended.|
-
-**SESSIONS table**
-|Column|Description|
-|---|---|
-|duration_mins|The duration of the session in minutes.|
-|started_date|The date when the session started.|
-|ended_date|The date when the session ended.|
-|device_os|The operating system of the device used for the session.|
-
-**PACKAGE_DATA table**
-|Column|Description|
-|---|---|
-|package_id|Unique identifier of a package.|
-|package_version|The version of the package.|
-|package_owner_id|The user id of the package owner.|
-|package_owner_name|The username of the package owner.|
-|package_owner_display_name|The display name of the package owner.|
-|package_owner_avatar_url|The avatar URL of the package owner.|
-|package_is_partial|The status indicating if the package is partial.|
+The remaining tables follow similar structure according to the data they are storing. For example, 'payments' table will have columns related to payment information (id, date, amount, currency, description), 'voice_sessions' table will store voice session data (channel_id, guild_id, duration_mins, started_date, ended_date), etc. Each table is storing a specific type of data regarding user's interactions and activities in Discord.
