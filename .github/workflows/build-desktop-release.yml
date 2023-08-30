@@ -34,14 +34,14 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
+      - name: Setup PNPM
+        run: corepack enable && pnpm -v
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 20.5.0
           cache: pnpm
-
-      - name: Setup PNPM
-        run: corepack enable && pnpm -v
 
       - uses: jongwooo/next-cache@v1
 
