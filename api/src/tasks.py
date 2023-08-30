@@ -796,7 +796,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     update_step(package_status_id, package_id, 'PROCESSED', session)
 
-    package_status_updated = fetch_package_status(package_status_id, session)
+    package_status_updated = fetch_package_status(package_id, session)
     time_diff = time.time() - package_status_updated.created_at
     formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_diff))
 
