@@ -458,12 +458,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
             compute_times.append(compute_time_diff)
 
         print(f'Channel messages data: {time.time() - start}')
-        print(f'Average channel read time: {sum(read_channel_times) / len(read_channel_times)}')
-        print(f'Average CSV read time: {sum(read_csv_times) / len(read_csv_times)}')
-        print(f'Average JSON read time: {sum(read_json_times) / len(read_json_times)}')
-        print(f'Average compute time: {sum(compute_times) / len(compute_times)}')
-        print(f'Average compute 1 time: {sum(compute_1_times) / len(compute_1_times)}')
-        print(f'Average compute 2 time: {sum(compute_2_times) / len(compute_2_times)}')
+        print(f'Average channel read time: {sum(read_channel_times) / (len(read_channel_times) or 1)}')
+        print(f'Average CSV read time: {sum(read_csv_times) / (len(read_csv_times) or 1)}')
+        print(f'Average JSON read time: {sum(read_json_times) / (len(read_json_times) or 1)}')
+        print(f'Average compute time: {sum(compute_times) / (len(compute_times) or 1)}')
+        print(f'Average compute 1 time: {sum(compute_1_times) / (len(compute_1_times) or 1)}')
+        print(f'Average compute 2 time: {sum(compute_2_times) / (len(compute_2_times) or 1)}')
 
     '''
     Process voice channel logs to get a list of "events"
