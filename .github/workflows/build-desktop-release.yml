@@ -19,11 +19,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v2
-        with:
-          version: latest
-
       - name: Install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
         # You can remove libayatana-appindicator3-dev if you don't use the system tray feature.
@@ -44,6 +39,9 @@ jobs:
         with:
           node-version: 20.5.0
           cache: pnpm
+
+      - name: Setup PNPM
+        run: corepack enable && pnpm -v
 
       - uses: jongwooo/next-cache@v1
 
