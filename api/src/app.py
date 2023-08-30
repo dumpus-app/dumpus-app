@@ -106,6 +106,21 @@ def process_link():
 
     print(
         f'Order taken, package added to the queue. (package_id: {package_id})')
+
+    session = Session()
+
+    existing_package_process_status = fetch_package_status(package_id, session)
+    if existing_package_process_status and not existing_package_process_status.is_errored and not existing_package_process_status.is_cancelled:
+        send_internal_notification({
+            'embeds': [
+                {
+                    'title': 'Loading existing package',
+                    'description': f'Package ID: {package_id}',
+                    'color': 0xbbfcbb
+                }
+            ]
+        })
+        return jsonify(res), 200
     
     send_internal_notification({
         'embeds': [
@@ -116,12 +131,6 @@ def process_link():
             }
         ]
     })
-
-    session = Session()
-
-    existing_package_process_status = fetch_package_status(package_id, session)
-    if existing_package_process_status and not existing_package_process_status.is_errored and not existing_package_process_status.is_cancelled:
-        return jsonify(res), 200
 
     package_process_status = PackageProcessStatus(
         package_id=package_id, step='LOCKED')
@@ -211,6 +220,16 @@ def get_package_data(package_id):
 
     if not data:
         return make_response('', 404)
+
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': 'Fetching existing package data',
+                'description': f'Package ID: {package_id}',
+                'color': 0xaea4e0
+            }
+        ]
+    })
     
     return Response(data, mimetype='application/octet-stream')
 
@@ -239,6 +258,16 @@ def cancel_package(package_id):
     session.commit()
 
     session.close()
+
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': 'Deleting existing package data',
+                'description': f'Package ID: {package_id}',
+                'color': 0xf79494
+            }
+        ]
+    })
 
     return jsonify(res), 200
 
