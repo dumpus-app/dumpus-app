@@ -797,7 +797,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
     update_step(package_status_id, package_id, 'PROCESSED', session)
 
     package_status_updated = fetch_package_status(package_id, session)
-    time_diff = time.time() - package_status_updated.created_at
+    time_diff = time.time() - package_status_updated.created_at.timestamp()
     formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_diff))
 
     send_internal_notification({
