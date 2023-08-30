@@ -3,45 +3,86 @@ Note: this documentation was generated automatically from the tasks.py code usin
 
 **activity table**
 
-| Column | Description |
-| --- | --- |
-| event_name | Indicates the category or type of event that took place, such as a message sent, an application command used, premium_upsell_viewed, etc. These event names help identify the specific action performed. |
-| day | Represents the date the respective event took place, it is in 'YYYY-MM-DD' format. |
-| hour | Indicates the hour (in 24-hr format) when the event occurred. |
-| occurrence_count | Tracks the number of times a particular event occurred. | 
-| associated_channel_id | Refers to the ID of the related channel, if applicable. It links this event to a specific channel. |
-| associated_guild_id | Contains the ID of the associated guild, if applicable. It ties the event to a specific guild. |
-| associated_user_id | Specifies the ID of the user connected with the event, if applicable. It relates the event with a specific user. |
-| extra_field_1 | An extra field to accommodate varying attributes based on the event_type. Could be utilized for instance in storing names of emojis for an add_reaction event. |
-| extra_field_2 | Another extra field to accommodate varying attributes based on the event_type. Could be for instance used in storing custom emoji information in add_reaction events. |
+|Column|Description|
+|---|---|
+|event_name|Identification of activity event. This may include 'message_sent', 'guild_joined', 'application_command_used', etc. |
+|day|The day the described event occurred, format is 'YYYY-MM-DD'. |
+|hour|The hour the event occurred, expressed in a 24-hour format.|
+|occurence_count|How many times the event has occurred.|
+|associated_channel_id|The unique ID of the channel associated with the event.|
+|associated_guild_id|The Unique ID of the guild (server) associated with the event.|
+|associated_user_id|The unique user ID associated with the event.|
+|extra_field_1|Additional details about the event. The values vary depending on the given event.|
+|extra_field_2|Additional details about the event. The values vary depending on the given event.|
 
 **dm_channels_data table**
 
-| Column | Description |
-| --- | --- |
-| channel_id | Contains Discord ID of the Direct Message (DM) channel. |
-| dm_user_id | Stores the Discord ID of the user involved in the DM. |
-| user_name | Stores the username of the user engaged in the DM. |
-| display_name | Stores the display name of the user involved in the DM. |
-| user_avatar_url | Contains the URL that points to the user's avatar. |
-| total_message_count | Reflects the total number of messages exchanged in the DM. |
-| total_voice_channel_duration | Represents the total duration the user was involved in voice channels while in the DM. |
-| sentiment_score | Indicates the overall sentiment score derived from the message contents in the DM. |
+|Column|Description|
+|---|---|
+|channel_id|Unique ID of the channel where direct message happened.|
+|dm_user_id|Unique ID of the user involved in the direct message.|
+|user_name|Username of the user involved in the direct message.|
+|display_name|Display name of the user involved in the direct message.|
+|user_avatar_url|URL of the user's avatar.|
+|total_message_count|Total count of messages in the direct message.|
+|total_voice_channel_duration|Total duration of voice channel usage in minutes.|
+|sentiment_score|Sentiment score of messages in the direct message (ranges from -1 to 1, from negative to positive sentiment).|
 
 **guild_channels_data table**
 
-| Column | Description |
-| --- | --- |
-| channel_id | Indicates the Discord ID of the guild channel. |
-| guild_id | Contains the Discord ID of the guild associated with the channel. |
-| channel_name | Stores the name of the guild channel. |
-| total_message_count | Captures the total number of messages exchanged in the guild channel. |
-| total_voice_channel_duration | Contains the total duration users were involved in voice channels while in the guild. |
+|Column|Description|
+|---|---|
+|channel_id|Unique ID of the guild channel.|
+|guild_id|Unique ID of the guild (server).|
+|channel_name|Name of the guild channel.|
+|total_message_count|Total count of messages in the guild channel.|
+|total_voice_channel_duration|Total duration of voice channel usage in the guild channel in minutes.|
 
 **guilds table**
 
-| Column | Description |
-| --- | --- |
-| guild_id | Shows the Discord ID of the guild. |
-| guild_name | Stores the name of the guild. |
-| total_message_count | Reflects the total number of messages exchanged in the guild. |
+|Column|Description|
+|---|---|
+|guild_id|Unique ID of the guild.|
+|guild_name|Name of the guild.|
+|total_message_count|Total count of messages in the guild.|
+
+**payments table**
+
+|Column|Description|
+|---|---|
+|payment_id|Unique ID of the payment transaction.|
+|payment_date|Date of the payment done, format is 'YYYY-MM-DD'.|
+|payment_amount|Amount of payment done.|
+|payment_currency|Currency of the payment done.|
+|payment_description|Description of the payment done.|
+
+**voice_sessions table**
+
+|Column|Description|
+|---|---|
+|channel_id|Unique ID of the channel where voice session was held.|
+|guild_id|Unique ID of the guild (server), of which channel the voice session was held.|
+|duration_mins|Duration of the voice session in minutes.|
+|started_date|Start date and time of the voice session.|
+|ended_date|End date and time of the voice session.|
+
+**sessions table**
+
+|Column|Description|
+|---|---|
+|duration_mins|Total duration of the user's active session in minutes.|
+|started_date|Start date and time of the user's session.|
+|ended_date|End date and time of the user's session.|
+|device_os|Operating system of the device from which session was active.|
+
+**package_data table**
+
+|Column|Description|
+|---|---|
+|package_id|Unique ID of the data package.|
+|package_version|Version of the data package.|
+|package_owner_id|Unique ID of the owner of the data package.|
+|package_owner_name|Username of the owner of the data package.|
+|package_owner_display_name|Display Name of the owner of the data package.|
+|package_owner_avatar_url|URL of the owner's avatar.|
+|package_is_partial|Indicates whether the package is partial (1 - Yes, 0 - No).|
