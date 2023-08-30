@@ -14,6 +14,8 @@ from sqlite import generate_demo_database
 
 from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn, fetch_diswho_user
 
+from wh import send_internal_notification
+
 app = Flask(__name__)
 CORS(app)
 
@@ -104,6 +106,16 @@ def process_link():
 
     print(
         f'Order taken, package added to the queue. (package_id: {package_id})')
+    
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': 'New package added to the queue',
+                'description': f'Package ID: {package_id}',
+                'color': 0x1F8BFF
+            }
+        ]
+    })
 
     session = Session()
 

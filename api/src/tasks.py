@@ -31,7 +31,7 @@ from sqlite import create_new_empty_database, export_sqlite_to_bin
 import os
 from collections import defaultdict
 
-from db import update_progress, update_step, SavedPackageData, Session, PackageProcessStatus
+from db import update_progress, update_step, fetch_package_status, SavedPackageData, Session, PackageProcessStatus
 from util import (
     # discord utilities
     extract_key_from_discord_link,
@@ -45,6 +45,8 @@ from util import (
     get_ts_regular_string_parser,
     get_ts_string_parser
 )
+
+from wh import send_internal_notification
 
 from nltk.sentiment import SentimentIntensityAnalyzer
 sia = SentimentIntensityAnalyzer()
@@ -794,6 +796,20 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     update_step(package_status_id, package_id, 'PROCESSED', session)
 
+    package_status_updated = fetch_package_status(package_status_id, session)
+    time_diff = time.time() - package_status_updated.created_at
+    formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_diff))
+
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': f'Package processed successfully',
+                'description': f'Package ID: {package_id} (took {formatted_time})',
+                'color': 0x4b9e4b
+            }
+        ]
+    })
+
     return analytics_line_count
 
 @app.task()
@@ -831,6 +847,16 @@ def handle_package(package_status_id, package_id, link):
             'is_errored': True,
             'error_message_code': current,
             'error_message_traceback': e_traceback
+        })
+
+        send_internal_notification({
+            'embeds': [
+                {
+                    'title': f'Package errored',
+                    'description': f'Package ID: {package_id} (error {current if current else "UNKNOWN_ERROR"})',
+                    'color': 0x9e4b4b
+                }
+            ]
         })
         session.commit()
     finally:

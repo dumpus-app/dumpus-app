@@ -98,3 +98,10 @@ def fetch_package_data(package_id, auth_upn, session):
         iv = result.iv
         sqlite_buffer = decrypt_sqlite_data(encrypted_data, iv, auth_upn)
         return sqlite_buffer
+
+def fetch_pending_packages():
+    session = Session()
+    # select * from package_process_status pps where step <> 'PROCESSED' and error_message_code is null
+    result = session.query(PackageProcessStatus).filter(PackageProcessStatus.step != 'PROCESSED', PackageProcessStatus.error_message_code == None).all()
+    session.close()
+    return result
