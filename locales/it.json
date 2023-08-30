@@ -9,6 +9,27 @@
       "description": "Attendere prego."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "buy": "Buy Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Cominciamo",
@@ -26,7 +47,8 @@
         "L'app funziona senza alcun dato leggibile memorizzato sull'API esterna. Se hai ancora domande, non esitare a contattarci a contact@dumpus.app."
       ],
       "30DaysDelay": "Tieni a mente che può richiedere fino a 30 giorni ricevere l'email. Sii paziente!",
-      "getData": "Come ottenere i miei dati?"
+      "getData": "Come ottenere i miei dati?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Benvenuto su Dumpus",
@@ -36,7 +58,8 @@
         "Sintesi",
         "Richiedi i tuoi dati",
         "Avvia l'analisi"
-      ]
+      ],
+      "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
@@ -117,7 +140,8 @@
       "progress": {
         "downloading": "Download in corso...",
         "analyzing": "Analizzando...",
-        "processed": "Processato",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "Stiamo caricando i tuoi dati",
           "description": "Attendere prego..."
@@ -131,11 +155,13 @@
       "unknownPackageId": "Questo pacchetto è sconosciuto.",
       "unauthorized": "Non hai il permesso di interagire con questo pacchetto dati.",
       "invalidLink": "Link non valido.",
-      "unknownError": "Si è verificato un errore imprevisto.",
-      "expiredLink": "Link scaduto."
+      "unknownError": "An unknown error occurred.",
+      "expiredLink": "Link scaduto.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "messaggi inviati",
     "messagesSentPerDay": "Sono all'incirca {{- value}} messaggi al giorno!",
     "titleMessagesSentPerDay": "Messaggi inviati al giorno",
@@ -180,6 +206,16 @@
       "seenNitroAds": "pubblicità nitro viste",
       "spentInVoiceChannels": "spesi nei canali vocali"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "media messaggi inviati al giorno",
@@ -229,7 +265,8 @@
       "deleting": "Cancellazione in corso...",
       "delete": "Elimina il pacchetto attuale",
       "restoring": "Ripristino in corso...",
-      "restorePurchases": "Ripristina gli acquisti"
+      "restorePurchases": "Ripristina gli acquisti",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "Informazioni",
@@ -263,6 +300,7 @@
     "contributions": "{{- value}} contribuzioni"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "Girata sorprendente degli eventi... Ecco il tuo percorso di recupero:",
     "retry": "Retry",
     "report": "Segnala su GitHub",
@@ -286,7 +324,8 @@
     "popup": {
       "title": "Ecco il mio Riepilogo Discord!",
       "description": "Generato su https://dumpus.app, prova tu stesso!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Uscendo...",
   "exitDemo": "Esci dalla demo e inizia!",
@@ -297,8 +336,21 @@
     "stats": "Statistiche",
     "settings": "Impostazioni"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "Bot più usati",
   "topChannels": "Canali principali",
   "firstMessages": "I tuoi primi messaggi",
-  "relatedGuild": "Server correlato"
+  "relatedGuild": "Server correlato",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }

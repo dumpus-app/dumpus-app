@@ -9,6 +9,27 @@
       "description": "Vennligst vent."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "buy": "Buy Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Gå videre",
@@ -26,7 +47,8 @@
         "Appen fungerer uten noe lesbar data lagret på det eksterne API-et. Hvis du uansett har noen spørsmål, ta gjerne kontakt med oss på contact@dumpus.app."
       ],
       "30DaysDelay": "Husk at det kan ta opptil 30 dager å motta e-posten. Vær tolmodig!",
-      "getData": "Hvordan skaffer jeg datapakken?"
+      "getData": "Hvordan skaffer jeg datapakken?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Velkommen til Dumpus",
@@ -36,7 +58,8 @@
         "Oppsummering",
         "Be om dataene dine",
         "Start analysen"
-      ]
+      ],
+      "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
@@ -117,7 +140,8 @@
       "progress": {
         "downloading": "Laster ned",
         "analyzing": "Analyserer",
-        "processed": "Behandlet",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "Vi laster inn dine data",
           "description": "Vennligst vent..."
@@ -131,11 +155,13 @@
       "unknownPackageId": "Denne pakken er ukjent.",
       "unauthorized": "Du har ikke tillatelse til å utføre handlinger med disse pakkedataene.",
       "invalidLink": "Lenken er ugyldig.",
-      "unknownError": "En ukjent feil oppstod.",
-      "expiredLink": "Lenken har utløpt."
+      "unknownError": "An unknown error occurred.",
+      "expiredLink": "Lenken har utløpt.",
+      "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "meldinger sendt",
     "messagesSentPerDay": "Det er rundt {{- value}} meldinger hver dag!",
     "titleMessagesSentPerDay": "Meldinger sendt per dag",
@@ -180,6 +206,16 @@
       "seenNitroAds": "nitro annonser sett",
       "spentInVoiceChannels": "brukt i talekanaler"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "gjennomsnittlig meldinger sendt per dag",
@@ -229,7 +265,8 @@
       "deleting": "Sletter...",
       "delete": "Slett gjeldende pakke",
       "restoring": "Gjenoppretter...",
-      "restorePurchases": "Gjenopprett kjøp"
+      "restorePurchases": "Gjenopprett kjøp",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "Om",
@@ -263,6 +300,7 @@
     "contributions": "{{- value}} bidrag"
   },
   "error": {
+    "error": "An error occurred...",
     "title": "Overraskende rekke hendelser... Her er din vei til å gjenopprette:",
     "retry": "Retry",
     "report": "Rapporter på GitHub",
@@ -286,7 +324,8 @@
     "popup": {
       "title": "Her er mitt Discord recap!",
       "description": "Generert på https://dumpus.app, prøv det selv!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Avslutter...",
   "exitDemo": "Avslutt demo og kom i gang!",
@@ -297,8 +336,21 @@
     "stats": "Statistikk",
     "settings": "Innstillinger"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "Most brukte botter",
   "topChannels": "Mest brukte kanaler",
   "firstMessages": "Dine første meldinger",
-  "relatedGuild": "Relatert server"
+  "relatedGuild": "Relatert server",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }
