@@ -80,7 +80,7 @@
           "backendURL": "Backend URL",
           "optional": "वैकल्पिक",
           "backendURLHint": "तपाई आफैले होस्ट गरेको open source सर्भर URL",
-          "notice": "अगाडि बढ्नासाथै तपाईं हाम्रो [privacy policy](/privacy) र हाम्रा [terms](/terms) मा सहमति जनाउनुहुन्छ।",
+          "notice": "अगाडि बढ्नासाथै तपाईं हाम्रो [privacy policy](https://dumpus.app/legal/privacy) र हाम्रा [terms](https://dumpus.app/legal/terms) मा सहमति जनाउनुहुन्छ।",
           "explore": "Explore!",
           "errors": {
             "required": "आवश्यक",
