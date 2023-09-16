@@ -103,7 +103,7 @@
           "backendURL": "URL бэкэнда",
           "optional": "дополнительно",
           "backendURLHint": "URL на ваш собственный бэкэнд-сервер ",
-          "notice": "Продолжая, вы согласны на нашу [политику приватности](/privacy) и наши [условия пользования](/terms).",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "Изучить!",
           "errors": {
             "required": "Требуется",
