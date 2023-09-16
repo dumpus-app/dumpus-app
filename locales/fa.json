@@ -103,7 +103,7 @@
           "backendURL": "Backend URL",
           "optional": "اختیاری",
           "backendURLHint": "URL سرور منبع باز میزبانی شده خودتان",
-          "notice": "با ادامه، شما با [خط‌مشی رازداری](privacy/) و [شرایط](terms/) ما موافقت می‌کنید.",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "کاوش!",
           "errors": {
             "required": "الزامی",
