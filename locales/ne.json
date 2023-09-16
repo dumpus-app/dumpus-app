@@ -103,7 +103,7 @@
           "backendURL": "Backend URL",
           "optional": "वैकल्पिक",
           "backendURLHint": "Your own hosted open source server URL",
-          "notice": "अगाडि बढ्नासाथै तपाईं हाम्रो [privacy policy](/privacy) र हाम्रा [terms](/terms) मा सहमति जनाउनुहुन्छ।",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "Explore!",
           "errors": {
             "required": "आवश्यक",
