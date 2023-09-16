@@ -22,3 +22,6 @@ project(':hugotomazi-capacitor-navigation-bar').projectDir = new File('../node_m
 
 include ':capacitor-plugin-safe-area'
 project(':capacitor-plugin-safe-area').projectDir = new File('../node_modules/.pnpm/capacitor-plugin-safe-area@2.0.5_@capacitor+core@5.2.2/node_modules/capacitor-plugin-safe-area/android')
+
+include ':capacitor-rate-app'
+project(':capacitor-rate-app').projectDir = new File('../node_modules/.pnpm/capacitor-rate-app@4.0.3_@capacitor+core@5.2.2/node_modules/capacitor-rate-app/android')

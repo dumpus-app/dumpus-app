@@ -58,7 +58,7 @@ const configStorage = create(
     {
       name: "config",
       storage: createJSONStorage(() => localStorage),
-      version: 2,
+      version: 3,
       migrate: migrateConfig,
     },
   ),

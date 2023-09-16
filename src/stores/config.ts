@@ -3,6 +3,8 @@ import { getStorageKey } from "~/hooks/use-sql-init";
 import type { PackageData } from "~/types/sql";
 import { queryClient } from "~/utils/react-query";
 import { type CreateSlice } from ".";
+import { isCapacitorSupported } from "~/capacitor/utils";
+import { RateApp } from "capacitor-rate-app";
 
 export const timeRanges = ["4weeks", "6months", "year", "lifetime"] as const;
 
@@ -26,6 +28,7 @@ type State = {
   };
   packages: Package[];
   selectedID: null | string;
+  lastRatePromptDate: string | null;
 };
 
 type Actions = {
@@ -50,6 +53,8 @@ type Actions = {
     packages: State["packages"],
     selectedID: State["selectedID"],
   ) => Package[];
+  getLastRatePromptDate: () => Date | null;
+  callPrompt: () => void;
 };
 
 const initialState: State = {
@@ -59,6 +64,7 @@ const initialState: State = {
   loadingData: undefined,
   packages: [],
   selectedID: null,
+  lastRatePromptDate: null,
 };
 
 export type ConfigSlice = State & Actions;
@@ -70,6 +76,10 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
   },
   getUnselectedPackages(packages, selectedID) {
     return packages.filter(({ id }) => id !== selectedID);
+  },
+  getLastRatePromptDate() {
+    const { lastRatePromptDate } = get().config;
+    return lastRatePromptDate ? new Date(lastRatePromptDate) : null;
   },
   reset: () =>
     set((state) => ({ config: { ...state.config, ...initialState } })),
@@ -127,5 +137,33 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
       router.refresh();
     }
     queryClient.clear();
+  },
+  callPrompt: () => {
+    const date = get().config.getLastRatePromptDate();
+
+    function isDateOlderThanOneMonth(date: Date): boolean {
+      // Get the current date
+      const currentDate = new Date();
+
+      // Calculate a date one month from now
+      const oneMonthFromNow = new Date(currentDate);
+      oneMonthFromNow.setMonth(currentDate.getMonth() + 1);
+
+      // Compare the given date with one month from now
+      return date < oneMonthFromNow;
+    }
+
+    if (
+      !isCapacitorSupported() ||
+      (date ? !isDateOlderThanOneMonth(date) : false)
+    ) {
+      return;
+    }
+
+    RateApp.requestReview();
+
+    set((state) => ({
+      config: { ...state.config, lastRatePromptDate: new Date().toISOString() },
+    }));
   },
 });
