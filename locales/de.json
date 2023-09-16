@@ -103,7 +103,7 @@
           "backendURL": "Backend URL",
           "optional": "Optional",
           "backendURLHint": "Deine eigene gehostete Open-Source-Server-URL",
-          "notice": "Indem du fortfährst, stimmst du unserer [Datenschutzrichtlinie](/privacy) und unseren [terms](/terms) zu.",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "Entdecke!",
           "errors": {
             "required": "Pflichtfeld",
