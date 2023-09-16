@@ -1,0 +1,75 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+    desc "Push a new beta build to TestFlight"
+    lane :buildtest do
+      setup_ci
+      match(type: "appstore")
+      build_app(workspace: "App.xcworkspace", scheme: "App") # Change name of workspace
+    end
+    lane :beta do
+        setup_ci
+        match(type: "appstore")
+        build_app(workspace: "App.xcworkspace", scheme: "App") # Change name of workspace
+        api_key = app_store_connect_api_key(
+          key_id: ENV["APP_STORE_KEY_ID"],
+          issuer_id: ENV["APP_STORE_KEY_ISSUER_ID"],
+          key_content: ENV["APP_STORE_API_KEY"],
+          in_house: false, # optional but may be required if using match/sigh
+          duration: 500
+        )
+        upload_to_testflight(
+          api_key: api_key,
+          changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!",
+          skip_waiting_for_build_processing: true,
+          skip_submission: true,
+          apple_id: ENV["APP_STORE_APP_APPLE_ID"],
+          app_identifier: ENV["APP_STORE_APP_IDENTIFIER"],
+          team_id: ENV["APP_STORE_TEAM_ID"],
+        )
+    end
+    lane :prod do
+        setup_ci
+        match(type: "appstore")
+        build_app(workspace: "App.xcworkspace", scheme: "App") # Change name of workspace
+        api_key = app_store_connect_api_key(
+            key_id: ENV["APP_STORE_KEY_ID"],
+            issuer_id: ENV["APP_STORE_KEY_ISSUER_ID"],
+            key_content: ENV["APP_STORE_API_KEY"],
+            in_house: false # optional but may be required if using match/sigh
+        )
+        upload_to_app_store(
+          api_key: api_key,
+          force: true, # Set to true to skip verification of HTML preview
+          skip_metadata: true,# pass a specific value to the iTMSTransporter -itc_provider option
+          submit_for_review: false,
+          precheck_include_in_app_purchases: false,
+          app_identifier: ENV["APP_STORE_APP_IDENTIFIER"],
+          team_id: ENV["APP_STORE_TEAM_ID"]
+        )
+    end
+    lane :test do
+        api_key = app_store_connect_api_key(
+          key_id: ENV["APP_STORE_KEY_ID"],
+          issuer_id: ENV["APP_STORE_KEY_ISSUER_ID"],
+          key_filepath: "./AuthKey.p8",
+          in_house: false, # optional but may be required if using match/sigh
+        )
+        upload_to_testflight(changelog: ENV["CHANGELOG"] || "New features and enhancements are continously added to the app!")
+    end
+end

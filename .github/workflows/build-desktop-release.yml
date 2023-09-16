@@ -34,21 +34,21 @@ jobs:
         with:
           workspaces: "./src-tauri -> target"
 
-      - name: Sync node version and setup cache
+      - name: Setup PNPM
+        run: corepack enable && pnpm -v
+
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: "19.9.0"
+          node-version: 20.5.0
+          cache: pnpm
 
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - uses: jongwooo/next-cache@v1
 
       - name: Install frontend dependencies
-        # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
-        # TODO: reenable
-        # run: pnpm install --frozen-lockfile
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - name: Build the app
+      - name: Build app
         uses: tauri-apps/tauri-action@v0
 
         env:

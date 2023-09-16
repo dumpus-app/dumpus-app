@@ -9,6 +9,27 @@
       "description": "Please wait."
     }
   },
+  "premium": {
+    "premium": "Premium",
+    "buy": "Buy Premium",
+    "success": "You're an Early Supporter",
+    "thanks": "Thanks for supporting us!",
+    "supportUs": "Support us!",
+    "earlySupporter": "Early Supporter",
+    "reduction": "60% off",
+    "oneTime": "one-time",
+    "supporter": "Supporter",
+    "soon": "Soon",
+    "notSupported": "Payments not supported",
+    "maybeLater": "Maybe later",
+    "proceed": "Proceed",
+    "unavailable": "Unavailable",
+    "content": [
+      "Supporter role on Discord",
+      "Up to 100+ DMs leaderboard",
+      "Early access to new features"
+    ]
+  },
   "onboarding": {
     "routesLabels": {
       "/": "Let's go",
@@ -26,7 +47,8 @@
         "The app is working without any readable data stored on the external API. If you still have any questions, feel free to contact us at contact@dumpus.app."
       ],
       "30DaysDelay": "Keep in mind it can take up to 30 days to receive the email. Be patient!",
-      "getData": "How to get my data?"
+      "getData": "How to get my data?",
+      "gotIt": "Got it!"
     },
     "/": {
       "welcome": "Welcome to Dumpus",
@@ -36,7 +58,8 @@
         "Briefing",
         "Request your data",
         "Start the analysis"
-      ]
+      ],
+      "selectFavoriteLanguage": "Select your favorite language"
     },
     "slides": [
       {
@@ -80,7 +103,7 @@
           "backendURL": "Backend URL",
           "optional": "optional",
           "backendURLHint": "Your own hosted open source server URL",
-          "notice": "By proceeding, you agree to our [privacy policy](/privacy) and our [terms](/terms).",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "Explore!",
           "errors": {
             "required": "Required",
@@ -117,7 +140,8 @@
       "progress": {
         "downloading": "Downloading",
         "analyzing": "Analyzing",
-        "processed": "Processed",
+        "processing": "Processing",
+        "importing": "Importing",
         "loading": {
           "title": "We’re loading your data",
           "description": "Please wait..."
@@ -131,12 +155,13 @@
       "unknownPackageId": "This package is unknown.",
       "unauthorized": "You are not allowed to interact with this package data.",
       "invalidLink": "Link invalid.",
-      "unknownError": "An unknown error occured.",
+      "unknownError": "An unknown error occurred.",
       "expiredLink": "Link expired.",
       "comeBackLater": "You can close and come back later."
     }
   },
   "stats": {
+    "messages": "{{- value}} messages",
     "messagesSent": "messages sent",
     "messagesSentPerDay": "That's about {{- value}} messages per day!",
     "titleMessagesSentPerDay": "Messages sent per day",
@@ -181,6 +206,16 @@
       "seenNitroAds": "seen nitro ads",
       "spentInVoiceChannels": "spent in voice channels"
     }
+  },
+  "shareImage": {
+    "title": "Stats for Discord",
+    "topDMS": "Top DMs",
+    "topGuilds": "Top guilds",
+    "getYours": "Get yours at",
+    "talkedWith": "number of users you talked with",
+    "messagesSent": "number of messages you sent",
+    "timeSpent": "time spent on Discord",
+    "appOpenings": "number of times you opened the app"
   },
   "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
@@ -230,7 +265,8 @@
       "deleting": "Deleting...",
       "delete": "Delete current package",
       "restoring": "Restoring...",
-      "restorePurchases": "Restore purchases"
+      "restorePurchases": "Restore purchases",
+      "addPackage": "Add a new package"
     },
     "about": {
       "title": "About",
@@ -264,6 +300,7 @@
     "contributions": "{{- value}} contributions"
   },
   "error": {
+    "error":"An error occurred...",
     "title": "Surprising turn of events... Here is your path to recovery:",
     "retry": "Retry",
     "report": "Report on GitHub",
@@ -287,7 +324,8 @@
     "popup": {
       "title": "Here is my Discord recap!",
       "description": "Generated on https://dumpus.app, try it yourself!"
-    }
+    },
+    "error": "An error occurred..."
   },
   "exitingDemo": "Exiting...",
   "exitDemo": "Exit demo and get started!",
@@ -298,8 +336,21 @@
     "stats": "Stats",
     "settings": "Settings"
   },
+  "timeRanges": {
+    "4weeks": "4 weeks",
+    "6months": "6 months",
+    "year": "Year",
+    "lifetime": "Lifetime"
+  },
   "topUsedBot": "Top used bots",
   "topChannels": "Top channels",
   "firstMessages": "Your first messages",
-  "relatedGuild": "Related guild"
+  "relatedGuild": "Related guild",
+  "more": "More",
+  "noData": "No data available",
+  "noDataTip": "Select another time range to view data",
+  "notFound": {
+    "title": "Not found",
+    "description": "The page you are looking for doesn't exist."
+  }
 }

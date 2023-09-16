@@ -1,66 +1,35 @@
 "use client";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { CheckBadgeIcon, CheckCircleIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
-import { useMount } from "react-use";
 import { shallow } from "zustand/shallow";
-import { purchases } from "~/capacitor";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
 import { useAppStore } from "~/stores";
-import { emitter } from "~/utils/emitter";
 import { formatMoney } from "~/utils/format";
-
-// TODO: extract to i18n
-const content = [
-  "Supporter role on Discord",
-  "Up to 100+ DMs leaderboard",
-  "Upload one package every 30 days",
-];
+import { useTranslation } from "~/i18n/client";
 
 export default function InAppPurchasesDialog() {
+  const { t } = useTranslation();
+  const content = t("premium.content", { returnObjects: true }) as string[];
   const [open, setOpen] = useAppStore(
     ({ ui }) => [ui.showInAppPurchasesDialog, ui.setShowInAppPurchasesDialog],
     shallow,
   );
-  const [supported, setSupported] = useState(false);
-  const [product, setProduct] =
-    useState<Awaited<ReturnType<typeof purchases.getProduct>>>();
-  const setPremium = useAppStore(({ config }) => config.setPremium);
+  const [supported, products] = useAppStore(
+    ({ purchases }) => [purchases.supported, purchases.products],
+    shallow,
+  );
+  const hasProducts = products.length > 0;
   const toast = useToast();
   const [loading, setLoading] = useState(false);
 
-  useMount(async () => {
-    const initializeDialog = async () => {
-      setSupported(true);
-      const product = await purchases.getProduct("supporter");
-      setProduct(product);
-      console.log({ product });
-      emitter.on("purchases:transaction:approved", ({ key, product }) => {
-        if (key === "supporter") {
-          setPremium(true);
-          // Prevent duplicated toasts
-          if (!open) return;
-          toast({
-            title: "You're an Early Supporter",
-            description: "Thanks for supporting us!",
-            icon: CheckBadgeIcon,
-            id: key,
-          });
-          setOpen(false);
-        }
-      });
-    };
-    // the plugin can be initialized BEFORE this component is mounted
-    if (purchases.initialized) {
-      await initializeDialog();
-    } else {
-      emitter.on("purchases:initialized", async () => {
-        await initializeDialog();
-      });
-    }
-  });
+  async function onPurchase() {
+    setLoading(true);
+    await products[0]!.getOffer()!.order();
+    setLoading(false);
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -95,7 +64,7 @@ export default function InAppPurchasesDialog() {
                       as="h3"
                       className="text-lg font-bold text-white sm:text-2xl"
                     >
-                      Support us
+                      {t("premium.supportUs")}
                     </Dialog.Title>
                     <div className="mt-2 w-full space-y-2 text-left text-base text-gray-400">
                       {content.map((p, i) => (
@@ -106,70 +75,72 @@ export default function InAppPurchasesDialog() {
                       ))}
                     </div>
                   </div>
-                  {supported && product ? (
+                  {supported && hasProducts ? (
                     <div className="mt-4 grid grid-cols-1 gap-2">
                       <div className="rounded-lg border-[3px] border-success-400 bg-gray-800 p-2">
                         <div className="flex items-center justify-between">
                           <div className="text-lg text-gray-50">
-                            Early supporter
+                            {t("premium.earlySupporter")}
                           </div>
                           <div className="rounded-full bg-success-400 px-2 py-0.5 text-sm text-gray-950">
-                            60% off
+                            {t("premium.reduction")}
                           </div>
                         </div>
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
                             {formatMoney(
-                              product.pricing!.priceMicros / 1_000_000,
-                              { currency: product.pricing!.currency },
+                              products[0].pricing!.priceMicros / 1_000_000,
+                              { currency: products[0].pricing!.currency },
                             )}
                           </div>
-                          <div className="text-gray-400">one-time</div>
+                          <div className="text-gray-400">
+                            {t("premium.oneTime")}
+                          </div>
                         </div>
                       </div>
                       <div className="rounded-lg border-[3px] border-transparent bg-gray-800 p-2 opacity-60">
                         <div className="flex items-center justify-between">
-                          <div className="text-lg text-gray-50">Supporter</div>
+                          <div className="text-lg text-gray-50">
+                            {t("premium.supporter")}
+                          </div>
                           <div className="rounded-full bg-brand-300 px-2 py-0.5 text-sm text-gray-950">
-                            Soon
+                            {t("premium.soon")}
                           </div>
                         </div>
                         <div className="mt-1 flex items-end justify-between">
                           <div className="text-3xl font-semibold text-white">
-                            3.29€
+                            3.29$
                           </div>
-                          <div className="text-gray-400">one-time</div>
+                          <div className="text-gray-400">
+                            {t("premium.oneTime")}
+                          </div>
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="mt-4 text-center font-mono text-danger-400">
-                      Payments not supported
+                      {t("premium.notSupported")}
                     </div>
                   )}
                 </div>
                 <Button
                   variant="brand"
                   className="mt-4 w-full"
-                  onClick={async () => {
-                    setLoading(true);
-                    await product!.getOffer()!.order();
-                    setLoading(false);
-                  }}
-                  disabled={!supported || !product || loading}
+                  onClick={onPurchase}
+                  disabled={!supported || !hasProducts || loading}
                 >
                   {loading
-                    ? "Loading..."
-                    : supported && product
-                    ? "Proceed"
-                    : "Unavailable"}
+                    ? t("global.loading.title")
+                    : supported && hasProducts
+                    ? t("premium.proceed")
+                    : t("premium.unavailable")}
                 </Button>
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
                   className="-mb-2 mt-1 w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
                 >
-                  Maybe later
+                  {t("premium.maybeLater")}
                 </button>
               </Dialog.Panel>
             </Transition.Child>

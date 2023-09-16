@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { useTranslation } from "~/i18n/client";
 
 type ListElement = {
   name: string;
@@ -19,30 +20,31 @@ export type Props = {
   };
   topDMS: ListElement[];
   topGuilds: ListElement[];
+  t: ReturnType<typeof useTranslation>["t"];
 };
 
 function StatCard({
   children,
   value,
   label,
-  tw,
+  className,
 }: {
   children: React.ReactNode;
   value: string;
   label: string;
-  tw?: string;
+  className?: string;
 }) {
   return (
     <div
-      tw={clsx(
-        "flex-1 bg-gray-800 flex items-start text-gray-300 rounded-lg p-4",
-        tw,
+      className={clsx(
+        "flex flex-1 items-start rounded-lg bg-gray-800 p-4 text-gray-300",
+        className,
       )}
     >
       {children}
-      <div tw="flex flex-col items-start ml-2">
-        <div tw="text-3xl font-bold text-brand-300">{value}</div>
-        <div tw="text-lg text-gray-300">{label}</div>
+      <div className="ml-2 flex flex-col items-start">
+        <div className="text-3xl font-bold text-brand-300">{value}</div>
+        <div className="text-lg text-gray-300">{label}</div>
       </div>
     </div>
   );
@@ -51,37 +53,43 @@ function StatCard({
 function TopList({
   title,
   elements,
-  tw,
+  className,
 }: {
   title: string;
   elements: ListElement[];
-  tw?: string;
+  className?: string;
 }) {
   return (
-    <div tw={clsx("flex flex-col bg-gray-800 p-4 rounded-lg flex-1", tw)}>
-      <div tw="text-xl text-gray-300 font-medium">{title}</div>
-      <div tw="flex flex-col mt-2">
+    <div
+      className={clsx(
+        "flex flex-1 flex-col rounded-lg bg-gray-800 p-4",
+        className,
+      )}
+    >
+      <div className="text-xl font-medium text-gray-300">{title}</div>
+      <div className="mt-2 flex flex-col">
         {elements.map(({ name, url, count }, i) => (
-          <div key={i} tw="flex items-center mt-2 justify-between">
-            <div tw="flex items-center">
+          <div key={i} className="mt-2 flex items-center justify-between">
+            <div className="flex items-center">
               {/* eslint-disable-next-line */}
               <img
                 src={url}
                 alt=""
-                tw="object-cover object-center rounded-full"
+                className="rounded-full object-cover object-center"
                 width={48}
                 height={48}
+                crossOrigin="anonymous"
               />
-              <div tw="ml-2 text-xl text-white">{name}</div>
+              <div className="ml-2 text-xl text-white">{name}</div>
             </div>
-            <div tw="flex items-center text-brand-300">
-              <div tw="mr-2 text-xl">{count}</div>
+            <div className="flex items-center text-brand-300">
+              <div className="mr-2 text-xl">{count}</div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
                 // @ts-ignore
-                tw="h-8 w-8"
+                className="h-8 w-8"
               >
                 <path
                   fillRule="evenodd"
@@ -102,53 +110,59 @@ export default function StaticShareImage({
   stats,
   topDMS,
   topGuilds,
+  t,
 }: Props) {
   return (
-    <div tw="h-full w-full flex flex-col bg-gray-950 text-gray-400">
-      <div tw="h-4 bg-brand-300 flex-shrink-0" />
-      <div tw="flex-1 p-8 flex flex-col">
-        <div tw="flex-1 h-full flex flex-col">
-          <div tw="flex mb-8">
+    <div className="flex h-full w-full flex-col bg-gray-950 text-gray-400">
+      <div className="h-4 flex-shrink-0 bg-brand-300" />
+      <div className="flex flex-1 flex-col p-8">
+        <div className="flex h-full flex-1 flex-col">
+          <div className="mb-8 flex">
             {/* eslint-disable-next-line */}
             <img
               src={user.avatarURL}
               alt=""
-              tw="object-cover object-center rounded-full"
+              className="rounded-full object-cover object-center"
               width={128}
               height={128}
+              crossOrigin="anonymous"
             />
-            <div tw="flex flex-col justify-center ml-4">
-              <div tw="text-gray-300 text-2xl">Stats for Discord</div>
-              <div tw="text-white font-bold text-6xl">{user.displayName}</div>
+            <div className="ml-4 flex flex-col justify-center">
+              <div className="text-2xl text-gray-300">
+                {t("shareImage.title")}
+              </div>
+              <div className="text-6xl font-bold text-white">
+                {user.displayName}
+              </div>
             </div>
           </div>
-          <div tw="flex flex-col">
-            <div tw="flex">
+          <div className="flex flex-col">
+            <div className="flex">
               <StatCard
                 value={stats.messagesSent}
-                label="number of messages you sent"
-                tw="mr-4"
+                label={t("shareImage.messagesSent")}
+                className="mr-4"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   // @ts-ignore
-                  tw="h-10 w-10"
+                  className="h-10 w-10"
                 >
                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                 </svg>
               </StatCard>
               <StatCard
                 value={stats.timeSpent}
-                label="time spent online on Discord"
+                label={t("shareImage.timeSpent")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   // @ts-ignore
-                  tw="h-10 w-10"
+                  className="h-10 w-10"
                 >
                   <path
                     fillRule="evenodd"
@@ -158,58 +172,63 @@ export default function StaticShareImage({
                 </svg>
               </StatCard>
             </div>
-            <div tw="flex mt-4">
+            <div className="mt-4 flex">
               <StatCard
                 value={stats.appOpenings}
-                label="number of times you opened the app"
-                tw="mr-4"
+                label={t("shareImage.appOpenings")}
+                className="mr-4"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   // @ts-ignore
-                  tw="h-10 w-10"
+                  className="h-10 w-10"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fillRule="evenodd"
                     d="M12 1.5a.75.75 0 01.75.75V4.5a.75.75 0 01-1.5 0V2.25A.75.75 0 0112 1.5zM5.636 4.136a.75.75 0 011.06 0l1.592 1.591a.75.75 0 01-1.061 1.06l-1.591-1.59a.75.75 0 010-1.061zm12.728 0a.75.75 0 010 1.06l-1.591 1.592a.75.75 0 01-1.06-1.061l1.59-1.591a.75.75 0 011.061 0zm-6.816 4.496a.75.75 0 01.82.311l5.228 7.917a.75.75 0 01-.777 1.148l-2.097-.43 1.045 3.9a.75.75 0 01-1.45.388l-1.044-3.899-1.601 1.42a.75.75 0 01-1.247-.606l.569-9.47a.75.75 0 01.554-.68zM3 10.5a.75.75 0 01.75-.75H6a.75.75 0 010 1.5H3.75A.75.75 0 013 10.5zm14.25 0a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H18a.75.75 0 01-.75-.75zm-8.962 3.712a.75.75 0 010 1.061l-1.591 1.591a.75.75 0 11-1.061-1.06l1.591-1.592a.75.75 0 011.06 0z"
-                    clip-rule="evenodd"
+                    clipRule="evenodd"
                   />
                 </svg>
               </StatCard>
               <StatCard
                 value={stats.networkSize}
-                label="number of users you talked with"
+                label={t("shareImage.talkedWith")}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
                   // @ts-ignore
-                  tw="h-10 w-10"
+                  className="h-10 w-10"
                 >
                   <path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z" />
                 </svg>
               </StatCard>
             </div>
           </div>
-          <div tw="flex mt-4">
-            <TopList title="Top DMs" elements={topDMS} tw="mr-4" />
-            <TopList title="Top Guilds" elements={topGuilds} />
+          <div className="mt-4 flex">
+            <TopList
+              title={t("shareImage.topDMS")}
+              elements={topDMS}
+              className="mr-4"
+            />
+            <TopList title={t("shareImage.topGuilds")} elements={topGuilds} />
           </div>
-          <div tw="mt-auto flex justify-between items-center">
-            <div tw="text-white flex text-xl">
-              <div>Get yours at</div>
-              <div tw="text-brand-300 ml-2">dumpus.app</div>
+          <div className="mt-auto flex items-center justify-between">
+            <div className="flex text-xl text-white">
+              <div>{t("shareImage.getYours")}</div>
+              <div className="ml-2 text-brand-300">dumpus.app</div>
             </div>
             {/* eslint-disable-next-line */}
             <img
               src="/assets/logo.png"
               alt=""
-              tw="object-cover object-center rounded-full"
+              className="rounded-full object-cover object-center"
               width={64}
               height={64}
+              crossOrigin="anonymous"
             />
           </div>
         </div>

@@ -45,16 +45,16 @@ export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
     const startDate = new Date(endDate);
 
     switch (timeRange) {
-      case "4 weeks":
+      case "4weeks":
         startDate.setDate(startDate.getDate() - 4 * 7);
         break;
-      case "6 months":
+      case "6months":
         startDate.setMonth(startDate.getMonth() - 6);
         break;
-      case "Year":
+      case "year":
         startDate.setFullYear(startDate.getFullYear() - 1);
         break;
-      case "Lifetime":
+      case "lifetime":
         startDate.setTime(startDateLimit.getTime());
         break;
     }

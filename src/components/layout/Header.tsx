@@ -1,13 +1,13 @@
 "use client";
 
+import { colors } from "#root/tailwind.config";
 import clsx from "clsx";
+import Link from "next/link";
 import { useCallback, useEffect } from "react";
 import { useMount, useUnmount } from "react-use";
 import { useScrolled } from "~/hooks/use-layout";
-import { useAppStore, DEFAULT_SAFE_AREA_INSET_COLOR } from "~/stores";
+import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";
 import { Icon } from "~/types";
-import { colors } from "#root/tailwind.config";
-import Link from "../Link";
 
 export type Props = {
   title?: string;

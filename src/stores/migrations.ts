@@ -15,6 +15,15 @@ export const migrateConfig = (persistedState: unknown, version: number) => {
     }
     version++;
   }
+  if (version === 2) {
+    config.timeRange = {
+      "4 weeks": "4weeks",
+      "6 months": "6months",
+      Year: "year",
+      Lifetime: "lifetime",
+    }[config.timeRange];
+    version++;
+  }
 
   return persistedState as any;
 };

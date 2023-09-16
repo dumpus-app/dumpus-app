@@ -13,7 +13,7 @@ export default function Error({ error, reset }: NextErrorProps) {
     <div className="my-auto flex flex-col items-center space-y-4 px-2">
       <ExclamationTriangleIcon className="mx-auto h-16 w-16 text-danger-400" />
       <div className="max-w-xs text-center">
-        <h1 className="text-xl font-bold text-white">An error occured</h1>
+        <h1 className="text-xl font-bold text-white">{t("error.error")}</h1>
         <div className="mt-2 rounded-lg bg-gray-800 p-2 font-mono text-sm text-danger-500">
           {error.message}
         </div>
