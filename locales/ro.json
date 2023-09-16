@@ -80,7 +80,7 @@
           "backendURL": "Backend URL",
           "optional": "opțional",
           "backendURLHint": "Adresa URL a serverului open source găzduit",
-          "notice": "Continuând, sunteți de acord cu [politica noastră de confidențialitate](/privacy) și cu [termenii](/termenii).",
+          "notice": "Continuând, sunteți de acord cu [politica noastră de confidențialitate](https://dumpus.app/legal/privacy) și cu [termenii](/termenii).",
           "explore": "Exploră!",
           "errors": {
             "required": "Necesar",

@@ -80,7 +80,7 @@
           "backendURL": "Backend-URL",
           "optional": "valgfritt",
           "backendURLHint": "Din egen server-URL for åpen kildekode",
-          "notice": "Ved å fortsette, godtar du våre [retningslinjer for personvern](/privacy) og [vilkår](/terms).",
+          "notice": "Ved å fortsette, godtar du våre [retningslinjer for personvern](https://dumpus.app/legal/privacy) og [vilkår](https://dumpus.app/legal/terms).",
           "explore": "Utforsk!",
           "errors": {
             "required": "Påkrevd",

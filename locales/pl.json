@@ -80,7 +80,7 @@
           "backendURL": "Adres URL backendu",
           "optional": " (opcjonalnie)",
           "backendURLHint": "Twój własny adres URL otwartego serwera",
-          "notice": "Kontynuując, zgadzasz się na naszą [politykę prywatności](/privacy) i nasze [warunki](/terms).",
+          "notice": "Kontynuując, zgadzasz się na naszą [politykę prywatności](https://dumpus.app/legal/privacy) i nasze [warunki](https://dumpus.app/legal/terms).",
           "explore": "Odkrywaj",
           "errors": {
             "required": "Wymagane",

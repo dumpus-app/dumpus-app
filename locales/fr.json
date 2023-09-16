@@ -80,7 +80,7 @@
           "backendURL": "URL du backend",
           "optional": "facultatif",
           "backendURLHint": "Votre propre URL de serveur open source hébergé",
-          "notice": "En poursuivant, vous acceptez notre [politique de confidentialité](/privacy) et nos [conditions](/terms).",
+          "notice": "En poursuivant, vous acceptez notre [politique de confidentialité](https://dumpus.app/legal/privacy) et nos [conditions](https://dumpus.app/legal/terms).",
           "explore": "Explorez !",
           "errors": {
             "required": "Obligatoire",
