@@ -103,7 +103,7 @@
           "backendURL": "後端網址",
           "optional": "選用項",
           "backendURLHint": "您自己託管的開源伺服器網址",
-          "notice": "繼續操作即表示您同意我們的 [隱私政策](/privacy) 和我們的 [條款](/terms)。",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "探索！",
           "errors": {
             "required": "必填",
