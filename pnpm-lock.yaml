@@ -90,8 +90,8 @@ dependencies:
     specifier: 8.44.0
     version: 8.44.0
   eslint-config-next:
-    specifier: 13.4.11
-    version: 13.4.11(eslint@8.44.0)(typescript@5.1.6)
+    specifier: 13.4.19
+    version: 13.4.19(eslint@8.44.0)(typescript@5.1.6)
   flagpack-core:
     specifier: ^2.0.0
     version: 2.0.0
@@ -114,8 +114,8 @@ dependencies:
     specifier: ^3.0.1
     version: 3.0.1
   next:
-    specifier: 13.4.11
-    version: 13.4.11(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
+    specifier: 13.4.19
+    version: 13.4.19(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0)
   next-language-detector:
     specifier: ^1.0.2
     version: 1.0.2
@@ -2320,26 +2320,26 @@ packages:
       "@jridgewell/sourcemap-codec": 1.4.15
     dev: true
 
-  /@next/env@13.4.11:
+  /@next/env@13.4.19:
     resolution:
       {
-        integrity: sha512-BbPLOkfFFca+OpwSmGhNrl56B3ZzOFS4eJ85SpGTDpjlXoz7XFfS3MMOfjUCTuW1laTrQjm98I9Q30tsYpr8ew==,
+        integrity: sha512-FsAT5x0jF2kkhNkKkukhsyYOrRqtSxrEhfliniIq0bwWbuXLgyt3Gv0Ml+b91XwjwArmuP7NxCiGd++GGKdNMQ==,
       }
     dev: false
 
-  /@next/eslint-plugin-next@13.4.11:
+  /@next/eslint-plugin-next@13.4.19:
     resolution:
       {
-        integrity: sha512-BsxI1DLtTZLX/MEoSg5Rilk2c6tlcjGseByxwasBPeoNH+fda/DZe8RkOmmmncNmTV/OzTBj/Pq6Pc3BqgLuBA==,
+        integrity: sha512-N/O+zGb6wZQdwu6atMZHbR7T9Np5SUFUjZqCbj0sXm+MwQO35M8TazVB4otm87GkXYs2l6OPwARd3/PUWhZBVQ==,
       }
     dependencies:
       glob: 7.1.7
     dev: false
 
-  /@next/swc-darwin-arm64@13.4.11:
+  /@next/swc-darwin-arm64@13.4.19:
     resolution:
       {
-        integrity: sha512-lc3vl7Wo5A6dnLoJKlURHx2Y8wvHPQBy2JmJ88r+xbATYSyy3U+1B0M0ycrtleIP3lmachoeai9V/8ITt+/AQQ==,
+        integrity: sha512-vv1qrjXeGbuF2mOkhkdxMDtv9np7W4mcBtaDnHU+yJG+bBwa6rYsYSCI/9Xm5+TuF5SbZbrWO6G1NfTh1TMjvQ==,
       }
     engines: { node: ">= 10" }
     cpu: [arm64]
@@ -2348,10 +2348,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-darwin-x64@13.4.11:
+  /@next/swc-darwin-x64@13.4.19:
     resolution:
       {
-        integrity: sha512-0bSZrEcKSOywSeCJbqwE9B7nHd5CVB+J6vIjCKb0IUWzmireMn6OLu1fsZbNKNetpuVq2Fdk2dmUpYIXuSfGTg==,
+        integrity: sha512-jyzO6wwYhx6F+7gD8ddZfuqO4TtpJdw3wyOduR4fxTUCm3aLw7YmHGYNjS0xRSYGAkLpBkH1E0RcelyId6lNsw==,
       }
     engines: { node: ">= 10" }
     cpu: [x64]
@@ -2360,10 +2360,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-arm64-gnu@13.4.11:
+  /@next/swc-linux-arm64-gnu@13.4.19:
     resolution:
       {
-        integrity: sha512-BrSo2dYhbYSJksmzdj6uR+hz0ZNgVdWKeyVFou+SSHHm1JoviAOPv9QPBliK1LMoBVk5TA2FlTMS5zzYfm2mUw==,
+        integrity: sha512-vdlnIlaAEh6H+G6HrKZB9c2zJKnpPVKnA6LBwjwT2BTjxI7e0Hx30+FoWCgi50e+YO49p6oPOtesP9mXDRiiUg==,
       }
     engines: { node: ">= 10" }
     cpu: [arm64]
@@ -2372,10 +2372,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-arm64-musl@13.4.11:
+  /@next/swc-linux-arm64-musl@13.4.19:
     resolution:
       {
-        integrity: sha512-AWACRlOtmCO+KaRaPtltYdoRPHhXf1ywhc6vRxT0UnJvrFpbzDpncKHCadPWYlrOyT37bT1+9ye8tHxBjlNiuA==,
+        integrity: sha512-aU0HkH2XPgxqrbNRBFb3si9Ahu/CpaR5RPmN2s9GiM9qJCiBBlZtRTiEca+DC+xRPyCThTtWYgxjWHgU7ZkyvA==,
       }
     engines: { node: ">= 10" }
     cpu: [arm64]
@@ -2384,10 +2384,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-x64-gnu@13.4.11:
+  /@next/swc-linux-x64-gnu@13.4.19:
     resolution:
       {
-        integrity: sha512-JEC0lkHKSLeW82YeSeTO4GjcQ1996paE2+daFWFPJ6V1m0zJ/6FWGZEIivGdsZTUGy34pFFoYlo9QhDEeRZWHw==,
+        integrity: sha512-htwOEagMa/CXNykFFeAHHvMJeqZfNQEoQvHfsA4wgg5QqGNqD5soeCer4oGlCol6NGUxknrQO6VEustcv+Md+g==,
       }
     engines: { node: ">= 10" }
     cpu: [x64]
@@ -2396,10 +2396,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-linux-x64-musl@13.4.11:
+  /@next/swc-linux-x64-musl@13.4.19:
     resolution:
       {
-        integrity: sha512-gBTXltxQf+2vGx7c5eBMYhh/TJ1IPTOWi75XhfdLhXP3CljupRZJiFzwTKYXk/XAEc3Vd/FL8DYJN5THog1t2Q==,
+        integrity: sha512-4Gj4vvtbK1JH8ApWTT214b3GwUh9EKKQjY41hH/t+u55Knxi/0wesMzwQRhppK6Ddalhu0TEttbiJ+wRcoEj5Q==,
       }
     engines: { node: ">= 10" }
     cpu: [x64]
@@ -2408,10 +2408,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-arm64-msvc@13.4.11:
+  /@next/swc-win32-arm64-msvc@13.4.19:
     resolution:
       {
-        integrity: sha512-SlOMH+Ewh71/PQGM9hSoHoINNo0RFekMIJ/95JcLIRGLZLFj5jEFb44WT8ISmBFtkdZu7eSeIcnD615sCwwctw==,
+        integrity: sha512-bUfDevQK4NsIAHXs3/JNgnvEY+LRyneDN788W2NYiRIIzmILjba7LaQTfihuFawZDhRtkYCv3JDC3B4TwnmRJw==,
       }
     engines: { node: ">= 10" }
     cpu: [arm64]
@@ -2420,10 +2420,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-ia32-msvc@13.4.11:
+  /@next/swc-win32-ia32-msvc@13.4.19:
     resolution:
       {
-        integrity: sha512-W0dipacpgzmqcJlqCwmMLEHg4nxGa6wUxS8tsABEcFDF/+UQA5p34H5rGsn+SoeGNmhK0Nsr+cDtVbEviDEf6w==,
+        integrity: sha512-Y5kikILFAr81LYIFaw6j/NrOtmiM4Sf3GtOc0pn50ez2GCkr+oejYuKGcwAwq3jiTKuzF6OF4iT2INPoxRycEA==,
       }
     engines: { node: ">= 10" }
     cpu: [ia32]
@@ -2432,10 +2432,10 @@ packages:
     dev: false
     optional: true
 
-  /@next/swc-win32-x64-msvc@13.4.11:
+  /@next/swc-win32-x64-msvc@13.4.19:
     resolution:
       {
-        integrity: sha512-thNeqt0QtsvaNkRK+Ge31REyriGMJC3HlVwvC9z6b82+Q7Coz5Q/UvIX3HmKPr00UleSRCM4QPxH+YT6wrjOqw==,
+        integrity: sha512-YzA78jBDXMYiINdPdJJwGgPNT3YqBNNGhsthsDoWHL9p24tEJn9ViQf/ZqTbwSpX/RrkPupLfuuTH2sf73JBAw==,
       }
     engines: { node: ">= 10" }
     cpu: [x64]
@@ -4003,7 +4003,7 @@ packages:
     engines: { node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7 }
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001517
+      caniuse-lite: 1.0.30001520
       electron-to-chromium: 1.4.466
       node-releases: 2.0.13
       update-browserslist-db: 1.0.11(browserslist@4.21.9)
@@ -4104,13 +4104,6 @@ packages:
       }
     engines: { node: ">=14.16" }
     dev: true
-
-  /caniuse-lite@1.0.30001517:
-    resolution:
-      {
-        integrity: sha512-Vdhm5S11DaFVLlyiKu4hiUTkpZu+y1KA/rZZqVQfOD5YdDT/eQKlkt7NaE0WGOFgX32diqt9MiP9CAiFeRklaA==,
-      }
-    dev: false
 
   /caniuse-lite@1.0.30001520:
     resolution:
@@ -5520,10 +5513,10 @@ packages:
     engines: { node: ">=12" }
     dev: false
 
-  /eslint-config-next@13.4.11(eslint@8.44.0)(typescript@5.1.6):
+  /eslint-config-next@13.4.19(eslint@8.44.0)(typescript@5.1.6):
     resolution:
       {
-        integrity: sha512-nirAnOj0pFi4QYuVCEy9mTL2iRKCHtSzfls9vDtXyg4gSybiAHARyfXAGARtWwB+FPgo3bVhUQsflFpOjQi+Gw==,
+        integrity: sha512-WE8367sqMnjhWHvR5OivmfwENRQ1ixfNE9hZwQqNCsd+iM3KnuMc1V8Pt6ytgjxjf23D+xbesADv9x3xaKfT3g==,
       }
     peerDependencies:
       eslint: ^7.23.0 || ^8.0.0
@@ -5532,7 +5525,7 @@ packages:
       typescript:
         optional: true
     dependencies:
-      "@next/eslint-plugin-next": 13.4.11
+      "@next/eslint-plugin-next": 13.4.19
       "@rushstack/eslint-patch": 1.2.0
       "@typescript-eslint/parser": 5.59.5(eslint@8.44.0)(typescript@5.1.6)
       eslint: 8.44.0
@@ -6851,6 +6844,7 @@ packages:
         integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==,
       }
     engines: { node: ">=8" }
+    hasBin: true
 
   /is-docker@3.0.0:
     resolution:
@@ -6858,6 +6852,7 @@ packages:
         integrity: sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ==,
       }
     engines: { node: ^12.20.0 || ^14.13.1 || >=16.0.0 }
+    hasBin: true
     dev: false
 
   /is-extglob@2.1.1:
@@ -6890,6 +6885,7 @@ packages:
         integrity: sha512-KIYLCCJghfHZxqjYBE7rEy0OBuTd5xCHS7tHVgvCLkx7StIoaxwNW3hCALgEUjFfeRk+MG/Qxmp/vtETEF3tRA==,
       }
     engines: { node: ">=14.16" }
+    hasBin: true
     dependencies:
       is-docker: 3.0.0
     dev: false
@@ -7204,6 +7200,7 @@ packages:
       {
         integrity: sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==,
       }
+    hasBin: true
     dependencies:
       minimist: 1.2.8
     dev: false
@@ -7214,6 +7211,7 @@ packages:
         integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==,
       }
     engines: { node: ">=6" }
+    hasBin: true
     dev: false
 
   /jsonfile@6.1.0:
@@ -8341,31 +8339,28 @@ packages:
       i18next-browser-languagedetector: 6.1.2
     dev: false
 
-  /next@13.4.11(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0):
+  /next@13.4.19(@babel/core@7.22.9)(react-dom@18.2.0)(react@18.2.0):
     resolution:
       {
-        integrity: sha512-XlJClNF3OPCv99At3BA7TflcF5q2zJAuTcyE4l6f5LWN3Uh8FF4e8PhZfaBk0PKmsKL7yOMGele/UUzbLvLbzw==,
+        integrity: sha512-HuPSzzAbJ1T4BD8e0bs6B9C1kWQ6gv8ykZoRWs5AQoiIuqbGHHdQO7Ljuvg05Q0Z24E2ABozHe6FxDvI6HfyAw==,
       }
     engines: { node: ">=16.8.0" }
     hasBin: true
     peerDependencies:
       "@opentelemetry/api": ^1.1.0
-      fibers: ">= 3.1.0"
       react: ^18.2.0
       react-dom: ^18.2.0
       sass: ^1.3.0
     peerDependenciesMeta:
       "@opentelemetry/api":
         optional: true
-      fibers:
-        optional: true
       sass:
         optional: true
     dependencies:
-      "@next/env": 13.4.11
+      "@next/env": 13.4.19
       "@swc/helpers": 0.5.1
       busboy: 1.6.0
-      caniuse-lite: 1.0.30001517
+      caniuse-lite: 1.0.30001520
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -8373,15 +8368,15 @@ packages:
       watchpack: 2.4.0
       zod: 3.21.4
     optionalDependencies:
-      "@next/swc-darwin-arm64": 13.4.11
-      "@next/swc-darwin-x64": 13.4.11
-      "@next/swc-linux-arm64-gnu": 13.4.11
-      "@next/swc-linux-arm64-musl": 13.4.11
-      "@next/swc-linux-x64-gnu": 13.4.11
-      "@next/swc-linux-x64-musl": 13.4.11
-      "@next/swc-win32-arm64-msvc": 13.4.11
-      "@next/swc-win32-ia32-msvc": 13.4.11
-      "@next/swc-win32-x64-msvc": 13.4.11
+      "@next/swc-darwin-arm64": 13.4.19
+      "@next/swc-darwin-x64": 13.4.19
+      "@next/swc-linux-arm64-gnu": 13.4.19
+      "@next/swc-linux-arm64-musl": 13.4.19
+      "@next/swc-linux-x64-gnu": 13.4.19
+      "@next/swc-linux-x64-musl": 13.4.19
+      "@next/swc-win32-arm64-msvc": 13.4.19
+      "@next/swc-win32-ia32-msvc": 13.4.19
+      "@next/swc-win32-x64-msvc": 13.4.19
     transitivePeerDependencies:
       - "@babel/core"
       - babel-plugin-macros
@@ -9852,6 +9847,7 @@ packages:
       {
         integrity: sha512-iMDbmAWtfU+MHpxt/I5iWI7cY6YVEZUQ3MBgPQ++XD1PELuJHIl82xBmObyP2KyQmkNB2dsqF7seoQQiAn5yDQ==,
       }
+    hasBin: true
     dependencies:
       is-core-module: 2.12.0
       path-parse: 1.0.7
@@ -9981,6 +9977,7 @@ packages:
       {
         integrity: sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==,
       }
+    hasBin: true
     dev: true
 
   /semver@6.3.1:
@@ -9988,12 +9985,14 @@ packages:
       {
         integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==,
       }
+    hasBin: true
 
   /semver@7.0.0:
     resolution:
       {
         integrity: sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==,
       }
+    hasBin: true
     dev: true
 
   /semver@7.5.1:
