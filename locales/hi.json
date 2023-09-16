@@ -103,7 +103,7 @@
           "backendURL": "बैकएंड यूआरएल",
           "optional": "वैकल्पिक",
           "backendURLHint": "आपका स्वयं का होस्ट किया गया ओपन सोर्स सर्वर यूआरएल",
-          "notice": "आगे बढ़ते हुए, आप हमारी [गोपनीयता नीति](/privacy) और हमारी [शर्तें](/terms) से सहमत होते हैं।",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "एक्सप्लोर करें!",
           "errors": {
             "required": "आवश्यक",
