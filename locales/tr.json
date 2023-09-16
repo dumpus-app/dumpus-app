@@ -103,7 +103,7 @@
           "backendURL": "Backend URL",
           "optional": "opsiyonel",
           "backendURLHint": "Kendi açık kaynaklı sunucunun URL'si",
-          "notice": "Devam ederek, [Gizlilik Politikasına](/privacy) ve [şartlarımıza](/terms) uyacağına onaylamış olursun.",
+          "notice": "By proceeding, you agree to our [privacy policy](https://dumpus.app/legal/privacy) and our [terms](https://dumpus.app/legal/terms).",
           "explore": "Keşfet!",
           "errors": {
             "required": "Gerekli",
