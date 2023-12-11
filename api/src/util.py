@@ -9,7 +9,7 @@ import base64
 import jwt
 import requests
 
-discord_link_regex = r'https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})'
+discord_link_regex = r'^https:\/\/click\.discord\.com\/ls\/click\?upn=([A-Za-z0-9-_]{500,})$'
 dl_whitelisted_domains_raw = os.getenv('DL_ZIP_WHITELISTED_DOMAINS')
 dl_whitelisted_domains = dl_whitelisted_domains_raw and dl_whitelisted_domains_raw.split(',') or []
 

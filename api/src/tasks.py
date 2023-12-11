@@ -3,7 +3,6 @@ load_dotenv()
 
 from celery import Celery, current_task
 
-import subprocess
 import traceback
 
 import pandas as pd
@@ -30,6 +29,7 @@ from sqlite import create_new_empty_database, export_sqlite_to_bin
 
 import os
 from collections import defaultdict
+import requests
 
 from db import update_progress, update_step, fetch_package_status, SavedPackageData, Session, PackageProcessStatus
 from util import (
@@ -74,19 +74,17 @@ def download_file(package_status_id, package_id, link, session):
 
     if not check_whitelisted_link(link):
         print('checking content type')
-        command = f"curl -L -I {link}"
-        process = subprocess.run(command, shell=True, capture_output=True, text=True)
-
-        if "application/octet-stream" not in process.stdout or "HTTP/2 400" in process.stdout:
-            print('The link does not point to a zip file.')
-            raise Exception('EXPIRED_LINK')
+        r = requests.head(link, allow_redirects=True)
+        if r.status_code != 200 or 'content-type' not in r.headers or 'application/octet-stream' not in r.headers['content-type']:
+            print('The link does not point to a valid file.')
+            raise Exception('INVALID_LINK')
 
     print('downloading')
     update_step(package_status_id, package_id, 'DOWNLOADING', session)
-    command = f"curl -L -o {path} {link}"
-
-    process = subprocess.Popen(command, shell=True)
-    process.wait()
+    r = requests.get(link, allow_redirects=True, stream=True)
+    with open(path, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=10*1024):
+            f.write(chunk)
 
     return path
 
