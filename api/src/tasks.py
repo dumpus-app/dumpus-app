@@ -425,6 +425,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
                 try:
                     print(map(lambda message: message['Timestamp'], messages))
+                    print(map(lambda message: message['Content'], messages))
                     print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
                     print(count_sentiments(map(lambda message: message['Content'], messages)))
                 except Exception as e:
