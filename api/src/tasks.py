@@ -75,7 +75,8 @@ def download_file(package_status_id, package_id, link, session):
     if not check_whitelisted_link(link):
         print('checking content type')
         r = requests.head(link, allow_redirects=True)
-        if r.status_code != 200 or 'content-type' not in r.headers or 'application/octet-stream' not in r.headers['content-type']:
+        # check if location starts with https://storage.googleapis.com after 302
+        if r.status_code != 302 and not r.headers['Location'].startswith('https://storage.googleapis.com'):
             print('The link does not point to a valid file.')
             raise Exception('INVALID_LINK')
 
