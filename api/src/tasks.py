@@ -428,7 +428,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     print(map(lambda message: message['Content'], messages))
                     print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
                     print(count_sentiments(map(lambda message: message['Content'], messages)))
+                    print("sentiment ok")
                     print(list(filter(lambda message: 'Content' in message, messages))[:10])
+                    print("parsed successfully")
                 except Exception as e:
                     print(e)
                 print(f'Channel {channel_id} parsed')
