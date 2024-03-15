@@ -423,7 +423,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
             #print(f'Channel {channel_id} has {len(messages)} messages')
             compute_2_time_start = time.time()
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
-                print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
+                try:
+                    print(map(lambda message: message['Timestamp'], messages))
+                except Exception as e:
+                    print(e)
+                print(f'Channel {channel_id} parsed')
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
                 dms_channels_data.append({
                     'channel_id': channel_id,
@@ -437,7 +441,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
                 })
 
             elif 'guild' in channel_json:
-                print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
+                try:
+                    print(map(lambda message: message['Timestamp'], messages))
+                except Exception as e:
+                    print(e)
+                print(f'Channel {channel_id} parsed')
                 guild_channels_data.append({
                     'guild_id': channel_json['guild']['id'],
                     'guild_name': channel_json['guild']['name'],
