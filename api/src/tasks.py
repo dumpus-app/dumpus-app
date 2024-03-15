@@ -407,23 +407,18 @@ def read_analytics_file(package_status_id, package_id, link, session):
             # new package includes 'c' before the channel id
             is_new_package = channel_json_file.startswith('messages/c')
             read_time_start = time.time()
-            ch_msgs_file_name = f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv'
+            ch_msgs_file_name = f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json'
             if ch_msgs_file_name not in namelist:
                 continue
-            message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.csv')
+            message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json')
             read_time_diff = time.time() - read_time_start
             read_channel_times.append(read_time_diff)
             read_time_start = time.time()
-            cols_to_use = ['Contents', 'Timestamp']
-            message_csv = pd.read_csv(message_content, usecols=cols_to_use)
+            messages = orjson.loads(message_content.read())
             read_time_diff = time.time() - read_time_start
             read_csv_times.append(read_time_diff)
             compute_time_start = time.time()
             compute_1_time_start = time.time()
-            message_csv['Timestamp'] = pd.to_datetime(message_csv['Timestamp'], format="mixed").apply(lambda x: x.timestamp())
-            message_csv.rename(columns={'Contents': 'content', 'Timestamp': 'timestamp'}, inplace=True)
-            messages = message_csv.to_dict('records')
-            messages.sort(key=lambda message: message['timestamp'])
             compute_1_time_diff = time.time() - compute_1_time_start
             compute_1_times.append(compute_1_time_diff)
            #print(f'Channel {channel_id} has {len(messages)} messages')
@@ -434,11 +429,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     'channel_id': channel_id,
                     'dm_user_id': dm_user_id,
                     # TODO : get username from user_id
-                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
-                    'sentiment_score': count_sentiments(map(lambda message: message['content'], messages)),
+                    'message_timestamps': count_dates_hours(map(lambda message: message['Timestamp'], messages)),
+                    'sentiment_score': count_sentiments(map(lambda message: message['Content'], messages)),
                     'total_message_count': len(messages),
                     # make sure content exists
-                    'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
+                    'first_10_messages': list(filter(lambda message: 'Content' in message, messages))[:10]
                 })
 
             elif 'guild' in channel_json:
@@ -446,9 +441,9 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     'guild_id': channel_json['guild']['id'],
                     'guild_name': channel_json['guild']['name'],
                     'channel_id': channel_id,
-                    'message_timestamps': count_dates_hours(map(lambda message: message['timestamp'], messages)),
+                    'message_timestamps': count_dates_hours(map(lambda message: message['Timestamp'], messages)),
                     'total_message_count': len(messages),
-                    'first_10_messages': list(filter(lambda message: 'content' in message, messages))[:10]
+                    'first_10_messages': list(filter(lambda message: 'Content' in message, messages))[:10]
                 })
             compute_2_time_diff = time.time() - compute_2_time_start
             compute_2_times.append(compute_2_time_diff)
