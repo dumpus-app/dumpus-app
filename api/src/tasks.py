@@ -458,7 +458,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     'channel_id': channel_id,
                     'message_timestamps': count_dates_hours(map(lambda message: message['Timestamp'], messages)),
                     'total_message_count': len(messages),
-                    'first_10_messages': list(filter(lambda message: 'Content' in message, messages))[:10]
+                    'first_10_messages': list(filter(lambda message: 'Contents' in message, messages))[:10]
                 })
             print(f'Channel messages data: {time.time() - start}')
             compute_2_time_diff = time.time() - compute_2_time_start
