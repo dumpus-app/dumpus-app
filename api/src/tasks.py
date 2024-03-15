@@ -420,13 +420,10 @@ def read_analytics_file(package_status_id, package_id, link, session):
             print(f'Channel {channel_id} has {len(messages)} messages')
             read_time_diff = time.time() - read_time_start
             read_csv_times.append(read_time_diff)
-            compute_time_start = time.time()
-            compute_1_time_start = time.time()
-            compute_1_time_diff = time.time() - compute_1_time_start
-            compute_1_times.append(compute_1_time_diff)
-           #print(f'Channel {channel_id} has {len(messages)} messages')
+            #print(f'Channel {channel_id} has {len(messages)} messages')
             compute_2_time_start = time.time()
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
+                print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
                 dms_channels_data.append({
                     'channel_id': channel_id,
@@ -440,6 +437,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
                 })
 
             elif 'guild' in channel_json:
+                print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
                 guild_channels_data.append({
                     'guild_id': channel_json['guild']['id'],
                     'guild_name': channel_json['guild']['name'],
