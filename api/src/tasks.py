@@ -417,6 +417,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
             read_channel_times.append(read_time_diff)
             read_time_start = time.time()
             messages = orjson.loads(message_content.read())
+            print(f'Channel {channel_id} has {len(messages)} messages')
             read_time_diff = time.time() - read_time_start
             read_csv_times.append(read_time_diff)
             compute_time_start = time.time()
@@ -447,6 +448,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
                     'total_message_count': len(messages),
                     'first_10_messages': list(filter(lambda message: 'Content' in message, messages))[:10]
                 })
+            print(f'Channel messages data: {time.time() - start}')
             compute_2_time_diff = time.time() - compute_2_time_start
             compute_2_times.append(compute_2_time_diff)
             compute_time_diff = time.time() - compute_time_start
