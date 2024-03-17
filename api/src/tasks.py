@@ -850,6 +850,7 @@ def handle_package(package_status_id, package_id, link):
         download_file(package_status_id, package_id, link, session)
         read_analytics_file(package_status_id, package_id, link, session)
     except Exception as e:
+        print(e)
         expected = ('EXPIRED_LINK')
         current = str(e)
         e_traceback = None
