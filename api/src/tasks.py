@@ -411,34 +411,19 @@ def read_analytics_file(package_status_id, package_id, link, session):
             is_new_package = channel_json_file.startswith('messages/c')
             read_time_start = time.time()
             ch_msgs_file_name = f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json'
-            print('checking...')
             if ch_msgs_file_name not in namelist:
-                print('skipping...')
-                print(ch_msgs_file_name)
                 continue
             message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json')
             read_time_diff = time.time() - read_time_start
             read_channel_times.append(read_time_diff)
             read_time_start = time.time()
             messages = orjson.loads(message_content.read())
-            print(f'Channel {channel_id} has {len(messages)} messages')
             read_time_diff = time.time() - read_time_start
             read_csv_times.append(read_time_diff)
             #print(f'Channel {channel_id} has {len(messages)} messages')
             compute_time_start = time.time()
             compute_2_time_start = time.time()
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
-                try:
-                    print(map(lambda message: message['Timestamp'], messages))
-                    print(map(lambda message: message['Contents'], messages))
-                    print(count_dates_hours(map(lambda message: message['Timestamp'], messages)))
-                    print(count_sentiments(map(lambda message: message['Contents'], messages)))
-                    print("sentiment ok")
-                    print(list(filter(lambda message: 'Contents' in message, messages))[:10])
-                    print("parsed successfully")
-                except Exception as e:
-                    print(e)
-                print(f'Channel {channel_id} parsed')
                 dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
                 dms_channels_data.append({
                     'channel_id': channel_id,
@@ -452,11 +437,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
                 })
 
             elif 'guild' in channel_json:
-                try:
-                    print(map(lambda message: message['Timestamp'], messages))
-                except Exception as e:
-                    print(e)
-                print(f'Channel {channel_id} parsed')
                 guild_channels_data.append({
                     'guild_id': channel_json['guild']['id'],
                     'guild_name': channel_json['guild']['name'],
