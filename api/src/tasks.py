@@ -411,7 +411,10 @@ def read_analytics_file(package_status_id, package_id, link, session):
             is_new_package = channel_json_file.startswith('messages/c')
             read_time_start = time.time()
             ch_msgs_file_name = f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json'
+            print('checking...')
             if ch_msgs_file_name not in namelist:
+                print('skipping...')
+                print(ch_msgs_file_name)
                 continue
             message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json')
             read_time_diff = time.time() - read_time_start
