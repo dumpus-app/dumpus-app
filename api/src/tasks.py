@@ -425,6 +425,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
             read_time_diff = time.time() - read_time_start
             read_csv_times.append(read_time_diff)
             #print(f'Channel {channel_id} has {len(messages)} messages')
+            compute_time_start = time.time()
             compute_2_time_start = time.time()
             if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
                 try:
