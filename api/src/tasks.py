@@ -396,6 +396,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         compute_1_times = []
         compute_2_times = []
         channel_json_files = [file_name for file_name in namelist if file_name.startswith('messages/') and file_name.endswith('channel.json')]
+        print(f'Found {len(channel_json_files)} channel files')
         for channel_json_file in channel_json_files:
             read_time_start = time.time()
             channel_content = zip.open(channel_json_file)
