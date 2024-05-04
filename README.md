@@ -38,7 +38,7 @@ This app is the v2 of the existing [Discord Data Package Explorer](https://ddpe.
 | **Cross-platform**                        | ✅            | ❌ (web only)                             |
 | **Server-side processing**                | ✅            | ❌ (only work on really powerful devices) |
 | **Advanced statistics**                   | ✅            | ❌ (only basic analysis)                  |
-| **More than 10 top DMs/servers/channels** | ✅ (up to 20) | ❌ (10 max)                               |
+| **Top DMs/servers/channels**              | ✅ (up to 20) | ❌ (10 max)                               |
 | **Shareable stats card**                  | ✅            | ❌                                        |
 | **Multi-packages handling**               | ✅            | ❌                                        |
 
