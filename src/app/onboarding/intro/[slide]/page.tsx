@@ -22,7 +22,7 @@ export default function Page({
   const { image, title, description } = slideData;
 
   return (
-    <div className="flex flex-col items-center	space-y-4 text-center">
+    <div className="flex flex-col items-center space-y-4 text-center">
       <Image src={image} alt={title} width={256} height={256} />
       <h1 className="text-xl font-bold text-white">{title}</h1>
       <p className="text-gray-400">
