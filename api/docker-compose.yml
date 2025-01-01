@@ -1,0 +1,90 @@
+services:
+
+  broker:
+    container_name: dumpus-broker
+    image: rabbitmq:latest
+    ports:
+      - "5672:5672"
+
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "--quiet", "ping" ]
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+    environment:
+      RABBITMQ_DEFAULT_USER: dumpus
+      RABBITMQ_DEFAULT_PASS: dumpus
+
+    restart: unless-stopped
+
+  db:
+    container_name: dumpus-db
+    image: postgres:latest
+    ports:
+      - "6641:5432"
+
+    healthcheck:
+      test: [ "CMD-SHELL", "PGUSER=dumpus", "pg_isready" ]
+      interval: 1s
+      timeout: 10s
+      retries: 5
+
+    environment:
+      POSTGRES_USER: dumpus
+      POSTGRES_PASSWORD: dumpus
+      POSTGRES_DB: dumpus
+
+    restart: unless-stopped
+
+  worker:
+    container_name: dumpus-worker
+    build:
+      dockerfile: Dockerfile.worker
+
+    healthcheck:
+      test: [ "CMD-SHELL", "celery", "-A", "tasks", "inspect", "ping", "-d", "regular_process@$HOSTNAME" ]
+      interval: 2s
+      timeout: 10s
+      retries: 5
+
+    depends_on:
+      broker:
+        condition: service_healthy
+        restart: true
+      db:
+        condition: service_healthy
+        restart: true
+  
+    environment:  
+      POSTGRES_URL: "postgresql+psycopg2://dumpus:dumpus@db:5432/dumpus"
+      RABBITMQ_URL: "amqp://dumpus:dumpus@broker:5672/"
+
+  api:
+    container_name: dumpus-api
+    build:
+      dockerfile: Dockerfile.api
+
+    ports:
+      - "5000:5000"
+    depends_on:
+      worker:
+        condition: service_healthy
+        restart: true
+
+    environment:
+      POSTGRES_URL: "postgresql+psycopg2://dumpus:dumpus@db:5432/dumpus"
+      RABBITMQ_URL: "amqp://dumpus:dumpus@broker:5672/"
+
+  # flower:
+  #   container_name: flower
+  #   build:
+  #     dockerfile: Dockerfile.flower
+
+  #   ports:
+  #     - "5566:5566"
+
+  #   depends_on:
+  #     worker:
+  #       condition: service_healthy
+  #       restart: true
