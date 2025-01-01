@@ -99,13 +99,19 @@ def generate_diswho_jwt():
 
 def fetch_diswho_user(user_id):
     diswho_base_url = os.getenv('DISWHO_BASE_URL')
-    diswho_jwt = generate_diswho_jwt()
+    if diswho_base_url:
+        base_url = diswho_base_url + "/user"
+        diswho_jwt = generate_diswho_jwt()
+        auth = f"Bearer {diswho_jwt}"
+    else:
+        base_url = os.getenv('DISCORD_BASE_URL', 'https://discord.com/api/v8/users/')
+        auth = f"Bot {os.getenv('DISCORD_SECRET')}"
 
     headers = {
-        'authorization': f'Bearer {diswho_jwt}'
+        'authorization': auth
     }
 
-    r = requests.get(f'{diswho_base_url}/user/{user_id}', headers=headers)
+    r = requests.get(f'{base_url}/{user_id}', headers=headers)
     if r.status_code == 200:
         return r.json()
     else:
