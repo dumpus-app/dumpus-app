@@ -1,5 +1,4 @@
 services:
-
   broker:
     container_name: dumpus-broker
     image: rabbitmq:latest
@@ -7,16 +6,16 @@ services:
       - "5672:5672"
 
     healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "--quiet", "ping" ]
+      test: ["CMD", "rabbitmq-diagnostics", "--quiet", "ping"]
       timeout: 10s
       retries: 5
       start_period: 10s
 
     environment:
-      RABBITMQ_DEFAULT_USER: dumpus
-      RABBITMQ_DEFAULT_PASS: dumpus
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
 
-    restart: unless-stopped
+    restart: on-failure
 
   db:
     container_name: dumpus-db
@@ -25,17 +24,17 @@ services:
       - "6641:5432"
 
     healthcheck:
-      test: [ "CMD-SHELL", "PGUSER=dumpus", "pg_isready" ]
-      interval: 1s
+      test: ["CMD-SHELL", "PGUSER=dumpus", "pg_isready"]
+      interval: 5s
       timeout: 10s
       retries: 5
 
     environment:
-      POSTGRES_USER: dumpus
-      POSTGRES_PASSWORD: dumpus
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
       POSTGRES_DB: dumpus
 
-    restart: unless-stopped
+    restart: on-failure
 
   worker:
     container_name: dumpus-worker
@@ -43,7 +42,11 @@ services:
       dockerfile: Dockerfile.worker
 
     healthcheck:
-      test: [ "CMD-SHELL", "celery", "-A", "tasks", "inspect", "ping", "-d", "regular_process@$HOSTNAME" ]
+      test:
+        [
+          "CMD-SHELL",
+          "celery -A tasks inspect ping -d regular_process@$$HOSTNAME",
+        ]
       interval: 2s
       timeout: 10s
       retries: 5
@@ -55,10 +58,10 @@ services:
       db:
         condition: service_healthy
         restart: true
-  
-    environment:  
-      POSTGRES_URL: "postgresql+psycopg2://dumpus:dumpus@db:5432/dumpus"
-      RABBITMQ_URL: "amqp://dumpus:dumpus@broker:5672/"
+
+    environment:
+      POSTGRES_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASS}@db:5432/dumpus"
+      RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@broker:5672/"
 
   api:
     container_name: dumpus-api
@@ -73,8 +76,8 @@ services:
         restart: true
 
     environment:
-      POSTGRES_URL: "postgresql+psycopg2://dumpus:dumpus@db:5432/dumpus"
-      RABBITMQ_URL: "amqp://dumpus:dumpus@broker:5672/"
+      POSTGRES_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASS}@db:5432/dumpus"
+      RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@broker:5672/"
 
   # flower:
   #   container_name: flower
