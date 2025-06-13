@@ -22,5 +22,5 @@ dev:
 		trap 'docker compose down' EXIT; \
 		docker compose up -d broker db worker && \
 		cd src && \
-		waitress-serve --port=${API_PORT} app:app \
+		tee >(docker compose logs -f) >(waitress-serve --port=${API_PORT} app:app) \
 	"
