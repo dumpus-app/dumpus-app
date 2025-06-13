@@ -11,6 +11,7 @@ down:
 	docker compose down
 
 install:
+	uv venv --python 3.10
 	. .venv/bin/activate
 	uv pip install -r requirements.txt
 	uv run ./scripts/download-ntk.py
