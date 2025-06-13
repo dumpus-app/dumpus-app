@@ -32,7 +32,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASS}
-      POSTGRES_DB: dumpus
+      POSTGRES_DB: ${POSTGRES_DB}
 
     restart: on-failure
     volumes:
