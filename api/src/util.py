@@ -25,6 +25,7 @@ def extract_upn_from_discord_link (link):
     # get everything after first / and encode base64
     parsed = urlparse(link)
     part = parsed.path.strip('/')
+    # FIXME ZIP `upn` = ZIP file name
     upn = base64.b64encode(part.encode('utf-8')).decode('utf-8')
     if re.match(discord_link_regex, link):
         upn = re.match(discord_link_regex, link).group(1)
