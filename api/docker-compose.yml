@@ -64,6 +64,8 @@ services:
     environment:
       POSTGRES_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASS}@db:5432/dumpus"
       RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@broker:5672/"
+      CELERY_HOSTNAME: "${CELERY_HOSTNAME}"
+      CELERY_QUEUE: "${CELERY_QUEUE}"
 
   api:
     container_name: dumpus-api
