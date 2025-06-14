@@ -50,7 +50,7 @@ def generate_avatar_url_from_user_id_avatar_hash (user_id, hash):
     return None
 
 def get_package_zip_path (package_id):
-    return os.path.join(os.getenv('DL_ZIP_TMP_PATH'), f'{package_id}.zip')
+    return os.path.join('..', os.getenv('DL_ZIP_TMP_PATH'), f'{package_id}.zip')
 
 def ts_included_in_range (ts, start_date, end_date):
     if not start_date:
