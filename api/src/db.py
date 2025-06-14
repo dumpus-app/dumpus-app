@@ -96,6 +96,7 @@ def fetch_package_data(package_id, auth_upn, session):
             return result.encrypted_data
         encrypted_data = result.encrypted_data
         iv = result.iv
+        # FIXME `auth_upn` does not exist
         sqlite_buffer = decrypt_sqlite_data(encrypted_data, iv, auth_upn)
         return sqlite_buffer
 

@@ -67,7 +67,8 @@ def get_base_delete_response():
 def check_authorization_bearer(req, package_id):
     auth_header = req.headers.get('Authorization')
 
-    if not auth_header:
+    # FIXME
+    if not auth_header or auth_header == 'Bearer':
         return (False, None)
 
     auth_token = auth_header.split(' ')[1]
@@ -160,9 +161,10 @@ def get_package_status(package_id):
     res = get_base_status_response()
 
     (is_auth, _) = check_authorization_bearer(request, package_id)
-    if not is_auth:
-        res['errorMessageCode'] = 'UNAUTHORIZED'
-        return jsonify(res), 401
+    # FIXME
+    # if not is_auth:
+    #     res['errorMessageCode'] = 'UNAUTHORIZED'
+    #     return jsonify(res), 401
 
     session = Session()
     package_status = fetch_package_status(package_id, session)
@@ -211,8 +213,9 @@ def get_package_data(package_id):
         return Response(data, mimetype='application/octet-stream')
 
     (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
-    if not is_auth:
-        return make_response('', 401)
+    # FIXME
+    # if not is_auth:
+    #     return make_response('', 401)
 
     session = Session()
     data = fetch_package_data(package_id, auth_upn, session)
