@@ -27,7 +27,8 @@ function useSchema() {
         .url(t("onboarding.access.methods.link.errors.url"))
         .or(z.literal("")),
     })
-    .refine(
+    // FIXME
+    /*.refine(
       (data) =>
         data.discordLink.startsWith("https://click.discord.com/ls/click?upn="),
       {
@@ -51,7 +52,7 @@ function useSchema() {
         message: t("onboarding.access.methods.link.errors.emptyKey"),
         path: ["discordLink"],
       },
-    );
+    )*/;
 
   return schema;
 }
