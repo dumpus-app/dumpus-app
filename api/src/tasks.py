@@ -191,7 +191,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         We read it line by line (each line is a JSON object).
         '''
 
-        analytics_file_name = next((name for name in zip.namelist() if name.startswith('activity/analytics') and name.endswith('.json')), None)
+        analytics_file_name = next((name for name in zip.namelist() if name.startswith('Activity/analytics') and name.endswith('.json')), None)
 
         if analytics_file_name:
 
@@ -351,7 +351,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         This will be used later to get the guild name from the guild_id.
         '''
 
-        server_content = zip.open('servers/index.json')
+        server_content = zip.open('Servers/index.json')
         server_json = orjson.loads(server_content.read())
         for guild_id in server_json:
             guilds.append({
@@ -364,7 +364,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         This will be used later to get the channel name from the channel_id (or to check whether it is a DM or a Guild Channel).
         '''
 
-        message_index_content = zip.open('messages/index.json')
+        message_index_content = zip.open('Messages/index.json')
         message_index_json = orjson.loads(message_index_content.read())
         for channel_id in message_index_json:
             full_name = message_index_json[channel_id]
@@ -395,7 +395,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         compute_times = []
         compute_1_times = []
         compute_2_times = []
-        channel_json_files = [file_name for file_name in namelist if file_name.startswith('messages/') and file_name.endswith('channel.json')]
+        channel_json_files = [file_name for file_name in namelist if file_name.startswith('Messages/') and file_name.endswith('channel.json')]
         print(f'Found {len(channel_json_files)} channel files')
         for channel_json_file in channel_json_files:
             read_time_start = time.time()
@@ -406,14 +406,14 @@ def read_analytics_file(package_status_id, package_id, link, session):
             channel_json = orjson.loads(channel_content.read())
             read_time_diff = time.time() - read_time_start
             read_json_times.append(read_time_diff)
-            channel_id = re.match(r'messages\/c?([0-9]{16,32})\/', channel_json_file).group(1)
+            channel_id = re.match(r'Messages\/c?([0-9]{16,32})\/', channel_json_file).group(1)
             # new package includes 'c' before the channel id
-            is_new_package = channel_json_file.startswith('messages/c')
+            is_new_package = channel_json_file.startswith('Messages/c')
             read_time_start = time.time()
-            ch_msgs_file_name = f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json'
+            ch_msgs_file_name = f'Messages/{"c" if is_new_package else ""}{channel_id}/messages.json'
             if ch_msgs_file_name not in namelist:
                 continue
-            message_content = zip.open(f'messages/{"c" if is_new_package else ""}{channel_id}/messages.json')
+            message_content = zip.open(f'Messages/{"c" if is_new_package else ""}{channel_id}/messages.json')
             read_time_diff = time.time() - read_time_start
             read_channel_times.append(read_time_diff)
             read_time_start = time.time()
