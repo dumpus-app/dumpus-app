@@ -156,7 +156,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         All this data will be useful to parse more complex things later.
         '''
 
-        user_content = zip.open('account/user.json')
+        user_content = zip.open('Account/user.json')
         user_json = orjson.loads(user_content.read())
         user_data = {
             'id': user_json['id'],
