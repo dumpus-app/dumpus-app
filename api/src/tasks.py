@@ -61,6 +61,58 @@ def count_sentiments(contents):
             sentiments.append(score)
     return sum(sentiments) / len(sentiments) if len(sentiments) > 0 else 0
 
+def find_user_root(zip_namelist):
+    """
+    Find the root path for user.json in the package.
+    This handles cases where the folder might be translated (e.g., 'Compte/user.json' in French).
+    """
+    # Look for any direct user.json file in the root of a folder
+    user_path = next((name for name in zip_namelist if re.match(r'^[^/]+/user\.json$', name)), None)
+    if user_path:
+        return user_path.split('/')[0]
+    return None
+
+def find_messages_root(zip_namelist):
+    """
+    Find the root path for Messages folder in the package.
+    This handles cases where the folder might be translated.
+    """
+    # Find any channel.json inside a numbered folder
+    sample = next((name for name in zip_namelist if re.search(r'/c?[0-9]{16,32}/channel\.json$', name)), None)
+    if sample:
+        # Remove the channel ID and file name to get the root
+        segments = sample.split('/')
+        return '/'.join(segments[:-2])
+    return None
+
+def find_servers_root(zip_namelist):
+    """
+    Find the root path for Servers folder in the package.
+    This handles cases where the folder might be translated.
+    """
+    # Find guild.json or index.json that contains server data
+    sample = next((name for name in zip_namelist if re.search(r'/[0-9]{16,32}/guild\.json$', name)), None)
+    if sample:
+        # Remove the guild ID and file name to get the root
+        segments = sample.split('/')
+        return '/'.join(segments[:-2])
+    
+    # Try to find the index.json file in any folder that might be for servers
+    server_index = next((name for name in zip_namelist if name.endswith('/index.json') 
+                       and not (name.startswith('Messages/') or name.startswith('messages/'))), None)
+    if server_index:
+        return '/'.join(server_index.split('/')[:-1])
+    
+    return None
+
+def find_analytics_file(zip_namelist):
+    """
+    Find the analytics file in the package.
+    This handles cases where the folder might be translated.
+    """
+    # Look for any JSON file in a folder that could be analytics
+    return next((name for name in zip_namelist if re.search(r'/analytics.*\.json$', name)), None)
+
 app = Celery(config_source='celeryconfig')
 
 def download_file(package_status_id, package_id, link, session):
@@ -156,9 +208,14 @@ def read_analytics_file(package_status_id, package_id, link, session):
         All this data will be useful to parse more complex things later.
         '''
 
-        user_path = 'Account/user.json'
-        if user_path not in zip.namelist() and 'account/user.json' in zip.namelist():
-            user_path = 'account/user.json'
+        user_path = find_user_root(zip.namelist())
+        if not user_path:
+            # Fallback to traditional paths
+            user_path = 'Account/user.json'
+            if user_path not in zip.namelist() and 'account/user.json' in zip.namelist():
+                user_path = 'account/user.json'
+        else:
+            user_path = f'{user_path}/user.json'
         user_content = zip.open(user_path)
         user_json = orjson.loads(user_content.read())
         user_data = {
@@ -194,7 +251,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
         We read it line by line (each line is a JSON object).
         '''
 
-        analytics_file_name = next((name for name in zip.namelist() if (name.startswith('Activity/analytics') or name.startswith('activity/analytics')) and name.endswith('.json')), None)
+        analytics_file_name = find_analytics_file(zip.namelist())
 
         if analytics_file_name:
 
@@ -354,9 +411,15 @@ def read_analytics_file(package_status_id, package_id, link, session):
         This will be used later to get the guild name from the guild_id.
         '''
 
-        server_path = 'Servers/index.json'
-        if server_path not in zip.namelist() and 'servers/index.json' in zip.namelist():
-            server_path = 'servers/index.json'
+        namelist = zip.namelist()
+        servers_root = find_servers_root(namelist)
+        if not servers_root:
+            server_path = 'Servers/index.json'
+            if server_path not in namelist and 'servers/index.json' in namelist:
+                server_path = 'servers/index.json'
+        else:
+            server_path = f'{servers_root}/index.json'
+        
         server_content = zip.open(server_path)
         server_json = orjson.loads(server_content.read())
         for guild_id in server_json:
@@ -370,9 +433,14 @@ def read_analytics_file(package_status_id, package_id, link, session):
         This will be used later to get the channel name from the channel_id (or to check whether it is a DM or a Guild Channel).
         '''
 
-        message_index_path = 'Messages/index.json'
-        if message_index_path not in zip.namelist() and 'messages/index.json' in zip.namelist():
-            message_index_path = 'messages/index.json'
+        messages_root = find_messages_root(namelist)
+        if not messages_root:
+            message_index_path = 'Messages/index.json'
+            if message_index_path not in namelist and 'messages/index.json' in namelist:
+                message_index_path = 'messages/index.json'
+        else:
+            message_index_path = f'{messages_root}/index.json'
+            
         message_index_content = zip.open(message_index_path)
         message_index_json = orjson.loads(message_index_content.read())
         for channel_id in message_index_json:
@@ -404,7 +472,14 @@ def read_analytics_file(package_status_id, package_id, link, session):
         compute_times = []
         compute_1_times = []
         compute_2_times = []
-        channel_json_files = [file_name for file_name in namelist if (file_name.startswith('Messages/') or file_name.startswith('messages/')) and file_name.endswith('channel.json')]
+        
+        # If we have a messages root path, use it for more precise filtering
+        if messages_root:
+            channel_json_files = [file_name for file_name in namelist if file_name.startswith(f'{messages_root}/') and file_name.endswith('channel.json')]
+        else:
+            # Fallback to checking any potential messages folders
+            channel_json_files = [file_name for file_name in namelist if (file_name.startswith('Messages/') or file_name.startswith('messages/')) and file_name.endswith('channel.json')]
+        
         print(f'Found {len(channel_json_files)} channel files')
         for channel_json_file in channel_json_files:
             read_time_start = time.time()
@@ -415,14 +490,28 @@ def read_analytics_file(package_status_id, package_id, link, session):
             channel_json = orjson.loads(channel_content.read())
             read_time_diff = time.time() - read_time_start
             read_json_times.append(read_time_diff)
-            channel_id = re.match(r'(?:Messages|messages)\/c?([0-9]{16,32})\/', channel_json_file).group(1)
-            # new package includes 'c' before the channel id
-            is_new_package = channel_json_file.startswith('Messages/c') or channel_json_file.startswith('messages/c')
-            read_time_start = time.time()
-            messages_folder = 'Messages' if channel_json_file.startswith('Messages/') else 'messages'
-            ch_msgs_file_name = f'{messages_folder}/{"c" if is_new_package else ""}{channel_id}/messages.json'
+            
+            # Extract channel ID with a more flexible regex pattern that handles any path structure
+            channel_id_match = re.search(r'/c?([0-9]{16,32})/', channel_json_file)
+            if not channel_id_match:
+                continue
+                
+            channel_id = channel_id_match.group(1)
+            
+            # Determine if 'c' prefix is used before channel IDs
+            channel_path_parts = channel_json_file.split('/')
+            channel_dir = channel_path_parts[-2]  # Get the directory containing channel.json
+            is_new_package = channel_dir.startswith('c')
+            
+            # Get the path up to the numbered directory
+            base_path = '/'.join(channel_path_parts[:-2])
+            
+            # Construct message file path based on the channel file path structure
+            ch_msgs_file_name = f'{base_path}/{"c" if is_new_package else ""}{channel_id}/messages.json'
             if ch_msgs_file_name not in namelist:
                 continue
+                
+            read_time_start = time.time()
             message_content = zip.open(ch_msgs_file_name)
             read_time_diff = time.time() - read_time_start
             read_channel_times.append(read_time_diff)
