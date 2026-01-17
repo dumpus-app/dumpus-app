@@ -24,6 +24,10 @@ export const migrateConfig = (persistedState: unknown, version: number) => {
     }[config.timeRange];
     version++;
   }
+  if (version === 3) {
+    // Do nothing, adds an optional field
+    version++;
+  }
 
   return persistedState as any;
 };
