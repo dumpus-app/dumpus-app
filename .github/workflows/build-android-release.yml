@@ -27,16 +27,7 @@ jobs:
       - uses: jongwooo/next-cache@v1
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v2
-        with:
-          api-level: 32
-          script: |
-            sdkmanager "build-tools;32.0.0"
-            echo "Build Tools installed"
-            export PATH=$PATH:$ANDROID_HOME/build-tools/32.0.0/
-
-      - name: Add build-tools to PATH
-        run: echo "$ANDROID_HOME/build-tools/32.0.0/" >> $GITHUB_PATH
+        uses: android-actions/setup-android@v3
 
       - name: Decode and set up Android Keystore
         run: echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 --decode > ${{ runner.temp }}/keystore.jks
@@ -63,6 +54,25 @@ jobs:
           ANDROID_KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
           ANDROID_RELEASE_TYPE: AAB
 
+      - name: Upload AAB Release Asset
+        id: upload-aab-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
+          asset_name: app-release-signed.aab
+          asset_content_type: application/vnd.android.package-archive
+        if: github.event_name == 'release'
+
+      - name: Archive AAB as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-signed.aab
+          path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
+        if: github.event_name != 'release'
+
       - name: Build Android App (APK)
         run: pnpm run script:build-android
         env:
@@ -78,33 +88,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./android/app/build/outputs/apk/release/app-release-apksigner-signed.apk
-          asset_name: app-release-apksigner-signed.apk
-          asset_content_type: application/vnd.android.package-archive
-        if: github.event_name == 'release'
-
-      - name: Upload AAB Release Asset
-        id: upload-aab-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
-          asset_name: app-release-signed.aab
+          asset_path: ./android/app/build/outputs/apk/release/app-release-signed.apk
+          asset_name: app-release-signed.apk
           asset_content_type: application/vnd.android.package-archive
         if: github.event_name == 'release'
 
       - name: Archive APK as workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app-release-apksigner-signed.apk
-          path: ./android/app/build/outputs/apk/release/app-release-apksigner-signed.apk
-        if: github.event_name != 'release'
-
-      - name: Archive AAB as workflow artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-signed.aab
-          path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
+          name: app-release-signed.apk
+          path: ./android/app/build/outputs/apk/release/app-release-signed.apk
         if: github.event_name != 'release'
