@@ -1,4 +1,4 @@
-name: ChatGPT Workflow
+name: SQLite docs auto-generate
 
 on:
   push:
@@ -9,59 +9,73 @@ on:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    # Only regenerate docs when the commit asks for it explicitly, or when the
+    # workflow is triggered manually. Otherwise the job is skipped (gray, not red).
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '--rebuild-docs') }}
 
     steps:
-      - name: Check for rebuild-docs
-        run: |
-          echo "Commit message: '${{ steps.commit.outputs.message }}'"
-          if [[ "${{ steps.commit.outputs.message }}" == *"--rebuild-docs"* ]]; then
-            echo "Commit message contains --rebuild-docs. Continue to next step."
-          else
-            echo "Commit message does not contain --rebuild-docs. Skipping subsequent steps."
-            exit 78
-        shell: bash
-        continue-on-error: true
-
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.11'
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install openai
+          pip install 'openai>=1.0,<2'
 
-      - name: Read tasks.py and Generate README
-        run: |
-          python -c "
-          import openai
-          import os
-          # Read content
-          with open('src/tasks.py', 'r') as file:
-              lines = file.readlines()
-          start_line = next(i for i, line in enumerate(lines, start=1) if '# auto-generated SQLite documentation starts here' in line)
-          content = ''.join(lines[start_line-1:])
-
-          # Call to ChatGPT
-          openai.api_key = os.getenv('OPENAI_API_KEY')
-          prompt = content
-          response = openai.ChatCompletion.create(model='gpt-4', messages=[{'role': 'user', 'content': f'{prompt}\nGenerate a documentation markdown table for each table of the SQLite database (including package_data). For example:\n\n**activity table**\n|Column|Description\n|event_name|One sentence to explain to the developers what kind of data they will find here. If the code provided allows you to provide an example of data format or value that is great, but do not invent anything.|same for this column|etc.\n\n**Table 2**\n|Column|Description|...\n\netc.'}])
-          readme_content = response.choices[0].message.content.strip()
-
-          # Write to db_doc.md
-          with open('docs/sqlite_database_structure.md', 'w') as file:
-              readme_content = 'Note: this documentation was generated automatically from the tasks.py code using an AI. Although we are confident in the reliability of the data displayed here, errors may occur.\n\n\n' + readme_content 
-              file.write(readme_content)
-          "
+      - name: Generate SQLite docs
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          python <<'PY'
+          from openai import OpenAI
+
+          with open('src/tasks.py', 'r') as f:
+              lines = f.readlines()
+          start_line = next(
+              i for i, line in enumerate(lines, start=1)
+              if '# auto-generated SQLite documentation starts here' in line
+          )
+          content = ''.join(lines[start_line - 1:])
+
+          client = OpenAI()
+          response = client.chat.completions.create(
+              model='gpt-4o-mini',
+              messages=[{
+                  'role': 'user',
+                  'content': (
+                      f'{content}\n'
+                      'Generate a documentation markdown table for each table of the '
+                      'SQLite database (including package_data). For example:\n\n'
+                      '**activity table**\n'
+                      '|Column|Description\n'
+                      '|event_name|One sentence to explain to the developers what kind '
+                      'of data they will find here. If the code provided allows you to '
+                      'provide an example of data format or value that is great, but do '
+                      'not invent anything.|same for this column|etc.\n\n'
+                      '**Table 2**\n'
+                      '|Column|Description|...\n\n'
+                      'etc.'
+                  )
+              }],
+          )
+          readme_content = response.choices[0].message.content.strip()
+
+          header = (
+              'Note: this documentation was generated automatically from the tasks.py '
+              'code using an AI. Although we are confident in the reliability of the '
+              'data displayed here, errors may occur.\n\n\n'
+          )
+          with open('docs/sqlite_database_structure.md', 'w') as f:
+              f.write(header + readme_content)
+          PY
 
       - name: Commit and Push
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v9
         with:
           message: 'Update sqlite_database_structure.md'
           add: 'docs/sqlite_database_structure.md'
