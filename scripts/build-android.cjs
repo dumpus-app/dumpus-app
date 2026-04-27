@@ -45,7 +45,11 @@ npmProcess.stderr.on("data", (data) => {
 npmProcess.on("close", (code) => {
   console.log(`child process exited with code ${code}`);
 
-  if (code === 0 && androidReleaseType === "APK") {
+  if (code !== 0) {
+    process.exit(code);
+  }
+
+  if (androidReleaseType === "APK") {
     const signProcess = exec(signCommand);
     signProcess.stdout.on("data", (data) => {
       console.log(`stdout: ${data}`);
@@ -55,6 +59,9 @@ npmProcess.on("close", (code) => {
     });
     signProcess.on("close", (code) => {
       console.log(`child process exited with code ${code}`);
+      if (code !== 0) {
+        process.exit(code);
+      }
     });
   }
 });
