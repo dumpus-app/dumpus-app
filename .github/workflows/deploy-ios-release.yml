@@ -84,7 +84,6 @@ jobs:
           bundle exec fastlane prod --verbose
         env:
           FASTLANE_VERBOSE: "1"
-          SPACESHIP_DEBUG: "1"
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
           FASTLANE_USER: ${{ secrets.FASTLANE_USER }}
