@@ -19,7 +19,7 @@ services:
 
   db:
     container_name: dumpus-db
-    image: postgres:latest
+    image: postgres:17-alpine
     ports:
       - "${POSTGRES_PORT}:5432"
 

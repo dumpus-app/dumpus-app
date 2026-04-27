@@ -58,35 +58,37 @@ def ts_included_in_range (ts, start_date, end_date):
     else:
         return start_date <= ts <= end_date
 
-def get_ts_string_parser(line):
-    year, month, day = int(line[1:5]), int(line[6:8]), int(line[9:11])
-    hour, minute = int(line[12:14]), int(line[15:17])
+def get_ts_string_parser(line, start_offset=1):
+    """
+    Parse a timestamp string in format YYYY-MM-DDTHH:MM or similar
+    Use start_offset to skip the leading quote if present
+    """
+    year, month, day = int(line[start_offset:start_offset+4]), int(line[start_offset+5:start_offset+7]), int(line[start_offset+8:start_offset+10])
+    hour, minute = int(line[start_offset+11:start_offset+13]), int(line[start_offset+14:start_offset+16])
 
     return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
 
 def get_ts_regular_string_parser(line):
-    year, month, day = int(line[0:4]), int(line[5:7]), int(line[8:10])
-    hour, minute = int(line[11:13]), int(line[14:16])
+    """Parse timestamp string starting at index 0 (no leading quote)"""
+    return get_ts_string_parser(line, start_offset=0)
 
-    return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+def _count_dates(timestamps, period='H'):
+    """
+    Count timestamp occurrences grouped by time period
+    Use period to group by hour or day
+    """
+    timestamps_series = pd.Series(timestamps)
+    if pd.api.types.is_numeric_dtype(timestamps_series):
+        timestamps_period = pd.to_datetime(timestamps_series, unit='s').dt.floor(period)
+    else:
+        timestamps_period = pd.to_datetime(timestamps_series).dt.floor(period)
+    return timestamps_period.value_counts().to_dict()
 
 def count_dates_hours(timestamps):
-    # Convert list of timestamps to a pandas Series
-    timestamps_series = pd.Series(timestamps)
-    # Convert timestamps to datetime and floor to nearest hour
-    timestamps_hour = pd.to_datetime(timestamps_series).dt.floor('H')
-    # Count occurrences of each unique hour
-    date_hour_counts = timestamps_hour.value_counts().to_dict()
-    return date_hour_counts
+    return _count_dates(timestamps, period='H')
 
 def count_dates_day(timestamps):
-    # Convert list of timestamps to a pandas Series
-    timestamps_series = pd.Series(timestamps)
-    # Convert timestamps to datetime and floor to nearest hour
-    timestamps_day = pd.to_datetime(timestamps_series, unit='s').dt.floor('D')
-    # Count occurrences of each unique hour
-    date_hour_counts = timestamps_day.value_counts().to_dict()
-    return date_hour_counts
+    return _count_dates(timestamps, period='D')
 
 current_jwt = None
 def generate_diswho_jwt():
