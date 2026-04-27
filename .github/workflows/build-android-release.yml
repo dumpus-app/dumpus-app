@@ -96,14 +96,14 @@ jobs:
         if: github.event_name == 'release'
 
       - name: Archive APK as workflow artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: app-release-apksigner-signed.apk
           path: ./android/app/build/outputs/apk/release/app-release-apksigner-signed.apk
         if: github.event_name != 'release'
 
       - name: Archive AAB as workflow artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: app-release-signed.aab
           path: ./android/app/build/outputs/bundle/release/app-release-signed.aab
