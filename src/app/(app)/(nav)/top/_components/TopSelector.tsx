@@ -56,8 +56,8 @@ export default function TopSelector({
         desktop
           ? "border-b-transparent"
           : scrolled
-          ? "border-b-gray-800"
-          : "border-b-transparent",
+            ? "border-b-gray-800"
+            : "border-b-transparent",
       )}
     >
       <div className="flex items-center space-x-1 px-1 py-1 sm:space-x-0 sm:p-0 md:space-x-1">

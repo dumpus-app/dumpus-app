@@ -16,8 +16,9 @@ function localIpAddress() {
       return iface;
     })
     .flat();
-  const ipAddress = aliases.find((alias) => !alias.address.startsWith("172"))
-    ?.address;
+  const ipAddress = aliases.find(
+    (alias) => !alias.address.startsWith("172"),
+  )?.address;
 
   if (!ipAddress) {
     throw new Error("No suitable network interface found.");

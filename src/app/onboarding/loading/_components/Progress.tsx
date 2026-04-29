@@ -49,10 +49,10 @@ export default function Progress({
           const status = hasError
             ? "error"
             : currentStep < i
-            ? "inactive"
-            : currentStep === i
-            ? "current"
-            : "active";
+              ? "inactive"
+              : currentStep === i
+                ? "current"
+                : "active";
 
           return (
             <div key={i} className="flex items-center space-x-2">

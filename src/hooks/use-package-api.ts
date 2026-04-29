@@ -83,8 +83,8 @@ export default function usePackageAPI({
       response.status === 401
         ? { data: null, errorMessageCode: "UNAUTHORIZED" }
         : response.status === 404
-        ? { data: null, errorMessageCode: "UNKNOWN_PACKAGE_ID" }
-        : { data: await response.arrayBuffer(), errorMessageCode: null };
+          ? { data: null, errorMessageCode: "UNKNOWN_PACKAGE_ID" }
+          : { data: await response.arrayBuffer(), errorMessageCode: null };
 
     return data;
   }
@@ -129,12 +129,12 @@ export default function usePackageAPI({
       response.status === 401
         ? { errorMessageCode: "UNAUTHORIZED" }
         : response.status === 404
-        ? { errorMessageCode: "UNKNOWN_USER_ID" }
-        : response.status === 429
-        ? { errorMessageCode: "RATE_LIMITED" }
-        : response.status === 500
-        ? { errorMessageCode: "FETCH_ERROR" }
-        : { ...(await response.json()), errorMessageCode: null };
+          ? { errorMessageCode: "UNKNOWN_USER_ID" }
+          : response.status === 429
+            ? { errorMessageCode: "RATE_LIMITED" }
+            : response.status === 500
+              ? { errorMessageCode: "FETCH_ERROR" }
+              : { ...(await response.json()), errorMessageCode: null };
 
     return data;
   }

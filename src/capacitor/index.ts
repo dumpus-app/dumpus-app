@@ -51,9 +51,8 @@ export async function initCapacitor({ router }: { router: AppRouterInstance }) {
   await handleSafeArea();
 
   const { StatusBar, Style } = await import("@capacitor/status-bar");
-  const { NavigationBar } = await import(
-    "@hugotomazi/capacitor-navigation-bar"
-  );
+  const { NavigationBar } =
+    await import("@hugotomazi/capacitor-navigation-bar");
 
   // TODO: fix in #50
   // App.addListener("backButton", ({ canGoBack }) => {
