@@ -15,6 +15,13 @@ permissions:
   id-token: write # OIDC
   contents: read
 
+# Serialize deploys: a queued one waits for the running one to finish.
+# Without this, two pushes in quick succession can race and leave
+# the bucket with one build's HTML and another's chunks.
+concurrency:
+  group: deploy-web
+  cancel-in-progress: false
+
 env:
   AWS_REGION: eu-west-1
   SITE_BUCKET: dumpus-web-site-prod
