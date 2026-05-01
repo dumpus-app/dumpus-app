@@ -237,7 +237,13 @@ def read_analytics_file(package_status_id, package_id, link, session):
             with zip.open(payments_path) as f:
                 payment_records = orjson.loads(f.read()).get('records', [])
 
+        # Only count successful payments. Discord's Payment.status enum:
+        # 1 = SUCCESSFUL, 2 = FAILED, 3 = REFUNDED, 4 = REFUND_PENDING,
+        # 5 = PARTIALLY_REFUNDED, 6 = PENDING. Without this filter, failed
+        # and refunded charges inflate the "spent on Nitro" total.
         for payment in payment_records:
+            if payment.get('status') != 1:
+                continue
             payments.append({
                 'id': payment['id'],
                 'amount': payment['amount'],
