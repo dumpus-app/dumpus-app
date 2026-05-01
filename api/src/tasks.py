@@ -919,7 +919,10 @@ def process_package(package_status_id, package_id, link, worker_name='regular_pr
     worker Lambda in production. worker_name lets premium-only work skip the
     regular-process path; we only run regular_process today.
     """
-    print(f'handling package {package_id} with link {link}')
+    # Don't log the link itself: it ends with ?upn=<UPN>, which is the
+    # AES key for that user's encrypted blob. Logging it would put the
+    # decryption key in CloudWatch.
+    print(f'handling package {package_id}')
     session = Session()
     package_status = session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).first()
     if not package_status:
