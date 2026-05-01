@@ -50,6 +50,14 @@ data "aws_iam_policy_document" "api" {
     actions   = ["s3:GetObject"]
     resources = ["${aws_s3_bucket.package_data.arn}/*"]
   }
+
+  # ListBucket is scoped to the bucket itself (not the keys) — needed so
+  # head_object returns 404 instead of 403 on missing keys.
+  statement {
+    sid       = "ListPackageBlobs"
+    actions   = ["s3:ListBucket"]
+    resources = [aws_s3_bucket.package_data.arn]
+  }
 }
 
 resource "aws_iam_role_policy" "api" {
