@@ -25,19 +25,24 @@ def _key(package_id: str) -> str:
 
 
 def _client():
-    """boto3 S3 client pinned to the function's region with sigv4.
-
-    Without these, boto3 generates URLs like `bucket.s3.amazonaws.com`
-    which 308-redirect to the regional endpoint for non-us-east-1 buckets.
-    Browsers treat the redirect as cross-origin and CORS-block the response.
-    """
+    """boto3 S3 client pinned to a regional endpoint with sigv4 + virtual
+    addressing — so presigned URLs come out as
+    `bucket.s3.<region>.amazonaws.com/...` directly. Without all three,
+    boto3 emits the legacy global `bucket.s3.amazonaws.com` URL, which
+    S3 308-redirects to the regional endpoint, and browsers CORS-block
+    the redirect."""
     import boto3
     from botocore.config import Config
 
+    region = os.environ.get("AWS_REGION", "eu-west-1")
     return boto3.client(
         "s3",
-        region_name=os.environ.get("AWS_REGION", "eu-west-1"),
-        config=Config(signature_version="s3v4"),
+        region_name=region,
+        endpoint_url=f"https://s3.{region}.amazonaws.com",
+        config=Config(
+            signature_version="s3v4",
+            s3={"addressing_style": "virtual"},
+        ),
     )
 
 
