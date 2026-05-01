@@ -6,7 +6,7 @@ from flask_cors import CORS
 from flask_limiter import Limiter
 
 # Import tasks before db so dotenv loads before SQLAlchemy reads POSTGRES_URL.
-import tasks  # noqa: F401
+import tasks
 from enqueue import enqueue_package
 from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_rank
 
@@ -211,10 +211,6 @@ def get_package_blob(package_id):
     import os
     import blob_storage
     from db import SavedPackageData
-
-    if not blob_storage.is_enabled():
-        # /blob requires S3. Local dev should use /data.
-        return jsonify({'errorMessageCode': 'S3_NOT_CONFIGURED'}), 501
 
     ttl = int(os.getenv('PACKAGE_DATA_PRESIGNED_URL_TTL_SECONDS', '300'))
 

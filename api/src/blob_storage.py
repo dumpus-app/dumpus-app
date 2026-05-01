@@ -5,8 +5,7 @@ package). The API generates short presigned GET URLs so clients can
 download directly from S3 — bypassing API Gateway, which is slow and
 6MB-capped for binary responses.
 
-No-op when PACKAGE_DATA_BUCKET is unset (local dev): callers fall back
-to the legacy DB-backed path.
+PACKAGE_DATA_BUCKET must be set; the /blob endpoint requires S3.
 """
 import os
 
@@ -14,9 +13,6 @@ import os
 def _bucket():
     return os.getenv("PACKAGE_DATA_BUCKET")
 
-
-def is_enabled() -> bool:
-    return bool(_bucket())
 
 
 def _key(package_id: str) -> str:
