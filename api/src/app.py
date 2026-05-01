@@ -5,9 +5,9 @@ from flask_cors import CORS
 
 from flask_limiter import Limiter
 
-# make sure tasks is imported before db
-# as env is loaded from tasks (so the celery worker can use it)
-from tasks import handle_package
+# Import tasks before db so dotenv loads before SQLAlchemy reads POSTGRES_URL.
+import tasks  # noqa: F401
+from enqueue import enqueue_package
 from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_data, fetch_package_rank
 
 from sqlite import generate_demo_database
@@ -148,8 +148,7 @@ def process_link():
 
     session.close()
 
-    handle_package.apply_async(
-        args=[id, package_id, link], queue='regular_process')
+    enqueue_package(id, package_id, link)
 
     return jsonify(res), 200
 

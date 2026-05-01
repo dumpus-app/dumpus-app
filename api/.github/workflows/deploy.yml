@@ -1,0 +1,102 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "infra/**"
+      - "**.md"
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Override image tag (defaults to git sha)"
+        required: false
+
+permissions:
+  id-token: write   # GitHub OIDC
+  contents: read
+
+env:
+  AWS_REGION: eu-west-1
+  ECR_REPO: dumpus-prod-lambda
+  API_FUNCTION: dumpus-prod-api
+  WORKER_FUNCTION: dumpus-prod-worker
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Resolve image tag
+        id: meta
+        run: |
+          if [ -n "${{ inputs.image_tag }}" ]; then
+            tag="${{ inputs.image_tag }}"
+          else
+            tag="${GITHUB_SHA::12}"
+          fi
+          echo "image_tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to ECR
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Build & push Lambda image
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile.lambda
+          push: true
+          # Lambda only runs amd64 unless the function is configured for arm64.
+          # Keep amd64 unless we explicitly switch the function architecture.
+          platforms: linux/amd64
+          provenance: false
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:${{ steps.meta.outputs.image_tag }}
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:latest
+          cache-from: type=gha,scope=lambda
+          cache-to: type=gha,scope=lambda,mode=max
+
+      - name: Update Lambda functions
+        env:
+          IMAGE_URI: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:${{ steps.meta.outputs.image_tag }}
+        run: |
+          set -euo pipefail
+          for fn in "${API_FUNCTION}" "${WORKER_FUNCTION}"; do
+            echo "::group::Updating $fn"
+            aws lambda update-function-code \
+              --function-name "$fn" \
+              --image-uri "$IMAGE_URI" \
+              --publish \
+              > /dev/null
+            aws lambda wait function-updated --function-name "$fn"
+            echo "::endgroup::"
+          done
+
+      - name: Smoke test API
+        run: |
+          set -euo pipefail
+          for i in 1 2 3 4 5; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" https://api.dumpus.app/health || echo "000")
+            if [ "$code" = "200" ]; then
+              echo "API healthy"
+              exit 0
+            fi
+            echo "attempt $i: $code, retrying..."
+            sleep 5
+          done
+          echo "API never returned 200" >&2
+          exit 1

@@ -1,22 +1,4 @@
 services:
-  broker:
-    container_name: dumpus-broker
-    image: rabbitmq:latest
-    ports:
-      - "${RABBITMQ_PORT}:5672"
-
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "--quiet", "ping"]
-      timeout: 10s
-      retries: 5
-      start_period: 10s
-
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
-
-    restart: on-failure
-
   db:
     container_name: dumpus-db
     image: postgres:17-alpine
@@ -38,35 +20,6 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
 
-  worker:
-    container_name: dumpus-worker
-    build:
-      dockerfile: Dockerfile.worker
-
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "celery -A tasks inspect ping -d regular_process@$$HOSTNAME",
-        ]
-      interval: 2s
-      timeout: 10s
-      retries: 5
-
-    depends_on:
-      broker:
-        condition: service_healthy
-        restart: true
-      db:
-        condition: service_healthy
-        restart: true
-
-    environment:
-      POSTGRES_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASS}@db:5432/dumpus"
-      RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@broker:5672/"
-      CELERY_HOSTNAME: "${CELERY_HOSTNAME}"
-      CELERY_QUEUE: "${CELERY_QUEUE}"
-
   api:
     container_name: dumpus-api
     build:
@@ -75,26 +28,20 @@ services:
     ports:
       - "${API_PORT}:5000"
     depends_on:
-      worker:
+      db:
         condition: service_healthy
         restart: true
 
+    # Local dev runs the worker in-process: enqueue_package() calls process_package()
+    # synchronously. In production, the API Lambda enqueues to SQS instead.
     environment:
+      QUEUE_BACKEND: sync
       POSTGRES_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASS}@db:5432/dumpus"
-      RABBITMQ_URL: "amqp://${RABBITMQ_USER}:${RABBITMQ_PASS}@broker:5672/"
-
-  # flower:
-  #   container_name: flower
-  #   build:
-  #     dockerfile: Dockerfile.flower
-
-  #   ports:
-  #     - "5566:5566"
-
-  #   depends_on:
-  #     worker:
-  #       condition: service_healthy
-  #       restart: true
+      DL_ZIP_TMP_PATH: ${DL_ZIP_TMP_PATH}
+      DL_ZIP_WHITELISTED_DOMAINS: ${DL_ZIP_WHITELISTED_DOMAINS}
+      DISWHO_BASE_URL: ${DISWHO_BASE_URL}
+      DISWHO_JWT_SECRET: ${DISWHO_JWT_SECRET}
+      DISCORD_SECRET: ${DISCORD_SECRET}
 
 volumes:
   postgres-data:

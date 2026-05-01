@@ -1,8 +1,6 @@
 from dotenv import load_dotenv
 load_dotenv()
 
-from celery import Celery, current_task
-
 import traceback
 
 import pandas as pd
@@ -48,18 +46,15 @@ from util import (
 
 from wh import send_internal_notification
 
-from nltk.sentiment import SentimentIntensityAnalyzer
-sia = SentimentIntensityAnalyzer()
-
+# TODO: restore real sentiment scoring. Stubbed to a constant so we can
+# drop NLTK + the vader_lexicon download from the Lambda image while we
+# decide whether sentiment is worth the ~50MB of data and the cold-start
+# cost. Re-enable by reinstating SentimentIntensityAnalyzer here and the
+# nltk install step in Dockerfile.lambda.
 def count_sentiments(contents):
-    sentiments = []
-    for content in contents:
-        if not content:
-            continue
-        score = sia.polarity_scores(str(content))["compound"]
-        if score != 0:
-            sentiments.append(score)
-    return sum(sentiments) / len(sentiments) if len(sentiments) > 0 else 0
+    for _ in contents:
+        pass
+    return 0.5
 
 def find_user_root(zip_namelist):
     """
@@ -112,8 +107,6 @@ def find_analytics_file(zip_namelist):
     """
     # Look for any JSON file in a folder that could be analytics
     return next((name for name in zip_namelist if re.search(r'/analytics.*\.json$', name)), None)
-
-app = Celery(config_source='celeryconfig')
 
 def download_file(package_status_id, package_id, link, session):
     # check if file exists in tmp
@@ -905,25 +898,26 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     return analytics_line_count
 
-@app.task()
-def handle_package(package_status_id, package_id, link):
+def process_package(package_status_id, package_id, link, worker_name='regular_process'):
+    """Process a package end-to-end.
+
+    Invoked by enqueue_package(QUEUE_BACKEND=sync) for local dev and by the SQS
+    worker Lambda in production. worker_name lets premium-only work skip the
+    regular-process path; we only run regular_process today.
+    """
     print(f'handling package {package_id} with link {link}')
     session = Session()
     package_status = session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).first()
     if not package_status:
         print('package not found')
         return
-    
+
     if package_status.is_cancelled:
         print('package is cancelled, skipping')
         return
 
-    # regular_process or premium_process
-    worker_name = current_task.request.hostname
-
     if package_status.is_upgraded and worker_name.startswith('regular_process'):
         print('package is upgraded and worker is regular, skipping')
-        # the package has already been added to the premium worker queue
         return
 
     try:
@@ -956,3 +950,5 @@ def handle_package(package_status_id, package_id, link):
     finally:
         remove_file(package_id)
         session.close()
+
+

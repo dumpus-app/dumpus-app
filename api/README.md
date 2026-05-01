@@ -6,6 +6,7 @@ API to extract statistics from the Discord Data Packages (GDPR packages). This A
 
 * [Architecture Documentation](#architecture-documentation)
 * [Self-hosting](#self-hosting)
+* [Deploy to AWS](#deploy-to-aws)
 * [API Documentation](#api-documentation)
 * [Troubleshooting](#troubleshooting)
 
@@ -32,17 +33,58 @@ Thus:
 
 Anyone can host their own Dumpus instance. The official Dumpus client can then be configured to use it.
 
+The worker no longer runs as a separate Celery process — set `QUEUE_BACKEND=sync` and the API processes packages inline on the request thread (good enough at small volume), or set `QUEUE_BACKEND=sqs` to dispatch to AWS SQS (used by the Lambda deployment).
+
 * clone <https://github.com/dumpus-app/dumpus-api>
-* you can use Docker (easy way)
-* or you can install everything by yourself:
+* easy way: `cp .env.example .env`, fill it in, then `make up`
+* manual:
     - install requirements with pip
-    - start a RabbitMQ server (or redis)
     - start a PostgreSQL server
-    - fill the .env file with your Redis and PostgreSQL creds
-    - start the API using `waitress-serve --port=5000 app:app`
-    - start one worker using `celery --app tasks worker --loglevel=info --queues=regular_process --hostname=regular_process@%h --concurrency=1`
+    - fill the .env file with your PostgreSQL creds
+    - start the API: `QUEUE_BACKEND=sync waitress-serve --port=5000 app:app`
 
 By default, Dumpus API will only treat zip files sent from `https://discord.click`. You can specify a `DL_ZIP_WHITELISTED_DOMAINS` environment variable to add other allowed domains.
+
+## Deploy to AWS
+
+A Terraform stack under `infra/terraform/` provisions a serverless deployment of the API on AWS:
+
+| Component        | AWS service              |
+| ---------------- | ------------------------ |
+| API              | Lambda (container image) behind API Gateway HTTP API |
+| Worker           | Lambda triggered by SQS                              |
+| Database         | RDS Postgres in private subnets                      |
+| Outbound NAT     | fck-nat instance (NAT Gateway replacement)           |
+| Secrets          | Secrets Manager + Lambda env                         |
+| TLS / DNS        | ACM cert + Route53 alias to API Gateway              |
+| CI               | GitHub OIDC role; build → ECR → `update-function-code` |
+
+### Bootstrap
+
+1. Create a public Route53 hosted zone for your domain and point your registrar's nameservers at it.
+2. `cp infra/terraform/terraform.tfvars.example infra/terraform/terraform.tfvars` and fill in `discord_secret`, `domain_name`, `github_repository`, region, etc.
+3. `cd infra/terraform && terraform init && terraform apply`.
+   This single apply does everything: a `null_resource` pushes a placeholder image (the public AWS Lambda Python base) into ECR with the `:bootstrap` tag, then the Lambda functions are created against that placeholder. Requires `docker` and `aws` CLI on the apply host.
+4. Set the GitHub repo secret `AWS_DEPLOY_ROLE_ARN` from `terraform output -raw github_deploy_role_arn`. From here on, every push to `main` builds the real image in CI and rolls both Lambdas — no more local builds needed.
+
+### Day-to-day deploys
+
+Push to `main` → `.github/workflows/deploy.yml` builds the container, pushes to ECR tagged with the git SHA, and rolls both Lambdas via OIDC. No long-lived AWS keys in GitHub.
+
+### Operations
+
+```bash
+aws logs tail /aws/lambda/<name-prefix>-<env>-api --follow
+aws logs tail /aws/lambda/<name-prefix>-<env>-worker --follow
+aws sqs receive-message --queue-url "$(terraform output -raw sqs_dlq_url)"
+```
+
+Things to keep in mind:
+
+- **API cold start** is a few seconds while pandas imports. Invisible on the async submit/poll flow; use provisioned concurrency if a sync endpoint must be sub-second.
+- **Worker `/tmp` cap** defaults to 5GB (max 10GB). Bump `worker_ephemeral_storage_mb` if users upload very large Discord exports.
+- **Worker timeout** is 15 min (Lambda hard cap). Failures land in the DLQ after one retry.
+- **fck-nat is a single instance.** Switch to a managed NAT Gateway if you need the extra availability — at the cost of a much higher fixed monthly bill.
 
 ## API Documentation
 
@@ -167,12 +209,5 @@ Current error message codes:
 
 ## Troubleshooting
 
-* Server does not respond after `POST /process`. Try to remove this property from the celeryconfig.py file.
-```
-broker_use_ssl={
-    'ssl_cert_reqs': None
-}
-```
-
-* API server is crashing and say that Postgres is not supported.  
+* API server is crashing and says that Postgres is not supported.
 Make sure that your PostgreSQL server URL starts with **postgresql://** and not **postgres://**, which is no longer supported by SQLAlchemy.

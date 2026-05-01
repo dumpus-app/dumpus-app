@@ -1,0 +1,32 @@
+# Copy to terraform.tfvars and fill in. Do NOT commit terraform.tfvars.
+
+region      = "eu-west-1"
+environment = "prod"
+
+# Strongly recommended: pin the account ID so a stray AWS_PROFILE pointing
+# at the wrong account fails the plan instead of touching it. Get yours with
+# `aws sts get-caller-identity --query Account --output text`.
+# allowed_account_ids = ["123456789012"]
+
+# Must already exist as a Route53 hosted zone in this account.
+domain_name   = "dumpus.app"
+api_subdomain = "api"
+
+# Secrets — better passed as env: TF_VAR_diswho_jwt_secret=... tofu apply
+diswho_jwt_secret = ""
+wh_url            = ""
+diswho_base_url   = ""
+
+# Set to enable the GitHub Actions deploy role.
+github_repository = "Androz2091/dumpus-api"
+
+# Initial image tag the Lambdas point at. After the first apply, CI's
+# update-function-code calls take over and Terraform ignores image_uri
+# changes, so this only matters for the very first deploy.
+image_tag = "bootstrap"
+
+# Optional sizing overrides
+# worker_lambda_memory       = 3008
+# worker_ephemeral_storage_mb = 5120
+# worker_reserved_concurrency = 1
+# postgres_multi_az          = false

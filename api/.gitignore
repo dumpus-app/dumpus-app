@@ -11,6 +11,8 @@ node_test
 
 # Env
 .env
+.env.*
+!.env.example
 
 # Data
 scripts/res.txt
@@ -18,3 +20,6 @@ scripts/res.txt
 
 # JetBrains IDE
 .idea
+
+# Claude Code
+.claude/

@@ -1,0 +1,15 @@
+# Single image used by both Lambda functions (api + worker). The active
+# handler is selected per-function via the Lambda ImageConfig.Command.
+FROM public.ecr.aws/lambda/python:3.10
+
+WORKDIR ${LAMBDA_TASK_ROOT}
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Flat layout: src/* sits at the task root so existing top-level imports
+# (`from tasks import ...`) keep working.
+COPY src/ ${LAMBDA_TASK_ROOT}/
+
+# Default to the API handler. Override per function in Terraform/Lambda config.
+CMD [ "lambda_handlers.api.handler" ]
