@@ -25,8 +25,11 @@ resource "aws_secretsmanager_secret" "postgres_url" {
 
 resource "aws_secretsmanager_secret_version" "postgres_url" {
   secret_id = aws_secretsmanager_secret.postgres_url.id
+  # sslmode=require pairs with rds.force_ssl=1 in the parameter group:
+  # the client refuses plaintext, the server refuses plaintext, no
+  # gap between the two.
   secret_string = format(
-    "postgresql+psycopg2://%s:%s@%s:%d/%s",
+    "postgresql+psycopg2://%s:%s@%s:%d/%s?sslmode=require",
     var.postgres_username,
     random_password.postgres.result,
     aws_db_instance.main.address,
