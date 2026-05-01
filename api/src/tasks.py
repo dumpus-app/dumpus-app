@@ -913,9 +913,12 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     # Encrypted blob → S3 (clients fetch via presigned URL); only the iv
     # stays in Postgres so the API can hand it to the client for decryption.
+    # Store iv as hex — the column is a String, so writing raw bytes lets
+    # PostgreSQL serialize it as the BYTEA literal "\x..." which leaks
+    # straight to the client.
     import blob_storage
     blob_storage.upload(package_id, data)
-    session.add(SavedPackageData(package_id=package_id, iv=iv))
+    session.add(SavedPackageData(package_id=package_id, iv=iv.hex()))
     session.commit()
 
     print(f'SQLite serialization: {time.time() - start}')

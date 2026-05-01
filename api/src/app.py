@@ -238,13 +238,9 @@ def get_package_blob(package_id):
     if not row or not blob_storage.exists(package_id):
         return make_response('', 404)
 
-    iv_value = row.iv
-    if isinstance(iv_value, (bytes, bytearray)):
-        iv_value = iv_value.hex()
-
     return jsonify({
         'url': blob_storage.presigned_url(package_id, ttl_seconds=ttl),
-        'iv': iv_value,
+        'iv': row.iv,
         'ttl': ttl,
     }), 200
 
