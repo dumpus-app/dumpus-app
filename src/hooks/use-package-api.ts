@@ -2,12 +2,14 @@
 
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import type {
+  PackageAPIBlobResponse,
   PackageAPIDataResponse,
   PackageAPIProcessResponse,
   PackageAPIRemoveResponse,
   PackageAPIStatusResponse,
   PackageAPIUserResponse,
 } from "~/types/package-api";
+import { decryptPackageBlob } from "~/utils/crypto";
 
 export default function usePackageAPI({
   baseURL = DEFAULT_PACKAGE_API_URL,
@@ -69,24 +71,45 @@ export default function usePackageAPI({
   }: {
     packageID: string;
     UPNKey: string;
-  }) {
-    const response = await api({
-      path: `/process/${packageID}/data`,
+  }): Promise<PackageAPIDataResponse> {
+    // /blob returns a presigned S3 URL the client downloads directly,
+    // bypassing the API Gateway slow path. The blob is encrypted; we
+    // decrypt here using the UPN so the key never reaches the server.
+    // Demo packages are unencrypted (iv=null).
+    const blobResponse = await api({
+      path: `/process/${packageID}/blob`,
       method: "GET",
       headers: {
-        Accept: "text/plain",
+        Accept: "application/json",
         Authorization: `Bearer ${UPNKey}`,
       },
     });
 
-    const data: PackageAPIDataResponse =
-      response.status === 401
-        ? { data: null, errorMessageCode: "UNAUTHORIZED" }
-        : response.status === 404
-        ? { data: null, errorMessageCode: "UNKNOWN_PACKAGE_ID" }
-        : { data: await response.arrayBuffer(), errorMessageCode: null };
+    if (blobResponse.status === 401) {
+      return { data: null, errorMessageCode: "UNAUTHORIZED" };
+    }
+    if (blobResponse.status === 404) {
+      return { data: null, errorMessageCode: "UNKNOWN_PACKAGE_ID" };
+    }
+    if (!blobResponse.ok) {
+      throw new Error(`/blob ${packageID} failed: HTTP ${blobResponse.status}`);
+    }
 
-    return data;
+    const { url, iv } = (await blobResponse.json()) as PackageAPIBlobResponse;
+
+    const objectResponse = await fetch(url);
+    if (!objectResponse.ok) {
+      throw new Error(
+        `presigned download for ${packageID} failed: HTTP ${objectResponse.status}`,
+      );
+    }
+    const downloaded = await objectResponse.arrayBuffer();
+
+    const decrypted = iv
+      ? await decryptPackageBlob(downloaded, iv, UPNKey)
+      : downloaded;
+
+    return { data: decrypted, errorMessageCode: null };
   }
 
   async function remove({
