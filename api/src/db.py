@@ -1,8 +1,7 @@
-from crypto import decrypt_sqlite_data
 import os
 
 from datetime import datetime
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, LargeBinary, Boolean
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func, text
 
@@ -15,7 +14,6 @@ class SavedPackageData(Base):
 
     id = Column(Integer, primary_key=True)
     package_id = Column(String(255), nullable=False)
-    encrypted_data = Column(LargeBinary(), nullable=False)
     iv = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
@@ -40,6 +38,12 @@ class PackageProcessStatus(Base):
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
 
 Base.metadata.create_all(engine)
+
+# One-shot migration: drop the legacy encrypted_data blob column on the
+# saved_package_data table. Encrypted bytes live in S3 now; only iv stays
+# in the DB. IF EXISTS makes this idempotent across cold starts.
+with engine.begin() as conn:
+    conn.execute(text("ALTER TABLE saved_package_data DROP COLUMN IF EXISTS encrypted_data;"))
 
 Session = sessionmaker(bind=engine)
 
@@ -88,16 +92,6 @@ def fetch_package_rank (package_id, package_status, session):
 def fetch_package_status(package_id, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
     return status
-
-def fetch_package_data(package_id, auth_upn, session):
-    result = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(SavedPackageData.created_at.desc()).first()
-    if result:
-        if package_id == 'demo':
-            return result.encrypted_data
-        encrypted_data = result.encrypted_data
-        iv = result.iv
-        sqlite_buffer = decrypt_sqlite_data(encrypted_data, iv, auth_upn)
-        return sqlite_buffer
 
 def fetch_pending_packages():
     session = Session()

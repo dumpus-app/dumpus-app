@@ -160,14 +160,33 @@ Available steps:
 
 ### Fetch a package data
 
-* `GET /process/<package_id>/data`
+* `GET /process/<package_id>/blob`
 
-Response: the Discord Data Package SQLite database (GZIP of the binary SQLite file), decrypted.
+Returns a short-lived presigned S3 URL the client downloads the encrypted
+SQLite from directly. Decryption happens client-side using the UPN as the
+key, so the encryption key never reaches the server.
+
+Response:
+```json
+{
+    "url": "https://<bucket>.s3.<region>.amazonaws.com/...",
+    "iv": "abc123...",
+    "ttl": 300
+}
+```
+
+`iv` is a hex string for real packages, `null` for the demo (the demo blob
+is unencrypted). Decrypt with `AES-CBC` using `SHA-256(UPN)` as the key
+and the returned IV; the plaintext is a gzipped SQLite file.
 
 Status codes:
-* `200`: the data is available and has been returned.
+* `200`: presigned URL returned.
 * `401`: the UPN KEY provided in the Authorization header is not valid.
-* `404`: unknown package ID.
+* `404`: no blob for this package id.
+* `501`: server doesn't have the S3 backend wired up.
+
+Demo (`/process/demo/blob`) is unauthenticated and lazy-seeds the blob on
+the first call after deploy.
 
 ### Fetch a package user
 

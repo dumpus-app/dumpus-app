@@ -27,22 +27,3 @@ def encrypt_sqlite_data(sqlite_buffer, auth_upn):
 
     return (encrypted_data, iv)
 
-def decrypt_sqlite_data(encrypted_data, iv, auth_upn):
-
-    fixed_size_upn = hashlib.sha256(auth_upn.encode()).digest()
-
-    if not isinstance(iv, bytes):
-        iv = bytes.fromhex(iv[2:])
-
-    # Prepare the decryptor
-    cipher = Cipher(algorithms.AES(fixed_size_upn), modes.CBC(iv), backend=default_backend())
-    decryptor = cipher.decryptor()
-
-    # Decrypt the data
-    decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
-
-    # Remove the padding
-    unpadder = padding.PKCS7(128).unpadder()
-    unpadded_data = unpadder.update(decrypted_data) + unpadder.finalize()
-
-    return unpadded_data

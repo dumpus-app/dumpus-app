@@ -1,6 +1,6 @@
 import socket
 
-from flask import Flask, jsonify, request, Response, make_response
+from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 
 from flask_limiter import Limiter
@@ -8,7 +8,7 @@ from flask_limiter import Limiter
 # Import tasks before db so dotenv loads before SQLAlchemy reads POSTGRES_URL.
 import tasks  # noqa: F401
 from enqueue import enqueue_package
-from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_data, fetch_package_rank
+from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_rank
 
 from sqlite import generate_demo_database
 
@@ -195,44 +195,6 @@ def get_package_status(package_id):
     return jsonify(res), 200
 
 
-@app.route('/process/<package_id>/data', methods=['GET'])
-def get_package_data(package_id):
-
-    if package_id == 'demo':
-        session = Session()
-        data = fetch_package_data('demo', 'demo', session)
-        if not data:
-            binary_data = generate_demo_database()
-            session.add(SavedPackageData(package_id='demo', encrypted_data=binary_data, iv='demo'))
-            session.commit()
-            data = binary_data
-        session.close()
-        return Response(data, mimetype='application/octet-stream')
-
-    (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
-    if not is_auth:
-        return make_response('', 401)
-
-    session = Session()
-    data = fetch_package_data(package_id, auth_upn, session)
-    session.close()
-
-    if not data:
-        return make_response('', 404)
-
-    send_internal_notification({
-        'embeds': [
-            {
-                'title': 'Fetching existing package data',
-                'description': f'Package ID: {package_id}',
-                'color': 0xaea4e0
-            }
-        ]
-    })
-    
-    return Response(data, mimetype='application/octet-stream')
-
-
 @app.route('/process/<package_id>/blob', methods=['GET'])
 def get_package_blob(package_id):
     """Return a presigned S3 URL the client can fetch the package blob from.
@@ -367,11 +329,3 @@ def page_not_found(e):
 @app.errorhandler(500)
 def internal_server_error(e):
     return jsonify({'error': 'Internal server error.'}), 500
-
-def rm_demo():
-    session = Session()
-    session.query(SavedPackageData).filter(SavedPackageData.package_id == 'demo').delete()
-    session.commit()
-    session.close()
-
-rm_demo()
