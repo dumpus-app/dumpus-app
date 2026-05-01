@@ -57,6 +57,8 @@ def exists(package_id: str) -> bool:
         boto3.client("s3").head_object(Bucket=_bucket(), Key=_key(package_id))
         return True
     except ClientError as e:
-        if e.response.get("Error", {}).get("Code") in ("404", "NoSuchKey", "NotFound"):
+        # boto3 reports object-not-found in several flavors depending on the
+        # SDK version; check the HTTP status, which is always 404.
+        if e.response.get("ResponseMetadata", {}).get("HTTPStatusCode") == 404:
             return False
         raise
