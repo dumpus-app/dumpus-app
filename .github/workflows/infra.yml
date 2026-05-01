@@ -1,0 +1,60 @@
+name: infra
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        type: choice
+        description: "What to do"
+        options: [plan, apply]
+        default: plan
+
+permissions:
+  contents: read
+
+jobs:
+  infra:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: infra/terraform
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up OpenTofu
+        uses: opentofu/setup-opentofu@v1
+        with:
+          tofu_version: 1.8.5
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          aws-access-key-id: ${{ secrets.BOOTSTRAP_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.BOOTSTRAP_AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: tofu init
+        run: tofu init
+
+      - name: tofu plan
+        if: inputs.action == 'plan'
+        run: tofu plan -var-file=terraform.ci.tfvars -no-color
+
+      - name: tofu apply
+        if: inputs.action == 'apply'
+        run: tofu apply -auto-approve -var-file=terraform.ci.tfvars
+
+      - name: Outputs
+        if: inputs.action == 'apply'
+        run: |
+          {
+            echo "## Terraform outputs"
+            echo
+            echo '```'
+            tofu output
+            echo '```'
+            echo
+            echo "**Next**: copy \`github_deploy_role_arn\` into \`AWS_DEPLOY_ROLE_ARN\` repo secret."
+          } >> "$GITHUB_STEP_SUMMARY"
