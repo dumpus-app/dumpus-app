@@ -307,8 +307,20 @@ def get_avatar(package_id, user_id):
             return make_response('', 500)
         
         avatar_hash = user.get('avatar')
-        avatar_extension = 'gif' if avatar_hash and avatar_hash.startswith('a_') else 'webp'
-        avatar_url = f'https://cdn.discordapp.com/avatars/{user_id}/{avatar_hash}.{avatar_extension}' if avatar_hash else None
+        if avatar_hash:
+            avatar_extension = 'gif' if avatar_hash.startswith('a_') else 'webp'
+            avatar_url = f'https://cdn.discordapp.com/avatars/{user_id}/{avatar_hash}.{avatar_extension}'
+        else:
+            # Discord's built-in default avatars. Legacy users have a
+            # discriminator (e.g. "1234") and pick from 5 defaults; new
+            # users have discriminator "0" and the index is derived from
+            # the snowflake.
+            discriminator = user.get('discriminator')
+            if discriminator and discriminator != '0':
+                index = int(discriminator) % 5
+            else:
+                index = (int(user_id) >> 22) % 6
+            avatar_url = f'https://cdn.discordapp.com/embed/avatars/{index}.png'
 
         return jsonify({
             'user_id': user_id,
