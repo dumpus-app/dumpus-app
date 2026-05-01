@@ -227,7 +227,17 @@ def read_analytics_file(package_status_id, package_id, link, session):
                 'avatar_url': generate_avatar_url_from_user_id_avatar_hash(relation_ship['id'], relation_ship['user']['avatar']),
                 'display_name': 'display_name' in relation_ship and relation_ship['display_name'] or None,
             })
-        for payment in user_json['payments']:
+        # Payments live at <user_root>/user_data_exports/discord_billing/payments.json
+        # in current Discord exports. Skip silently if the file isn't there
+        # (account never had any payment activity).
+        payment_records = []
+        user_root = user_path.rsplit('/', 1)[0]
+        payments_path = f'{user_root}/user_data_exports/discord_billing/payments.json'
+        if payments_path in zip.namelist():
+            with zip.open(payments_path) as f:
+                payment_records = orjson.loads(f.read()).get('records', [])
+
+        for payment in payment_records:
             payments.append({
                 'id': payment['id'],
                 'amount': payment['amount'],
@@ -928,13 +938,18 @@ def process_package(package_status_id, package_id, link, worker_name='regular_pr
         download_file(package_status_id, package_id, link, session)
         read_analytics_file(package_status_id, package_id, link, session)
     except Exception as e:
-        print(e)
+        # Always log the full trace to CloudWatch — print(e) alone gives just
+        # the exception message and no line numbers, which makes the failure
+        # impossible to debug from logs.
+        tb = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+        print(f'process_package failed for {package_id}:\n{tb}')
+
         expected = ('EXPIRED_LINK')
         current = str(e)
         e_traceback = None
         if expected not in current:
             current = 'UNKNOWN_ERROR'
-            e_traceback = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+            e_traceback = tb
         session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).update({
             'is_errored': True,
             'error_message_code': current,
