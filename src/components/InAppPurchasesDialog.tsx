@@ -132,8 +132,8 @@ export default function InAppPurchasesDialog() {
                   {loading
                     ? t("global.loading.title")
                     : supported && hasProducts
-                    ? t("premium.proceed")
-                    : t("premium.unavailable")}
+                      ? t("premium.proceed")
+                      : t("premium.unavailable")}
                 </Button>
                 <button
                   type="button"

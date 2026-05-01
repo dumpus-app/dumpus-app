@@ -10,15 +10,12 @@
  */
 
 function hexToBytes(hex: string): Uint8Array {
-  // Tolerate the legacy Postgres bytea format `\xABCD…` if it ever leaks
-  // through; new packages serialise to clean hex.
-  const clean = hex.startsWith("\\x") ? hex.slice(2) : hex;
-  if (clean.length % 2 !== 0) {
-    throw new Error(`invalid iv hex length: ${clean.length}`);
+  if (hex.length % 2 !== 0) {
+    throw new Error(`invalid iv hex length: ${hex.length}`);
   }
-  const out = new Uint8Array(clean.length / 2);
+  const out = new Uint8Array(hex.length / 2);
   for (let i = 0; i < out.length; i++) {
-    out[i] = parseInt(clean.slice(i * 2, i * 2 + 2), 16);
+    out[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
   }
   return out;
 }

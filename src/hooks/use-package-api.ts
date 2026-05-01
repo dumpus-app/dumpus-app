@@ -152,12 +152,12 @@ export default function usePackageAPI({
       response.status === 401
         ? { errorMessageCode: "UNAUTHORIZED" }
         : response.status === 404
-        ? { errorMessageCode: "UNKNOWN_USER_ID" }
-        : response.status === 429
-        ? { errorMessageCode: "RATE_LIMITED" }
-        : response.status === 500
-        ? { errorMessageCode: "FETCH_ERROR" }
-        : { ...(await response.json()), errorMessageCode: null };
+          ? { errorMessageCode: "UNKNOWN_USER_ID" }
+          : response.status === 429
+            ? { errorMessageCode: "RATE_LIMITED" }
+            : response.status === 500
+              ? { errorMessageCode: "FETCH_ERROR" }
+              : { ...(await response.json()), errorMessageCode: null };
 
     return data;
   }
