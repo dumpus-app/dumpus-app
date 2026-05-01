@@ -563,47 +563,67 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     '''
     Process voice channel logs to get a list of "events"
+
+    The original implementation was O(n*m + n*k) per channel: a linear scan of
+    all leaves to find the next leave per join, plus a linear scan of every
+    accepted event so far to dedupe overlapping joins. For heavy users with
+    thousands of voice events this blew through the 15-min Lambda cap.
+
+    Now: bisect on sorted-leave timestamps for the next-leave lookup, and a
+    parallel sorted list of accepted events keyed by started_date for the
+    overlap check. O((n+m) log m + n log k).
     '''
-    # Group voice channel logs by channel_id
+    import bisect
+
     logs_by_channel = {k: list(v) for k, v in groupby(sorted(voice_channel_logs, key=lambda x: x['channel_id']), key=lambda x: x['channel_id'])}
     voice_channel_logs_duration = []
+
+    # Parallel structures for O(log k) overlap queries against the global
+    # event list. Voice events on Discord are non-overlapping per user, so
+    # only the rightmost candidate (largest started_date <= t) needs checking.
+    accepted_starts = []
+    accepted_events = []
+
+    def _is_in_existing_event(t):
+        i = bisect.bisect_right(accepted_starts, t)
+        if i == 0:
+            return False
+        e = accepted_events[i - 1]
+        return e['ended_date'] >= t
+
     for channel_id, logs in logs_by_channel.items():
-        # Separate join and leave events
         joins = [x for x in logs if x['event_type'] == 'join_voice_channel']
         leaves = [x for x in logs if x['event_type'] == 'leave_voice_channel']
 
-        # Sort events by timestamp
         sorted_joins = sorted(joins, key=lambda x: x['timestamp'])
         sorted_leaves = sorted(leaves, key=lambda x: x['timestamp'])
-        
+        leave_timestamps = [l['timestamp'] for l in sorted_leaves]
+
         for join in sorted_joins:
-            # Find the next leave event that happened after this join
-            next_leave = next((leave for leave in sorted_leaves if leave['timestamp'] >= join['timestamp']), None)
-            
-            # Calculate duration
-            duration = next_leave['timestamp'] - join['timestamp'] if next_leave else 0
-            
+            j_ts = join['timestamp']
+
+            idx = bisect.bisect_left(leave_timestamps, j_ts)
+            if idx >= len(sorted_leaves):
+                continue
+            next_leave = sorted_leaves[idx]
+            duration = next_leave['timestamp'] - j_ts
+
             if duration > 24 * 60 * 60:
-                pass
-            elif not next_leave:
-                pass
-            else:
-                join_is_included_in_duration = any(
-                    join['timestamp'] >= e['started_date'] # this join happened after the start of another event
-                    and join['timestamp'] <= e['ended_date'] # this same event ended after this join
-                    for e in voice_channel_logs_duration)
-                
-                if join_is_included_in_duration:
-                    #print(f'Join is included in duration: {join}')
-                    pass
-                else:
-                    voice_channel_logs_duration.append({
-                        'channel_id': channel_id,
-                        'guild_id': join['guild_id'] if 'guild_id' in join else None,
-                        'duration_mins': duration // 60,
-                        'started_date': join['timestamp'],
-                        'ended_date': next_leave['timestamp'] if next_leave else None
-                    })
+                continue
+            if _is_in_existing_event(j_ts):
+                continue
+
+            event = {
+                'channel_id': channel_id,
+                'guild_id': join['guild_id'] if 'guild_id' in join else None,
+                'duration_mins': duration // 60,
+                'started_date': j_ts,
+                'ended_date': next_leave['timestamp'],
+            }
+            voice_channel_logs_duration.append(event)
+            ins = bisect.bisect_right(accepted_starts, j_ts)
+            accepted_starts.insert(ins, j_ts)
+            accepted_events.insert(ins, event)
 
     session_logs_duration = []
 
