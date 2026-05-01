@@ -882,7 +882,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
     import blob_storage
     if blob_storage.is_enabled():
         try:
-            blob_storage.upload_encrypted(package_id, data)
+            blob_storage.upload(package_id, data)
         except Exception as e:
             print(f'WARN: S3 blob upload failed for {package_id}: {e}')
 

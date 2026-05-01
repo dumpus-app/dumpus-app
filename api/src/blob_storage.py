@@ -24,14 +24,15 @@ def _key(package_id: str) -> str:
     return f"packages/{package_id}.bin"
 
 
-def upload_encrypted(package_id: str, encrypted_bytes: bytes) -> None:
-    """Push the encrypted blob to S3 under a deterministic key."""
+def upload(package_id: str, body: bytes) -> None:
+    """Push a blob to S3 under a deterministic key. Same operation for the
+    worker's encrypted SQLite and the demo's unencrypted one."""
     import boto3
 
     boto3.client("s3").put_object(
         Bucket=_bucket(),
         Key=_key(package_id),
-        Body=encrypted_bytes,
+        Body=body,
         ContentType="application/octet-stream",
     )
 

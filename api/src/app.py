@@ -235,28 +235,41 @@ def get_package_data(package_id):
 
 @app.route('/process/<package_id>/blob', methods=['GET'])
 def get_package_blob(package_id):
-    """Return a presigned S3 URL the client can fetch the encrypted blob from.
+    """Return a presigned S3 URL the client can fetch the package blob from.
 
-    Pairs with /data: same auth, same lookup, but instead of streaming the
-    decrypted SQLite through API Gateway (slow + 6MB cap), the client
-    downloads encrypted bytes directly from S3 and decrypts them locally
+    Replaces /data. The client downloads bytes directly from S3 (fast, no
+    API Gateway middleman) and — for real packages — decrypts them locally
     using its UPN.
 
-    Response: {"url": <presigned GET>, "iv": <hex>, "ttl": <seconds>}
-    Errors: 401 (bad bearer), 404 (no row), 409 (row exists but no S3 blob).
+    Response: {"url": <presigned GET>, "iv": <hex|null>, "ttl": <seconds>}
+              iv is null for the demo (the demo blob is unencrypted).
+
+    Errors: 401 (bad bearer), 404 (no row / no S3 blob), 501 (S3 not wired).
     """
     import os
     import blob_storage
     from db import SavedPackageData
 
+    if not blob_storage.is_enabled():
+        # /blob requires S3. Local dev should use /data.
+        return jsonify({'errorMessageCode': 'S3_NOT_CONFIGURED'}), 501
+
+    ttl = int(os.getenv('PACKAGE_DATA_PRESIGNED_URL_TTL_SECONDS', '300'))
+
+    # Demo: unauthenticated, lazy-seed S3 from generate_demo_database() on the
+    # very first call after deploy, then serve from S3 forever after.
+    if package_id == 'demo':
+        if not blob_storage.exists('demo'):
+            blob_storage.upload('demo', generate_demo_database())
+        return jsonify({
+            'url': blob_storage.presigned_url('demo', ttl_seconds=ttl),
+            'iv': None,
+            'ttl': ttl,
+        }), 200
+
     (is_auth, _) = check_authorization_bearer(request, package_id)
     if not is_auth:
         return make_response('', 401)
-
-    if not blob_storage.is_enabled():
-        # /blob is meaningless without S3 — fall through so callers can
-        # detect and switch back to /data.
-        return jsonify({'errorMessageCode': 'S3_NOT_CONFIGURED'}), 501
 
     session = Session()
     row = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(
@@ -264,22 +277,18 @@ def get_package_blob(package_id):
     ).first()
     session.close()
 
-    if not row:
+    if not row or not blob_storage.exists(package_id):
         return make_response('', 404)
-
-    if not blob_storage.exists(package_id):
-        # Row exists in DB but worker hadn't migrated yet (or upload failed).
-        # Caller can fall back to /data.
-        return jsonify({'errorMessageCode': 'BLOB_NOT_IN_S3'}), 409
-
-    ttl = int(os.getenv('PACKAGE_DATA_PRESIGNED_URL_TTL_SECONDS', '300'))
-    url = blob_storage.presigned_url(package_id, ttl_seconds=ttl)
 
     iv_value = row.iv
     if isinstance(iv_value, (bytes, bytearray)):
         iv_value = iv_value.hex()
 
-    return jsonify({'url': url, 'iv': iv_value, 'ttl': ttl}), 200
+    return jsonify({
+        'url': blob_storage.presigned_url(package_id, ttl_seconds=ttl),
+        'iv': iv_value,
+        'ttl': ttl,
+    }), 200
 
 
 @app.route('/process/<package_id>', methods=['DELETE'])
