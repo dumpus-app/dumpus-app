@@ -17,7 +17,8 @@ image_tag = "bootstrap"
 diswho_base_url            = "https://diswho.androz2091.fr"
 dl_zip_whitelisted_domains = ""
 
-# Bigger memory = proportionally more vCPU. Speeds large-package processing
-# without much extra cost (memory is billed per GB-second; faster runs cancel
-# out the higher per-second rate).
-worker_lambda_memory = 10240
+# Fargate worker sizing. 2 vCPU + 8 GB is plenty headroom over the previous
+# Lambda's max (3 GB / 1.7 GB used) and bumps CPU enough that even heavy
+# packages finish well under any deadline.
+worker_task_cpu    = 2048
+worker_task_memory = 8192

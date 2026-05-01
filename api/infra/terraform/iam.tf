@@ -71,24 +71,22 @@ resource "aws_iam_role_policy" "api" {
   policy = data.aws_iam_policy_document.api.json
 }
 
-# --- Worker Lambda role ---
+# --- Forwarder Lambda role ---
+#
+# Receives SQS messages, fires Fargate tasks. Doesn't touch RDS, S3, or app
+# secrets — those live on the task role.
 
-resource "aws_iam_role" "worker" {
-  name               = "${local.name}-worker-lambda"
+resource "aws_iam_role" "forwarder" {
+  name               = "${local.name}-forwarder-lambda"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume.json
 }
 
-resource "aws_iam_role_policy_attachment" "worker_basic" {
-  role       = aws_iam_role.worker.name
+resource "aws_iam_role_policy_attachment" "forwarder_basic" {
+  role       = aws_iam_role.forwarder.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_iam_role_policy_attachment" "worker_vpc" {
-  role       = aws_iam_role.worker.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
-}
-
-data "aws_iam_policy_document" "worker" {
+data "aws_iam_policy_document" "forwarder" {
   statement {
     sid = "ConsumeQueue"
     actions = [
@@ -101,26 +99,30 @@ data "aws_iam_policy_document" "worker" {
   }
 
   statement {
-    sid     = "ReadAppSecrets"
-    actions = ["secretsmanager:GetSecretValue"]
-    resources = [
-      aws_secretsmanager_secret.postgres_url.arn,
-      aws_secretsmanager_secret.diswho_jwt_secret.arn,
-      aws_secretsmanager_secret.wh_url.arn,
-      aws_secretsmanager_secret.discord_bot_token.arn,
-    ]
+    sid       = "RunWorkerTask"
+    actions   = ["ecs:RunTask"]
+    resources = ["${aws_ecs_task_definition.worker.arn_without_revision}:*"]
   }
 
-  # Worker uploads each finished encrypted blob.
+  # ecs:RunTask requires PassRole on the task and execution roles so ECS can
+  # assume them when launching the task.
   statement {
-    sid       = "WritePackageBlobs"
-    actions   = ["s3:PutObject"]
-    resources = ["${aws_s3_bucket.package_data.arn}/*"]
+    sid     = "PassTaskRoles"
+    actions = ["iam:PassRole"]
+    resources = [
+      aws_iam_role.worker_task.arn,
+      aws_iam_role.worker_task_execution.arn,
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ecs-tasks.amazonaws.com"]
+    }
   }
 }
 
-resource "aws_iam_role_policy" "worker" {
-  name   = "${local.name}-worker"
-  role   = aws_iam_role.worker.id
-  policy = data.aws_iam_policy_document.worker.json
+resource "aws_iam_role_policy" "forwarder" {
+  name   = "${local.name}-forwarder"
+  role   = aws_iam_role.forwarder.id
+  policy = data.aws_iam_policy_document.forwarder.json
 }

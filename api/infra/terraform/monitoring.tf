@@ -5,12 +5,14 @@ resource "aws_sns_topic" "alerts" {
   name = "${local.name}-alerts"
 }
 
-# Anything in the DLQ means a worker invocation failed twice in a row
-# (process_package raised an unhandled exception or the Lambda timed out
-# at the 15-min cap). Always worth a look.
+# Anything in the DLQ means the forwarder Lambda failed to launch a Fargate
+# worker task twice in a row (capacity / IAM / network). Always worth a look.
+# Process-level failures inside a worker task surface as an ERRORED package
+# row + Discord webhook from process_package() — they don't go through the
+# DLQ because the SQS message was already acked by the forwarder.
 resource "aws_cloudwatch_metric_alarm" "worker_dlq_depth" {
   alarm_name          = "${local.name}-worker-dlq-not-empty"
-  alarm_description   = "A worker invocation failed permanently and the SQS message landed in the DLQ. Check /aws/lambda/${aws_lambda_function.worker.function_name} for the traceback."
+  alarm_description   = "Forwarder Lambda failed to launch a Fargate worker task. Check /aws/lambda/${aws_lambda_function.forwarder.function_name} and the worker log group ${aws_cloudwatch_log_group.worker.name}."
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = 1
   metric_name         = "ApproximateNumberOfMessagesVisible"

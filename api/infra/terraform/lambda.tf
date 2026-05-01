@@ -62,38 +62,35 @@ resource "aws_lambda_function" "api" {
   ]
 }
 
-# --- Worker Lambda ---
+# --- Forwarder Lambda ---
+#
+# Tiny SQS consumer that fires one Fargate task per message. The actual work
+# happens in the Fargate task (see ecs.tf); this Lambda just acts as the
+# SQS → ECS RunTask glue.
 
-resource "aws_lambda_function" "worker" {
-  function_name = "${local.name}-worker"
-  role          = aws_iam_role.worker.arn
+resource "aws_lambda_function" "forwarder" {
+  function_name = "${local.name}-forwarder"
+  role          = aws_iam_role.forwarder.arn
 
   package_type = "Image"
   image_uri    = local.image_uri
 
   image_config {
-    command = ["lambda_handlers.worker.handler"]
+    command = ["lambda_handlers.forwarder.handler"]
   }
 
-  memory_size = var.worker_lambda_memory
-  timeout     = var.worker_lambda_timeout
-
-  ephemeral_storage {
-    size = var.worker_ephemeral_storage_mb
-  }
-
-  # null → use the account-level concurrency pool. New AWS accounts have a
-  # 10-execution ceiling and require ≥10 unreserved, so any reservation fails
-  # until you request a quota increase. Set the var > 0 once that's lifted.
-  reserved_concurrent_executions = var.worker_reserved_concurrency > 0 ? var.worker_reserved_concurrency : null
-
-  vpc_config {
-    subnet_ids         = aws_subnet.private[*].id
-    security_group_ids = [aws_security_group.lambda.id]
-  }
+  # Forwarder just calls ecs.run_task — minimal memory, sub-second runtime.
+  memory_size = 256
+  timeout     = 30
 
   environment {
-    variables = local.app_environment
+    variables = {
+      ECS_CLUSTER          = aws_ecs_cluster.main.name
+      ECS_TASK_DEFINITION  = aws_ecs_task_definition.worker.family
+      ECS_CONTAINER_NAME   = local.worker_container_name
+      ECS_SUBNETS          = join(",", aws_subnet.private[*].id)
+      ECS_SECURITY_GROUPS  = aws_security_group.worker_task.id
+    }
   }
 
   lifecycle {
@@ -101,26 +98,20 @@ resource "aws_lambda_function" "worker" {
   }
 
   depends_on = [
-    aws_iam_role_policy_attachment.worker_basic,
-    aws_iam_role_policy_attachment.worker_vpc,
-    aws_cloudwatch_log_group.worker,
+    aws_iam_role_policy_attachment.forwarder_basic,
+    aws_cloudwatch_log_group.forwarder,
     null_resource.lambda_bootstrap_image,
   ]
 }
 
-# --- SQS → worker trigger ---
+# --- SQS → forwarder trigger ---
 
-resource "aws_lambda_event_source_mapping" "worker_sqs" {
+resource "aws_lambda_event_source_mapping" "forwarder_sqs" {
   event_source_arn = aws_sqs_queue.packages.arn
-  function_name    = aws_lambda_function.worker.arn
+  function_name    = aws_lambda_function.forwarder.arn
 
   batch_size                         = 1
   maximum_batching_window_in_seconds = 0
 
   function_response_types = ["ReportBatchItemFailures"]
-
-  scaling_config {
-    # Match reserved concurrency so we don't burn through retries during a backlog.
-    maximum_concurrency = max(2, var.worker_reserved_concurrency)
-  }
 }

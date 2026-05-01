@@ -19,9 +19,11 @@ permissions:
 
 env:
   AWS_REGION: eu-west-1
-  ECR_REPO: dumpus-prod-lambda
+  ECR_LAMBDA_REPO: dumpus-prod-lambda
+  ECR_WORKER_REPO: dumpus-prod-worker
   API_FUNCTION: dumpus-prod-api
-  WORKER_FUNCTION: dumpus-prod-worker
+  FORWARDER_FUNCTION: dumpus-prod-forwarder
+  WORKER_TASK_FAMILY: dumpus-prod-worker
 
 jobs:
   build-and-deploy:
@@ -53,29 +55,41 @@ jobs:
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v4
 
-      - name: Build & push Lambda image
-        id: build
+      - name: Build & push Lambda image (api + forwarder)
         uses: docker/build-push-action@v7
         with:
           context: .
           file: Dockerfile.lambda
           push: true
           # Lambda only runs amd64 unless the function is configured for arm64.
-          # Keep amd64 unless we explicitly switch the function architecture.
           platforms: linux/amd64
           provenance: false
           tags: |
-            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:${{ steps.meta.outputs.image_tag }}
-            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:latest
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_LAMBDA_REPO }}:${{ steps.meta.outputs.image_tag }}
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_LAMBDA_REPO }}:latest
           cache-from: type=gha,scope=lambda
           cache-to: type=gha,scope=lambda,mode=max
 
-      - name: Update Lambda functions
+      - name: Build & push worker image (Fargate)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: Dockerfile.worker
+          push: true
+          platforms: linux/amd64
+          provenance: false
+          tags: |
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_WORKER_REPO }}:${{ steps.meta.outputs.image_tag }}
+            ${{ steps.ecr.outputs.registry }}/${{ env.ECR_WORKER_REPO }}:latest
+          cache-from: type=gha,scope=worker
+          cache-to: type=gha,scope=worker,mode=max
+
+      - name: Update Lambdas
         env:
-          IMAGE_URI: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_REPO }}:${{ steps.meta.outputs.image_tag }}
+          IMAGE_URI: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_LAMBDA_REPO }}:${{ steps.meta.outputs.image_tag }}
         run: |
           set -euo pipefail
-          for fn in "${API_FUNCTION}" "${WORKER_FUNCTION}"; do
+          for fn in "${API_FUNCTION}" "${FORWARDER_FUNCTION}"; do
             echo "::group::Updating $fn"
             aws lambda update-function-code \
               --function-name "$fn" \
@@ -85,6 +99,38 @@ jobs:
             aws lambda wait function-updated --function-name "$fn"
             echo "::endgroup::"
           done
+
+      - name: Register new worker task definition revision
+        env:
+          IMAGE_URI: ${{ steps.ecr.outputs.registry }}/${{ env.ECR_WORKER_REPO }}:${{ steps.meta.outputs.image_tag }}
+        run: |
+          set -euo pipefail
+          # Pull the active revision, swap in the new image, register a new
+          # revision. ECS resolves task family → latest revision on each
+          # runTask call, so no further wiring is needed.
+          aws ecs describe-task-definition \
+            --task-definition "$WORKER_TASK_FAMILY" \
+            --query 'taskDefinition' \
+            > /tmp/td.json
+          jq --arg img "$IMAGE_URI" '
+            .containerDefinitions[0].image = $img
+            | {
+                family,
+                taskRoleArn,
+                executionRoleArn,
+                networkMode,
+                containerDefinitions,
+                requiresCompatibilities,
+                cpu,
+                memory,
+                ephemeralStorage,
+                runtimePlatform
+              }
+            | with_entries(select(.value != null))
+          ' /tmp/td.json > /tmp/td-new.json
+          aws ecs register-task-definition \
+            --cli-input-json file:///tmp/td-new.json \
+            > /dev/null
 
       - name: Smoke test API
         run: |

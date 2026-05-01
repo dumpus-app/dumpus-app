@@ -8,17 +8,30 @@ output "region" {
   value       = var.region
 }
 
-output "ecr_repository_url" {
-  description = "Push the Lambda container image here"
+output "ecr_lambda_repository_url" {
+  description = "Push the API + forwarder Lambda container image here"
   value       = aws_ecr_repository.lambda.repository_url
+}
+
+output "ecr_worker_repository_url" {
+  description = "Push the Fargate worker container image here"
+  value       = aws_ecr_repository.worker.repository_url
 }
 
 output "api_lambda_name" {
   value = aws_lambda_function.api.function_name
 }
 
-output "worker_lambda_name" {
-  value = aws_lambda_function.worker.function_name
+output "forwarder_lambda_name" {
+  value = aws_lambda_function.forwarder.function_name
+}
+
+output "worker_ecs_cluster_name" {
+  value = aws_ecs_cluster.main.name
+}
+
+output "worker_ecs_task_family" {
+  value = aws_ecs_task_definition.worker.family
 }
 
 output "sqs_queue_url" {
@@ -34,7 +47,7 @@ output "rds_endpoint" {
 }
 
 output "fck_nat_eip" {
-  description = "Public IP that all outbound Lambda traffic comes from"
+  description = "Public IP that all outbound worker / Lambda traffic comes from"
   value       = aws_eip.fck_nat.public_ip
 }
 

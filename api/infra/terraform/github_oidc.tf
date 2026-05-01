@@ -78,7 +78,10 @@ data "aws_iam_policy_document" "github_deploy" {
       "ecr:PutImage",
       "ecr:UploadLayerPart",
     ]
-    resources = [aws_ecr_repository.lambda.arn]
+    resources = [
+      aws_ecr_repository.lambda.arn,
+      aws_ecr_repository.worker.arn,
+    ]
   }
 
   statement {
@@ -93,8 +96,36 @@ data "aws_iam_policy_document" "github_deploy" {
     ]
     resources = [
       aws_lambda_function.api.arn,
-      aws_lambda_function.worker.arn,
+      aws_lambda_function.forwarder.arn,
     ]
+  }
+
+  # Register a new task definition revision per deploy so the next runTask
+  # picks up the freshly-pushed image. DescribeTaskDefinition is needed to
+  # read the existing revision as a starting point. RegisterTaskDefinition
+  # has no resource-level permissions, hence "*".
+  statement {
+    sid = "EcsRegisterTaskDefinition"
+    actions = [
+      "ecs:RegisterTaskDefinition",
+      "ecs:DescribeTaskDefinition",
+    ]
+    resources = ["*"]
+  }
+
+  # CI re-passes the same task / execution roles when registering revisions.
+  statement {
+    sid     = "EcsPassTaskRoles"
+    actions = ["iam:PassRole"]
+    resources = [
+      aws_iam_role.worker_task.arn,
+      aws_iam_role.worker_task_execution.arn,
+    ]
+    condition {
+      test     = "StringEquals"
+      variable = "iam:PassedToService"
+      values   = ["ecs-tasks.amazonaws.com"]
+    }
   }
 }
 

@@ -47,17 +47,18 @@ By default, Dumpus API will only treat zip files sent from `https://discord.clic
 
 ## Deploy to AWS
 
-A Terraform stack under `infra/terraform/` provisions a serverless deployment of the API on AWS:
+A Terraform stack under `infra/terraform/` provisions a deployment of the API on AWS:
 
 | Component        | AWS service              |
 | ---------------- | ------------------------ |
 | API              | Lambda (container image) behind API Gateway HTTP API |
-| Worker           | Lambda triggered by SQS                              |
+| Forwarder        | Lambda triggered by SQS, fires one Fargate task per message |
+| Worker           | Fargate task (no time / memory caps, pay-per-run)    |
 | Database         | RDS Postgres in private subnets                      |
 | Outbound NAT     | fck-nat instance (NAT Gateway replacement)           |
-| Secrets          | Secrets Manager + Lambda env                         |
+| Secrets          | Secrets Manager + Lambda/task env                    |
 | TLS / DNS        | ACM cert + Route53 alias to API Gateway              |
-| CI               | GitHub OIDC role; build → ECR → `update-function-code` |
+| CI               | GitHub OIDC role; build → ECR → `update-function-code` + `register-task-definition` |
 
 ### Bootstrap
 
@@ -69,21 +70,23 @@ A Terraform stack under `infra/terraform/` provisions a serverless deployment of
 
 ### Day-to-day deploys
 
-Push to `main` → `.github/workflows/deploy.yml` builds the container, pushes to ECR tagged with the git SHA, and rolls both Lambdas via OIDC. No long-lived AWS keys in GitHub.
+Push to `main` → `.github/workflows/deploy.yml` builds both container images (Lambda for the API + forwarder, plain Python for the Fargate worker), pushes them to ECR tagged with the git SHA, rolls both Lambdas, and registers a new ECS task definition revision. The next runTask call picks up the new image. No long-lived AWS keys in GitHub.
 
 ### Operations
 
 ```bash
 aws logs tail /aws/lambda/<name-prefix>-<env>-api --follow
-aws logs tail /aws/lambda/<name-prefix>-<env>-worker --follow
+aws logs tail /aws/lambda/<name-prefix>-<env>-forwarder --follow
+aws logs tail /aws/ecs/<name-prefix>-<env>-worker --follow
 aws sqs receive-message --queue-url "$(terraform output -raw sqs_dlq_url)"
 ```
 
 Things to keep in mind:
 
 - **API cold start** is a few seconds while pandas imports. Invisible on the async submit/poll flow; use provisioned concurrency if a sync endpoint must be sub-second.
-- **Worker `/tmp` cap** defaults to 5GB (max 10GB). Bump `worker_ephemeral_storage_mb` if users upload very large Discord exports.
-- **Worker timeout** is 15 min (Lambda hard cap). Failures land in the DLQ after one retry.
+- **Worker `/tmp` cap** defaults to 30 GiB. Bump `worker_task_ephemeral_storage_gib` if users upload very large Discord exports (Fargate ceiling is 200 GiB).
+- **Worker has no time cap.** Heavy packages just take as long as they need; failures show up as ERRORED package rows + a Discord webhook from `process_package`, not in the DLQ.
+- **Forwarder DLQ.** If the forwarder Lambda itself fails to launch a Fargate task twice (capacity / IAM / network), the SQS message lands in the DLQ — alarmed via Discord through `monitoring.tf`.
 - **fck-nat is a single instance.** Switch to a managed NAT Gateway if you need the extra availability — at the cost of a much higher fixed monthly bill.
 
 ## API Documentation

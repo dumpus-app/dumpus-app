@@ -26,7 +26,7 @@ github_repository = "Androz2091/dumpus-api"
 image_tag = "bootstrap"
 
 # Optional sizing overrides
-# worker_lambda_memory       = 3008
-# worker_ephemeral_storage_mb = 5120
-# worker_reserved_concurrency = 1
-# postgres_multi_az          = false
+# worker_task_cpu                  = 2048
+# worker_task_memory               = 8192
+# worker_task_ephemeral_storage_gib = 30
+# postgres_multi_az                = false

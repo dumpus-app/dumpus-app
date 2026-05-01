@@ -96,7 +96,7 @@ variable "postgres_multi_az" {
 # ---- Lambda sizing ----
 
 variable "image_tag" {
-  description = "Container image tag deployed to both Lambdas. CI overrides per-deploy via UpdateFunctionCode."
+  description = "Container image tag deployed to the API + forwarder Lambdas and the worker Fargate task. CI overrides per-deploy via UpdateFunctionCode + RegisterTaskDefinition."
   type        = string
   default     = "bootstrap"
 }
@@ -113,28 +113,24 @@ variable "api_lambda_timeout" {
   default     = 30
 }
 
-variable "worker_lambda_memory" {
-  description = "MB. Pandas + zip processing are memory-hungry; 3008 is the sweet spot."
+# ---- Fargate worker sizing ----
+
+variable "worker_task_cpu" {
+  description = "CPU units for the Fargate worker task. 1024 = 1 vCPU. Valid Fargate combos: 256/512/1024/2048/4096/8192/16384."
   type        = number
-  default     = 3008
+  default     = 2048
 }
 
-variable "worker_lambda_timeout" {
-  description = "Seconds. Lambda hard cap is 900."
+variable "worker_task_memory" {
+  description = "MB for the Fargate worker task. Must be a valid combo with worker_task_cpu (e.g. 2048 vCPU → 4096..16384 MB)."
   type        = number
-  default     = 900
+  default     = 8192
 }
 
-variable "worker_ephemeral_storage_mb" {
-  description = "MB of /tmp space for the worker (Discord zips). 512..10240."
+variable "worker_task_ephemeral_storage_gib" {
+  description = "GiB of ephemeral disk for /tmp on the worker task. Fargate default is 20; valid override range is 21..200."
   type        = number
-  default     = 5120
-}
-
-variable "worker_reserved_concurrency" {
-  description = "Cap on concurrent worker Lambdas. 0 = no reservation (account-level pool). New AWS accounts have a 10-execution ceiling and reject any reservation until you request a Lambda concurrency quota increase. Set > 0 once that's lifted."
-  type        = number
-  default     = 0
+  default     = 30
 }
 
 # ---- App secrets / config ----
