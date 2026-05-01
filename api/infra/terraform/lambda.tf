@@ -15,6 +15,10 @@ locals {
       DISWHO_JWT_SECRET = aws_secretsmanager_secret.diswho_jwt_secret.arn
       WH_URL            = aws_secretsmanager_secret.wh_url.arn
     })
+
+    # Encrypted package blobs live here; API generates presigned URLs.
+    PACKAGE_DATA_BUCKET                    = aws_s3_bucket.package_data.id
+    PACKAGE_DATA_PRESIGNED_URL_TTL_SECONDS = tostring(var.package_data_presigned_url_ttl_seconds)
   }
 }
 

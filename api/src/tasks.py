@@ -875,6 +875,17 @@ def read_analytics_file(package_status_id, package_id, link, session):
     key = extract_key_from_discord_link(link)
     (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
 
+    # When PACKAGE_DATA_BUCKET is configured, also push the encrypted blob to
+    # S3 so /blob can serve a presigned URL. Failure here is non-fatal — the
+    # legacy DB blob still gets written below and the slow /data path keeps
+    # working.
+    import blob_storage
+    if blob_storage.is_enabled():
+        try:
+            blob_storage.upload_encrypted(package_id, data)
+        except Exception as e:
+            print(f'WARN: S3 blob upload failed for {package_id}: {e}')
+
     session.add(SavedPackageData(package_id=package_id, encrypted_data=data, iv=iv))
     session.commit()
 

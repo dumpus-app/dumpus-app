@@ -41,6 +41,15 @@ data "aws_iam_policy_document" "api" {
       aws_secretsmanager_secret.wh_url.arn,
     ]
   }
+
+  # boto3.generate_presigned_url signs with this role's identity, so the
+  # role itself must be allowed to GetObject — the URL just borrows that
+  # permission for ~5 minutes.
+  statement {
+    sid       = "ReadPackageBlobs"
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.package_data.arn}/*"]
+  }
 }
 
 resource "aws_iam_role_policy" "api" {
@@ -86,6 +95,13 @@ data "aws_iam_policy_document" "worker" {
       aws_secretsmanager_secret.diswho_jwt_secret.arn,
       aws_secretsmanager_secret.wh_url.arn,
     ]
+  }
+
+  # Worker uploads each finished encrypted blob.
+  statement {
+    sid       = "WritePackageBlobs"
+    actions   = ["s3:PutObject"]
+    resources = ["${aws_s3_bucket.package_data.arn}/*"]
   }
 }
 

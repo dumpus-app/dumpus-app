@@ -37,3 +37,7 @@ output "fck_nat_eip" {
   description = "Public IP that all outbound Lambda traffic comes from"
   value       = aws_eip.fck_nat.public_ip
 }
+
+output "package_data_bucket" {
+  value = aws_s3_bucket.package_data.id
+}

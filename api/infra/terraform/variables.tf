@@ -139,6 +139,18 @@ variable "worker_reserved_concurrency" {
 
 # ---- App secrets / config ----
 
+variable "package_data_retention_days" {
+  description = "How long to keep encrypted package blobs in S3 before lifecycle deletion. Acts as a passive GDPR-friendly cleanup."
+  type        = number
+  default     = 90
+}
+
+variable "package_data_presigned_url_ttl_seconds" {
+  description = "TTL on the presigned download URL the API hands the client. Short = safer if the URL leaks."
+  type        = number
+  default     = 300
+}
+
 variable "wh_url" {
   description = "Optional Discord webhook URL the app pings for internal notifications (new package, errored package, etc.). Leave blank to disable."
   type        = string
