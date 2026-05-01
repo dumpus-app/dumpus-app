@@ -48,6 +48,13 @@ export type PackageAPIDataResponse = Prettify<
   | { data: null; errorMessageCode: "UNKNOWN_PACKAGE_ID" | "UNAUTHORIZED" }
 >;
 
+export type PackageAPIBlobResponse = Prettify<{
+  url: string;
+  // null for demo (unencrypted); hex string for real packages
+  iv: string | null;
+  ttl: number;
+}>;
+
 export type PackageAPIRemoveResponse = Prettify<{
   isDeleted: boolean;
   errorMessageCode: "UNKNOWN_PACKAGE_ID" | "UNAUTHORIZED";
