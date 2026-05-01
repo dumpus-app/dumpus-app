@@ -1,0 +1,73 @@
+name: deploy-web
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "android/**"
+      - "ios/**"
+      - "src-tauri/**"
+      - "infra/**"
+      - "**.md"
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # OIDC
+  contents: read
+
+env:
+  AWS_REGION: eu-west-1
+  SITE_BUCKET: dumpus-web-site-prod
+  CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.14.2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build static site
+        run: pnpm build
+        env:
+          NODE_ENV: production
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync to S3
+        run: |
+          # Hashed assets — long cache, immutable.
+          aws s3 sync dist/ "s3://${SITE_BUCKET}/" \
+            --delete \
+            --exclude "*.html" \
+            --exclude "*.json" \
+            --cache-control "public, max-age=31536000, immutable"
+          # HTML + JSON — never cached so deploys take effect immediately.
+          aws s3 sync dist/ "s3://${SITE_BUCKET}/" \
+            --exclude "*" \
+            --include "*.html" \
+            --include "*.json" \
+            --cache-control "public, max-age=0, must-revalidate"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${CLOUDFRONT_DISTRIBUTION_ID}" \
+            --paths "/*" \
+            --query 'Invalidation.Id' \
+            --output text
