@@ -41,3 +41,8 @@ output "fck_nat_eip" {
 output "package_data_bucket" {
   value = aws_s3_bucket.package_data.id
 }
+
+output "alerts_topic_arn" {
+  description = "SNS topic that the ops alarms publish to. Subscribe an email after first apply."
+  value       = aws_sns_topic.alerts.arn
+}

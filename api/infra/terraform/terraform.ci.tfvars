@@ -16,3 +16,8 @@ image_tag = "bootstrap"
 
 diswho_base_url            = "https://diswho.androz2091.fr"
 dl_zip_whitelisted_domains = ""
+
+# Bigger memory = proportionally more vCPU. Speeds large-package processing
+# without much extra cost (memory is billed per GB-second; faster runs cancel
+# out the higher per-second rate).
+worker_lambda_memory = 10240

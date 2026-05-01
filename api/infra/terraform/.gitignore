@@ -10,3 +10,4 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 # .terraform.lock.hcl IS committed — it pins provider versions for reproducibility.
+infra/terraform/notifier/notifier.zip
