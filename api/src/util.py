@@ -107,7 +107,7 @@ def fetch_diswho_user(user_id):
         auth = f"Bearer {diswho_jwt}"
     else:
         base_url = os.getenv('DISCORD_BASE_URL', 'https://discord.com/api/v8/users/')
-        auth = f"Bot {os.getenv('DISCORD_SECRET')}"
+        auth = f"Bot {os.getenv('DISCORD_BOT_TOKEN')}"
 
     headers = {
         'authorization': auth
@@ -118,3 +118,26 @@ def fetch_diswho_user(user_id):
         return r.json()
     else:
         return None
+
+
+def fetch_discord_guild(guild_id):
+    """Fetch a guild via the Discord bot API. Returns the parsed JSON or None on error."""
+    bot_token = os.getenv('DISCORD_BOT_TOKEN')
+    if not bot_token:
+        return None
+    r = requests.get(
+        f'https://discord.com/api/v10/guilds/{guild_id}',
+        params={'with_counts': 'true'},
+        headers={'Authorization': f'Bot {bot_token}'},
+        timeout=5,
+    )
+    if r.status_code != 200:
+        return None
+    return r.json()
+
+
+def discord_icon_url(guild_id, icon_hash):
+    if not icon_hash:
+        return None
+    ext = 'gif' if icon_hash.startswith('a_') else 'png'
+    return f'https://cdn.discordapp.com/icons/{guild_id}/{icon_hash}.{ext}'

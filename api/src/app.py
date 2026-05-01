@@ -12,7 +12,7 @@ from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_st
 
 from sqlite import generate_demo_database
 
-from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn, fetch_diswho_user
+from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn, fetch_diswho_user, fetch_discord_guild, discord_icon_url
 
 from wh import send_internal_notification
 
@@ -316,6 +316,27 @@ def get_avatar(package_id, user_id):
             'avatar_url': avatar_url,
             'username': user['username'] if 'username' in user and user['username'] else None,
         }), 200
+
+
+@app.route('/widget/<guild_id>', methods=['GET'])
+def get_widget(guild_id):
+    """Replacement for the legacy widget.dumpus.app proxy.
+
+    Returns name + icon_url + member_count for a guild the bot can see.
+    """
+    if not guild_id.isdigit():
+        return jsonify({'error': 'invalid guild id'}), 400
+
+    guild = fetch_discord_guild(guild_id)
+    if not guild:
+        return jsonify({'error': 'guild not found or bot lacks access'}), 404
+
+    return jsonify({
+        'name': guild['name'],
+        'icon_url': discord_icon_url(guild_id, guild.get('icon')),
+        'member_count': guild.get('approximate_member_count', 0),
+    }), 200
+
 
 @app.errorhandler(404)
 def page_not_found(e):

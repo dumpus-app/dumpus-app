@@ -65,3 +65,17 @@ resource "aws_secretsmanager_secret_version" "wh_url" {
     ignore_changes = [secret_string]
   }
 }
+
+resource "aws_secretsmanager_secret" "discord_bot_token" {
+  name                    = "${local.name}/app/discord-bot-token"
+  recovery_window_in_days = 7
+}
+
+resource "aws_secretsmanager_secret_version" "discord_bot_token" {
+  secret_id     = aws_secretsmanager_secret.discord_bot_token.id
+  secret_string = var.discord_bot_token
+
+  lifecycle {
+    ignore_changes = [secret_string]
+  }
+}

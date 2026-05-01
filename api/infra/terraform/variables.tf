@@ -158,6 +158,13 @@ variable "wh_url" {
   default     = ""
 }
 
+variable "discord_bot_token" {
+  description = "Discord bot token. Used by /widget to fetch guild info via the bot API."
+  type        = string
+  sensitive   = true
+  default     = ""
+}
+
 variable "diswho_jwt_secret" {
   type      = string
   sensitive = true
