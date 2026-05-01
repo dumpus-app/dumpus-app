@@ -10,7 +10,7 @@ resource "aws_cloudfront_distribution" "site" {
   is_ipv6_enabled     = true
   comment             = "${local.name} ${var.environment}"
   default_root_object = "index.html"
-  price_class         = "PriceClass_100" # NA + EU only — cheapest, covers our audience
+  price_class         = "PriceClass_100"
   aliases             = [local.fqdn]
 
   origin {
