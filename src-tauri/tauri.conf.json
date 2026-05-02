@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "pnpm build:desktop && node ../scripts/flatten-trailing-slash.cjs",
+    "beforeBuildCommand": "pnpm build:desktop && pnpm script:flatten-dist",
     "beforeDevCommand": "pnpm dev:desktop",
     "devPath": "http://localhost:3000",
     "distDir": "../dist"
