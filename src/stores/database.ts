@@ -63,9 +63,7 @@ export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
     // backed by a per-db cache instead of a fresh full-table scan each call.
     const ext = db ? readExtremities(db) : null;
     const rawExtremityDates: [string, string] | undefined =
-      ext && ext[0] !== null && ext[1] !== null
-        ? [ext[0], ext[1]]
-        : undefined;
+      ext && ext[0] !== null && ext[1] !== null ? [ext[0], ext[1]] : undefined;
 
     const startDateLimit = new Date(rawExtremityDates?.[0] || "2015-05-13"); // Discord creation
     const endDate = rawExtremityDates
