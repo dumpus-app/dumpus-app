@@ -13,7 +13,12 @@ export default function RenderMarkdown({
     <ReactMarkdown
       remarkPlugins={[remarkGfm]}
       components={{
-        a: (props: any) => <a {...props} target="_blank" />,
+        // rel guards against reverse tabnabbing — without it, the linked
+        // page can navigate `window.opener` of the original tab. noreferrer
+        // also strips the Referer header for privacy.
+        a: (props: any) => (
+          <a {...props} target="_blank" rel="noopener noreferrer" />
+        ),
         ...(noClosingTag
           ? {
               p: Fragment,
