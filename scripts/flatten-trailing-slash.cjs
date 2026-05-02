@@ -25,7 +25,9 @@ const path = require("path");
 const distDir = path.resolve(__dirname, "..", "dist");
 
 if (!fs.existsSync(distDir)) {
-  console.error(`flatten-trailing-slash: ${distDir} does not exist; did the Next build run?`);
+  console.error(
+    `flatten-trailing-slash: ${distDir} does not exist; did the Next build run?`,
+  );
   process.exit(1);
 }
 
@@ -53,4 +55,6 @@ function walk(dir) {
 
 walk(distDir);
 
-console.log(`flatten-trailing-slash: mirrored ${mirrored} index.html files for Tauri's asset resolver`);
+console.log(
+  `flatten-trailing-slash: mirrored ${mirrored} index.html files for Tauri's asset resolver`,
+);
