@@ -1,8 +1,6 @@
 "use client";
 
-import html2canvas from "html2canvas";
 import { useCallback } from "react";
-import { renderToString } from "react-dom/server";
 import StaticShareImage, {
   type Props as StaticShareImageProps,
 } from "~/components/StaticShareImage";
@@ -12,6 +10,14 @@ const height = 775;
 
 export default function useGenerateImg() {
   const generate = useCallback(async function (props: StaticShareImageProps) {
+    // Lazy-load html2canvas (~150KB) and react-dom/server (~40KB) only when
+    // the user actually triggers a share. Both are heavy, used here once,
+    // and not needed for the rest of the app to function.
+    const [{ default: html2canvas }, { renderToString }] = await Promise.all([
+      import("html2canvas"),
+      import("react-dom/server"),
+    ]);
+
     // Create element with Static Share Card
     const element = document.createElement("div");
     element.innerHTML = renderToString(StaticShareImage(props));
