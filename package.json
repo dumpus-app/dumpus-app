@@ -34,15 +34,20 @@
     "tauri:icon": "tauri icon ./ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x~car.png",
     "trapeze:run": "node ./trapeze.config.mjs"
   },
+  "pnpm": {
+    "overrides": {
+      "@hugotomazi/capacitor-navigation-bar>@capacitor/core": "^7.0.0"
+    }
+  },
   "dependencies": {
-    "@capacitor/android": "^6.2.1",
-    "@capacitor/app": "^6.0.3",
-    "@capacitor/core": "^6.2.1",
-    "@capacitor/filesystem": "^6.0.4",
-    "@capacitor/ios": "^6.2.1",
-    "@capacitor/network": "^6.0.4",
-    "@capacitor/share": "^6.0.4",
-    "@capacitor/status-bar": "^6.0.3",
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/filesystem": "^7.0.0",
+    "@capacitor/ios": "^7.0.0",
+    "@capacitor/network": "^7.0.0",
+    "@capacitor/share": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0",
     "@headlessui/react": "^1.7.19",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
@@ -56,11 +61,11 @@
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "10.4.15",
-    "capacitor-plugin-safe-area": "^3.0.4",
+    "capacitor-plugin-safe-area": "^4.0.0",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "consola": "^3.4.2",
-    "cordova-plugin-purchase": "^13.15.3",
+    "cordova-plugin-purchase": "^13.15.4",
     "crc-32": "^1.2.2",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.11",
@@ -92,7 +97,7 @@
     "zustand": "^4.5.7"
   },
   "devDependencies": {
-    "@capacitor/cli": "^6.2.1",
+    "@capacitor/cli": "^7.0.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tauri-apps/cli": "^1.6.3",
     "@trapezedev/project": "^7.1.3",
