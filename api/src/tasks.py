@@ -209,14 +209,22 @@ def read_analytics_file(package_status_id, package_id, link, session):
         All this data will be useful to parse more complex things later.
         '''
 
-        user_path = find_user_root(zip.namelist())
-        if not user_path:
-            # Fallback to traditional paths
+        user_root = find_user_root(zip.namelist())
+        if user_root:
+            user_path = f'{user_root}/user.json'
+        elif 'Account/user.json' in zip.namelist():
             user_path = 'Account/user.json'
-            if user_path not in zip.namelist() and 'account/user.json' in zip.namelist():
-                user_path = 'account/user.json'
+        elif 'account/user.json' in zip.namelist():
+            user_path = 'account/user.json'
         else:
-            user_path = f'{user_path}/user.json'
+            # Discord exports drop user.json (and the entire Account folder)
+            # entirely when the user un-ticks the "User data" option in the
+            # request form. Without it the package has no owner identity to
+            # anchor the analysis on, so there's nothing useful to compute.
+            # Surface this as a distinct code so the UI can prompt them to
+            # re-export with that option enabled instead of bouncing them
+            # with the generic UNKNOWN_ERROR.
+            raise Exception('MISSING_USER_DATA')
         user_content = zip.open(user_path)
         user_json = orjson.loads(user_content.read())
         user_data = {
@@ -993,7 +1001,7 @@ def process_package(package_status_id, package_id, link, worker_name='regular_pr
         # just the string 'EXPIRED_LINK' (Python tuples need a comma);
         # the `in` check then accidentally did substring match on a
         # single code, hiding INVALID_LINK behind UNKNOWN_ERROR.
-        EXPECTED_ERROR_CODES = ('EXPIRED_LINK', 'INVALID_LINK')
+        EXPECTED_ERROR_CODES = ('EXPIRED_LINK', 'INVALID_LINK', 'MISSING_USER_DATA')
         current = str(e)
         e_traceback = None
         if current not in EXPECTED_ERROR_CODES:
