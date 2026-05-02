@@ -26,6 +26,40 @@ def export_sqlite_to_bin(cur, conn):
         return (zipped_buffer)
     
 
+def create_indexes(cur):
+    """Add secondary indexes used by the frontend's read queries.
+
+    Built once after bulk inserts (rather than declared in CREATE TABLE)
+    so each insert only writes the row, and the index is constructed in
+    one shot at the end. This keeps worker write time down on heavy
+    packages.
+
+    The picks below were chosen against the queries actually run by the
+    frontend (see hooks/data/use-*.ts in dumpus-app):
+
+    - activity: every read filters on event_name + a date range, often
+      narrowed by guild or channel. The existing PK starts with
+      (event_name, day, hour, ...) which already covers global time-range
+      queries, but guild/channel-scoped queries had to scan all rows in
+      the (event_name, day) range. Two compound indexes fix that.
+    - sessions: no PK at all, every query filters on started_date.
+    - voice_sessions: PK leads with channel_id, but every query filters
+      only on started_date — index it directly.
+    - dm_channels_data and guild_channels_data: PK is on channel_id, but
+      reads also group/filter by dm_user_id / guild_id respectively.
+    """
+    statements = [
+        'CREATE INDEX idx_activity_event_guild_day ON activity (event_name, associated_guild_id, day)',
+        'CREATE INDEX idx_activity_event_channel_day ON activity (event_name, associated_channel_id, day)',
+        'CREATE INDEX idx_sessions_started_date ON sessions (started_date)',
+        'CREATE INDEX idx_voice_sessions_started_date ON voice_sessions (started_date)',
+        'CREATE INDEX idx_dm_channels_dm_user_id ON dm_channels_data (dm_user_id)',
+        'CREATE INDEX idx_guild_channels_guild_id ON guild_channels_data (guild_id)',
+    ]
+    for stmt in statements:
+        cur.execute(stmt)
+
+
 def create_new_empty_database():
     conn = sqlite3.connect(':memory:')
     cur = conn.cursor()

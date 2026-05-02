@@ -23,7 +23,7 @@ from io import TextIOWrapper
 import gzip
 import tempfile
 
-from sqlite import create_new_empty_database, export_sqlite_to_bin
+from sqlite import create_new_empty_database, create_indexes, export_sqlite_to_bin
 
 import os
 from collections import defaultdict
@@ -900,6 +900,11 @@ def read_analytics_file(package_status_id, package_id, link, session):
         VALUES (?, ?, ?, ?, ?, ?, ?);
     ''', (package_id, '0.1.0',  user_data['id'], user_data['username'], user_data['display_name'], user_data['avatar_url'], 1 if is_partial else 0))
 
+    conn.commit()
+
+    # Build secondary indexes after bulk inserts but before VACUUM, so the
+    # vacuum repacks the index pages too.
+    create_indexes(cur)
     conn.commit()
 
     # make database smaller
