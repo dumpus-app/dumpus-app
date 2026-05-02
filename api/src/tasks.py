@@ -122,6 +122,14 @@ def download_file(package_status_id, package_id, link, session):
         r = requests.head(link, allow_redirects=True)
         print(r.status_code)
         print(r.headers)
+        # Discord download URLs are signed and short-lived: click.discord.com
+        # 302s to a Google Cloud Storage signed URL, which returns 4xx (most
+        # commonly 400) once the signature TTL is up. Surface that as
+        # EXPIRED_LINK so the user sees a useful message instead of the
+        # generic UNKNOWN_ERROR fallback.
+        if 400 <= r.status_code < 500:
+            print(f'Link is expired (upstream returned {r.status_code}).')
+            raise Exception('EXPIRED_LINK')
         if r.status_code != 200 or 'content-type' not in r.headers or 'application/octet-stream' not in r.headers['content-type']:
             print('The link does not point to a valid file.')
             raise Exception('INVALID_LINK')
@@ -978,10 +986,17 @@ def process_package(package_status_id, package_id, link, worker_name='regular_pr
         tb = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
         print(f'process_package failed for {package_id}:\n{tb}')
 
-        expected = ('EXPIRED_LINK')
+        # Worker raises these as known error codes. Anything else gets
+        # relabeled UNKNOWN_ERROR with the full traceback preserved for
+        # CloudWatch debugging.
+        # NOTE: this used to be `expected = ('EXPIRED_LINK')` which is
+        # just the string 'EXPIRED_LINK' (Python tuples need a comma);
+        # the `in` check then accidentally did substring match on a
+        # single code, hiding INVALID_LINK behind UNKNOWN_ERROR.
+        EXPECTED_ERROR_CODES = ('EXPIRED_LINK', 'INVALID_LINK')
         current = str(e)
         e_traceback = None
-        if expected not in current:
+        if current not in EXPECTED_ERROR_CODES:
             current = 'UNKNOWN_ERROR'
             e_traceback = tb
         session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).update({
