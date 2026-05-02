@@ -157,6 +157,7 @@
       "invalidLink": "Link geçersiz.",
       "unknownError": "Bilinmeyen bir hata oluştu.",
       "expiredLink": "Linkin süresi bitmiş.",
+      "missingUserData": "Your Discord export is missing your User data. When requesting your data again, make sure the \"User data\" option is ticked.",
       "comeBackLater": "You can close and come back later."
     }
   },
