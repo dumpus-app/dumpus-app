@@ -157,6 +157,7 @@
       "invalidLink": "پیوند نامعتبر است.",
       "unknownError": "خطایی ناشناخته رخ داده است.",
       "expiredLink": "لینک منقضی شده.",
+      "missingUserData": "Your Discord export is missing your User data. When requesting your data again, make sure the \"User data\" option is ticked.",
       "comeBackLater": "می توانید ببندید و بعداً برگردید."
     }
   },
