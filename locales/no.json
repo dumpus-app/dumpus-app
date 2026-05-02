@@ -157,6 +157,7 @@
       "invalidLink": "Lenken er ugyldig.",
       "unknownError": "An unknown error occurred.",
       "expiredLink": "Lenken har utløpt.",
+      "missingUserData": "Your Discord export is missing your User data. When requesting your data again, make sure the \"User data\" option is ticked.",
       "comeBackLater": "You can close and come back later."
     }
   },
