@@ -8,7 +8,7 @@ from flask_limiter import Limiter
 # Import tasks before db so dotenv loads before SQLAlchemy reads POSTGRES_URL.
 import tasks
 from enqueue import enqueue_package
-from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_rank
+from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_rank, get_cached_discord_user, cache_discord_user
 
 from sqlite import generate_demo_database
 
@@ -291,13 +291,23 @@ def get_avatar(package_id, user_id):
             return make_response('', 401)
     
         session = Session()
-        data = fetch_package_status(package_id, session)
-        session.close()
+        try:
+            data = fetch_package_status(package_id, session)
 
-        if not data:
-            return make_response('', 401)
-        
-        user = fetch_diswho_user(user_id)
+            if not data:
+                return make_response('', 401)
+
+            # Hit the upstream only on a cache miss / stale entry. Then
+            # only persist responses that look real — username present
+            # is the cheapest signal that we got past auth/404/5xx and
+            # have something worth handing back to a future caller.
+            user = get_cached_discord_user(user_id, session)
+            if not user:
+                user = fetch_diswho_user(user_id)
+                if user and user.get('username'):
+                    cache_discord_user(user_id, user, session)
+        finally:
+            session.close()
 
         if not user:
             return make_response('', 500)

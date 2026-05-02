@@ -1,9 +1,11 @@
 import os
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy.sql import func, text
+
+import orjson
 
 engine = create_engine(os.getenv('POSTGRES_URL'), pool_recycle=3600, pool_pre_ping=True)
 
@@ -17,6 +19,24 @@ class SavedPackageData(Base):
     iv = Column(String(255), nullable=False)
     created_at = Column(DateTime, nullable=False, default=func.now())
     updated_at = Column(DateTime, nullable=False, onupdate=func.now(), default=func.now())
+
+class CachedDiscordUser(Base):
+    """Cache of upstream /user payloads (diswho or Discord bot API).
+
+    Discord usernames + avatars don't move often; the upstream is rate-
+    limited (429s on bursts) so a small Postgres-backed cache absorbs
+    the per-package fan-out and stops us hammering Discord every time
+    a user opens a heavy package.
+    """
+    __tablename__ = 'cached_discord_user'
+
+    user_id = Column(String(255), primary_key=True)
+    payload = Column(String, nullable=False)  # JSON-serialized upstream response
+    cached_at = Column(DateTime, nullable=False, default=func.now())
+
+
+CACHED_DISCORD_USER_TTL_HOURS = 24
+
 
 class PackageProcessStatus(Base):
     __tablename__ = 'package_process_status'
@@ -92,6 +112,33 @@ def fetch_package_rank (package_id, package_status, session):
 def fetch_package_status(package_id, session):
     status = session.query(PackageProcessStatus).filter_by(package_id=package_id).order_by(PackageProcessStatus.created_at.desc()).first()
     return status
+
+def get_cached_discord_user(user_id, session):
+    """Return the cached upstream user dict, or None if absent or stale."""
+    row = session.query(CachedDiscordUser).filter_by(user_id=user_id).first()
+    if not row:
+        return None
+    if datetime.now() - row.cached_at > timedelta(hours=CACHED_DISCORD_USER_TTL_HOURS):
+        return None
+    return orjson.loads(row.payload)
+
+
+def cache_discord_user(user_id, payload, session):
+    """Upsert a user payload into the cache.
+
+    Caller must only pass valid upstream responses — never None, never
+    error envelopes — so the cache doesn't pin failures and starve
+    legitimate retries.
+    """
+    serialized = orjson.dumps(payload).decode()
+    existing = session.query(CachedDiscordUser).filter_by(user_id=user_id).first()
+    if existing:
+        existing.payload = serialized
+        existing.cached_at = datetime.now()
+    else:
+        session.add(CachedDiscordUser(user_id=user_id, payload=serialized))
+    session.commit()
+
 
 def fetch_pending_packages():
     session = Session()
