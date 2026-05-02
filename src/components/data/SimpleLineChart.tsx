@@ -1,86 +1,20 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import clsx from "clsx";
-import {
-  Line,
-  LineChart,
-  CartesianGrid,
-  Legend,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
-import { formatNumber } from "~/utils/format";
 
-export type Props = {
-  data: {
-    label: string;
-    value: number;
-  }[];
-  className?: string;
-  legend: string;
-  showSmallDots?: boolean;
-};
+import type { Props } from "./SimpleLineChart.impl";
 
-export default function SimpleLineChart({
-  data,
-  className,
-  legend,
-  showSmallDots = false,
-}: Props) {
-  return (
-    <div className={clsx("h-48 overflow-hidden sm:h-72", className)}>
-      <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data}>
-          <CartesianGrid
-            strokeDasharray="0"
-            vertical={false}
-            className="stroke-gray-700"
-          />
-          <XAxis
-            dataKey="label"
-            // stroke-gray-400
-            stroke="#94a3b8"
-          />
-          <YAxis
-            width={45}
-            // stroke-gray-400
-            stroke="#94a3b8"
-            tickFormatter={(v, i) => formatNumber(v)}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#1e293b",
-              border: "none",
-              borderRadius: "0.5rem",
-            }}
-            cursor={{ fill: "#ffffff25", stroke: "#ffffff25", strokeWidth: 6 }}
-          />
-          <Legend />
-          <Line
-            dataKey="value"
-            type="monotone"
-            // className="fill-brand-200"
-            name={legend}
-            // stroke-brand-300
-            stroke="#7dd3fc"
-            strokeWidth={2}
-            dot={{
-              fill: "#7dd3fc",
-              stroke: "#7dd3fc",
-              strokeWidth: showSmallDots ? 0 : 3,
-            }}
-            // stroke-brand-200
-            activeDot={{
-              fill: "#7dd3fc",
-              stroke: "#7dd3fc",
-              strokeWidth: showSmallDots ? 1 : 4,
-            }}
-            animationDuration={300}
-          />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  );
+export type { Props };
+
+// See PieChart.tsx for the rationale; same recharts deferral.
+const SimpleLineChartLazy = dynamic(() => import("./SimpleLineChart.impl"), {
+  ssr: false,
+  loading: () => (
+    <div className={clsx("h-48 overflow-hidden sm:h-72")} />
+  ),
+});
+
+export default function SimpleLineChart(props: Props) {
+  return <SimpleLineChartLazy {...props} />;
 }
