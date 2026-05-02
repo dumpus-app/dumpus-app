@@ -26,7 +26,9 @@ export type PackageAPIStatusResponse = Prettify<
           | "UNKNOWN_PACKAGE_ID"
           | "UNKNOWN_ERROR"
           | "UNAUTHORIZED"
-          | "EXPIRED_LINK";
+          | "EXPIRED_LINK"
+          | "INVALID_LINK"
+          | "MISSING_USER_DATA";
       }
   ) &
     (
