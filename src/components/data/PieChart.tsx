@@ -14,7 +14,9 @@ export type { Props };
 const PieChartLazy = dynamic(() => import("./PieChart.impl"), {
   ssr: false,
   loading: () => (
-    <div className={clsx("relative aspect-square h-48 overflow-hidden sm:h-72")} />
+    <div
+      className={clsx("relative aspect-square h-48 overflow-hidden sm:h-72")}
+    />
   ),
 });
 

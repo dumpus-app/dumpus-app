@@ -10,9 +10,7 @@ export type { Props };
 // See PieChart.tsx for the rationale; same recharts deferral.
 const SimpleBarChartLazy = dynamic(() => import("./SimpleBarChart.impl"), {
   ssr: false,
-  loading: () => (
-    <div className={clsx("h-48 overflow-hidden sm:h-72")} />
-  ),
+  loading: () => <div className={clsx("h-48 overflow-hidden sm:h-72")} />,
 });
 
 export default function SimpleBarChart(props: Props) {
