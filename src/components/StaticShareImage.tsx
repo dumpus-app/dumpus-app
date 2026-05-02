@@ -74,7 +74,7 @@ function TopList({
               {/* eslint-disable-next-line */}
               <img
                 src={url}
-                alt=""
+                alt={name}
                 className="rounded-full object-cover object-center"
                 width={48}
                 height={48}
@@ -121,7 +121,7 @@ export default function StaticShareImage({
             {/* eslint-disable-next-line */}
             <img
               src={user.avatarURL}
-              alt=""
+              alt={user.displayName}
               className="rounded-full object-cover object-center"
               width={128}
               height={128}
@@ -224,7 +224,7 @@ export default function StaticShareImage({
             {/* eslint-disable-next-line */}
             <img
               src="/assets/logo.png"
-              alt=""
+              alt="Dumpus"
               className="rounded-full object-cover object-center"
               width={64}
               height={64}
