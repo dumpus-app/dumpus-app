@@ -25,6 +25,7 @@
     "lint": "cross-env-shell NEXT_PUBLIC_DEPLOY_ENV=web \"pnpm script:list-locales && cross-env next lint\"",
     "prepare": "pnpm script:list-locales",
     "script:build-android": "cross-env-shell NODE_ENV=production \"cap sync\" && node ./scripts/build-android.cjs",
+    "script:flatten-dist": "node ./scripts/flatten-trailing-slash.cjs",
     "script:list-locales": "node ./scripts/list-locales.cjs",
     "start": "serve dist",
     "tauri:icon": "tauri icon ./ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x~car.png",
