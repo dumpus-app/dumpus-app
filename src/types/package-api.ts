@@ -28,7 +28,8 @@ export type PackageAPIStatusResponse = Prettify<
           | "UNAUTHORIZED"
           | "EXPIRED_LINK"
           | "INVALID_LINK"
-          | "MISSING_USER_DATA";
+          | "MISSING_USER_DATA"
+          | "MISSING_ACTIVITY_DATA";
       }
   ) &
     (

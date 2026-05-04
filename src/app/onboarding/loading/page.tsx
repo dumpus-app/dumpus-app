@@ -37,6 +37,7 @@ export default function Page() {
             UNKNOWN_ERROR: t("onboarding.loading.unknownError"),
             EXPIRED_LINK: t("onboarding.loading.expiredLink"),
             MISSING_USER_DATA: t("onboarding.loading.missingUserData"),
+            MISSING_ACTIVITY_DATA: t("onboarding.loading.missingActivityData"),
           }[error]
         }
         url="/onboarding/access/link/"

@@ -158,6 +158,7 @@
       "unknownError": "An unknown error occurred.",
       "expiredLink": "Link expired.",
       "missingUserData": "Your Discord export is missing your User data. When requesting your data again, make sure the \"User data\" option is ticked.",
+      "missingActivityData": "Your Discord export is missing your activity history. When requesting your data again, make sure the \"Activity history\" option is ticked.",
       "comeBackLater": "You can close and come back later."
     }
   },
