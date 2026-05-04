@@ -433,11 +433,18 @@ def read_analytics_file(package_status_id, package_id, link, session):
             # package_is_partial from the SQLite to know which screens to
             # render as N/A. Asking the user to re-export would mean a
             # ~30-day round-trip, so degrading gracefully is the kinder UX.
-            if analytics_line_count > 0:
+            # Guard on compute_time_per_line, NOT analytics_line_count: the
+            # latter is bumped at the top of the loop, before the
+            # `if not 'event_type' in analytics_line_json: continue` skip.
+            # A file whose lines all lack event_type (Discord ships these
+            # for some kinds of partial exports) would have line count > 0
+            # but produce no usable events, which is the actual condition
+            # for "we have nothing to average and nothing to chart".
+            if compute_time_per_line:
                 is_partial = False
                 print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
             else:
-                print('Analytics file is empty — keeping is_partial=True; activity-driven stats will be N/A on the client.')
+                print(f'Analytics file produced no usable events ({analytics_line_count} raw lines) — keeping is_partial=True; activity-driven stats will be N/A on the client.')
 
         print(f'Analytics data: {time.time() - start}')
         print(f'Session logs: {len(session_logs)}')
