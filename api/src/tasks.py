@@ -280,8 +280,6 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
         if analytics_file_name:
 
-            is_partial = False
-
             compute_time_per_line = []
             for line in TextIOWrapper(zip.open(analytics_file_name)):
 
@@ -426,7 +424,20 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
                 compute_time_per_line.append(time.time() - compute_time_per_line_start)
 
-            print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
+            # When the user un-ticks "Activity history" in Discord's export
+            # request form, Discord still ships an analytics file path but
+            # the file is empty. Don't error — keep is_partial=True (the
+            # default) and let the rest of the worker produce what it can:
+            # owner profile, servers, DMs, payments, per-channel message
+            # totals from CSVs are all still useful. The frontend reads
+            # package_is_partial from the SQLite to know which screens to
+            # render as N/A. Asking the user to re-export would mean a
+            # ~30-day round-trip, so degrading gracefully is the kinder UX.
+            if analytics_line_count > 0:
+                is_partial = False
+                print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
+            else:
+                print('Analytics file is empty — keeping is_partial=True; activity-driven stats will be N/A on the client.')
 
         print(f'Analytics data: {time.time() - start}')
         print(f'Session logs: {len(session_logs)}')
