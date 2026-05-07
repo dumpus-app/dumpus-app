@@ -456,20 +456,34 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
         namelist = zip.namelist()
         servers_root = find_servers_root(namelist)
-        if not servers_root:
-            server_path = 'Servers/index.json'
-            if server_path not in namelist and 'servers/index.json' in namelist:
-                server_path = 'servers/index.json'
-        else:
+        # Resolve server_path defensively: only assign a path that actually
+        # exists in the zip. Don't fall through to the canonical literal
+        # 'Servers/index.json' and let zip.open KeyError — that's the
+        # UNKNOWN_ERROR users hit when they un-tick "Servers" in Discord's
+        # data-request form.
+        if servers_root:
             server_path = f'{servers_root}/index.json'
-        
-        server_content = zip.open(server_path)
-        server_json = orjson.loads(server_content.read())
-        for guild_id in server_json:
-            guilds.append({
-                'id': guild_id,
-                'name': server_json[guild_id]
-            })
+        elif 'Servers/index.json' in namelist:
+            server_path = 'Servers/index.json'
+        elif 'servers/index.json' in namelist:
+            server_path = 'servers/index.json'
+        else:
+            server_path = None
+
+        if server_path:
+            server_content = zip.open(server_path)
+            server_json = orjson.loads(server_content.read())
+            for guild_id in server_json:
+                guilds.append({
+                    'id': guild_id,
+                    'name': server_json[guild_id]
+                })
+        else:
+            # Server data missing — DMs, friends, payments, profile still
+            # process. Mark partial so the frontend can render server-scoped
+            # stats as N/A (issue dumpus-app/dumpus-app#232 covers the banner).
+            print('No Servers/index.json found — skipping server data; package is partial.')
+            is_partial = True
 
         '''
         Read Channels Data.
@@ -477,15 +491,24 @@ def read_analytics_file(package_status_id, package_id, link, session):
         '''
 
         messages_root = find_messages_root(namelist)
-        if not messages_root:
-            message_index_path = 'Messages/index.json'
-            if message_index_path not in namelist and 'messages/index.json' in namelist:
-                message_index_path = 'messages/index.json'
-        else:
+        # Same defensive resolution as servers above.
+        if messages_root:
             message_index_path = f'{messages_root}/index.json'
-            
-        message_index_content = zip.open(message_index_path)
-        message_index_json = orjson.loads(message_index_content.read())
+        elif 'Messages/index.json' in namelist:
+            message_index_path = 'Messages/index.json'
+        elif 'messages/index.json' in namelist:
+            message_index_path = 'messages/index.json'
+        else:
+            message_index_path = None
+
+        if message_index_path:
+            message_index_content = zip.open(message_index_path)
+            message_index_json = orjson.loads(message_index_content.read())
+        else:
+            print('No Messages/index.json found — skipping channel data; package is partial.')
+            is_partial = True
+            message_index_json = {}
+
         for channel_id in message_index_json:
             full_name = message_index_json[channel_id]
             if full_name is None:
