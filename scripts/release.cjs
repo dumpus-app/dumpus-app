@@ -59,6 +59,42 @@ if (dirty) {
   process.exit(1);
 }
 
+// 1a. Insist on being on main. Both v1.0.10 and v1.0.11 misfired because
+// `pnpm release:patch` was run on a feature branch — the bump commit went
+// there, the GH Release was cut against main HEAD which still had the
+// previous version, and platform workflows built artifacts under the new
+// tag with the OLD version's code. Catching this here is the cheapest
+// possible save.
+const currentBranch = out("git rev-parse --abbrev-ref HEAD");
+if (currentBranch !== "main") {
+  console.error(
+    `Refusing to release from branch '${currentBranch}'. Releases must come\n` +
+      `from main so the tag, the GitHub Release, and the platform builds all\n` +
+      `agree on which code is being shipped. Run:\n` +
+      `\n` +
+      `  git checkout main\n` +
+      `  git pull --ff-only\n` +
+      `  pnpm release:${LEVEL}\n`,
+  );
+  process.exit(1);
+}
+
+// 1b. Insist on local main being in sync with origin/main. Otherwise the
+// release commit could land on top of stale code, and a subsequent
+// `git push` would either fast-forward (fine) or be rejected (annoying)
+// — but worse, if you cut the GH Release between bump-commit and push,
+// workflows still build the wrong thing.
+run("git fetch origin main --quiet");
+const localHead = out("git rev-parse HEAD");
+const remoteHead = out("git rev-parse origin/main");
+if (localHead !== remoteHead) {
+  console.error(
+    `Local main (${localHead.slice(0, 7)}) is out of sync with origin/main (${remoteHead.slice(0, 7)}).\n` +
+      `Pull (or push your local commits) so they match, then re-run.`,
+  );
+  process.exit(1);
+}
+
 // 2. Bump package.json — straight JSON edit avoids npm/pnpm version's
 // side effects (auto-tag, auto-commit, lockfile rewrite, etc.).
 const pkgPath = path.join(repoRoot, "package.json");
