@@ -257,8 +257,18 @@ def read_analytics_file(package_status_id, package_id, link, session):
         # 1 = SUCCESSFUL, 2 = FAILED, 3 = REFUNDED, 4 = REFUND_PENDING,
         # 5 = PARTIALLY_REFUNDED, 6 = PENDING. Without this filter, failed
         # and refunded charges inflate the "spent on Nitro" total.
+        #
+        # Also skip purchases settled in Discord Orbs (currency ==
+        # "discord_orb"). Orbs are a virtual currency Discord hands out via
+        # Quests / events — users do not pay real money to acquire them, and
+        # the `amount` is denominated in orbs, not cents. Summing them with
+        # fiat payments produced absurd totals (e.g. a user with €0 of real
+        # spend but ~30k orbs of cosmetic purchases got billed as "$297
+        # spent" because 29 720 orbs were treated as 29 720 cents).
         for payment in payment_records:
             if payment.get('status') != 1:
+                continue
+            if payment.get('currency') == 'discord_orb':
                 continue
             payments.append({
                 'id': payment['id'],
