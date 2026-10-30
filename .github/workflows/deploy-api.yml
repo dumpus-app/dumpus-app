@@ -1,12 +1,16 @@
-name: deploy
+name: deploy-api
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "docs/**"
-      - "infra/**"
-      - "**.md"
+  # Off until a manual run has deployed from this repo and `/health`
+  # answered, then uncomment.
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "api/**"
+  #     - ".github/workflows/deploy-api.yml"
+  #     - "!api/docs/**"
+  #     - "!api/infra/**"
+  #     - "!api/**.md"
   workflow_dispatch:
     inputs:
       image_tag:
@@ -14,7 +18,7 @@ on:
         required: false
 
 permissions:
-  id-token: write   # GitHub OIDC
+  id-token: write # GitHub OIDC
   contents: read
 
 env:
@@ -45,7 +49,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          role-to-assume: ${{ secrets.AWS_API_DEPLOY_ROLE_ARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to ECR
@@ -58,8 +62,8 @@ jobs:
       - name: Build & push Lambda image (api + forwarder)
         uses: docker/build-push-action@v7
         with:
-          context: .
-          file: Dockerfile.lambda
+          context: api
+          file: api/Dockerfile.lambda
           push: true
           # Lambda only runs amd64 unless the function is configured for arm64.
           platforms: linux/amd64
@@ -73,8 +77,8 @@ jobs:
       - name: Build & push worker image (Fargate)
         uses: docker/build-push-action@v7
         with:
-          context: .
-          file: Dockerfile.worker
+          context: api
+          file: api/Dockerfile.worker
           push: true
           platforms: linux/amd64
           provenance: false
