@@ -1,0 +1,54 @@
+name: E2E
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "public/**"
+      - "locales/**"
+      - "e2e/**"
+      - "scripts/list-locales.cjs"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "next.config.mjs"
+      - "tailwind.config.ts"
+      - "postcss.config.cjs"
+      - "tsconfig.json"
+      - "playwright.config.ts"
+      - ".github/workflows/e2e.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  e2e:
+    # The committed screenshots were taken in this image, on arm64 like an
+    # Apple Silicon Mac running `pnpm test:e2e:docker`. The image tag must
+    # match `@playwright/test`, Renovate bumps both together.
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+
+    steps:
+      - uses: actions/checkout@v6
+
+      # The image's Node and the `packageManager` pnpm, like
+      # `scripts/e2e-docker.sh`.
+      - run: corepack enable
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build and run the e2e suite
+        run: pnpm test:e2e
+
+      - name: Upload the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
