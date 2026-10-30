@@ -1,0 +1,21 @@
+# Fargate task image. Plain Python — no Lambda runtime — because Fargate
+# runs ordinary container processes. Keeps the image small and the entrypoint
+# obvious.
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# System deps are minimal: pandas wheels are manylinux, orjson too. If a
+# future package adds something native, install it here.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Flat layout: matches Dockerfile.lambda so existing top-level imports
+# (`from tasks import ...`) keep working.
+COPY src/ /app/
+
+ENTRYPOINT ["python", "-u", "worker_main.py"]
