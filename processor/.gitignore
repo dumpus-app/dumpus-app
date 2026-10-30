@@ -1,0 +1,9 @@
+# Packages, databases and reports hold a user's data.
+*.zip
+*.sqlite*
+report.json
+*.report.json
+
+# What `go build ./cmd/dumpus-processor` writes here.
+/dumpus-processor
+/dumpus-processor.exe
