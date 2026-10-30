@@ -37,7 +37,7 @@ def handler(event, context):
         message_id = record.get('messageId')
         try:
             body = json.loads(record['body'])
-            ecs.run_task(
+            response = ecs.run_task(
                 cluster=CLUSTER,
                 taskDefinition=TASK_DEF,
                 launchType='FARGATE',
@@ -59,6 +59,11 @@ def handler(event, context):
                     }],
                 },
             )
+            # RunTask reports a task it couldn't place (capacity, ENI limits)
+            # in `failures` instead of raising.
+            if response.get('failures') or not response.get('tasks'):
+                reasons = [f.get('reason') for f in response.get('failures', [])]
+                raise RuntimeError(f'RunTask started no task: {reasons}')
             print(f'launched task for package {body["package_id"]}')
         except Exception as e:
             print(f'record {message_id} failed: {e}')
