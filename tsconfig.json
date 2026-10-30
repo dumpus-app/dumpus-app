@@ -32,5 +32,5 @@
     "dist/types/**/*.ts",
     "src/env.mjs"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "api", "processor"]
 }

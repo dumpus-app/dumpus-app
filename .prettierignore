@@ -7,3 +7,5 @@ android/app/src/main/assets/public
 ios/App/App/public
 src-tauri/target
 pnpm-lock.yaml
+/api
+/processor
