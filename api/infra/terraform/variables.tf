@@ -58,8 +58,10 @@ variable "fck_nat_instance_type" {
 # ---- Database ----
 
 variable "postgres_version" {
+  # Major only: RDS applies minor upgrades on its own, and a pinned minor
+  # makes every plan try to downgrade to it.
   type    = string
-  default = "17.2"
+  default = "17"
 }
 
 variable "postgres_instance_class" {
