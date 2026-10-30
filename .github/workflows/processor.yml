@@ -1,0 +1,122 @@
+name: processor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "processor/**"
+      - ".github/workflows/processor.yml"
+  pull_request:
+    paths:
+      - "processor/**"
+      - ".github/workflows/processor.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: processor-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: processor
+
+env:
+  # `go.mod`'s `go` line is the minimum; CI uses the latest patch of that minor.
+  GO_VERSION: "1.26.x"
+
+jobs:
+  test:
+    name: test (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          # Production runs on arm64, and `modernc.org/sqlite` carries
+          # per-architecture code, so the tests run there too.
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: processor/go.sum
+
+      - name: gofmt
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "Not gofmt-ed:"; echo "$unformatted"; exit 1
+          fi
+
+      - name: go mod tidy
+        run: go mod tidy -diff
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: go test
+        run: go test -race -count=1 -coverprofile=coverage.out ./...
+
+      - name: Coverage summary
+        run: |
+          {
+            echo "### Coverage (${{ matrix.arch }})"
+            echo '```'
+            go tool cover -func=coverage.out | tail -1
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: processor/go.sum
+
+      - name: staticcheck
+        run: go run honnef.co/go/tools/cmd/staticcheck@v0.8.2 ./...
+
+  # The module parses zips from untrusted users.
+  vulncheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: processor/go.sum
+
+      - name: govulncheck
+        run: go run golang.org/x/vuln/cmd/govulncheck@v1.9.0 ./...
+
+  # The CLI is meant to run on anyone's machine, without cgo.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: processor/go.sum
+
+      - name: Cross-build dumpus-processor
+        env:
+          CGO_ENABLED: "0"
+        run: |
+          for target in linux/amd64 linux/arm64 darwin/amd64 darwin/arm64 windows/amd64; do
+            echo "building $target"
+            GOOS="${target%/*}" GOARCH="${target#*/}" go build -o /dev/null ./cmd/dumpus-processor
+          done
