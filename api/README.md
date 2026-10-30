@@ -35,7 +35,7 @@ Anyone can host their own Dumpus instance. The official Dumpus client can then b
 
 The worker no longer runs as a separate Celery process — set `QUEUE_BACKEND=sync` and the API processes packages inline on the request thread (good enough at small volume), or set `QUEUE_BACKEND=sqs` to dispatch to AWS SQS (used by the Lambda deployment).
 
-* clone <https://github.com/dumpus-app/dumpus-api>
+* clone <https://github.com/dumpus-app/dumpus-app> and work from its `api/` folder
 * easy way: `cp .env.example .env`, fill it in, then `make up`
 * manual:
     - install requirements with pip
@@ -66,11 +66,11 @@ A Terraform stack under `infra/terraform/` provisions a deployment of the API on
 2. `cp infra/terraform/terraform.tfvars.example infra/terraform/terraform.tfvars` and fill in `discord_secret`, `domain_name`, `github_repository`, region, etc.
 3. `cd infra/terraform && terraform init && terraform apply`.
    This single apply does everything: a `null_resource` pushes a placeholder image (the public AWS Lambda Python base) into ECR with the `:bootstrap` tag, then the Lambda functions are created against that placeholder. Requires `docker` and `aws` CLI on the apply host.
-4. Set the GitHub repo secret `AWS_DEPLOY_ROLE_ARN` from `terraform output -raw github_deploy_role_arn`. From here on, every push to `main` builds the real image in CI and rolls both Lambdas — no more local builds needed.
+4. Set the GitHub repo secret `AWS_API_DEPLOY_ROLE_ARN` from `terraform output -raw github_deploy_role_arn`. From here on, every push to `main` that touches `api/` builds the real image in CI and rolls both Lambdas, so no more local builds are needed.
 
 ### Day-to-day deploys
 
-Push to `main` → `.github/workflows/deploy.yml` builds both container images (Lambda for the API + forwarder, plain Python for the Fargate worker), pushes them to ECR tagged with the git SHA, rolls both Lambdas, and registers a new ECS task definition revision. The next runTask call picks up the new image. No long-lived AWS keys in GitHub.
+A push to `main` that touches `api/` runs `.github/workflows/deploy-api.yml`, at the repo root, which builds both container images (Lambda for the API + forwarder, plain Python for the Fargate worker), pushes them to ECR tagged with the git SHA, rolls both Lambdas, and registers a new ECS task definition revision. The next runTask call picks up the new image. No long-lived AWS keys in GitHub.
 
 ### Operations
 

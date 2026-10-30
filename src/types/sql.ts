@@ -1,4 +1,4 @@
-// https://github.com/dumpus-app/dumpus-api/blob/main/docs/sqlite_database_structure.md
+// api/docs/sqlite_database_structure.md
 
 export type Activity = {
   event_name: string;

@@ -139,6 +139,6 @@ resource "aws_iam_role_policy" "github_deploy" {
 }
 
 output "github_deploy_role_arn" {
-  description = "Set as the AWS_DEPLOY_ROLE_ARN secret in GitHub"
+  description = "Set as the AWS_API_DEPLOY_ROLE_ARN secret in GitHub"
   value       = local.github_oidc_enabled ? aws_iam_role.github_deploy[0].arn : ""
 }
