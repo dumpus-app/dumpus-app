@@ -100,13 +100,21 @@ def find_servers_root(zip_namelist):
     
     return None
 
+# Activity comes as several event streams. Many exports omit `analytics`, the
+# most complete one; `reporting` carries the same session, app open, voice,
+# reaction and guild join events. `tns` and `modeling` carry fewer of them.
+ACTIVITY_STREAMS = ('analytics', 'reporting')
+
 def find_analytics_file(zip_namelist):
     """
     Find the analytics file in the package.
     This handles cases where the folder might be translated.
     """
-    # Look for any JSON file in a folder that could be analytics
-    return next((name for name in zip_namelist if re.search(r'/analytics.*\.json$', name)), None)
+    for stream in ACTIVITY_STREAMS:
+        name = next((name for name in zip_namelist if re.search(rf'/{stream}.*\.json$', name)), None)
+        if name:
+            return name
+    return None
 
 def download_file(package_status_id, package_id, link, session):
     # check if file exists in tmp
