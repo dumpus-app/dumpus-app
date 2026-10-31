@@ -261,7 +261,7 @@ def generate_demo_database():
         else:
             pass
         # random day between 2021 and now
-        day = datetime.date(random.randint(2021, datetime.datetime.now().year), random.randint(1, 12), random.randint(1, 28))
+        day = datetime.date(random.randint(2021, datetime.datetime.now().year), random.randint(1, 12), random.randint(1, 28)).isoformat()
         hour = random.randint(0, 23)
         occurence_count = more_weighted_events.__contains__(event_name) and random.randint(1, 50) or 1
         data = (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
