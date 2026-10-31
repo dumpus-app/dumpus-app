@@ -261,15 +261,19 @@ def cancel_package(package_id):
         res['errorMessageCode'] = 'UNKNOWN_PACKAGE_ID'
         session.close()
         return jsonify(res), 200
-    
-    session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).delete()
-    session.query(SavedPackageData).filter(SavedPackageData.package_id == package_id).delete()
+
+    # The blob goes before the rows: if S3 refuses, the request fails with
+    # the rows still there, so deleting again can finish the job.
+    import blob_storage
+    try:
+        blob_storage.delete(package_id)
+        session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).delete()
+        session.query(SavedPackageData).filter(SavedPackageData.package_id == package_id).delete()
+        session.commit()
+    finally:
+        session.close()
 
     res['isDeleted'] = True
-
-    session.commit()
-
-    session.close()
 
     send_internal_notification({
         'embeds': [

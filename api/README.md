@@ -216,6 +216,8 @@ Status codes:
 
 * `DELETE /process/<package_id>`
 
+Deletes the package's rows and its encrypted blob in S3.
+
 Response:
 ```js
 {
