@@ -10,9 +10,7 @@ allowed_account_ids = ["436630934006"]
 domain_name   = "dumpus.app"
 api_subdomain = "api"
 
-# Both while the API moves into dumpus-app, so either repo can deploy it.
-# Drop dumpus-api once `deploy-api.yml` has deployed from dumpus-app.
-github_repository = ["dumpus-app/dumpus-api", "dumpus-app/dumpus-app"]
+github_repository = ["dumpus-app/dumpus-app"]
 
 image_tag = "bootstrap"
 
