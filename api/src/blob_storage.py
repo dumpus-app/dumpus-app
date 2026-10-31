@@ -53,6 +53,12 @@ def upload(package_id: str, body: bytes) -> None:
     )
 
 
+def delete(package_id: str) -> None:
+    """S3 answers success for a key it doesn't have, so a package that
+    never got a blob deletes the same way."""
+    _client().delete_object(Bucket=_bucket(), Key=_key(package_id))
+
+
 def presigned_url(package_id: str, ttl_seconds: int = 300) -> str:
     """Return a short-lived URL the client can GET directly from S3."""
     return _client().generate_presigned_url(

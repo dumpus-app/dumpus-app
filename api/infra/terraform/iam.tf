@@ -47,11 +47,13 @@ data "aws_iam_policy_document" "api" {
   # role itself must be allowed to GetObject — the URL just borrows that
   # permission for ~5 minutes. PutObject is for the demo lazy-seed path
   # in /blob/demo (the worker uploads real packages with its own role).
+  # DeleteObject is for DELETE /process/<package_id>.
   statement {
     sid = "ReadWritePackageBlobs"
     actions = [
       "s3:GetObject",
       "s3:PutObject",
+      "s3:DeleteObject",
     ]
     resources = ["${aws_s3_bucket.package_data.arn}/*"]
   }
