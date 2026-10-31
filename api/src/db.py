@@ -67,13 +67,6 @@ with engine.begin() as conn:
 
 Session = sessionmaker(bind=engine)
 
-def update_progress (package_status_id, package_id, current_progress, session):
-    package = session.query(PackageProcessStatus).filter_by(id=package_status_id).first()
-    if package:
-        package.progress = current_progress
-        package.updated_at = datetime.now()
-        session.commit()
-
 def update_step (package_status_id, package_id, step, session):
     package = session.query(PackageProcessStatus).filter_by(id=package_status_id).first()
     if package:

@@ -2,7 +2,6 @@ import hashlib
 import re
 from datetime import datetime
 from collections import Counter
-import pandas as pd
 import os
 from urllib.parse import urlparse
 import base64
@@ -43,12 +42,6 @@ def extract_key_from_discord_link (link):
     encrypt_key = upn
     return encrypt_key
 
-def generate_avatar_url_from_user_id_avatar_hash (user_id, hash):
-    if hash:
-        extension = hash.startswith('a_') and 'gif' or 'jpg'
-        return f'https://cdn.discordapp.com/avatars/{user_id}/{hash}.{extension}'
-    return None
-
 def get_package_zip_path (package_id):
     return os.path.join('..', os.getenv('DL_ZIP_TMP_PATH'), f'{package_id}.zip')
 
@@ -57,38 +50,6 @@ def ts_included_in_range (ts, start_date, end_date):
         return ts <= end_date
     else:
         return start_date <= ts <= end_date
-
-def get_ts_string_parser(line, start_offset=1):
-    """
-    Parse a timestamp string in format YYYY-MM-DDTHH:MM or similar
-    Use start_offset to skip the leading quote if present
-    """
-    year, month, day = int(line[start_offset:start_offset+4]), int(line[start_offset+5:start_offset+7]), int(line[start_offset+8:start_offset+10])
-    hour, minute = int(line[start_offset+11:start_offset+13]), int(line[start_offset+14:start_offset+16])
-
-    return datetime(year=year, month=month, day=day, hour=hour, minute=minute)
-
-def get_ts_regular_string_parser(line):
-    """Parse timestamp string starting at index 0 (no leading quote)"""
-    return get_ts_string_parser(line, start_offset=0)
-
-def _count_dates(timestamps, period='H'):
-    """
-    Count timestamp occurrences grouped by time period
-    Use period to group by hour or day
-    """
-    timestamps_series = pd.Series(timestamps)
-    if pd.api.types.is_numeric_dtype(timestamps_series):
-        timestamps_period = pd.to_datetime(timestamps_series, unit='s').dt.floor(period)
-    else:
-        timestamps_period = pd.to_datetime(timestamps_series).dt.floor(period)
-    return timestamps_period.value_counts().to_dict()
-
-def count_dates_hours(timestamps):
-    return _count_dates(timestamps, period='H')
-
-def count_dates_day(timestamps):
-    return _count_dates(timestamps, period='D')
 
 current_jwt = None
 def generate_diswho_jwt():

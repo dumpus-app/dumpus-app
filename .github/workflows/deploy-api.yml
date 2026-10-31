@@ -5,10 +5,13 @@ on:
     branches: [main]
     paths:
       - "api/**"
+      # The worker image builds dumpus-processor from processor/.
+      - "processor/**"
       - ".github/workflows/deploy-api.yml"
       - "!api/docs/**"
       - "!api/infra/**"
       - "!api/**.md"
+      - "!processor/**.md"
   workflow_dispatch:
     inputs:
       image_tag:
@@ -83,6 +86,8 @@ jobs:
         with:
           context: api
           file: api/Dockerfile.worker
+          # Dockerfile.worker copies processor/ from this named context.
+          build-contexts: processor=processor
           push: true
           platforms: linux/amd64
           provenance: false
