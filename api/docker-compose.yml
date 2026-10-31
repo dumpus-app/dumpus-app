@@ -23,7 +23,11 @@ services:
   api:
     container_name: dumpus-api
     build:
+      context: .
       dockerfile: Dockerfile.api
+      # Dockerfile.api builds dumpus-processor from processor/.
+      additional_contexts:
+        processor: ../processor
 
     ports:
       - "${API_PORT}:5000"

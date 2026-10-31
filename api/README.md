@@ -37,9 +37,10 @@ Anyone can host their own Dumpus instance. The official Dumpus client can then b
 The worker no longer runs as a separate Celery process — set `QUEUE_BACKEND=sync` and the API processes packages inline on the request thread (good enough at small volume), or set `QUEUE_BACKEND=sqs` to dispatch to AWS SQS (used by the Lambda deployment).
 
 * clone <https://github.com/dumpus-app/dumpus-app> and work from its `api/` folder
-* easy way: `cp .env.example .env`, fill it in, then `make up`
+* easy way: `cp .env.example .env`, fill it in, then `make up`, which builds the API image with `dumpus-processor` in it
 * manual:
     - install requirements with pip
+    - install `dumpus-processor`, which turns each package into its database: `go install github.com/dumpus-app/dumpus-app/processor/cmd/dumpus-processor@latest`. `go install` puts it in `$(go env GOPATH)/bin`: set `DUMPUS_PROCESSOR` to its path unless you move it to `/usr/local/bin/dumpus-processor`
     - start a PostgreSQL server
     - fill the .env file with your PostgreSQL creds
     - start the API: `QUEUE_BACKEND=sync waitress-serve --port=5000 app:app`
@@ -71,7 +72,7 @@ A Terraform stack under `infra/terraform/` provisions a deployment of the API on
 
 ### Day-to-day deploys
 
-A push to `main` that touches `api/` runs `.github/workflows/deploy-api.yml`, at the repo root, which builds both container images (Lambda for the API + forwarder, plain Python for the Fargate worker), pushes them to ECR tagged with the git SHA, rolls both Lambdas, and registers a new ECS task definition revision. The next runTask call picks up the new image. No long-lived AWS keys in GitHub.
+A push to `main` that touches `api/` or `processor/` runs `.github/workflows/deploy-api.yml`, at the repo root, which builds both container images (Lambda for the API + forwarder, Python and the `dumpus-processor` binary for the Fargate worker), pushes them to ECR tagged with the git SHA, rolls both Lambdas, and registers a new ECS task definition revision. The next runTask call picks up the new image. No long-lived AWS keys in GitHub.
 
 ### Operations
 
