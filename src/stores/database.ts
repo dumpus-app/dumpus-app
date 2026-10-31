@@ -55,7 +55,14 @@ function readExtremities(db: Database): [string | null, string | null] {
 export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
   db: null,
   setDB: (v) => set((state) => ({ database: { ...state.database, db: v } })),
-  getNextID: (id) => (id ? `${parseInt(id) + 1}` : "0"),
+  // One past the largest id in use, so a new package never takes the id, and
+  // the stored database, of one still there.
+  getNextID: (id) => {
+    const ids = [id, ...get().config.packages.map((pkg) => pkg.id)]
+      .map((v) => (v === null ? NaN : parseInt(v)))
+      .filter((n) => !isNaN(n));
+    return `${ids.length ? Math.max(...ids) + 1 : 0}`;
+  },
   getTimeRangeDates: ({ timeRange, db }) => {
     // Original code accepted [string, string] | undefined and fell back to
     // (Discord epoch, now) when missing. Preserve that exact behaviour, just
