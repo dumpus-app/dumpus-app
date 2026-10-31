@@ -63,12 +63,12 @@ func event(eventType string, kv ...string) string {
 
 func lines(ls ...string) string { return strings.Join(ls, "\n") + "\n" }
 
-type layout struct{ account, messages, servers, activity string }
+type folders struct{ account, messages, servers, activity string }
 
 var (
-	english   = layout{"Account", "Messages", "Servers", "Activity"}
-	spanish   = layout{"Cuenta", "Mensajes", "Servidores", "Actividad"}
-	lowercase = layout{"account", "messages", "servers", "activity"}
+	english   = folders{"Account", "Messages", "Servers", "Activity"}
+	spanish   = folders{"Cuenta", "Mensajes", "Servidores", "Actividad"}
+	lowercase = folders{"account", "messages", "servers", "activity"}
 )
 
 const (
@@ -114,7 +114,7 @@ func messages(timestamps ...string) string {
 	return "[" + strings.Join(ms, ", ") + "]"
 }
 
-func channelFolder(l layout, id, channelJSON, messagesJSON string) []entry {
+func channelFolder(l folders, id, channelJSON, messagesJSON string) []entry {
 	dir := l.messages + "/c" + id + "/"
 	es := []entry{{dir, ""}, {dir + "channel.json", channelJSON}}
 	if messagesJSON != "" {
@@ -164,8 +164,8 @@ var activityLines = lines(
 	`{"no_event_type": true}`,
 )
 
-// fullPackage is a package with every section, in a given folder layout.
-func fullPackage(l layout) []entry {
+// fullPackage is a package with every section, in the given folders.
+func fullPackage(l folders) []entry {
 	es := []entry{
 		{l.account + "/", ""},
 		{l.account + "/user.json", userJSON},
@@ -327,7 +327,7 @@ func TestFullPackage(t *testing.T) {
 }
 
 func TestLocalizedAndLowercaseFolders(t *testing.T) {
-	for _, l := range []layout{spanish, lowercase} {
+	for _, l := range []folders{spanish, lowercase} {
 		t.Run(l.account, func(t *testing.T) {
 			res := process(t, fullPackage(l))
 			diffTables(t, tables(res.Model), fullTables())
@@ -346,7 +346,7 @@ func without(es []entry, prefixes ...string) []entry {
 
 func TestMissingSections(t *testing.T) {
 	t.Run("servers", func(t *testing.T) {
-		for _, l := range []layout{english, spanish} {
+		for _, l := range []folders{english, spanish} {
 			res := process(t, without(fullPackage(l), l.servers+"/"))
 			got := tables(res.Model)
 			want := fullTables()

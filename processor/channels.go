@@ -2,7 +2,8 @@ package processor
 
 import (
 	"bytes"
-	"encoding/json"
+	"errors"
+	"io"
 	"strings"
 )
 
@@ -100,25 +101,43 @@ type channelInput struct {
 	channel      members
 	channelID    string
 	messagesPath string
-	messagesJSON []byte
+	messages     io.Reader
 }
 
 // A channel with exactly two recipients is a DM, else one with a guild is a
-// guild channel, else it is ignored, group DMs included.
-func readChannel(in channelInput, ownerID string, iss *issues) channelResult {
-	res := channelResult{channelID: in.channelID}
-	cj := in.channel
-	if !json.Valid(in.messagesJSON) {
-		iss.add(in.messagesPath, "", "", ProblemMalformed, 1)
-		return res
+// guild channel, else it is ignored, group DMs included. Its issues are only
+// reported once `messages.json` is known to be well formed, which the
+// reference reads first. err is a read error.
+func readChannel(in channelInput, ownerID string, iss *issues) (channelResult, error) {
+	var found issues
+	res := classifyChannel(in, ownerID, &found)
+	mc, problem, err := readMessages(in.messages, res.kind == channelDM)
+	if err != nil || problem != "" {
+		if problem != "" {
+			iss.add(in.messagesPath, "", "", problem, 1)
+		}
+		return channelResult{}, err
 	}
-	if kindOf(in.messagesJSON[skipSpace(in.messagesJSON, 0):]) != kindArray {
-		iss.add(in.messagesPath, "", "", ProblemWrongType, 1)
-		return res
+	iss.merge(found.m)
+	if res.kind == 0 {
+		return res, nil
 	}
+	iss.add(in.messagesPath, "", "[]", ProblemWrongType, mc.notObjects)
+	iss.add(in.messagesPath, "", "Timestamp", ProblemMissing, mc.missingTS)
+	iss.add(in.messagesPath, "", "Timestamp", ProblemWrongType, mc.wrongTS)
+	iss.add(in.messagesPath, "", "Timestamp", ProblemUnparseable, mc.unparseable)
+	iss.add(in.messagesPath, "", "Contents", ProblemMissing, mc.missingContents)
+	if mc.mixed {
+		iss.add(in.messagesPath, "", "Timestamp", ProblemMixedFormats, 1)
+	}
+	res.total, res.hours = mc.total, mc.hours
+	return res, nil
+}
 
+func classifyChannel(in channelInput, ownerID string, iss *issues) channelResult {
+	res := channelResult{channelID: in.channelID}
 	isDM := false
-	if rv, has := cj.get("recipients"); has {
+	if rv, has := in.channel.get("recipients"); has {
 		switch kindOf(rv) {
 		case kindArray:
 			var recipients [][]byte
@@ -142,17 +161,14 @@ func readChannel(in channelInput, ownerID string, iss *issues) channelResult {
 	}
 	if isDM {
 		res.kind = channelDM
-	} else if gv, has := cj.get("guild"); has {
+	} else if gv, has := in.channel.get("guild"); has {
 		gm, ok := guildOf(gv, in.channelPath, iss)
 		if !ok {
 			return res
 		}
 		res.kind = channelGuild
 		res.guildID = gm
-	} else {
-		return res
 	}
-	countMessages(&res, in.messagesJSON, in.messagesPath, res.kind == channelDM, iss)
 	return res
 }
 
@@ -216,71 +232,128 @@ func guildOf(gv []byte, path string, iss *issues) (*string, bool) {
 	return nil, false
 }
 
-// A channel mixing timestamp formats or offsets, on which pandas fails, is
-// reported and counted per message.
-func countMessages(res *channelResult, data []byte, path string, dm bool, iss *issues) {
-	res.hours = map[int64]int64{}
-	var first *messageStamp
-	mixed := false
-	var missingTS, wrongTS, unparseable, missingContents, notObjects int
-	_ = eachElement(data, func(v []byte) bool {
-		res.total++
-		if kindOf(v) != kindObject {
-			notObjects++
-			return true
+// messageCounts is what a `messages.json` gives the tables.
+type messageCounts struct {
+	total int64
+	hours map[int64]int64 // message count per wall-clock hour
+	// A channel mixing timestamp formats or offsets, on which pandas fails, is
+	// reported and counted per message.
+	mixed                                                        bool
+	notObjects, missingTS, wrongTS, unparseable, missingContents int
+}
+
+// readMessages walks a `messages.json` as it is read, so that its size doesn't
+// matter. problem is set when the whole file is unusable, err on a read error.
+func readMessages(r io.Reader, dm bool) (mc messageCounts, problem string, err error) {
+	s := newJSONStream(r)
+	mc.hours = map[int64]int64{}
+	c := s.nonSpace()
+	if c != '[' {
+		s.value(c, 1)
+		s.end()
+		if s.err == nil {
+			return mc, ProblemWrongType, nil
 		}
-		var ts []byte
-		hasTS, hasContents := false, false
-		_ = eachMember(v, func(key, value []byte) bool {
-			if bytes.IndexByte(key, '\\') >= 0 {
-				key = []byte(keyString(key))
+	} else {
+		var first *messageStamp
+		c = s.nonSpace()
+		for done := c == ']'; !done && s.err == nil; {
+			mc.total++
+			if c == '{' {
+				s.message(&mc, &first, dm)
+			} else {
+				mc.notObjects++
+				s.value(c, 2)
 			}
-			switch string(key) {
-			case "Timestamp":
-				ts, hasTS = value, true
-			case "Contents":
-				hasContents = true
-			}
-			return true
-		})
-		if dm && !hasContents {
-			missingContents++
+			c, done = s.close(']')
 		}
-		if !hasTS {
-			missingTS++
-			return true
-		}
-		switch kindOf(ts) {
-		case kindNull:
-			return true
-		case kindString:
-		default:
-			wrongTS++
-			return true
-		}
-		s, _ := decodeString(ts)
-		if natString(s) {
-			return true
-		}
-		st, ok := parseMessageTimestamp(s)
-		if !ok {
-			unparseable++
-			return true
-		}
-		if first == nil {
-			first = &st
-		} else if st.format != first.format || st.offset != first.offset {
-			mixed = true
-		}
-		res.hours[st.hour]++
-		return true
-	})
-	iss.add(path, "", "[]", ProblemWrongType, notObjects)
-	iss.add(path, "", "Timestamp", ProblemMissing, missingTS)
-	iss.add(path, "", "Timestamp", ProblemWrongType, wrongTS)
-	iss.add(path, "", "Timestamp", ProblemUnparseable, unparseable)
-	iss.add(path, "", "Contents", ProblemMissing, missingContents)
-	if mixed {
-		iss.add(path, "", "Timestamp", ProblemMixedFormats, 1)
+		s.end()
 	}
+	switch {
+	case s.err == nil:
+		return mc, "", nil
+	case errors.Is(s.err, errSyntax):
+		return messageCounts{}, ProblemMalformed, nil
+	}
+	return messageCounts{}, "", s.err
+}
+
+// message reads one message object, its opening brace already read, and counts
+// it per wall-clock hour of its Timestamp, as pandas does after flooring. Null
+// and empty timestamps are skipped like pandas' NaT.
+func (s *jsonStream) message(mc *messageCounts, first **messageStamp, dm bool) {
+	var ts []byte
+	tsKind, tsWhole, hasContents := kindInvalid, true, false
+	c := s.nonSpace()
+	for done := c == '}'; !done && s.err == nil; {
+		if c != '"' {
+			s.fail()
+			return
+		}
+		// 64 bytes hold `Timestamp` with every letter escaped.
+		key, whole := s.str(64)
+		if whole && bytes.IndexByte(key, '\\') >= 0 {
+			key = []byte(keyString(key))
+		}
+		if s.nonSpace() != ':' {
+			s.fail()
+			return
+		}
+		v := s.nonSpace()
+		switch {
+		case whole && string(key) == "Timestamp":
+			tsKind, tsWhole = kindOfByte(v), true
+			if v == '"' {
+				// Exports write 19 bytes, for eg. `2021-04-06 12:34:56`, and
+				// a string over 64 counts as unparseable.
+				var raw []byte
+				raw, tsWhole = s.str(64)
+				ts = append(ts[:0], raw...)
+			} else {
+				s.value(v, 3)
+			}
+		case whole && string(key) == "Contents":
+			hasContents = true
+			s.value(v, 3)
+		default:
+			s.value(v, 3)
+		}
+		c, done = s.close('}')
+	}
+	if s.err != nil {
+		return
+	}
+	if dm && !hasContents {
+		mc.missingContents++
+	}
+	switch tsKind {
+	case kindInvalid:
+		mc.missingTS++
+		return
+	case kindNull:
+		return
+	case kindString:
+	default:
+		mc.wrongTS++
+		return
+	}
+	str, ok := decodeString(append(append([]byte{'"'}, ts...), '"'))
+	if !ok || !tsWhole {
+		mc.unparseable++
+		return
+	}
+	if natString(str) {
+		return
+	}
+	st, ok := parseMessageTimestamp(str)
+	if !ok {
+		mc.unparseable++
+		return
+	}
+	if *first == nil {
+		*first = &st
+	} else if st.format != (*first).format || st.offset != (*first).offset {
+		mc.mixed = true
+	}
+	mc.hours[st.hour]++
 }

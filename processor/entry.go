@@ -4,15 +4,124 @@ import (
 	"archive/zip"
 	"bufio"
 	"bytes"
+	"cmp"
+	"errors"
 	"fmt"
 	"hash"
 	"hash/crc32"
 	"io"
+	"slices"
+	"sync"
+	"sync/atomic"
 
 	"github.com/klauspost/compress/flate"
 )
 
 const maxReadBuf = 1 << 20
+
+var errSharedData = errors.New("zip: entries share compressed data")
+
+type pkg struct {
+	*entries
+	lim     limits
+	iss     *issues
+	allowed map[*zip.File]bool // the entries within the inflate budget
+	skipped atomic.Bool        // an entry, folder or line was left out: the package is partial
+
+	mu      sync.Mutex
+	opened  []dataRange
+	claimed map[*zip.File]bool
+}
+
+type dataRange struct{ start, end int64 }
+
+func newPkg(zr *zip.Reader, lim limits, iss *issues) *pkg {
+	return &pkg{entries: indexEntries(zr), lim: lim, iss: iss, allowed: map[*zip.File]bool{}, claimed: map[*zip.File]bool{}}
+}
+
+// budget allows each entry, in a fixed order, whose declared size still fits in
+// what is left of total, so that what gets skipped doesn't depend on timing.
+// The declared size holds since an entry fails as soon as it inflates past it.
+func (p *pkg) budget(order []*zip.File, total uint64) {
+	var used uint64
+	for _, f := range order {
+		if p.allowed[f] {
+			continue
+		}
+		if f.UncompressedSize64 > total-used {
+			p.skip(f, ProblemOverBudget)
+			continue
+		}
+		used += f.UncompressedSize64
+		p.allowed[f] = true
+	}
+}
+
+// skip reports an entry the processor leaves out, a duplicate or past a limit,
+// which makes the package partial.
+func (p *pkg) skip(f *zip.File, problem string) {
+	p.iss.add(f.Name, "", "", problem, 1)
+	p.skipped.Store(true)
+}
+
+// readWhole reads and checks a whole entry. ok is false when a limit skipped
+// it, which is reported; errors name the entry by its masked path.
+func (p *pkg) readWhole(f *zip.File) (data []byte, ok bool, err error) {
+	switch {
+	case !p.allowed[f]:
+		return nil, false, nil
+	case f.UncompressedSize64 > p.lim.entryBytes:
+		p.skip(f, ProblemTooLarge)
+		return nil, false, nil
+	}
+	e, err := p.open(f, true)
+	if err != nil {
+		return nil, false, fmt.Errorf("%s: %w", maskPath(f.Name), err)
+	}
+	defer e.Close()
+	buf := bytes.NewBuffer(make([]byte, 0, f.UncompressedSize64+bytes.MinRead))
+	if _, err := buf.ReadFrom(e); err != nil {
+		return nil, false, fmt.Errorf("%s: %w", maskPath(f.Name), err)
+	}
+	return buf.Bytes(), true, nil
+}
+
+// open inflates an entry and records where its compressed data lies, for
+// checkShared.
+func (p *pkg) open(f *zip.File, checksum bool) (*entryReader, error) {
+	raw, err := f.OpenRaw()
+	if err != nil {
+		return nil, err
+	}
+	var start int64
+	if sr, ok := raw.(*io.SectionReader); ok {
+		_, start, _ = sr.Outer()
+	} else if start, err = f.DataOffset(); err != nil {
+		return nil, err
+	}
+	if end := start + int64(f.CompressedSize64); end > start {
+		p.mu.Lock()
+		if !p.claimed[f] {
+			p.claimed[f] = true
+			p.opened = append(p.opened, dataRange{start: start, end: end})
+		}
+		p.mu.Unlock()
+	}
+	return newEntryReader(f, raw, checksum)
+}
+
+// checkShared fails a package two of whose entries read share compressed data,
+// as Python's `zipfile` refuses overlapped entries. The inflate budget already
+// bounds what such entries cost, so the check runs once, after the reads.
+func (p *pkg) checkShared() error {
+	slices.SortFunc(p.opened, func(a, b dataRange) int { return cmp.Compare(a.start, b.start) })
+	for i := 1; i < len(p.opened); i++ {
+		if p.opened[i].start < p.opened[i-1].end {
+			return errSharedData
+		}
+	}
+	return nil
+}
 
 // entryReader inflates a zip entry, reading its compressed data through a
 // buffer sized to it: a small entry costs one `ReadAt` for its header and one
@@ -27,11 +136,7 @@ type entryReader struct {
 	crc   hash.Hash32 // nil when the caller checksums the data itself
 }
 
-func openEntry(f *zip.File, checksum bool) (*entryReader, error) {
-	raw, err := f.OpenRaw()
-	if err != nil {
-		return nil, err
-	}
+func newEntryReader(f *zip.File, raw io.Reader, checksum bool) (*entryReader, error) {
 	br := bufio.NewReaderSize(raw, int(min(max(f.CompressedSize64, 16), maxReadBuf)))
 	e := &entryReader{f: f, close: func() error { return nil }}
 	switch f.Method {
@@ -70,26 +175,3 @@ func (e *entryReader) Read(p []byte) (int, error) {
 }
 
 func (e *entryReader) Close() error { return e.close() }
-
-// readAll reads and checks a whole entry. Errors name the entry by its masked
-// path.
-func readAll(f *zip.File) ([]byte, error) {
-	data, err := readEntry(f)
-	if err != nil {
-		return nil, fmt.Errorf("%s: %w", maskPath(f.Name), err)
-	}
-	return data, nil
-}
-
-func readEntry(f *zip.File) ([]byte, error) {
-	e, err := openEntry(f, true)
-	if err != nil {
-		return nil, err
-	}
-	defer e.Close()
-	buf := bytes.NewBuffer(make([]byte, 0, min(f.UncompressedSize64, 64<<20)))
-	if _, err := buf.ReadFrom(e); err != nil {
-		return nil, err
-	}
-	return buf.Bytes(), nil
-}

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"strings"
-	"sync/atomic"
+	"sync"
 )
 
 type eventKind uint8
@@ -184,27 +184,27 @@ func sniffEventType(line []byte) ([]byte, sniff) {
 	return rest[j+1 : j+1+end], sniffValue
 }
 
-// Keys count days and hours since the epoch, in UTC.
+// Keys count days and hours since the epoch, in UTC, and hold strings by their
+// id in names, 0 being null.
 type (
 	dayKey struct {
-		daily int // the index in dailyEvents
+		daily int32 // the index in dailyEvents
 		day   int64
 	}
 	guildHourKey struct {
-		guild string
-		null  bool
+		guild uint32
 		hour  int64
 	}
 	appCommandKey struct {
-		guild, app string
+		guild, app uint32
 		day        int64
 	}
 	reactionKey struct {
-		channel, emoji string
+		channel, emoji uint32
 		day            int64
 	}
 	osDayKey struct {
-		os  string
+		os  uint32
 		day int64
 	}
 	// sessionEvent and voiceEvent keep their position in the file, so that
@@ -212,20 +212,54 @@ type (
 	sessionEvent struct {
 		ts    int64
 		order uint64
+		os    uint32
 		start bool
-		os    *string
 	}
 	voiceEvent struct {
-		ts      int64
-		order   uint64
-		join    bool
-		channel string
-		guild   *string
+		ts             int64
+		order          uint64
+		channel, guild uint32
+		join           bool
 	}
 )
 
+// names interns the strings stored events carry, for all the workers of a
+// stream: a stream repeats a few os names and ids many times, and a stored
+// event is then a few integers. Id 0 is null.
+type names struct {
+	mu  sync.Mutex
+	ids map[string]uint32
+	all []string
+}
+
+func newNames() *names { return &names{ids: map[string]uint32{}} }
+
+func (n *names) id(s []byte) uint32 {
+	n.mu.Lock()
+	defer n.mu.Unlock()
+	if id, ok := n.ids[string(s)]; ok {
+		return id
+	}
+	n.all = append(n.all, string(s))
+	id := uint32(len(n.all))
+	n.ids[n.all[id-1]] = id
+	return id
+}
+
+// str and ptr read the strings back once the stream is read, when the table no
+// longer grows.
+func (n *names) str(id uint32) string { return n.all[id-1] }
+
+func (n *names) ptr(id uint32) *string {
+	if id == 0 {
+		return nil
+	}
+	return &n.all[id-1]
+}
+
 type activityAgg struct {
 	lines, events int64
+	tooLong       int
 	usable        bool
 	daily         map[dayKey]int64
 	guildJoined   map[guildHourKey]int64
@@ -235,6 +269,9 @@ type activityAgg struct {
 	gates         [numGates]bool
 	sessions      []sessionEvent
 	voice         []voiceEvent
+	sessionParts  [][]sessionEvent
+	voiceParts    [][]voiceEvent
+	names         *names // set once the stream is read, nil without events
 	issues        map[issueKey]int
 }
 
@@ -249,9 +286,18 @@ func newActivityAgg() *activityAgg {
 	}
 }
 
+// setAside drops what the stream contributed, keeping its line count and
+// issues.
+func (a *activityAgg) setAside() {
+	kept := newActivityAgg()
+	kept.lines, kept.issues = a.lines, a.issues
+	*a = *kept
+}
+
 func (a *activityAgg) merge(b *activityAgg) {
 	a.lines += b.lines
 	a.events += b.events
+	a.tooLong += b.tooLong
 	for i, set := range b.gates {
 		a.gates[i] = a.gates[i] || set
 	}
@@ -270,20 +316,23 @@ func (a *activityAgg) merge(b *activityAgg) {
 	for k, n := range b.appOpened {
 		a.appOpened[k] += n
 	}
-	a.sessions = append(a.sessions, b.sessions...)
-	a.voice = append(a.voice, b.voice...)
+	// Stored events are kept per chunk and joined once, at their final size.
+	if len(b.sessions) > 0 {
+		a.sessionParts = append(a.sessionParts, b.sessions)
+	}
+	if len(b.voice) > 0 {
+		a.voiceParts = append(a.voiceParts, b.voice)
+	}
 	for k, n := range b.issues {
 		a.issues[k] += n
 	}
 }
 
 type lineReader struct {
-	agg  *activityAgg
-	path string // the masked stream path, for the report
-	// usable is shared by the workers: once a line with a top-level
-	// `event_type` was seen, lines of unused types need no decoding at all.
-	usable *atomic.Bool
+	agg    *activityAgg
+	s      *stream
 	fields eventFields
+	str    []byte
 }
 
 func (r *lineReader) issue(spec eventSpec, field int, problem string) {
@@ -291,12 +340,12 @@ func (r *lineReader) issue(spec eventSpec, field int, problem string) {
 	if field >= 0 {
 		fname = fieldNames[field]
 	}
-	r.agg.issues[issueKey{r.path, spec.name, fname, problem}]++
+	r.agg.issues[issueKey{r.s.path, spec.name, fname, problem}]++
 }
 
 func (r *lineReader) markUsable() {
-	if !r.usable.Load() {
-		r.usable.Store(true)
+	if !r.s.usable.Load() {
+		r.s.usable.Store(true)
 	}
 }
 
@@ -311,7 +360,7 @@ func (r *lineReader) line(line []byte, order uint64) {
 	case sniffValue:
 		var used bool
 		if spec, used = eventTypes[string(et)]; !used {
-			if !r.usable.Load() {
+			if !r.s.usable.Load() {
 				r.confirmUsable(line)
 			}
 			return
@@ -367,30 +416,61 @@ func (r *lineReader) timestamp(spec eventSpec, f *eventFields, field int) (int64
 		r.issue(spec, field, ProblemWrongType)
 		return 0, false
 	}
-	s, _ := decodeString(v)
-	ts, ok := pyTimestamp(s, 1)
+	var ts int64
+	var ok bool
+	if r.str, ok = appendSimple(r.str[:0], v); ok {
+		ts, ok = pyTimestamp(r.str, 1)
+	} else {
+		s, _ := decodeString(v)
+		ts, ok = pyTimestamp(s, 1)
+	}
 	if !ok {
 		r.issue(spec, field, ProblemUnparseable)
 	}
 	return ts, ok
 }
 
-// text reads a field holding a string; null gives ok with a nil string.
-func (r *lineReader) text(spec eventSpec, f *eventFields, field int) (*string, bool) {
+// text reads a field holding a string, as its id in names; null is 0.
+func (r *lineReader) text(spec eventSpec, f *eventFields, field int) (uint32, bool) {
 	if !f.has(field) {
 		r.issue(spec, field, ProblemMissing)
-		return nil, false
+		return 0, false
+	}
+	v := f.values[field]
+	switch kindOf(v) {
+	case kindString:
+		raw := v[1 : len(v)-1]
+		if bytes.IndexByte(raw, '\\') >= 0 {
+			s, _ := decodeString(v)
+			raw = append(r.str[:0], s...)
+			r.str = raw
+		}
+		return r.s.names.id(raw), true
+	case kindNull:
+		return 0, true
+	}
+	r.issue(spec, field, ProblemWrongType)
+	return 0, false
+}
+
+// plain reads a field holding a string the parser only tests, without
+// interning it.
+func (r *lineReader) plain(spec eventSpec, f *eventFields, field int) (string, bool) {
+	if !f.has(field) {
+		r.issue(spec, field, ProblemMissing)
+		return "", false
 	}
 	v := f.values[field]
 	switch kindOf(v) {
 	case kindString:
 		s, _ := decodeString(v)
-		return &s, true
+		return s, true
 	case kindNull:
-		return nil, true
+		r.issue(spec, field, ProblemNull)
+	default:
+		r.issue(spec, field, ProblemWrongType)
 	}
-	r.issue(spec, field, ProblemWrongType)
-	return nil, false
+	return "", false
 }
 
 // event mirrors the reference's per-event branches, in their order of checks.
@@ -430,18 +510,18 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 		if !ok {
 			return
 		}
-		if channel == nil {
+		if channel == 0 {
 			r.issue(spec, fChannelID, ProblemNull)
 			return
 		}
 		// A session takes its guild from the join.
-		var guild *string
+		var guild uint32
 		if spec.kind == evJoinVoice && f.has(fGuildID) {
 			if guild, ok = r.text(spec, f, fGuildID); !ok {
 				return
 			}
 		}
-		a.voice = append(a.voice, voiceEvent{ts: ts, order: order, join: spec.kind == evJoinVoice, channel: *channel, guild: guild})
+		a.voice = append(a.voice, voiceEvent{ts: ts, order: order, join: spec.kind == evJoinVoice, channel: channel, guild: guild})
 
 	case evSessionStart, evSessionEnd:
 		if !f.has(fOS) {
@@ -452,7 +532,7 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 			return
 		}
 		// A session takes its os from the start.
-		var os *string
+		var os uint32
 		if spec.kind == evSessionStart {
 			if os, ok = r.text(spec, f, fOS); !ok {
 				return
@@ -469,23 +549,15 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 		if !ok {
 			return
 		}
-		k := guildHourKey{null: guild == nil, hour: floorDiv(ts, secondsPerHour)}
-		if guild != nil {
-			k.guild = *guild
-		}
-		a.guildJoined[k]++
+		a.guildJoined[guildHourKey{guild: guild, hour: floorDiv(ts, secondsPerHour)}]++
 
 	case evGate:
 		if spec.gate == gateDevPortalDocs {
-			page, ok := r.text(spec, f, fPageName)
+			page, ok := r.plain(spec, f, fPageName)
 			if !ok {
 				return
 			}
-			if page == nil {
-				r.issue(spec, fPageName, ProblemNull)
-				return
-			}
-			if !strings.HasPrefix(*page, "/docs/") {
+			if !strings.HasPrefix(page, "/docs/") {
 				return
 			}
 		}
@@ -511,11 +583,13 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 			return
 		}
 		guild, ok := r.text(spec, f, fGuildID)
-		if !ok || app == nil || guild == nil {
-			// pandas' groupby drops rows with a null key.
+		if !ok {
 			return
 		}
-		a.appCommands[appCommandKey{guild: *guild, app: *app, day: floorDiv(ts, secondsPerDay)}]++
+		// pandas' groupby drops rows with a null key.
+		if app != 0 && guild != 0 {
+			a.appCommands[appCommandKey{guild: guild, app: app, day: floorDiv(ts, secondsPerDay)}]++
+		}
 
 	case evAddReaction:
 		ts, ok := r.timestamp(spec, f, fTimestamp)
@@ -531,10 +605,12 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 			return
 		}
 		emoji, ok := r.text(spec, f, fEmojiName)
-		if !ok || channel == nil || emoji == nil {
+		if !ok {
 			return
 		}
-		a.reactions[reactionKey{channel: *channel, emoji: *emoji, day: floorDiv(ts, secondsPerDay)}]++
+		if channel != 0 && emoji != 0 {
+			a.reactions[reactionKey{channel: channel, emoji: emoji, day: floorDiv(ts, secondsPerDay)}]++
+		}
 
 	case evAppOpened:
 		if !f.has(fOS) {
@@ -545,16 +621,18 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 			return
 		}
 		os, ok := r.text(spec, f, fOS)
-		if !ok || os == nil {
+		if !ok {
 			return
 		}
-		a.appOpened[osDayKey{os: *os, day: floorDiv(ts, secondsPerDay)}]++
+		if os != 0 {
+			a.appOpened[osDayKey{os: os, day: floorDiv(ts, secondsPerDay)}]++
+		}
 
 	case evDaily:
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
 			return
 		}
-		a.daily[dayKey{daily: spec.daily, day: floorDiv(ts, secondsPerDay)}]++
+		a.daily[dayKey{daily: int32(spec.daily), day: floorDiv(ts, secondsPerDay)}]++
 	}
 }

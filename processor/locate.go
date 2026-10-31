@@ -23,6 +23,53 @@ var (
 	}
 )
 
+// layout is what the processor reads, found from the entry names. An index
+// or payments path is empty when there is no candidate.
+type layout struct {
+	user, activity                        string
+	serversIndex, messagesIndex, payments string
+	channels                              []string // channel.json entries
+	duplicates                            []string // channel.json entries left out, see channelFolders
+}
+
+func (e *entries) layout() layout {
+	messagesRoot := e.messagesRoot()
+	l := layout{
+		user:          e.userEntry(),
+		activity:      e.activityStream(),
+		serversIndex:  e.indexPath(e.serversRoot(messagesRoot), "Servers/index.json", "servers/index.json"),
+		messagesIndex: e.indexPath(messagesRoot, "Messages/index.json", "messages/index.json"),
+	}
+	if l.user != "" {
+		l.payments = l.user[:strings.LastIndexByte(l.user, '/')] + "/user_data_exports/discord_billing/payments.json"
+	}
+	l.channels, l.duplicates = e.channelFolders(messagesRoot, l.user, l.activity, l.serversIndex, l.messagesIndex, l.payments)
+	return l
+}
+
+// readOrder is every entry the processor may read, in the order the inflate
+// budget is handed out.
+func (e *entries) readOrder(l layout) []*zip.File {
+	var out []*zip.File
+	add := func(name string) {
+		if f := e.get(name); name != "" && f != nil {
+			out = append(out, f)
+		}
+	}
+	add(l.user)
+	add(l.activity)
+	add(l.serversIndex)
+	add(l.messagesIndex)
+	add(l.payments)
+	for _, c := range l.channels {
+		add(c)
+		if _, messages, ok := messagesEntryFor(c); ok {
+			add(messages)
+		}
+	}
+	return out
+}
+
 type entries struct {
 	files  []*zip.File
 	byName map[string]*zip.File
@@ -122,6 +169,37 @@ func (e *entries) channelFiles(messagesRoot string) []string {
 		}
 	}
 	return out
+}
+
+// channelFolders keeps, in zip order, the channel.json entries whose folder
+// reads no entry that another folder or role already reads: a name can repeat,
+// and the folders under `Messages/c<id>/` read the messages of `<id>` there,
+// for eg. `Messages/c<id>/x/channel.json` reads `Messages/c<id>/<id>/messages.json`.
+// Each entry is charged once to the inflate budget, so it is read once.
+func (e *entries) channelFolders(messagesRoot string, roles ...string) (folders, duplicates []string) {
+	read := map[*zip.File]bool{}
+	for _, name := range roles {
+		if f := e.get(name); f != nil {
+			read[f] = true
+		}
+	}
+	for _, name := range e.channelFiles(messagesRoot) {
+		f := e.get(name)
+		var messages *zip.File
+		if _, path, ok := messagesEntryFor(name); ok {
+			messages = e.get(path)
+		}
+		if read[f] || messages != nil && read[messages] {
+			duplicates = append(duplicates, name)
+			continue
+		}
+		read[f] = true
+		if messages != nil {
+			read[messages] = true
+		}
+		folders = append(folders, name)
+	}
+	return folders, duplicates
 }
 
 func messagesEntryFor(channelPath string) (channelID, messagesPath string, ok bool) {

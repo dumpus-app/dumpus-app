@@ -9,6 +9,11 @@ import (
 
 // quadraticSessions is the session loop in its quadratic form: every pending
 // start is checked against every session accepted so far.
+// testNames holds the strings of the events the tests build.
+var testNames = newNames()
+
+func nameID(s string) uint32 { return testNames.id([]byte(s)) }
+
 func quadraticSessions(events []sessionEvent) []Session {
 	events = slices.Clone(events)
 	sortByTime(events, func(e sessionEvent) (int64, uint64) { return e.ts, e.order })
@@ -41,7 +46,7 @@ func quadraticSessions(events []sessionEvent) []Session {
 					DurationMins: floorDiv(duration, 60),
 					StartedDate:  float64(start.ts),
 					EndedDate:    float64(ev.ts),
-					DeviceOS:     start.os,
+					DeviceOS:     testNames.ptr(start.os),
 				})
 			}
 		}
@@ -52,7 +57,7 @@ func quadraticSessions(events []sessionEvent) []Session {
 func randomSessionEvents(rng *rand.Rand) []sessionEvent {
 	spans := []int64{3 * 3600, 2 * 86400, 10 * 86400}
 	span := spans[rng.IntN(len(spans))]
-	oses := []*string{strPtr("ios"), strPtr("android"), strPtr("windows"), nil}
+	oses := []uint32{nameID("ios"), nameID("android"), nameID("windows"), 0}
 	n := rng.IntN(80)
 	events := make([]sessionEvent, n)
 	for i := range events {
@@ -74,7 +79,7 @@ func TestSessionsMatchQuadraticLoop(t *testing.T) {
 	for i := range 50000 {
 		events := randomSessionEvents(rng)
 		want := quadraticSessions(events)
-		got := buildSessions(slices.Clone(events))
+		got := buildSessions(slices.Clone(events), testNames)
 		if !reflect.DeepEqual(got, want) {
 			t.Fatalf("sequence %d: got %d sessions, want %d\ngot  %v\nwant %v", i, len(got), len(want), got, want)
 		}
@@ -82,7 +87,8 @@ func TestSessionsMatchQuadraticLoop(t *testing.T) {
 }
 
 func TestSessions(t *testing.T) {
-	win, ios := strPtr("windows"), strPtr("ios")
+	win, ios := nameID("windows"), nameID("ios")
+	winName, iosName := testNames.ptr(win), testNames.ptr(ios)
 	const h = 3600
 	tests := []struct {
 		name   string
@@ -97,7 +103,7 @@ func TestSessions(t *testing.T) {
 				{ts: 600, start: false, os: win},
 				{ts: 1200, start: false, os: win},
 			},
-			want: []Session{{DurationMins: 10, StartedDate: 0, EndedDate: 600, DeviceOS: win}},
+			want: []Session{{DurationMins: 10, StartedDate: 0, EndedDate: 600, DeviceOS: winName}},
 		},
 		{
 			name: "starts over 24 hours old are dropped",
@@ -106,7 +112,7 @@ func TestSessions(t *testing.T) {
 				{ts: 24*h - 60, start: true, os: ios},
 				{ts: 24*h + 60, start: false, os: win},
 			},
-			want: []Session{{DurationMins: 2, StartedDate: 24*h - 60, EndedDate: 24*h + 60, DeviceOS: ios}},
+			want: []Session{{DurationMins: 2, StartedDate: 24*h - 60, EndedDate: 24*h + 60, DeviceOS: iosName}},
 		},
 		{
 			name: "a start on an accepted bound is inside it",
@@ -116,7 +122,7 @@ func TestSessions(t *testing.T) {
 				{ts: 600, start: true, os: ios},
 				{ts: 900, start: false, os: ios},
 			},
-			want: []Session{{DurationMins: 10, StartedDate: 0, EndedDate: 600, DeviceOS: win}},
+			want: []Session{{DurationMins: 10, StartedDate: 0, EndedDate: 600, DeviceOS: winName}},
 		},
 		{
 			name: "ties sort in file order",
@@ -124,7 +130,7 @@ func TestSessions(t *testing.T) {
 				{ts: 600, order: 1, start: false, os: win},
 				{ts: 600, order: 0, start: true, os: ios},
 			},
-			want: []Session{{DurationMins: 0, StartedDate: 600, EndedDate: 600, DeviceOS: ios}},
+			want: []Session{{DurationMins: 0, StartedDate: 600, EndedDate: 600, DeviceOS: iosName}},
 		},
 		{
 			name: "an end before any start pairs with nothing",
@@ -144,7 +150,7 @@ func TestSessions(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := buildSessions(tt.events); !reflect.DeepEqual(got, tt.want) {
+			if got := buildSessions(tt.events, testNames); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("got %v, want %v", got, tt.want)
 			}
 		})

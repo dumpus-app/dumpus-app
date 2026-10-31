@@ -8,7 +8,7 @@ import (
 
 // buildModel fills the tables in the reference's order; rows within a table
 // can come in another order, which only changes their rowids.
-func buildModel(packageID string, own owner, rels []relationship, pf *packageFiles, act *activityAgg, activityFound bool) *Model {
+func buildModel(packageID string, own owner, rels []relationship, pf *packageFiles, act *activityAgg, activityFound, skipped bool) *Model {
 	m := &Model{}
 
 	friends := make(map[string]relationship, len(rels))
@@ -79,11 +79,11 @@ func buildModel(packageID string, own owner, rels []relationship, pf *packageFil
 	}
 
 	m.Payments = pf.payments
-	m.VoiceSessions = buildVoiceSessions(act.voice)
-	m.Sessions = buildSessions(act.sessions)
+	m.VoiceSessions = buildVoiceSessions(act.voice, act.names)
+	m.Sessions = buildSessions(act.sessions, act.names)
 	m.Activity = append(m.Activity, activityRows(act)...)
 
-	isPartial := !(activityFound && act.usable) || !pf.serversIndexRead || !pf.messagesIndexRead
+	isPartial := !(activityFound && act.usable) || !pf.serversIndexRead || !pf.messagesIndexRead || skipped
 	m.Package = PackageData{
 		PackageID:        packageID,
 		PackageVersion:   PackageVersion,
@@ -99,43 +99,48 @@ func buildModel(packageID string, own owner, rels []relationship, pf *packageFil
 func activityRows(a *activityAgg) []Activity {
 	var rows []Activity
 
+	n := a.names
+	// Rows are sorted by their strings, not their ids, which depend on which
+	// worker met a string first.
+	name := func(id uint32) string {
+		if id == 0 {
+			return ""
+		}
+		return n.str(id)
+	}
 	for _, k := range slices.SortedFunc(maps.Keys(a.guildJoined), func(x, y guildHourKey) int {
-		return cmp.Or(cmp.Compare(x.guild, y.guild), compareBool(x.null, y.null), cmp.Compare(x.hour, y.hour))
+		return cmp.Or(compareBool(x.guild == 0, y.guild == 0), cmp.Compare(name(x.guild), name(y.guild)), cmp.Compare(x.hour, y.hour))
 	}) {
 		day, h := hourParts(k.hour)
-		var guild *string
-		if !k.null {
-			guild = strPtr(k.guild)
-		}
-		rows = append(rows, Activity{EventName: "guild_joined", Day: day, Hour: h, OccurrenceCount: a.guildJoined[k], GuildID: guild})
+		rows = append(rows, Activity{EventName: "guild_joined", Day: day, Hour: h, OccurrenceCount: a.guildJoined[k], GuildID: n.ptr(k.guild)})
 	}
 
 	for _, k := range slices.SortedFunc(maps.Keys(a.appCommands), func(x, y appCommandKey) int {
-		return cmp.Or(cmp.Compare(x.guild, y.guild), cmp.Compare(x.app, y.app), cmp.Compare(x.day, y.day))
+		return cmp.Or(cmp.Compare(name(x.guild), name(y.guild)), cmp.Compare(name(x.app), name(y.app)), cmp.Compare(x.day, y.day))
 	}) {
 		rows = append(rows, Activity{
 			EventName: "application_command_used", Day: dayString(k.day), OccurrenceCount: a.appCommands[k],
-			GuildID: strPtr(k.guild), UserID: strPtr(k.app),
+			GuildID: n.ptr(k.guild), UserID: n.ptr(k.app),
 		})
 	}
 
 	for _, k := range slices.SortedFunc(maps.Keys(a.reactions), func(x, y reactionKey) int {
-		return cmp.Or(cmp.Compare(x.channel, y.channel), cmp.Compare(x.emoji, y.emoji), cmp.Compare(x.day, y.day))
+		return cmp.Or(cmp.Compare(name(x.channel), name(y.channel)), cmp.Compare(name(x.emoji), name(y.emoji)), cmp.Compare(x.day, y.day))
 	}) {
 		// The reference tests the first reaction's numpy bool with `is True`,
 		// which never holds, so every reaction is stored as not custom.
 		rows = append(rows, Activity{
 			EventName: "add_reaction", Day: dayString(k.day), OccurrenceCount: a.reactions[k],
-			ChannelID: strPtr(k.channel), ExtraField1: strPtr(k.emoji), ExtraField2: strPtr("0"),
+			ChannelID: n.ptr(k.channel), ExtraField1: n.ptr(k.emoji), ExtraField2: strPtr("0"),
 		})
 	}
 
 	for _, k := range slices.SortedFunc(maps.Keys(a.appOpened), func(x, y osDayKey) int {
-		return cmp.Or(cmp.Compare(x.os, y.os), cmp.Compare(x.day, y.day))
+		return cmp.Or(cmp.Compare(name(x.os), name(y.os)), cmp.Compare(x.day, y.day))
 	}) {
 		rows = append(rows, Activity{
 			EventName: "app_opened", Day: dayString(k.day), OccurrenceCount: a.appOpened[k],
-			ExtraField1: strPtr(k.os),
+			ExtraField1: n.ptr(k.os),
 		})
 	}
 

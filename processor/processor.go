@@ -11,7 +11,9 @@ import (
 	"cmp"
 	"context"
 	"errors"
+	"fmt"
 	"io"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"time"
@@ -43,6 +45,8 @@ type Options struct {
 	// chunkBytes is the size of the chunks the activity stream is cut into;
 	// zero means 4 MiB. Tests make it small so that lines span chunks.
 	chunkBytes int
+	// limits replaces the default limits, field by field; set by tests.
+	limits limits
 }
 
 // Result is the processed package.
@@ -82,28 +86,41 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	if err != nil && !errors.Is(err, zip.ErrInsecurePath) {
 		return nil, err
 	}
-	ents := indexEntries(zr)
 	var iss issues
 	defer func() { rep.Issues = iss.list() }()
+	lim := opts.limits.orDefaults()
+	p := newPkg(zr, lim, &iss)
+	rep.Counts.InsecurePaths = insecurePaths(zr)
 
-	userPath := ents.userEntry()
-	if userPath == "" {
+	l := p.layout()
+	for _, name := range l.duplicates {
+		p.skip(p.get(name), ProblemDuplicate)
+	}
+	if l.user == "" {
 		rep.MissingFiles = append(rep.MissingFiles, MissingFile{Role: "user", Path: "Account/user.json"})
 		return nil, ErrMissingUserData
 	}
-	rep.Inputs["user"] = maskPath(userPath)
-	userData, err := readAll(ents.get(userPath))
+	p.budget(p.readOrder(l), lim.inflateBudget(size))
+	rep.Inputs["user"] = maskPath(l.user)
+	userData, ok, err := p.readWhole(p.get(l.user))
 	if err != nil {
 		return nil, err
 	}
-	own, rels := readOwner(userData, userPath, &iss)
+	var own owner
+	var rels []relationship
+	if ok {
+		own, rels = readOwner(userData, l.user, &iss)
+	}
 	rep.Counts.Relationships = len(rels)
 
-	activityPath := ents.activityStream()
-	if activityPath != "" {
-		rep.Inputs["activity"] = maskPath(activityPath)
-	} else {
+	var activity *zip.File
+	if l.activity == "" {
 		rep.MissingFiles = append(rep.MissingFiles, MissingFile{Role: "activity", Path: "Activity/analytics/events-*.json"})
+	} else {
+		rep.Inputs["activity"] = maskPath(l.activity)
+		if f := p.get(l.activity); p.allowed[f] {
+			activity = f
+		}
 	}
 
 	// The activity stream, the long pole, is read beside everything else. The
@@ -112,10 +129,15 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	act := newActivityAgg()
 	var files *packageFiles
 	var actTime, filesTime time.Duration
-	if activityPath != "" {
+	if activity != nil {
 		g.Go(func() error {
 			t := time.Now()
-			a, err := readActivity(gctx, ents.get(activityPath), max(workers-1, 1), cmp.Or(opts.chunkBytes, defaultChunkBytes))
+			a, err := readActivity(gctx, p, activity, activityConfig{
+				workers:    max(workers-1, 1),
+				chunkBytes: cmp.Or(opts.chunkBytes, defaultChunkBytes),
+				lineBytes:  lim.lineBytes,
+				events:     lim.eventLimit(size),
+			})
 			if err != nil {
 				return err
 			}
@@ -125,30 +147,33 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	}
 	g.Go(func() error {
 		t := time.Now()
-		pf, err := readFiles(gctx, ents, userPath, own.id, workers, &iss)
+		pf, err := readFiles(gctx, p, l, own.id, workers)
 		files, filesTime = pf, time.Since(t)
 		return err
 	})
 	if err := g.Wait(); err != nil {
 		return nil, err
 	}
-	if activityPath != "" {
+	if err := p.checkShared(); err != nil {
+		return nil, err
+	}
+	if activity != nil {
 		rep.TimingsMS["activity"] = actTime.Milliseconds()
 	}
 	rep.TimingsMS["files"] = filesTime.Milliseconds()
 	iss.merge(act.issues)
 
 	for role, path := range map[string]string{
-		"servers_index": files.serversIndexPath, "messages_index": files.messagesIndexPath, "payments": files.paymentsPath,
+		"servers_index": l.serversIndex, "messages_index": l.messagesIndex, "payments": l.payments,
 	} {
-		if path != "" && ents.get(path) != nil {
+		if path != "" && p.get(path) != nil {
 			rep.Inputs[role] = maskPath(path)
 		}
 	}
 	rep.MissingFiles = append(rep.MissingFiles, files.missing...)
 
 	t := time.Now()
-	m := buildModel(opts.PackageID, own, rels, files, act, activityPath != "")
+	m := buildModel(opts.PackageID, own, rels, files, act, activity != nil, p.skipped.Load())
 	rep.TimingsMS["build"] = time.Since(t).Milliseconds()
 	rep.Counts.ActivityLines = act.lines
 	rep.Counts.ActivityEvents = act.events
@@ -164,11 +189,22 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	return m, nil
 }
 
+// insecurePaths counts the names `archive/zip` rejects when
+// `GODEBUG=zipinsecurepath=0`: nothing is written to disk by name, so they
+// are only reported.
+func insecurePaths(zr *zip.Reader) int {
+	n := 0
+	for _, f := range zr.File {
+		if f.Name != "" && (!filepath.IsLocal(f.Name) || strings.Contains(f.Name, `\`)) {
+			n++
+		}
+	}
+	return n
+}
+
 // packageFiles is everything read besides `user.json` and the activity stream.
 // Each task of the pool sets its own fields.
 type packageFiles struct {
-	serversIndexPath, messagesIndexPath, paymentsPath string
-
 	missing           []MissingFile
 	guilds            []guildEntry
 	serversIndexRead  bool
@@ -179,45 +215,37 @@ type packageFiles struct {
 	messages          int64
 }
 
-func readFiles(ctx context.Context, ents *entries, userPath, ownerID string, workers int, iss *issues) (*packageFiles, error) {
-	messagesRoot := ents.messagesRoot()
-	pf := &packageFiles{
-		serversIndexPath:  ents.indexPath(ents.serversRoot(messagesRoot), "Servers/index.json", "servers/index.json"),
-		messagesIndexPath: ents.indexPath(messagesRoot, "Messages/index.json", "messages/index.json"),
-		paymentsPath:      userPath[:strings.LastIndexByte(userPath, '/')] + "/user_data_exports/discord_billing/payments.json",
-	}
-	channelPaths := ents.channelFiles(messagesRoot)
-	pf.channels = make([]channelResult, len(channelPaths))
-
+func readFiles(ctx context.Context, p *pkg, l layout, ownerID string, workers int) (*packageFiles, error) {
+	pf := &packageFiles{channels: make([]channelResult, len(l.channels))}
 	g, ctx := errgroup.WithContext(ctx)
 	g.SetLimit(workers)
 	optional := func(path string, use func(data []byte)) {
-		if path == "" || ents.get(path) == nil {
+		if path == "" || p.get(path) == nil {
 			return
 		}
 		g.Go(func() error {
-			data, err := readAll(ents.get(path))
-			if err == nil {
+			data, ok, err := p.readWhole(p.get(path))
+			if ok {
 				use(data)
 			}
 			return err
 		})
 	}
-	optional(pf.serversIndexPath, func(data []byte) {
-		pf.guilds, pf.serversIndexRead = readServersIndex(data, pf.serversIndexPath, iss)
+	optional(l.serversIndex, func(data []byte) {
+		pf.guilds, pf.serversIndexRead = readServersIndex(data, l.serversIndex, p.iss)
 	})
-	optional(pf.messagesIndexPath, func(data []byte) {
-		pf.labels, pf.messagesIndexRead = readMessagesIndex(data, pf.messagesIndexPath, iss)
+	optional(l.messagesIndex, func(data []byte) {
+		pf.labels, pf.messagesIndexRead = readMessagesIndex(data, l.messagesIndex, p.iss)
 	})
-	optional(pf.paymentsPath, func(data []byte) {
-		pf.payments = readPayments(data, pf.paymentsPath, iss)
+	optional(l.payments, func(data []byte) {
+		pf.payments = readPayments(data, l.payments, p.iss)
 	})
-	for i, path := range channelPaths {
+	for i, path := range l.channels {
 		g.Go(func() error {
 			if err := ctx.Err(); err != nil {
 				return err
 			}
-			res, err := readChannelFolder(ents, path, ownerID, iss)
+			res, err := readChannelFolder(p, path, ownerID)
 			pf.channels[i] = res
 			return err
 		})
@@ -227,10 +255,10 @@ func readFiles(ctx context.Context, ents *entries, userPath, ownerID string, wor
 	}
 
 	if !pf.serversIndexRead {
-		pf.missing = append(pf.missing, MissingFile{Role: "servers_index", Path: maskPath(orDefault(pf.serversIndexPath, "Servers/index.json"))})
+		pf.missing = append(pf.missing, MissingFile{Role: "servers_index", Path: maskPath(orDefault(l.serversIndex, "Servers/index.json"))})
 	}
 	if !pf.messagesIndexRead {
-		pf.missing = append(pf.missing, MissingFile{Role: "messages_index", Path: maskPath(orDefault(pf.messagesIndexPath, "Messages/index.json"))})
+		pf.missing = append(pf.missing, MissingFile{Role: "messages_index", Path: maskPath(orDefault(l.messagesIndex, "Messages/index.json"))})
 	}
 	for _, c := range pf.channels {
 		pf.messages += c.total
@@ -247,29 +275,41 @@ func orDefault(s, def string) string {
 
 // `channel.json` is parsed before looking for `messages.json`, so a malformed
 // one is reported even in a folder without messages.
-func readChannelFolder(ents *entries, channelPath, ownerID string, iss *issues) (channelResult, error) {
-	data, err := readAll(ents.get(channelPath))
-	if err != nil {
+func readChannelFolder(p *pkg, channelPath, ownerID string) (channelResult, error) {
+	data, ok, err := p.readWhole(p.get(channelPath))
+	if err != nil || !ok {
 		return channelResult{}, err
 	}
 	channel, err := parseObject(data)
 	if err != nil {
-		iss.add(channelPath, "", "", problemOf(err), 1)
+		p.iss.add(channelPath, "", "", problemOf(err), 1)
 		return channelResult{}, nil
 	}
-	id, messagesPath, ok := messagesEntryFor(channelPath)
-	if !ok {
+	id, messagesPath, found := messagesEntryFor(channelPath)
+	if !found {
 		return channelResult{}, nil
 	}
-	f := ents.get(messagesPath)
-	if f == nil {
+	// `messages.json` is streamed, so only the inflate budget bounds it: a heavy
+	// account's channel can be far larger than an entry read whole.
+	f := p.get(messagesPath)
+	if f == nil || !p.allowed[f] {
 		return channelResult{}, nil
 	}
-	msgs, err := readAll(f)
+	e, err := p.open(f, true)
 	if err != nil {
-		return channelResult{}, err
+		return channelResult{}, fmt.Errorf("%s: %w", maskPath(messagesPath), err)
 	}
-	return readChannel(channelInput{
-		channelPath: channelPath, channel: channel, channelID: id, messagesPath: messagesPath, messagesJSON: msgs,
-	}, ownerID, iss), nil
+	defer e.Close()
+	res, err := readChannel(channelInput{
+		channelPath: channelPath, channel: channel, channelID: id, messagesPath: messagesPath, messages: e,
+	}, ownerID, p.iss)
+	if err == nil {
+		// A file left as malformed is read to its end, where its size and
+		// CRC-32 are checked: a corrupt entry fails the package.
+		_, err = io.Copy(io.Discard, e)
+	}
+	if err != nil {
+		return channelResult{}, fmt.Errorf("%s: %w", maskPath(messagesPath), err)
+	}
+	return res, nil
 }

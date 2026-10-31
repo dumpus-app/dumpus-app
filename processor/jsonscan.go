@@ -30,7 +30,11 @@ func kindOf(v []byte) jsonKind {
 	if len(v) == 0 {
 		return kindInvalid
 	}
-	switch v[0] {
+	return kindOfByte(v[0])
+}
+
+func kindOfByte(c byte) jsonKind {
+	switch c {
 	case 'n':
 		return kindNull
 	case 't', 'f':
@@ -252,6 +256,31 @@ func problemOf(err error) string {
 		return ProblemWrongType
 	}
 	return ProblemMalformed
+}
+
+// appendSimple appends the content of a raw JSON string whose only escapes
+// are \", \\ and \/, as timestamps hold, without allocating; ok is false
+// for any other string, which decodeString handles.
+func appendSimple(dst, v []byte) (out []byte, ok bool) {
+	if len(v) < 2 || v[0] != '"' {
+		return dst, false
+	}
+	inner := v[1 : len(v)-1]
+	for i := 0; i < len(inner); i++ {
+		c := inner[i]
+		switch {
+		case c >= 0x80:
+			return dst, false
+		case c == '\\':
+			i++
+			if i == len(inner) || inner[i] != '"' && inner[i] != '\\' && inner[i] != '/' {
+				return dst, false
+			}
+			c = inner[i]
+		}
+		dst = append(dst, c)
+	}
+	return dst, true
 }
 
 func decodeString(v []byte) (string, bool) {

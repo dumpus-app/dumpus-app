@@ -14,7 +14,8 @@ type Report struct {
 	// Error is the code when the package could not be processed, one of
 	// [CodeMissingUserData] and [CodeUnknownError].
 	Error string `json:"error,omitempty"`
-	// Inputs maps each role to the entry that was read for it.
+	// Inputs maps each role to the entry found for it, also when a limit
+	// skipped it.
 	Inputs map[string]string `json:"inputs"`
 	// MissingFiles lists the roles of expected entries that were not found.
 	MissingFiles []MissingFile `json:"missing_files"`
@@ -57,6 +58,10 @@ type Counts struct {
 	VoiceSessions  int   `json:"voice_sessions"`
 	ActivityRows   int   `json:"activity_rows"`
 	Relationships  int   `json:"relationships"`
+	// InsecurePaths counts the names `archive/zip` calls insecure: not a local
+	// path, for eg. absolute or climbing out with `..`, or holding a
+	// backslash. Names are never used as paths on disk.
+	InsecurePaths int `json:"insecure_paths"`
 }
 
 // Problems an Issue can report.
@@ -68,6 +73,12 @@ const (
 	ProblemMalformed    = "malformed"     // the entry or line is not valid JSON
 	ProblemMixedFormats = "mixed_formats" // a channel mixes timestamp formats or offsets
 	ProblemSelfDM       = "self_dm"       // a DM whose recipients are all the owner
+	ProblemDuplicate    = "duplicate"     // a channel folder that reads an entry already read, skipped
+	// Limits on what a crafted package can cost; see limits.
+	ProblemTooLarge      = "too_large"       // an entry over the size read whole, skipped
+	ProblemOverBudget    = "over_budget"     // an entry past the total inflate budget, skipped
+	ProblemTooLong       = "too_long"        // activity lines over the length decoded, skipped
+	ProblemTooManyEvents = "too_many_events" // an activity stream over the event limit, set aside
 )
 
 var digitRuns = regexp.MustCompile(`[0-9]{3,}`)

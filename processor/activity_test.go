@@ -32,7 +32,7 @@ func randomStream(rng *rand.Rand, n int) (string, []sessionEvent) {
 			}
 			os := oses[rng.IntN(len(oses))]
 			ls = append(ls, event(kind, "timestamp", v, "os", `"`+os+`"`))
-			sessions = append(sessions, sessionEvent{ts: sec, order: uint64(i), start: start, os: &os})
+			sessions = append(sessions, sessionEvent{ts: sec, order: uint64(i), start: start, os: nameID(os)})
 		case 2:
 			v, _ := stamp()
 			kind := "join_voice_channel"
@@ -49,6 +49,28 @@ func randomStream(rng *rand.Rand, n int) (string, []sessionEvent) {
 		}
 	}
 	return strings.Join(ls, "\n"), sessions
+}
+
+// TestPageNameWhileInterning reads `dev_portal_page_viewed` lines on many
+// workers while others intern the strings they store, which the race detector
+// checks; the page's prefix still sets its gate.
+func TestPageNameWhileInterning(t *testing.T) {
+	var ls []string
+	for i := range 5000 {
+		ls = append(ls,
+			event("app_opened", "timestamp", ts("2021-04-06T10:00:00.000Z"), "os", fmt.Sprintf(`"os-%d"`, i)),
+			event("dev_portal_page_viewed", "timestamp", ts("2021-04-06T10:00:00.000Z"), "page_name", fmt.Sprintf(`"/docs/p%d"`, i)))
+	}
+	ls = append(ls, event("notification_clicked", "timestamp", ts("2021-04-06T10:00:00.000Z")))
+	pkg := append(without(fullPackage(english), "Activity/"), entry{"Activity/analytics/events-2021-00000-of-00001.json", lines(ls...)})
+	r, size := zipOf(t, pkg)
+	res, err := Process(context.Background(), r, size, Options{PackageID: "p", Workers: 8, chunkBytes: 4096})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !slices.ContainsFunc(res.Model.Activity, func(a Activity) bool { return a.EventName == "notification_clicked" }) {
+		t.Error("the docs pages didn't set their gate")
+	}
 }
 
 // TestChunksKeepFileOrder cuts the stream into chunks far smaller than its
@@ -73,7 +95,7 @@ func TestChunksKeepFileOrder(t *testing.T) {
 		if !reflect.DeepEqual(one.Model, many.Model) {
 			t.Fatalf("stream %d: chunked result differs", i)
 		}
-		if want := buildSessions(slices.Clone(events)); !reflect.DeepEqual(many.Model.Sessions, want) {
+		if want := buildSessions(slices.Clone(events), testNames); !reflect.DeepEqual(many.Model.Sessions, want) {
 			t.Fatalf("stream %d: sessions differ from the events in file order", i)
 		}
 		if many.Report.Counts.ActivityLines != 2000 {

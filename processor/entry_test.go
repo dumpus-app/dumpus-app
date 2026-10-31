@@ -39,10 +39,12 @@ func TestEntryReadCalls(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	p := newPkg(zr, defaultLimits, &issues{})
+	p.budget(zr.File, defaultLimits.inflateBudget(size))
 	for _, f := range zr.File {
 		before := cr.calls.Load()
-		if _, err := readAll(f); err != nil {
-			t.Fatal(err)
+		if _, ok, err := p.readWhole(f); err != nil || !ok {
+			t.Fatal(ok, err)
 		}
 		// One read for the local header, then one per MiB of compressed data.
 		want := 1 + (int64(f.CompressedSize64)+maxReadBuf-1)/maxReadBuf
@@ -80,7 +82,7 @@ func TestEntryLargerThanDeclared(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	e, err := openEntry(zr.File[0], true)
+	e, err := newPkg(zr, defaultLimits, &issues{}).open(zr.File[0], true)
 	if err != nil {
 		t.Fatal(err)
 	}

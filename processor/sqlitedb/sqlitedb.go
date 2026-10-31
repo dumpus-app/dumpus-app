@@ -106,67 +106,62 @@ var indexes = []string{
 	`CREATE INDEX idx_guild_channels_guild_id ON guild_channels_data (guild_id)`,
 }
 
+// insert is one table's rows; row builds the arguments of the i-th one as it
+// is inserted, so that a large table is never held twice.
 type insert struct {
-	table string
-	query string
-	rows  [][]any
+	table, query string
+	n            int
+	row          func(i int) []any
 }
 
 func inserts(m *processor.Model) []insert {
-	dm := insert{table: "dm_channels_data", query: `INSERT INTO dm_channels_data
-        (channel_id, dm_user_id, user_name, display_name, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`}
-	for _, r := range m.DMChannels {
-		dm.rows = append(dm.rows, []any{r.ChannelID, r.DMUserID, r.UserName, r.DisplayName, r.UserAvatarURL,
-			r.TotalMessageCount, r.TotalVoiceChannelDuration, r.SentimentScore})
-	}
-	gc := insert{table: "guild_channels_data", query: `INSERT INTO guild_channels_data
-        (channel_id, guild_id, channel_name, total_message_count, total_voice_channel_duration)
-        VALUES (?, ?, ?, ?, ?)`}
-	for _, r := range m.GuildChannels {
-		gc.rows = append(gc.rows, []any{r.ChannelID, r.GuildID, r.ChannelName, r.TotalMessageCount, r.TotalVoiceChannelDuration})
-	}
-	act := insert{table: "activity", query: `INSERT INTO activity
-        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`}
-	for _, r := range m.Activity {
-		act.rows = append(act.rows, []any{r.EventName, r.Day, r.Hour, r.OccurrenceCount, r.ChannelID, r.GuildID,
-			r.UserID, r.ExtraField1, r.ExtraField2})
-	}
-	g := insert{table: "guilds", query: `INSERT INTO guilds
-        (guild_id, guild_name, total_message_count)
-        VALUES (?, ?, ?)`}
-	for _, r := range m.Guilds {
-		g.rows = append(g.rows, []any{r.GuildID, r.GuildName, r.TotalMessageCount})
-	}
-	p := insert{table: "payments", query: `INSERT INTO payments
-        (payment_id, payment_date, payment_amount, payment_currency, payment_description)
-        VALUES (?, ?, ?, ?, ?)`}
-	for _, r := range m.Payments {
-		p.rows = append(p.rows, []any{r.PaymentID, r.PaymentDate, r.Amount, r.Currency, r.Description})
-	}
-	v := insert{table: "voice_sessions", query: `INSERT INTO voice_sessions
-        (channel_id, guild_id, duration_mins, started_date, ended_date)
-        VALUES (?, ?, ?, ?, ?)`}
-	for _, r := range m.VoiceSessions {
-		v.rows = append(v.rows, []any{r.ChannelID, r.GuildID, r.DurationMins, r.StartedDate, r.EndedDate})
-	}
-	s := insert{table: "sessions", query: `INSERT INTO sessions
-        (duration_mins, started_date, ended_date, device_os)
-        VALUES (?, ?, ?, ?)`}
-	for _, r := range m.Sessions {
-		s.rows = append(s.rows, []any{r.DurationMins, r.StartedDate, r.EndedDate, r.DeviceOS})
-	}
 	pk := m.Package
 	partial := 0
 	if pk.IsPartial {
 		partial = 1
 	}
-	pd := insert{table: "package_data", query: `INSERT INTO package_data
+	return []insert{{"dm_channels_data", `INSERT INTO dm_channels_data
+        (channel_id, dm_user_id, user_name, display_name, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, len(m.DMChannels), func(i int) []any {
+		r := m.DMChannels[i]
+		return []any{r.ChannelID, r.DMUserID, r.UserName, r.DisplayName, r.UserAvatarURL,
+			r.TotalMessageCount, r.TotalVoiceChannelDuration, r.SentimentScore}
+	}}, {"guild_channels_data", `INSERT INTO guild_channels_data
+        (channel_id, guild_id, channel_name, total_message_count, total_voice_channel_duration)
+        VALUES (?, ?, ?, ?, ?)`, len(m.GuildChannels), func(i int) []any {
+		r := m.GuildChannels[i]
+		return []any{r.ChannelID, r.GuildID, r.ChannelName, r.TotalMessageCount, r.TotalVoiceChannelDuration}
+	}}, {"activity", `INSERT INTO activity
+        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`, len(m.Activity), func(i int) []any {
+		r := m.Activity[i]
+		return []any{r.EventName, r.Day, r.Hour, r.OccurrenceCount, r.ChannelID, r.GuildID,
+			r.UserID, r.ExtraField1, r.ExtraField2}
+	}}, {"guilds", `INSERT INTO guilds
+        (guild_id, guild_name, total_message_count)
+        VALUES (?, ?, ?)`, len(m.Guilds), func(i int) []any {
+		r := m.Guilds[i]
+		return []any{r.GuildID, r.GuildName, r.TotalMessageCount}
+	}}, {"payments", `INSERT INTO payments
+        (payment_id, payment_date, payment_amount, payment_currency, payment_description)
+        VALUES (?, ?, ?, ?, ?)`, len(m.Payments), func(i int) []any {
+		r := m.Payments[i]
+		return []any{r.PaymentID, r.PaymentDate, r.Amount, r.Currency, r.Description}
+	}}, {"voice_sessions", `INSERT INTO voice_sessions
+        (channel_id, guild_id, duration_mins, started_date, ended_date)
+        VALUES (?, ?, ?, ?, ?)`, len(m.VoiceSessions), func(i int) []any {
+		r := m.VoiceSessions[i]
+		return []any{r.ChannelID, r.GuildID, r.DurationMins, r.StartedDate, r.EndedDate}
+	}}, {"sessions", `INSERT INTO sessions
+        (duration_mins, started_date, ended_date, device_os)
+        VALUES (?, ?, ?, ?)`, len(m.Sessions), func(i int) []any {
+		r := m.Sessions[i]
+		return []any{r.DurationMins, r.StartedDate, r.EndedDate, r.DeviceOS}
+	}}, {"package_data", `INSERT INTO package_data
         (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url, package_is_partial)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`, rows: [][]any{{pk.PackageID, pk.PackageVersion, pk.OwnerID, pk.OwnerName,
-		pk.OwnerDisplayName, pk.OwnerAvatarURL, partial}}}
-	return []insert{dm, gc, act, g, p, v, s, pd}
+        VALUES (?, ?, ?, ?, ?, ?, ?)`, 1, func(int) []any {
+		return []any{pk.PackageID, pk.PackageVersion, pk.OwnerID, pk.OwnerName, pk.OwnerDisplayName, pk.OwnerAvatarURL, partial}
+	}}}
 }
 
 // Result is what Write did.
@@ -251,8 +246,8 @@ func write(ctx context.Context, db *sql.DB, m *processor.Model) (map[string]int,
 		if err != nil {
 			return nil, err
 		}
-		for _, row := range ins.rows {
-			if _, err := stmt.ExecContext(ctx, row...); err != nil {
+		for i := range ins.n {
+			if _, err := stmt.ExecContext(ctx, ins.row(i)...); err != nil {
 				if !isConstraint(err) {
 					stmt.Close()
 					return nil, fmt.Errorf("insert into %s: %w", ins.table, err)

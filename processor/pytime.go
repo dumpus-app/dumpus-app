@@ -13,7 +13,7 @@ const (
 
 // pyIntASCII parses s the way Python's int() parses a str of ASCII characters:
 // surrounding whitespace, an optional sign and single underscores between digits.
-func pyIntASCII(s string) (int, bool) {
+func pyIntASCII[S ~string | ~[]byte](s S) (int, bool) {
 	isPySpace := func(c byte) bool {
 		return c == ' ' || (c >= '\t' && c <= '\r') || (c >= 0x1c && c <= 0x1f)
 	}
@@ -55,17 +55,17 @@ func pyIntASCII(s string) (int, bool) {
 }
 
 // pySlice returns s[start:end] with Python's clamping, counting code points.
-func pySlice(s string, start, end int) string {
+func pySlice[S ~string | ~[]byte](s S, start, end int) S {
 	if isASCII(s) {
 		start, end = min(start, len(s)), min(end, len(s))
 		return s[start:end]
 	}
-	r := []rune(s)
+	r := []rune(string(s))
 	start, end = min(start, len(r)), min(end, len(r))
-	return string(r[start:end])
+	return S(string(r[start:end]))
 }
 
-func isASCII(s string) bool {
+func isASCII[S ~string | ~[]byte](s S) bool {
 	for i := 0; i < len(s); i++ {
 		if s[i] >= utf8.RuneSelf {
 			return false
@@ -82,7 +82,7 @@ func daysIn(year, month int) int {
 // after offset, ignores everything past the minute and never checks the
 // separators, then reads the result as UTC, the worker's clock. It reports false
 // where the reference raises.
-func pyTimestamp(s string, offset int) (int64, bool) {
+func pyTimestamp[S ~string | ~[]byte](s S, offset int) (int64, bool) {
 	field := func(from, to int) (int, bool) {
 		return pyIntASCII(pySlice(s, offset+from, offset+to))
 	}
