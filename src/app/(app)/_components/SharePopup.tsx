@@ -214,7 +214,7 @@ export default function SharePopup() {
                         ? t("share.title")
                         : t("share.download"),
                       error: t("share.error"),
-                      loading: t("share.generating"),
+                      pending: t("share.generating"),
                     }[status]
                   }
                 </Button>

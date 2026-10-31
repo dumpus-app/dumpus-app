@@ -25,8 +25,8 @@ export default function useUserDetails({ userID }: { userID: string }) {
         userID,
       }),
     staleTime: Infinity,
-    refetchInterval: (data) => {
-      if (data?.errorMessageCode === "RATE_LIMITED") {
+    refetchInterval: (query) => {
+      if (query.state.data?.errorMessageCode === "RATE_LIMITED") {
         return 500;
       }
 

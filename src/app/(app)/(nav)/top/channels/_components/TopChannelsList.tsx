@@ -19,7 +19,8 @@ export default function TopChannelsList() {
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-channels", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
+    queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 

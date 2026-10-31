@@ -78,7 +78,8 @@ export default function TopGuildsList() {
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-guilds", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
+    queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 
