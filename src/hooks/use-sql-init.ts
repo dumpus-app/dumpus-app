@@ -1,6 +1,6 @@
 "use client";
 
-import pako from "pako";
+import { inflate } from "pako";
 import { useRef } from "react";
 import initSqlJs from "sql.js";
 import { useShallow } from "zustand/react/shallow";
@@ -68,7 +68,7 @@ export default function useSQLInit() {
 
     let data: Uint8Array;
     if (initData) {
-      data = pako.inflate(initData.initialData);
+      data = inflate(initData.initialData);
       storeUint8Array(getStorageKey(id), data);
     } else {
       data = retrieveUint8Array(getStorageKey(id))!;

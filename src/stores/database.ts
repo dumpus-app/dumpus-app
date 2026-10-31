@@ -43,8 +43,7 @@ function readExtremities(db: Database): [string | null, string | null] {
     "SELECT MIN(day) AS start, MAX(day) AS end FROM activity",
   );
   const row = queryData?.[0]?.values[0] as
-    | [string | null, string | null]
-    | undefined;
+    [string | null, string | null] | undefined;
   const computed: [string | null, string | null] = [
     row?.[0] ?? null,
     row?.[1] ?? null,
