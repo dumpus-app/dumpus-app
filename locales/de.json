@@ -21,7 +21,7 @@
       "previous": "Zurück",
       "trust": "Warum sollte ich der App vertrauen?",
       "trustContent": [
-        "Dumpus ist 100% Open Source. Du kannst den Code auf [GitHub](https://github.com/dumpus-app/dumpus-app) lesen und sogar deinen eigenen Server hosten.",
+        "Dumpus ist 100% Open Source. Du kannst den Code auf [GitHub](https://github.com/Androz2091/dumpus-app) lesen und sogar deinen eigenen Server hosten.",
         "Wir haben auch eine komplett [client-side web app](https://ddpe.androz2091.fr) mit weniger Features, aber ohne externe API.",
         "Die App funktioniert ohne das Speichern von Daten in der externen API. Wenn Du noch Fragen hast, kontaktiere uns unter contact@dumpus.app."
       ],

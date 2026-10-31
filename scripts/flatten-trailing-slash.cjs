@@ -13,7 +13,7 @@
 // …and gives up, leaving the WebView on a blank page where
 // `Right side of assignment cannot be destructured` blows up the JS.
 //
-// See dumpus-app/dumpus-app#366.
+// See Androz2091/dumpus-app#366.
 //
 // We could switch to `trailingSlash: false` for desktop only, but that
 // would either fork the Next config or change the live web build's URLs.

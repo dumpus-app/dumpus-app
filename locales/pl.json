@@ -21,7 +21,7 @@
       "previous": "Poprzedni",
       "trust": "Dlaczego mam ufać aplikacji?",
       "trustContent": [
-        "Dumpus jest w 100% otwartym oprogramowaniem. Możesz sprawdzić kod na [GitHub](https://github.com/dumpus-app/dumpus-app), a nawet stworzyć swój własny serwer.",
+        "Dumpus jest w 100% otwartym oprogramowaniem. Możesz sprawdzić kod na [GitHub](https://github.com/Androz2091/dumpus-app), a nawet stworzyć swój własny serwer.",
         "Mamy również ukończoną [aplikację internetową po stronie klienta](https://ddpe.androz2091.fr), z mniejszą ilością funkcji, ale bez zewnętrznych API.",
         "Aplikacja działa bez żadnego odczytywania danych przechowywanych w zewnętrznym API. Jeśli masz jakieś pytania, skontaktuj się z nami pod adresem contact@dumpus.app."
       ],

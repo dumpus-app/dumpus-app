@@ -10,7 +10,7 @@ allowed_account_ids = ["436630934006"]
 domain_name   = "dumpus.app"
 api_subdomain = "api"
 
-github_repository = ["dumpus-app/dumpus-app"]
+github_repository = ["Androz2091/dumpus-app"]
 
 image_tag = "bootstrap"
 

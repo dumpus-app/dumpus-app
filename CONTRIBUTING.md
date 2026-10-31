@@ -31,9 +31,9 @@ In short, when you submit code changes, your submissions are understood to be un
 
 To contribute, you'll have to agree to our CLA (Contributor License Agreement).
 
-## Report bugs using Github's [issues](https://github.com/dumpus-app/dumpus-app/issues)
+## Report bugs using Github's [issues](https://github.com/Androz2091/dumpus-app/issues)
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/dumpus-app/dumpus-app/issues/new). It's that easy!
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/Androz2091/dumpus-app/issues/new). It's that easy!
 
 ## Write bug reports with detail, background, and sample code
 

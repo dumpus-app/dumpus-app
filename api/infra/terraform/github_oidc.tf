@@ -2,7 +2,7 @@
 # Set var.github_repository to [] to skip provisioning.
 
 variable "github_repository" {
-  description = "Owner/repo names allowed to assume the deploy role, for eg. [\"dumpus-app/dumpus-app\"]. Empty = skip, which also drops the OIDC provider the web stack looks up."
+  description = "Owner/repo names allowed to assume the deploy role, for eg. [\"Androz2091/dumpus-app\"]. Empty = skip, which also drops the OIDC provider the web stack looks up."
   type        = list(string)
   default     = []
 }

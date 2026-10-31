@@ -21,7 +21,7 @@
       "previous": "Anterior",
       "trust": "De ce ar trebui să am încredere în aplicația asta?",
       "trustContent": [
-        "Dumpus este sursă deschisă 100%. Poți citi codul pe [GitHub](https://github.com/dumpus-app/dumpus-app), și chiar să găzduiești propriul server.",
+        "Dumpus este sursă deschisă 100%. Poți citi codul pe [GitHub](https://github.com/Androz2091/dumpus-app), și chiar să găzduiești propriul server.",
         "Noi avem de asemenea o completă [aplicație web la nivelul clientului](https://ddpe.androz2091.fr), cu puține caracteristici, dar fără un API extern.",
         "Aplicația funcționează fără date care pot fi citite stocate pe API-ul extern. Dacă mai aveți întrebări, nu ezitați să ne contactați la contact@dumpus.app."
       ],
