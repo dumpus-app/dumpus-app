@@ -10,10 +10,7 @@ import (
 	"sync/atomic"
 )
 
-const (
-	chunkSize   = 4 << 20
-	readBufSize = 1 << 20
-)
+const defaultChunkBytes = 4 << 20
 
 // chunk is a run of whole lines of the activity stream. seq orders chunks as
 // they appear in the stream; the buffer goes back to the pool once both the
@@ -28,7 +25,7 @@ type chunk struct {
 // readActivity streams the activity entry: this goroutine inflates it and cuts
 // it into chunks of whole lines, the workers decode and aggregate the lines,
 // and one more goroutine checksums the chunks in order, off the inflating core.
-func readActivity(ctx context.Context, f *zip.File, workers int) (*activityAgg, error) {
+func readActivity(ctx context.Context, f *zip.File, workers, chunkBytes int) (*activityAgg, error) {
 	r, err := openEntry(f, false)
 	if err != nil {
 		return nil, err
@@ -38,7 +35,7 @@ func readActivity(ctx context.Context, f *zip.File, workers int) (*activityAgg, 
 	nbuf := 2*workers + 2
 	free := make(chan *chunk, nbuf)
 	for range nbuf {
-		free <- &chunk{buf: make([]byte, chunkSize)}
+		free <- &chunk{buf: make([]byte, chunkBytes)}
 	}
 	release := func(c *chunk) {
 		if c.refs.Add(-1) == 0 {

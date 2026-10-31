@@ -8,6 +8,7 @@ package processor
 
 import (
 	"archive/zip"
+	"cmp"
 	"context"
 	"errors"
 	"io"
@@ -38,6 +39,10 @@ type Options struct {
 	// Workers is the number of goroutines decoding the activity stream and
 	// reading the other files. Zero means `GOMAXPROCS`.
 	Workers int
+
+	// chunkBytes is the size of the chunks the activity stream is cut into;
+	// zero means 4 MiB. Tests make it small so that lines span chunks.
+	chunkBytes int
 }
 
 // Result is the processed package.
@@ -110,7 +115,7 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	if activityPath != "" {
 		g.Go(func() error {
 			t := time.Now()
-			a, err := readActivity(gctx, ents.get(activityPath), max(workers-1, 1))
+			a, err := readActivity(gctx, ents.get(activityPath), max(workers-1, 1), cmp.Or(opts.chunkBytes, defaultChunkBytes))
 			if err != nil {
 				return err
 			}
