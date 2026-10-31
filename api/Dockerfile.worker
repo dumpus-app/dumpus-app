@@ -18,8 +18,8 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-# System deps are minimal: pandas wheels are manylinux, orjson too. If a
-# future package adds something native, install it here.
+# System deps are minimal: orjson wheels are manylinux. If a future package
+# adds something native, install it here.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
     && rm -rf /var/lib/apt/lists/*

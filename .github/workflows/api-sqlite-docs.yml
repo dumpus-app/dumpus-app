@@ -2,8 +2,12 @@ name: api-sqlite-docs
 
 on:
   push:
+    # dumpus-processor writes the database: its model, the code that fills
+    # the rows, and the DDL.
     paths:
-      - "api/src/tasks.py"
+      - "processor/model.go"
+      - "processor/build.go"
+      - "processor/sqlitedb/sqlitedb.go"
   workflow_dispatch:
 
 jobs:
@@ -38,13 +42,8 @@ jobs:
           python <<'PY'
           from openai import OpenAI
 
-          with open('src/tasks.py', 'r') as f:
-              lines = f.readlines()
-          start_line = next(
-              i for i, line in enumerate(lines, start=1)
-              if '# auto-generated SQLite documentation starts here' in line
-          )
-          content = ''.join(lines[start_line - 1:])
+          sources = ['model.go', 'build.go', 'sqlitedb/sqlitedb.go']
+          content = ''.join(open(f'../processor/{path}').read() for path in sources)
 
           client = OpenAI()
           response = client.chat.completions.create(
@@ -70,9 +69,9 @@ jobs:
           readme_content = response.choices[0].message.content.strip()
 
           header = (
-              'Note: this documentation was generated automatically from the tasks.py '
-              'code using an AI. Although we are confident in the reliability of the '
-              'data displayed here, errors may occur.\n\n\n'
+              'Note: this documentation was generated automatically from the '
+              'dumpus-processor code using an AI. Although we are confident in the '
+              'reliability of the data displayed here, errors may occur.\n\n\n'
           )
           with open('docs/sqlite_database_structure.md', 'w') as f:
               f.write(header + readme_content)
