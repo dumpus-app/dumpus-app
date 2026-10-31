@@ -208,16 +208,6 @@
       "spentInVoiceChannels": "spent in voice channels"
     }
   },
-  "shareImage": {
-    "title": "Stats for Discord",
-    "topDMS": "Top DMs",
-    "topGuilds": "Top guilds",
-    "getYours": "Get yours at",
-    "talkedWith": "number of users you talked with",
-    "messagesSent": "number of messages you sent",
-    "timeSpent": "time spent on Discord",
-    "appOpenings": "number of times you opened the app"
-  },
   "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
     "appOpeningsPerDay": "Discord app openings per day"
@@ -326,7 +316,113 @@
       "title": "Here is my Discord recap!",
       "description": "Generated on https://dumpus.app, try it yourself!"
     },
-    "error": "An error occurred..."
+    "error": "An error occurred...",
+    "close": "Close",
+    "previous": "Previous card",
+    "next": "Next card",
+    "cardsLabel": "Your recap cards",
+    "cards": {
+      "cover": "Cover",
+      "messages": "Messages",
+      "topDMs": "Top DMs",
+      "topServers": "Top servers",
+      "peakHour": "Peak hour",
+      "time": "Time on Discord",
+      "habits": "Little habits",
+      "summary": "Summary",
+      "summarySquare": "Square summary"
+    },
+    "range": {
+      "4weeks": "Last 4 weeks",
+      "6months": "Last 6 months",
+      "year": "Last year",
+      "lifetime": "Lifetime"
+    },
+    "units": {
+      "hours": "{{- value}} h",
+      "minutes": "{{- value}} min",
+      "hoursMinutes": "{{- hours}} h {{- minutes}} min"
+    },
+    "cover": {
+      "eyebrow": "Discord recap · {{- range}}",
+      "years_one": "{{count}} year of Discord, <accent>unpacked.</accent>",
+      "years_other": "{{count}} years of Discord, <accent>unpacked.</accent>",
+      "lifetime": "Your Discord so far, <accent>unpacked.</accent>",
+      "4weeks": "Your last 4 weeks on Discord, <accent>unpacked.</accent>",
+      "6months": "Your last 6 months on Discord, <accent>unpacked.</accent>",
+      "year": "Your last year on Discord, <accent>unpacked.</accent>"
+    },
+    "messages": {
+      "eyebrow": "Messages sent",
+      "unit_one": "message",
+      "unit_other": "messages",
+      "perDay": "That's <b>{{- value}} a day</b>, every day since {{- since}}.",
+      "busiest": "Busiest: {{- period}}",
+      "weekOf": "week of {{- date}}"
+    },
+    "topDMs": {
+      "eyebrow": "Your top DMs",
+      "headline": "Your people",
+      "count_one": "{{- value}} message",
+      "count_other": "{{- value}} messages"
+    },
+    "topServers": {
+      "eyebrow": "Your top servers",
+      "headline": "Your hangouts"
+    },
+    "peakHour": {
+      "eyebrow": "Peak hour",
+      "caption": "your busiest hour",
+      "nightOwl": "You're a night owl",
+      "earlyBird": "You're an early bird",
+      "daylight": "You text by daylight",
+      "evening": "You're an evening chatter",
+      "share": "<b>{{- share}}</b> of your messages go out between {{- from}} and {{- to}}."
+    },
+    "time": {
+      "eyebrow": "Time on Discord",
+      "unit_one": "hour",
+      "unit_other": "hours",
+      "days_one": "That's <b>{{- value}} full day.</b>",
+      "days_other": "That's <b>{{- value}} full days.</b>",
+      "appOpens_one": "app open",
+      "appOpens_other": "app opens",
+      "voice": "in voice",
+      "avgSession": "Average session"
+    },
+    "habits": {
+      "eyebrow": "Little habits",
+      "headline": "The small stuff",
+      "reactions_one": "reaction added",
+      "reactions_other": "reactions added",
+      "edits_one": "message edited",
+      "edits_other": "messages edited",
+      "notifications_one": "notification clicked",
+      "notifications_other": "notifications clicked",
+      "slashCommands_one": "slash command",
+      "slashCommands_other": "slash commands",
+      "voiceMessages_one": "voice message",
+      "voiceMessages_other": "voice messages",
+      "captchas_one": "captcha solved",
+      "captchas_other": "captchas solved",
+      "logins_one": "login",
+      "logins_other": "logins",
+      "appsAuthorized_one": "app authorized",
+      "appsAuthorized_other": "apps authorized",
+      "missingTitle": "Not in your export",
+      "missing": "{{- list}}. Discord left these out, so Dumpus can't count them."
+    },
+    "summary": {
+      "eyebrow": "{{- range}} recap",
+      "messages": "messages sent",
+      "messagesShort": "messages",
+      "hours": "on Discord",
+      "peakHour": "peak hour",
+      "people": "people in your DMs",
+      "servers": "servers you talked in",
+      "topDMs": "Top DMs",
+      "topServers": "Top servers"
+    }
   },
   "exitingDemo": "Exiting...",
   "exitDemo": "Exit demo and get started!",
