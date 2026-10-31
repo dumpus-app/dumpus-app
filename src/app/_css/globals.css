@@ -24,6 +24,28 @@
   }
 }
 
+/*
+  The metric-matched Arial that `next/font/google` generated for each font,
+  shown until it loads. The fonts themselves are in `src/app/_fonts`.
+*/
+@font-face {
+  font-family: "Rubik Fallback";
+  src: local("Arial");
+  ascent-override: 88.57%;
+  descent-override: 23.68%;
+  line-gap-override: 0%;
+  size-adjust: 105.57%;
+}
+
+@font-face {
+  font-family: "JetBrains Mono Fallback";
+  src: local("Arial");
+  ascent-override: 75.04%;
+  descent-override: 22.07%;
+  line-gap-override: 0%;
+  size-adjust: 135.93%;
+}
+
 #__next {
   @apply contents;
 }
