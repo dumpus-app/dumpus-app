@@ -22,9 +22,9 @@ permissions:
 
 jobs:
   e2e:
-    # The committed screenshots were taken in this image, on arm64 like an
-    # Apple Silicon Mac running `pnpm test:e2e:docker`. The image tag must
-    # match `@playwright/test`, Renovate bumps both together.
+    # The image `pnpm test:e2e:docker` runs, on arm64 like an Apple Silicon
+    # Mac. The image tag must match `@playwright/test`, Renovate bumps both
+    # together.
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 30
     container:

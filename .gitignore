@@ -10,10 +10,6 @@
 /test-results/
 /playwright-report/
 /blob-report/
-/e2e/.state/
-# only the baselines CI compares against, see `playwright.config.ts`
-/e2e/__screenshots__/*
-!/e2e/__screenshots__/linux/
 
 # next.js
 /.next/
