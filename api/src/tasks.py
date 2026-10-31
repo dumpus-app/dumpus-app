@@ -26,7 +26,7 @@ import tempfile
 from sqlite import create_new_empty_database, create_indexes, export_sqlite_to_bin
 
 import os
-from collections import defaultdict
+from collections import defaultdict, deque
 import requests
 
 from db import update_progress, update_step, fetch_package_status, SavedPackageData, Session, PackageProcessStatus
@@ -712,37 +712,50 @@ def read_analytics_file(package_status_id, package_id, link, session):
 
     session_logs = sorted(session_logs, key=lambda x: x['timestamp'])
 
-    ongoing_sessions = []
+    ongoing_sessions = deque()
     session_logs_duration = []
+    # Starts are checked in time order (sorted above) and sessions are built in
+    # end order, so a session that ended before the current start can't contain
+    # a later one. open_sessions keeps the ones that still can, and
+    # open_session_mins the earliest started_date among them.
+    open_sessions = deque()
+    open_session_mins = deque()
 
     for event in session_logs:
         if event['event_type'] == 'session_start':
             ongoing_sessions.append(event)
         else: # session_end
             while ongoing_sessions:
-                start_event = ongoing_sessions.pop(0)
-                
+                start_event = ongoing_sessions.popleft()
+
                 duration = event['timestamp'] - start_event['timestamp']
                 if duration > 24 * 60 * 60:
                     continue
                 if duration < 0:
-                    ongoing_sessions.insert(0, start_event) # Put back the event, it belongs to a future session_end
+                    ongoing_sessions.appendleft(start_event) # Put back the event, it belongs to a future session_end
                     break
-                
+
                 # At this point, we have a valid session duration
                 # We need to check if it is included in any existing session duration
-                start_is_included_in_duration = any(
-                    start_event['timestamp'] >= e['started_date'] # this join happened after the start of another event
-                    and start_event['timestamp'] <= e['ended_date'] # this same event ended after this join
-                    for e in session_logs_duration)
-                
+                start_ts = start_event['timestamp']
+                while open_sessions and open_sessions[0]['ended_date'] < start_ts:
+                    if open_session_mins[0] is open_sessions[0]:
+                        open_session_mins.popleft()
+                    open_sessions.popleft()
+                start_is_included_in_duration = bool(open_session_mins) and open_session_mins[0]['started_date'] <= start_ts
+
                 if not start_is_included_in_duration:
-                    session_logs_duration.append({
+                    accepted = {
                         'duration_mins': duration // 60,
-                        'started_date': start_event['timestamp'],
+                        'started_date': start_ts,
                         'ended_date': event['timestamp'],
                         'os': start_event['os'],
-                    })
+                    }
+                    session_logs_duration.append(accepted)
+                    open_sessions.append(accepted)
+                    while open_session_mins and open_session_mins[-1]['started_date'] >= start_ts:
+                        open_session_mins.pop()
+                    open_session_mins.append(accepted)
 
     print(f'Finish processing: {time.time() - start}')
 
