@@ -118,12 +118,13 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	rep.Counts.Relationships = len(rels)
 
 	var activity *zip.File
+	var stream *string
 	if l.activity == "" {
 		rep.MissingFiles = append(rep.MissingFiles, MissingFile{Role: "activity", Path: "Activity/analytics/events-*.json"})
 	} else {
 		rep.Inputs["activity"] = maskPath(l.activity)
 		if f := p.get(l.activity); p.allowed[f] {
-			activity = f
+			activity, stream = f, strPtr(l.stream)
 		}
 	}
 
@@ -174,7 +175,7 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	rep.MissingFiles = append(rep.MissingFiles, files.missing...)
 
 	t := time.Now()
-	m := buildModel(opts.PackageID, own, rels, files, act, activity != nil, p.skipped.Load())
+	m := buildModel(opts.PackageID, own, rels, files, act, stream, p.skipped.Load())
 	rep.TimingsMS["build"] = time.Since(t).Milliseconds()
 	rep.Counts.ActivityLines = act.lines
 	rep.Counts.ActivityEvents = act.events

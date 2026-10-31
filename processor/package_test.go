@@ -151,7 +151,6 @@ var activityLines = lines(
 	event("email_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")),
 	event("oauth2_authorize_accepted", "timestamp", ts("2021-04-06T09:00:00.000Z"), "application_id", `"`+app+`"`),
 	event("notification_clicked", "timestamp", ts("2021-04-06T09:00:00.000Z")),
-	event("dev_portal_page_viewed", "timestamp", ts("2021-04-06T09:00:00.000Z"), "page_name", `"/docs/intro"`),
 	event("voice_message_recorded", "timestamp", ts("2021-04-06T09:00:00.000Z")),
 	event("app_native_crash", "timestamp", ts("2021-04-06T09:00:00.000Z")),
 	event("app_crashed", "timestamp", ts("2021-04-06T09:30:00.000Z")),
@@ -231,8 +230,8 @@ func tables(m *Model) map[string][]string {
 		add("voice_sessions", fmt.Sprintf("%s|%s|%d|%.1f|%.1f", r.ChannelID, ptr(r.GuildID), r.DurationMins, r.StartedDate, r.EndedDate))
 	}
 	p := m.Package
-	add("package_data", fmt.Sprintf("%s|%s|%s|%s|%s|%s|%v", p.PackageID, p.PackageVersion, p.OwnerID, p.OwnerName,
-		ptr(p.OwnerDisplayName), ptr(p.OwnerAvatarURL), p.IsPartial))
+	add("package_data", fmt.Sprintf("%s|%s|%s|%s|%s|%s|%v|%s", p.PackageID, p.PackageVersion, p.OwnerID, p.OwnerName,
+		ptr(p.OwnerDisplayName), ptr(p.OwnerAvatarURL), p.IsPartial, ptr(p.ActivityStream)))
 	for _, rows := range out {
 		slices.Sort(rows)
 	}
@@ -262,9 +261,9 @@ var eventRows = []string{
 	"app_opened|2021-04-07|0|1|NULL|NULL|NULL|Android|NULL",
 	"email_opened|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
 	"app_crashed|2021-04-06|0|2|NULL|NULL|NULL|NULL|NULL",
-	// Gated on dev_portal_page_viewed; oauth2_authorize_accepted and
-	// voice_message_recorded have no rows, their gates being empty.
+	"oauth2_authorize_accepted|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
 	"notification_clicked|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
+	"voice_message_recorded|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
 }
 
 func fullTables() map[string][]string {
@@ -285,7 +284,7 @@ func fullTables() map[string][]string {
 		"sessions":       {"90|1617703200.0|1617708600.0|Windows"},
 		"voice_sessions": {voiceChan + "|" + guildOne + "|44|1617739260.0|1617741900.0"},
 		"package_data": {"pkg-test|0.1.0|" + ownerID + "|owner_user|Owner Name|https://cdn.discordapp.com/avatars/" +
-			ownerID + "/a_ownerhash.gif|false"},
+			ownerID + "/a_ownerhash.gif|false|analytics"},
 	}
 }
 

@@ -16,10 +16,13 @@ var (
 	guildEntryRe   = regexp.MustCompile(`/[0-9]{16,32}/guild\.json$`)
 	channelIDRe    = regexp.MustCompile(`/c?([0-9]{16,32})/`)
 	// Only the first shard of the first stream found is read: `analytics`, the
-	// most complete one, else `reporting`, which carries the same events.
-	activityStreamRes = []*regexp.Regexp{
-		regexp.MustCompile(`/analytics.*\.json$`),
-		regexp.MustCompile(`/reporting.*\.json$`),
+	// most complete one, else `reporting`.
+	activityStreams = []struct {
+		name string // stored in `package_data.activity_stream`
+		re   *regexp.Regexp
+	}{
+		{"analytics", regexp.MustCompile(`/analytics.*\.json$`)},
+		{"reporting", regexp.MustCompile(`/reporting.*\.json$`)},
 	}
 )
 
@@ -27,6 +30,7 @@ var (
 // or payments path is empty when there is no candidate.
 type layout struct {
 	user, activity                        string
+	stream                                string // the activity entry's stream, see activityStreams
 	serversIndex, messagesIndex, payments string
 	channels                              []string // channel.json entries
 	duplicates                            []string // channel.json entries left out, see channelFolders
@@ -36,10 +40,10 @@ func (e *entries) layout() layout {
 	messagesRoot := e.messagesRoot()
 	l := layout{
 		user:          e.userEntry(),
-		activity:      e.activityStream(),
 		serversIndex:  e.indexPath(e.serversRoot(messagesRoot), "Servers/index.json", "servers/index.json"),
 		messagesIndex: e.indexPath(messagesRoot, "Messages/index.json", "messages/index.json"),
 	}
+	l.activity, l.stream = e.activityStream()
 	if l.user != "" {
 		l.payments = l.user[:strings.LastIndexByte(l.user, '/')] + "/user_data_exports/discord_billing/payments.json"
 	}
@@ -144,13 +148,13 @@ func (e *entries) indexPath(root string, fallbacks ...string) string {
 	return ""
 }
 
-func (e *entries) activityStream() string {
-	for _, re := range activityStreamRes {
-		if name := e.first(re.MatchString); name != "" {
-			return name
+func (e *entries) activityStream() (path, stream string) {
+	for _, s := range activityStreams {
+		if path = e.first(s.re.MatchString); path != "" {
+			return path, s.name
 		}
 	}
-	return ""
+	return "", ""
 }
 
 func (e *entries) channelFiles(messagesRoot string) []string {
