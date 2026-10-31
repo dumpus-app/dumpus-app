@@ -1,14 +1,23 @@
 "use client";
 
 import type { DmChannelsData } from "~/types/sql";
+import { groupDays } from "./_chart";
 import { useDataSources } from "./_shared";
-import useTopDMsData from "~/hooks/data/use-top-dms-data";
 
 export default function useDMData({ userID }: { userID: string }) {
   const { sql, start, end } = useDataSources();
-  const topDMsData = useTopDMsData().getData({ offset: false });
 
-  const hasData = !!topDMsData?.find((dm) => dm.dm_user_id === userID);
+  // Whether the user is in the range's top DMs: a message to them in it.
+  const hasData = !!sql.rows`
+    SELECT 1 AS found
+    FROM activity a
+    WHERE a.event_name = 'message_sent'
+    AND a.associated_channel_id IN (
+      SELECT channel_id FROM dm_channels_data WHERE dm_user_id = '${userID}'
+    )
+    AND a.day BETWEEN '${start}' AND '${end}'
+    LIMIT 1;
+  `.data?.length;
 
   function getUser() {
     const { data, hasError } = sql<
@@ -69,50 +78,22 @@ export default function useDMData({ userID }: { userID: string }) {
   }
 
   function getDailySentMessages() {
-    const totalDays = new Date(end).getTime() - new Date(start).getTime();
-    const days = Math.floor(totalDays / (1000 * 60 * 60 * 24));
-
-    const periodLength = days > 360 ? 30 : days > 90 ? 7 : 1;
-
-    const { data, hasError } = sql<{
-      period_start: string;
-      message_count: number;
-    }>`
-      WITH RECURSIVE dates(day, day_group) AS (
-        VALUES('${start}', 1)
-        UNION ALL
-        SELECT date(day, '+1 day'), 
-        CASE WHEN (julianday(date(day, '+1 day')) - julianday('${start}')) % ${periodLength} = 0 THEN day_group + 1 ELSE day_group END
-        FROM dates
-        WHERE day < date('${start}', '+${days} days')
+    const { data, hasError } = sql.rows<{ day: string; count: number }>`
+      SELECT a.day, SUM(a.occurence_count) AS count
+      FROM activity a
+      WHERE a.event_name = 'message_sent'
+      AND a.associated_channel_id IN (
+        SELECT channel_id FROM dm_channels_data WHERE dm_user_id = '${userID}'
       )
-      SELECT 
-        MIN(dates.day) as period_start,
-        MAX(dates.day) as period_end,
-        IFNULL(SUM(joined_data.occurence_count),0) AS message_count
-      FROM 
-        dates
-      LEFT JOIN 
-        (SELECT a.day, a.occurence_count
-        FROM activity a
-        JOIN dm_channels_data d ON a.associated_channel_id = d.channel_id
-        WHERE a.event_name = 'message_sent' AND d.dm_user_id = '${userID}'
-        ) AS joined_data
-        ON dates.day = joined_data.day 
-      GROUP BY 
-        day_group
-      ORDER BY 
-        period_start ASC;
+      AND a.day BETWEEN '${start}' AND '${end}'
+      GROUP BY a.day;
     `;
 
     if (hasError) {
       return null;
     }
 
-    return data.map(({ period_start, message_count }) => ({
-      label: period_start,
-      value: message_count,
-    }));
+    return groupDays(start, end, data);
   }
 
   function getReactionsCount() {

@@ -6,17 +6,23 @@ import type {
   Guild,
   GuildChannelsData,
 } from "~/types/sql";
+import { groupDays } from "./_chart";
 import { useDataSources } from "./_shared";
-import useTopGuildsData from "./use-top-guilds-data";
 import { SQL_DEFAULT_LIMIT } from "~/constants";
 
 export default function useGuildData({ guildID }: { guildID: string }) {
   const { sql, start, end } = useDataSources();
-  const topChannelsData = useTopGuildsData().getData({ offset: false });
 
-  const hasData = !!topChannelsData?.find(
-    (guild) => guild.guild_id === guildID,
-  );
+  // Whether the guild is in the range's top guilds: a message in it.
+  const hasData = !!sql.rows`
+    SELECT 1 AS found
+    FROM activity a
+    JOIN guilds g ON g.guild_id = a.associated_guild_id
+    WHERE a.event_name = 'message_sent'
+    AND a.associated_guild_id = '${guildID}'
+    AND a.day BETWEEN '${start}' AND '${end}'
+    LIMIT 1;
+  `.data?.length;
 
   function getGuild() {
     const { data, hasError } = sql<Guild>`
@@ -144,49 +150,20 @@ export default function useGuildData({ guildID }: { guildID: string }) {
   }
 
   function getDailySentMessages() {
-    const totalDays = new Date(end).getTime() - new Date(start).getTime();
-    const days = Math.floor(totalDays / (1000 * 60 * 60 * 24));
-
-    const periodLength = days > 360 ? 30 : days > 90 ? 7 : 1;
-
-    const { data, hasError } = sql<{
-      period_start: string;
-      message_count: number;
-    }>`
-      WITH RECURSIVE dates(day, day_group) AS (
-        VALUES('${start}', 1)
-        UNION ALL
-        SELECT date(day, '+1 day'), 
-        CASE WHEN (julianday(date(day, '+1 day')) - julianday('${start}')) % ${periodLength} = 0 THEN day_group + 1 ELSE day_group END
-        FROM dates
-        WHERE day < date('${start}', '+${days} days')
-      )
-      SELECT 
-        MIN(dates.day) as period_start,
-        MAX(dates.day) as period_end,
-        IFNULL(SUM(joined_data.occurence_count),0) AS message_count
-      FROM 
-        dates
-      LEFT JOIN 
-        (SELECT a.day, a.occurence_count
-        FROM activity a
-        WHERE a.event_name = 'message_sent' AND a.associated_guild_id = '${guildID}'
-        ) AS joined_data
-        ON dates.day = joined_data.day 
-      GROUP BY 
-        day_group
-      ORDER BY 
-        period_start ASC;
-      `;
+    const { data, hasError } = sql.rows<{ day: string; count: number }>`
+      SELECT a.day, SUM(a.occurence_count) AS count
+      FROM activity a
+      WHERE a.event_name = 'message_sent'
+      AND a.associated_guild_id = '${guildID}'
+      AND a.day BETWEEN '${start}' AND '${end}'
+      GROUP BY a.day;
+    `;
 
     if (hasError) {
       return null;
     }
 
-    return data.map(({ period_start, message_count }) => ({
-      label: period_start,
-      value: message_count,
-    }));
+    return groupDays(start, end, data);
   }
 
   return {
