@@ -140,7 +140,7 @@ def process_link():
     (total_upgraded_row_count, total_row_count, _cp, _cs) = fetch_package_rank(
         package_id, package_process_status, session)
 
-    package_process_status.queue_standard_total_when_started = total_upgraded_row_count
+    package_process_status.queue_premium_total_when_started = total_upgraded_row_count
     package_process_status.queue_standard_total_when_started = total_row_count
     session.commit()
 

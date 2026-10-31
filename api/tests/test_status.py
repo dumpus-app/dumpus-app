@@ -114,7 +114,7 @@ def test_status_of_an_errored_package(submit, client, name, body, link_options, 
         errorMessageCode=code,
         isProcessing=True,
         processingStep=step,
-        processingQueuePosition=processing_queue(standard_when_joined=1),
+        processingQueuePosition=processing_queue(standard_when_joined=1, premium_when_joined=0),
     )
 
 
