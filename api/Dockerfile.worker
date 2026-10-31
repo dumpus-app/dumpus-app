@@ -1,6 +1,19 @@
 # Fargate task image. Plain Python — no Lambda runtime — because Fargate
 # runs ordinary container processes. Keeps the image small and the entrypoint
 # obvious.
+
+# dumpus-processor, cross-compiled on the build machine. processor/ comes in
+# as the named build context `processor`, so the api/ context stays as it is:
+# `docker buildx build --build-context processor=processor -f api/Dockerfile.worker api`
+# from the repo root.
+FROM --platform=$BUILDPLATFORM golang:1.26 AS processor-build
+ARG TARGETOS TARGETARCH
+WORKDIR /src
+COPY --from=processor go.mod go.sum ./
+RUN go mod download
+COPY --from=processor . .
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -buildvcs=false -ldflags="-s -w" ./cmd/dumpus-processor
+
 FROM python:3.10-slim
 
 WORKDIR /app
@@ -13,6 +26,8 @@ RUN apt-get update \
 
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY --from=processor-build /src/dumpus-processor /usr/local/bin/dumpus-processor
 
 # Flat layout: matches Dockerfile.lambda so existing top-level imports
 # (`from tasks import ...`) keep working.
