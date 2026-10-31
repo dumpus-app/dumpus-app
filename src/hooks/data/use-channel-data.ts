@@ -1,6 +1,7 @@
 "use client";
 
 import { groupDays } from "~/hooks/data/_chart";
+import { topLocalHour, type DayHourCount } from "~/hooks/data/_hours";
 import { useDataSources } from "~/hooks/data/_shared";
 import type { Guild, GuildChannelsData } from "~/types/sql";
 
@@ -75,30 +76,20 @@ export default function useChannelData({ channelID }: { channelID: string }) {
     return hasError ? null : data[0].invite_count;
   }
 
+  /** On the device's clock, see `localHours`. */
   function getTopChatHour() {
     if (!hasData) return null;
 
-    const { data, hasError } = sql<{
-      hour: number;
-      message_count: number;
-    }>`
-      SELECT
-        hour, SUM(occurence_count) as occurence_count
-      FROM
-          activity a
-      WHERE event_name = 'message_sent' 
-      AND day BETWEEN '${start}' AND '${end}'
+    const { data } = sql<DayHourCount>`
+      SELECT day, hour, SUM(occurence_count) AS count
+      FROM activity
+      WHERE event_name = 'message_sent'
       AND associated_channel_id = '${channelID}'
-      GROUP BY hour
-      ORDER BY occurence_count DESC
-      LIMIT 1;
+      AND day BETWEEN '${start}' AND '${end}'
+      GROUP BY day, hour;
     `;
 
-    if (hasError) {
-      return null;
-    }
-
-    return data[0].hour;
+    return topLocalHour(data);
   }
 
   function getReactionsCount() {

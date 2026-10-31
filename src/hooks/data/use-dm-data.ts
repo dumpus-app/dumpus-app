@@ -2,6 +2,7 @@
 
 import type { DmChannelsData } from "~/types/sql";
 import { groupDays } from "./_chart";
+import { topLocalHour, type DayHourCount } from "./_hours";
 import { useDataSources } from "./_shared";
 
 export default function useDMData({ userID }: { userID: string }) {
@@ -53,28 +54,22 @@ export default function useDMData({ userID }: { userID: string }) {
     return hasError ? null : data[0].message_count;
   }
 
+  /** On the device's clock, see `localHours`. */
   function getTopChatHour() {
     if (!hasData) return null;
 
-    const { data, hasError } = sql<{
-      hour: number;
-      message_count: number;
-    }>`
-      SELECT hour,
-        SUM(a.occurence_count) AS message_count
-      FROM 
-        activity a
-      JOIN dm_channels_data d
-        ON d.channel_id = a.associated_channel_id
-      WHERE event_name = 'message_sent' 
-      AND day BETWEEN '${start}' AND '${end}'
-      AND d.dm_user_id = '${userID}'
-      GROUP BY hour
-      ORDER BY occurence_count DESC
-      LIMIT 1
+    const { data } = sql<DayHourCount>`
+      SELECT a.day, a.hour, SUM(a.occurence_count) AS count
+      FROM activity a
+      WHERE a.event_name = 'message_sent'
+      AND a.associated_channel_id IN (
+        SELECT channel_id FROM dm_channels_data WHERE dm_user_id = '${userID}'
+      )
+      AND a.day BETWEEN '${start}' AND '${end}'
+      GROUP BY a.day, a.hour;
     `;
 
-    return hasError ? null : data[0].hour;
+    return topLocalHour(data);
   }
 
   function getDailySentMessages() {

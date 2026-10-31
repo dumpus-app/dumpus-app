@@ -8,6 +8,7 @@ import type {
 } from "~/types/sql";
 import { carriesEvent } from "./_availability";
 import { groupDays } from "./_chart";
+import { topLocalHour, type DayHourCount } from "./_hours";
 import { useDataSources } from "./_shared";
 import { SQL_DEFAULT_LIMIT } from "~/constants";
 
@@ -71,21 +72,18 @@ export default function useGuildData({ guildID }: { guildID: string }) {
     return hasError ? null : data[0].join_count;
   }
 
+  /** On the device's clock, see `localHours`. */
   function getTopChatHour() {
-    const { data, hasError } = sql<{ hour: number }>`
-      SELECT
-        hour,
-        SUM(occurence_count) AS message_count
+    const { data } = sql<DayHourCount>`
+      SELECT day, hour, SUM(occurence_count) AS count
       FROM activity
       WHERE event_name = 'message_sent'
       AND associated_guild_id = '${guildID}'
       AND day BETWEEN '${start}' AND '${end}'
-      GROUP BY hour
-      ORDER BY message_count DESC
-      LIMIT 1;
+      GROUP BY day, hour;
     `;
 
-    return hasError ? null : data[0].hour;
+    return topLocalHour(data);
   }
 
   /** Null when the export can't tell, see `carriesEvent`. */
