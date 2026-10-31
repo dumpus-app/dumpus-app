@@ -18,6 +18,10 @@
     {
       "groupName": "i18next monorepo",
       "matchPackageNames": ["/i18next/"]
+    },
+    {
+      "groupName": "playwright",
+      "matchPackageNames": ["@playwright/test", "mcr.microsoft.com/playwright"]
     }
   ]
 }

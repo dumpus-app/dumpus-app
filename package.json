@@ -32,6 +32,8 @@
     "script:list-locales": "node ./scripts/list-locales.cjs",
     "start": "serve dist",
     "tauri:icon": "tauri icon ./ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-60@3x~car.png",
+    "test:e2e": "pnpm build && playwright test",
+    "test:e2e:docker": "sh ./scripts/e2e-docker.sh",
     "trapeze:run": "node ./trapeze.config.mjs"
   },
   "dependencies": {
@@ -93,6 +95,7 @@
   },
   "devDependencies": {
     "@capacitor/cli": "^6.2.1",
+    "@playwright/test": "1.64.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tauri-apps/cli": "^1.6.3",
     "@trapezedev/project": "^7.1.3",
