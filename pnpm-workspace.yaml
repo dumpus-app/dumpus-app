@@ -1,0 +1,4 @@
+allowBuilds:
+  # Its postinstall only fetches the native binding when the optional
+  # dependency that ships it failed to install.
+  unrs-resolver: false

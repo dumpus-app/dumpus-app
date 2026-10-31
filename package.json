@@ -3,9 +3,9 @@
   "version": "1.0.11",
   "private": true,
   "license": "GPL-3.0",
-  "packageManager": "pnpm@9.14.2",
+  "packageManager": "pnpm@12.16.1",
   "engines": {
-    "pnpm": "9.14.2"
+    "pnpm": "12.16.1"
   },
   "scripts": {
     "android:dev": "cross-env-shell NODE_ENV=development \"echo 'Run `pnpm dev:mobile` in parallel' && cap sync && cap run android\"",

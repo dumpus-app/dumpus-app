@@ -3,7 +3,7 @@
 ## Local setup
 
 - Node.js >= `v16.17.0`
-- PNPM >= `8.0.0`
+- pnpm `12`, the version `packageManager` pins in `package.json`. Corepack runs it from `0.36.0` on (`npm i -g corepack@latest` updates an older one)
 - Visual Studio Code
 
 If you plan on developing more specific parts of the app, follow their respective guides:
