@@ -25,7 +25,7 @@ def processed_row(package_id, row_id=1, queue_total=1):
         # The worker never writes it.
         'progress': None,
         'queue_standard_total_when_started': queue_total,
-        'queue_premium_total_when_started': None,
+        'queue_premium_total_when_started': 0,
         'queue_standard_total_when_upgraded': None,
         'queue_premium_total_when_upgraded': None,
         'is_upgraded': False,
@@ -247,9 +247,8 @@ def test_queue_size_is_recorded_when_a_package_joins(submit, postgres):
     package = submit('account_only')
 
     row = next(row for row in status_row(postgres) if row['package_id'] == package.package_id)
-    # Both totals are meant to be stored, but the standard one is written twice
-    # and the premium one never.
-    assert (row['queue_standard_total_when_started'], row['queue_premium_total_when_started']) == (3, None)
+    # Standard: itself and the two queued ahead. Premium: the upgraded one.
+    assert (row['queue_standard_total_when_started'], row['queue_premium_total_when_started']) == (3, 1)
 
 
 def test_zip_already_in_the_tmp_dir_is_used_instead_of_downloading(client, postgres, upstream, zip_dir):
