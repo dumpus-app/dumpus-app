@@ -1,8 +1,7 @@
 #!/bin/sh
-# Runs the e2e suite in the Playwright image CI uses, the only place the
-# committed screenshots match. CI runs it on arm64, so take new baselines
-# on an arm64 host such as an Apple Silicon Mac. Arguments go to
-# `playwright test`, for eg. `pnpm test:e2e:docker --update-snapshots`.
+# Runs the e2e suite in the Playwright image CI uses, to reproduce on a Mac
+# what fails on Linux only. Arguments go to `playwright test`, for eg.
+# `pnpm test:e2e:docker --project mobile`.
 set -e
 
 version=$(node -p "require('@playwright/test/package.json').version")

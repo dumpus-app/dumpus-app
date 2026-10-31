@@ -1,30 +1,23 @@
 import type { BrowserContext, Route } from "@playwright/test";
 import { md5, type Dataset } from "./dataset";
-import { placeholderPng } from "./png";
 
 // In-memory stand-in for https://api.dumpus.app, its presigned S3 downloads
-// and the Discord CDN. Response shapes follow dumpus-api's `src/app.py`.
+// and the Discord CDN. Response shapes follow `api/src/app.py`.
 
-export const API_ORIGIN = "https://api.dumpus.app";
+const API_ORIGIN = "https://api.dumpus.app";
 const BLOB_ORIGIN = "https://dumpus-packages.s3.eu-west-1.amazonaws.com";
 const CDN_ORIGIN = "https://cdn.discordapp.com";
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1"]);
 const CORS = { "access-control-allow-origin": "*" };
+// Every avatar and guild icon, a transparent pixel.
+const PNG = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=",
+  "base64",
+);
 
 export type Package = { dataset: Dataset; blob: Buffer; iv: string | null };
 
 type ProcessingStep = "LOCKED" | "DOWNLOADING" | "ANALYZING" | "PROCESSED";
-
-export type StatusError =
-  "UNKNOWN_ERROR" | "EXPIRED_LINK" | "INVALID_LINK" | "MISSING_USER_DATA";
-
-type Held = "process" | "status" | "blob";
-
-type ApiCall = {
-  method: string;
-  path: string;
-  authorization: string | undefined;
-};
 
 function json(route: Route, body: unknown, status = 200) {
   return route.fulfill({
@@ -60,37 +53,10 @@ function baseStatus() {
 export class FakeApi {
   /** What `/status` reports for every package. */
   step: ProcessingStep = "PROCESSED";
-  queuePosition = 3;
-  statusError: StatusError | null = null;
-  readonly calls: ApiCall[] = [];
   /** Requests to hosts no mock stands in for, the test fails if any. */
   readonly unexpected: string[] = [];
 
-  private readonly holds = new Map<Held, Promise<void>>();
-  private readonly releases: (() => void)[] = [];
-  private readonly images = new Map<string, Buffer>();
-
   constructor(private readonly packages: Package[]) {}
-
-  /** Keeps `endpoint` from answering until the returned function is called. */
-  hold(endpoint: Held) {
-    let release!: () => void;
-    this.holds.set(
-      endpoint,
-      new Promise<void>((resolve) => {
-        release = () => {
-          this.holds.delete(endpoint);
-          resolve();
-        };
-      }),
-    );
-    this.releases.push(release);
-    return release;
-  }
-
-  releaseAll() {
-    for (const release of this.releases) release();
-  }
 
   async install(context: BrowserContext) {
     // Registered first so every route below takes precedence over it.
@@ -105,21 +71,21 @@ export class FakeApi {
     );
     await context.route(`${API_ORIGIN}/**`, (route) => this.api(route));
     await context.route(`${BLOB_ORIGIN}/**`, (route) => this.blob(route));
-    await context.route(`${CDN_ORIGIN}/**`, (route) => this.cdn(route));
+    await context.route(`${CDN_ORIGIN}/**`, (route) =>
+      route.fulfill({ headers: CORS, contentType: "image/png", body: PNG }),
+    );
   }
 
-  private async api(route: Route) {
+  private api(route: Route) {
     const request = route.request();
     const method = request.method();
     const { pathname } = new URL(request.url());
     const authorization = request.headers()["authorization"];
-    this.calls.push({ method, path: pathname, authorization });
 
     const [resource, id, ...rest] = pathname.split("/").filter(Boolean);
     const action = rest.join("/");
 
     if (method === "POST" && pathname === "/process") {
-      await this.holds.get("process");
       const link = request.postDataJSON().package_link;
       const pkg = this.packages.find(
         ({ dataset }) =>
@@ -170,7 +136,6 @@ export class FakeApi {
       }
 
       if (method === "GET" && action === "status") {
-        await this.holds.get("status");
         return json(route, this.statusBody());
       }
       if (method === "GET" && action === "blob") {
@@ -180,13 +145,9 @@ export class FakeApi {
         const user = pkg.dataset.apiUsers.get(rest[1]);
         return user ? json(route, user) : empty(route, 500);
       }
-      if (method === "DELETE" && !action) {
-        return json(route, { isDeleted: true, errorMessageCode: null });
-      }
     }
 
-    // Flask's 404 handler. The app asks for `/user/` with an empty id on a
-    // details page that doesn't exist.
+    // Flask's 404 handler.
     return json(route, { error: "Route not found." }, 404);
   }
 
@@ -199,12 +160,7 @@ export class FakeApi {
   }
 
   private statusBody() {
-    const base = {
-      ...baseStatus(),
-      isErrored: this.statusError !== null,
-      errorMessageCode: this.statusError,
-      processingStep: this.step,
-    };
+    const base = { ...baseStatus(), processingStep: this.step };
     if (this.step === "PROCESSED") return { ...base, isDataAvailable: true };
     return {
       ...base,
@@ -214,15 +170,14 @@ export class FakeApi {
         premiumQueueTotal: 0,
         standardQueueTotal: 12,
         premiumQueueUser: 0,
-        standardQueueUser: this.queuePosition,
+        standardQueueUser: 3,
         standardWhenJoined: 12,
         premiumWhenJoined: 0,
       },
     };
   }
 
-  private async blob(route: Route) {
-    await this.holds.get("blob");
+  private blob(route: Route) {
     const id = new URL(route.request().url()).pathname.slice(1);
     const pkg = this.packages.find(({ dataset }) => dataset.packageId === id);
     if (!pkg) {
@@ -233,22 +188,6 @@ export class FakeApi {
       headers: CORS,
       contentType: "binary/octet-stream",
       body: pkg.blob,
-    });
-  }
-
-  private cdn(route: Route) {
-    // The share image asks for `.png` where the app shows `.webp`: same
-    // avatar, same color.
-    const asset = new URL(route.request().url()).pathname.replace(/\.\w+$/, "");
-    let image = this.images.get(asset);
-    if (!image) {
-      image = placeholderPng(asset);
-      this.images.set(asset, image);
-    }
-    return route.fulfill({
-      headers: CORS,
-      contentType: "image/png",
-      body: image,
     });
   }
 }

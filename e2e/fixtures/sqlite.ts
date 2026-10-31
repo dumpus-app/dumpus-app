@@ -3,8 +3,8 @@ import { gzipSync } from "node:zlib";
 import initSqlJs from "sql.js";
 import type { Dataset } from "./dataset";
 
-// Copied from `create_new_empty_database()` and `create_indexes()` in
-// dumpus-api's `src/sqlite.py`, the schema `src/types/sql.ts` describes.
+// Copied from `processor/sqlitedb/sqlitedb.go`, the schema `src/types/sql.ts`
+// describes.
 const SCHEMA = `
   CREATE TABLE activity (
     event_name TEXT NOT NULL,
@@ -117,7 +117,7 @@ export async function buildDatabase({ tables }: Dataset) {
 /**
  * Blob as the worker uploads it: gzip, then AES-256-CBC with SHA-256 of the
  * UPN as the key and a random IV, PKCS7 padded (see `encrypt_sqlite_data()`
- * in dumpus-api's `src/crypto.py`). The demo is stored unencrypted.
+ * in `api/src/crypto.py`). The demo is stored unencrypted.
  */
 export function packBlob(database: Uint8Array, upn: string | null) {
   const gzipped = gzipSync(database);

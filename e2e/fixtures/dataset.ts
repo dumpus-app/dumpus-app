@@ -2,13 +2,10 @@ import { createHash } from "node:crypto";
 
 // Synthetic Discord packages for the e2e suite. Every name and id below is
 // made up, and every row comes from a seeded PRNG, so two runs produce the
-// same database and the same screenshots.
-
-/** Clock the browser is pinned to: the morning after the package's last day. */
-export const NOW = "2024-07-01T09:30:00.000Z";
+// same database.
 
 const FIRST_DAY = "2023-04-01";
-export const LAST_DAY = "2024-06-30";
+const LAST_DAY = "2024-06-30";
 
 export type ActivityRow = {
   event_name: string;
@@ -113,9 +110,9 @@ export type Dataset = {
   widgets: Map<string, ApiWidget>;
 };
 
-// Real UPNs are 500+ url-safe characters, see `discord_link_regex` in the
-// API's `src/util.py`.
-export const FAKE_UPN =
+// Real UPNs are 500+ url-safe characters, see `discord_link_regex` in
+// `api/src/util.py`.
+const FAKE_UPN =
   "e2e.fake-upn." + "0123456789abcdefghijklmnopqrstuvwxyz".repeat(14);
 export const FAKE_PACKAGE_LINK = `https://click.discord.com/ls/click?upn=${FAKE_UPN}`;
 
@@ -150,7 +147,7 @@ function addDays(day: string, n: number) {
   return date.toISOString().slice(0, 10);
 }
 
-export function daySeconds(day: string) {
+function daySeconds(day: string) {
   return Date.parse(`${day}T00:00:00Z`) / 1000;
 }
 
@@ -521,8 +518,6 @@ function build(recipe: Recipe): Dataset {
   }
 
   const rows = Array.from(activity.values());
-  breakTies(rows, dmChannels, guildChannels);
-
   for (const row of rows) {
     if (row.event_name !== "message_sent") continue;
     const dm = dmChannels.find(
@@ -563,85 +558,6 @@ function build(recipe: Recipe): Dataset {
     apiUsers,
     widgets,
   };
-}
-
-export const RANGES = [
-  { id: "4weeks", label: "4 weeks" },
-  { id: "6months", label: "6 months" },
-  { id: "year", label: "Year" },
-  { id: "lifetime", label: "Lifetime" },
-] as const;
-
-export type RangeID = (typeof RANGES)[number]["id"];
-
-/** Same date math as `getTimeRangeDates` in `src/stores/database.ts`. */
-export function rangeStart(range: RangeID) {
-  const start = new Date(`${LAST_DAY}T00:00:00Z`);
-  switch (range) {
-    case "4weeks":
-      start.setUTCDate(start.getUTCDate() - 4 * 7);
-      break;
-    case "6months":
-      start.setUTCMonth(start.getUTCMonth() - 6);
-      break;
-    case "year":
-      start.setUTCFullYear(start.getUTCFullYear() - 1);
-      break;
-    case "lifetime":
-      return FIRST_DAY;
-  }
-  return start.toISOString().slice(0, 10);
-}
-
-/**
- * Top lists are sorted by message count only, so two DMs (or guilds, or
- * channels) with the same total would come out in an order SQLite picks.
- * Nudge the last message of one of them until every total is unique in
- * every time range.
- */
-function breakTies(
-  rows: ActivityRow[],
-  dms: DmChannelRow[],
-  channels: GuildChannelRow[],
-) {
-  const dmOf = new Map(dms.map((dm) => [dm.channel_id, dm.dm_user_id]));
-  const groupings: ((row: ActivityRow) => string | null)[] = [
-    (row) => dmOf.get(row.associated_channel_id ?? "") ?? null,
-    (row) => (row.associated_guild_id ? row.associated_channel_id : null),
-    (row) => row.associated_guild_id,
-  ];
-  const messages = rows
-    .filter((row) => row.event_name === "message_sent")
-    .sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
-
-  for (let pass = 0; pass < 100; pass++) {
-    let changed = false;
-    for (const group of groupings) {
-      for (const { id } of RANGES) {
-        const start = rangeStart(id);
-        const totals = new Map<string, number>();
-        for (const row of messages) {
-          const key = group(row);
-          if (key === null || row.day < start) continue;
-          totals.set(key, (totals.get(key) ?? 0) + row.occurence_count);
-        }
-        const seen = new Set<number>();
-        for (const [key, total] of totals) {
-          if (!seen.has(total)) {
-            seen.add(total);
-            continue;
-          }
-          const last = messages
-            .filter((row) => group(row) === key && row.occurence_count >= 12)
-            .pop()!;
-          last.occurence_count++;
-          changed = true;
-        }
-      }
-    }
-    if (!changed) return;
-  }
-  throw new Error("could not make the top lists totals unique");
 }
 
 // prettier-ignore
@@ -826,7 +742,7 @@ export function buildMainDataset() {
   });
 }
 
-// Shaped like `generate_demo_database()` in the API's `src/sqlite.py`: a
+// Shaped like `generate_demo_database()` in `api/src/sqlite.py`: a
 // "wumpus" owner, generated usernames and "<username>'s server" guilds.
 export function buildDemoDataset() {
   const random = mulberry32(42);
