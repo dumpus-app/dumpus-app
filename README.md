@@ -1,16 +1,16 @@
 # [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
 > [!NOTE]
-> ⚡ Dumpus is moving its package processing to Go: **N× faster**, **N× less memory**, a **33× smaller** image.
+> ⚡ Package processing, rewritten in Go: **3.7× faster**, **5× less memory**, and a **33× smaller** image.
 
 <details>
 <summary>Before and after</summary>
 
 |                                  | Python | Go     |
 | -------------------------------- | ------ | ------ |
-| Typical package (median)         | … s    | … s    |
-| Large packages (90th percentile) | … s    | … s    |
-| Peak memory (median)             | … MB   | … MB   |
+| Typical package (median)         | 16.8 s | 4.4 s  |
+| Large packages (90th percentile) | 48.4 s | 14.9 s |
+| Peak memory (median)             | 277 MB | 51 MB  |
 | Start-up                         | 0.27 s | 1.1 ms |
 | Image                            | 371 MB | 11 MB  |
 
