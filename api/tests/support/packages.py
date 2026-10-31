@@ -181,15 +181,9 @@ COUNTED = [
     event('guild_joined', '2024-03-01T12:00:00.000Z', guild_id=GUILD_ONE),
     event('guild_joined', '2024-03-01T12:30:00.000Z', guild_id=GUILD_ONE),
     event('guild_joined', '2024-03-02T09:00:00.000Z', guild_id=GUILD_TWO),
-    # Gates `oauth2_authorize_accepted` below.
-    event('bot_token_compromised', '2024-03-10T10:00:00.000Z'),
     event('oauth2_authorize_accepted', '2024-03-10T11:00:00.000Z'),
     event('oauth2_authorize_accepted', '2024-03-11T11:00:00.000Z'),
-    # Not a docs page, so `notification_clicked` below is gated out.
-    event('dev_portal_page_viewed', '2024-03-12T07:00:00.000Z', page_name='/applications'),
     event('notification_clicked', '2024-03-12T08:00:00.000Z'),
-    # Gates `voice_message_recorded` below.
-    event('application_created', '2024-03-13T09:00:00.000Z'),
     event('voice_message_recorded', '2024-03-13T10:00:00.000Z'),
     event('email_opened', '2024-03-14T07:00:00.000Z'),
     event('email_opened', '2024-03-14T19:00:00.000Z'),

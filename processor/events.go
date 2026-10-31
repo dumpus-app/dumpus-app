@@ -3,7 +3,6 @@ package processor
 import (
 	"bytes"
 	"encoding/json"
-	"strings"
 	"sync"
 )
 
@@ -18,49 +17,32 @@ const (
 	evApplicationCommandUsed
 	evAddReaction
 	evAppOpened
-	evGate  // only decides whether a daily event is written, see gate
 	evDaily // counted per day, see dailyEvents
 )
 
-// gate is one of the lists the reference keeps only to decide whether an
-// unrelated daily event is written.
-type gate uint8
-
-const (
-	noGate gate = iota
-	gateBotTokenCompromised
-	gateDevPortalDocs // dev_portal_page_viewed on a /docs/ page
-	gateApplicationCreated
-	numGates
-)
-
-// dailyEvents are counted per day and written in this order. Three are gated on
-// an unrelated list being non-empty, a copy-paste slip in the reference kept on
-// purpose.
+// dailyEvents are counted per day and written in this order.
 var dailyEvents = []struct {
 	name  string   // the activity event name
 	types []string // the event types counted under it
-	gate  gate
 }{
-	{"email_opened", []string{"email_opened"}, noGate},
-	{"login_successful", []string{"login_successful"}, noGate},
-	{"app_crashed", []string{"app_crashed", "app_native_crash"}, noGate},
-	{"user_avatar_updated", []string{"user_avatar_updated"}, noGate},
-	{"oauth2_authorize_accepted", []string{"oauth2_authorize_accepted"}, gateBotTokenCompromised},
-	{"remote_auth_login", []string{"remote_auth_login"}, noGate},
-	{"notification_clicked", []string{"notification_clicked"}, gateDevPortalDocs},
-	{"captcha_served", []string{"captcha_served"}, noGate},
-	{"voice_message_recorded", []string{"voice_message_recorded"}, gateApplicationCreated},
-	{"message_reported", []string{"message_reported"}, noGate},
-	{"message_edited", []string{"message_edited"}, noGate},
-	{"premium_upsell_viewed", []string{"premium_upsell_viewed"}, noGate},
+	{"email_opened", []string{"email_opened"}},
+	{"login_successful", []string{"login_successful"}},
+	{"app_crashed", []string{"app_crashed", "app_native_crash"}},
+	{"user_avatar_updated", []string{"user_avatar_updated"}},
+	{"oauth2_authorize_accepted", []string{"oauth2_authorize_accepted"}},
+	{"remote_auth_login", []string{"remote_auth_login"}},
+	{"notification_clicked", []string{"notification_clicked"}},
+	{"captcha_served", []string{"captcha_served"}},
+	{"voice_message_recorded", []string{"voice_message_recorded"}},
+	{"message_reported", []string{"message_reported"}},
+	{"message_edited", []string{"message_edited"}},
+	{"premium_upsell_viewed", []string{"premium_upsell_viewed"}},
 }
 
 type eventSpec struct {
 	name  string // the event type
 	kind  eventKind
-	gate  gate // for evGate
-	daily int  // for evDaily, the index in dailyEvents
+	daily int // for evDaily, the index in dailyEvents
 }
 
 // Lines of other event types are skipped without being decoded.
@@ -74,9 +56,6 @@ var eventTypes = func() map[string]eventSpec {
 		"application_command_used": {kind: evApplicationCommandUsed},
 		"add_reaction":             {kind: evAddReaction},
 		"app_opened":               {kind: evAppOpened},
-		"bot_token_compromised":    {kind: evGate, gate: gateBotTokenCompromised},
-		"dev_portal_page_viewed":   {kind: evGate, gate: gateDevPortalDocs},
-		"application_created":      {kind: evGate, gate: gateApplicationCreated},
 	}
 	for i, d := range dailyEvents {
 		for _, t := range d.types {
@@ -100,7 +79,6 @@ const (
 	fApplicationID
 	fUserID
 	fEmojiName
-	fPageName
 	numFields
 )
 
@@ -114,7 +92,6 @@ var fieldNames = [numFields]string{
 	fApplicationID:        "application_id",
 	fUserID:               "user_id",
 	fEmojiName:            "emoji_name",
-	fPageName:             "page_name",
 }
 
 var fieldIndex = func() map[string]int {
@@ -270,7 +247,6 @@ type activityAgg struct {
 	appCommands  map[appCommandKey]int64
 	reactions    map[reactionKey]int64
 	appOpened    map[osDayKey]int64
-	gates        [numGates]bool
 	sessions     []sessionEvent
 	voice        []voiceEvent
 	sessionParts [][]sessionEvent
@@ -304,9 +280,6 @@ func (a *activityAgg) merge(b *activityAgg) {
 	a.tooLong += b.tooLong
 	a.read += b.read
 	a.failed += b.failed
-	for i, set := range b.gates {
-		a.gates[i] = a.gates[i] || set
-	}
 	for k, n := range b.daily {
 		a.daily[k] += n
 	}
@@ -467,26 +440,6 @@ func (r *lineReader) text(spec eventSpec, f *eventFields, field int) (uint32, bo
 	return 0, false
 }
 
-// plain reads a field holding a string the parser only tests, without
-// interning it.
-func (r *lineReader) plain(spec eventSpec, f *eventFields, field int) (string, bool) {
-	if !f.has(field) {
-		r.issue(spec, field, ProblemMissing)
-		return "", false
-	}
-	v := f.values[field]
-	switch kindOf(v) {
-	case kindString:
-		s, _ := decodeString(v)
-		return s, true
-	case kindNull:
-		r.issue(spec, field, ProblemNull)
-	default:
-		r.issue(spec, field, ProblemWrongType)
-	}
-	return "", false
-}
-
 // outcome is what event did with an event of a type the parser reads. A field
 // reported but replaced, for eg. a missing `client_track_timestamp`, still
 // gives eventRead.
@@ -575,21 +528,6 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) outcome
 			return eventFailed
 		}
 		a.guildJoined[guildHourKey{guild: guild, hour: floorDiv(ts, secondsPerHour)}]++
-
-	case evGate:
-		if spec.gate == gateDevPortalDocs {
-			page, ok := r.plain(spec, f, fPageName)
-			if !ok {
-				return eventFailed
-			}
-			if !strings.HasPrefix(page, "/docs/") {
-				return eventSkipped
-			}
-		}
-		if _, ok := r.timestamp(spec, f, fTimestamp); !ok {
-			return eventFailed
-		}
-		a.gates[spec.gate] = true
 
 	case evApplicationCommandUsed:
 		if !f.has(fApplicationID) {

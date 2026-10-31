@@ -151,7 +151,6 @@ var activityLines = lines(
 	event("email_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")),
 	event("oauth2_authorize_accepted", "timestamp", ts("2021-04-06T09:00:00.000Z"), "application_id", `"`+app+`"`),
 	event("notification_clicked", "timestamp", ts("2021-04-06T09:00:00.000Z")),
-	event("dev_portal_page_viewed", "timestamp", ts("2021-04-06T09:00:00.000Z"), "page_name", `"/docs/intro"`),
 	event("voice_message_recorded", "timestamp", ts("2021-04-06T09:00:00.000Z")),
 	event("app_native_crash", "timestamp", ts("2021-04-06T09:00:00.000Z")),
 	event("app_crashed", "timestamp", ts("2021-04-06T09:30:00.000Z")),
@@ -262,9 +261,9 @@ var eventRows = []string{
 	"app_opened|2021-04-07|0|1|NULL|NULL|NULL|Android|NULL",
 	"email_opened|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
 	"app_crashed|2021-04-06|0|2|NULL|NULL|NULL|NULL|NULL",
-	// Gated on dev_portal_page_viewed; oauth2_authorize_accepted and
-	// voice_message_recorded have no rows, their gates being empty.
+	"oauth2_authorize_accepted|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
 	"notification_clicked|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
+	"voice_message_recorded|2021-04-06|0|1|NULL|NULL|NULL|NULL|NULL",
 }
 
 func fullTables() map[string][]string {

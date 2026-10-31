@@ -149,11 +149,7 @@ func activityRows(a *activityAgg) []Activity {
 		return cmp.Or(cmp.Compare(x.daily, y.daily), cmp.Compare(x.day, y.day))
 	})
 	for _, k := range days {
-		d := dailyEvents[k.daily]
-		if d.gate != noGate && !a.gates[d.gate] {
-			continue
-		}
-		rows = append(rows, Activity{EventName: d.name, Day: dayString(k.day), OccurrenceCount: a.daily[k]})
+		rows = append(rows, Activity{EventName: dailyEvents[k.daily].name, Day: dayString(k.day), OccurrenceCount: a.daily[k]})
 	}
 	return rows
 }
