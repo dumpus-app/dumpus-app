@@ -74,6 +74,7 @@ const (
 	ProblemMixedFormats = "mixed_formats" // a channel mixes timestamp formats or offsets
 	ProblemSelfDM       = "self_dm"       // a DM whose recipients are all the owner
 	ProblemDuplicate    = "duplicate"     // a channel folder that reads an entry already read, skipped
+	ProblemNoEventRead  = "no_event_read" // a stream where events failed and none was read
 	// Limits on what a crafted package can cost; see limits.
 	ProblemTooLarge      = "too_large"       // an entry over the size read whole, skipped
 	ProblemOverBudget    = "over_budget"     // an entry past the total inflate budget, skipped

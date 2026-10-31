@@ -38,7 +38,7 @@ Exit codes:
 }
 ```
 
-`problem` is one of `missing`, `null`, `wrong_type`, `unparseable`, `malformed`, `mixed_formats`, `self_dm` and `duplicate` for a channel folder whose entries another one reads, then `too_large`, `over_budget`, `too_long` and `too_many_events` when a limit was hit. `counts.insecure_paths` counts the entry names `archive/zip` calls insecure, for eg. absolute, climbing out with `..` or holding a backslash; names are never used as paths on disk. `inputs` lists the entry found for each role, also when a limit skipped it. On failure the report carries `error` with the same code as stderr, and no issue: which ones were found before the failure depends on timing.
+`problem` is one of `missing`, `null`, `wrong_type`, `unparseable`, `malformed`, `mixed_formats`, `self_dm`, `duplicate` for a channel folder whose entries another one reads, and `no_event_read` for a stream where events failed and none was read, then `too_large`, `over_budget`, `too_long` and `too_many_events` when a limit was hit. `counts.insecure_paths` counts the entry names `archive/zip` calls insecure, for eg. absolute, climbing out with `..` or holding a backslash; names are never used as paths on disk. `inputs` lists the entry found for each role, also when a limit skipped it. On failure the report carries `error` with the same code as stderr, and no issue: which ones were found before the failure depends on timing.
 
 ### Limits
 
@@ -103,6 +103,7 @@ Where the worker fails a package, the processor goes on and counts the problem i
 - A DM message without `Contents` is counted like any other. The worker fails with `KeyError`.
 - A message without `Timestamp` counts in the channel's total but not per hour; one that isn't an ISO 8601 date is skipped (pandas reads some other formats, or fails).
 - Mixed timestamp formats in one channel, for eg. `:56` and `:56.123`, or two offsets: every message is bucketed by its own hour. pandas fails the whole package.
+- A stream where events failed and none was read, for eg. every timestamp in a new format, marks the package partial and is reported as `no_event_read`, whatever events the worker would skip without a problem.
 - Where a limit is hit, see [Limits](#limits), the processor skips and reports; the worker has no limits.
 - A channel folder whose `channel.json` or `messages.json` another folder or role reads is skipped, reported as `duplicate`, and the package is partial: for eg. a repeated entry name, or `channel.json` files in subfolders of `Messages/c<id>/`, which read the same `messages.json`. The worker reads every copy, and fails on the duplicate `channel_id` when the channel is in the messages index.
 - A line of the activity stream that isn't JSON is skipped, and counted when it carries an event type the parser uses; lines of other types aren't validated. The worker fails on any such line, blank lines included.

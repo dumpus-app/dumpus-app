@@ -261,18 +261,22 @@ type activityAgg struct {
 	lines, events int64
 	tooLong       int
 	usable        bool
-	daily         map[dayKey]int64
-	guildJoined   map[guildHourKey]int64
-	appCommands   map[appCommandKey]int64
-	reactions     map[reactionKey]int64
-	appOpened     map[osDayKey]int64
-	gates         [numGates]bool
-	sessions      []sessionEvent
-	voice         []voiceEvent
-	sessionParts  [][]sessionEvent
-	voiceParts    [][]voiceEvent
-	names         *names // set once the stream is read, nil without events
-	issues        map[issueKey]int
+	// read counts the relevant events the parser took and failed those it
+	// left out over a problem; the events the reference skips silently are in
+	// neither.
+	read, failed int64
+	daily        map[dayKey]int64
+	guildJoined  map[guildHourKey]int64
+	appCommands  map[appCommandKey]int64
+	reactions    map[reactionKey]int64
+	appOpened    map[osDayKey]int64
+	gates        [numGates]bool
+	sessions     []sessionEvent
+	voice        []voiceEvent
+	sessionParts [][]sessionEvent
+	voiceParts   [][]voiceEvent
+	names        *names // set once the stream is read, nil without events
+	issues       map[issueKey]int
 }
 
 func newActivityAgg() *activityAgg {
@@ -298,6 +302,8 @@ func (a *activityAgg) merge(b *activityAgg) {
 	a.lines += b.lines
 	a.events += b.events
 	a.tooLong += b.tooLong
+	a.read += b.read
+	a.failed += b.failed
 	for i, set := range b.gates {
 		a.gates[i] = a.gates[i] || set
 	}
@@ -367,6 +373,9 @@ func (r *lineReader) line(line []byte, order uint64) {
 		}
 	}
 	if !json.Valid(line) {
+		if spec.kind != 0 {
+			r.agg.failed++
+		}
 		r.issue(spec, -1, ProblemMalformed)
 		return
 	}
@@ -383,7 +392,12 @@ func (r *lineReader) line(line []byte, order uint64) {
 		}
 	}
 	r.agg.events++
-	r.event(spec, f, order)
+	switch r.event(spec, f, order) {
+	case eventRead:
+		r.agg.read++
+	case eventFailed:
+		r.agg.failed++
+	}
 }
 
 // confirmUsable decodes a line of an unused type to check that its
@@ -473,9 +487,20 @@ func (r *lineReader) plain(spec eventSpec, f *eventFields, field int) (string, b
 	return "", false
 }
 
+// outcome is what event did with an event of a type the parser reads. A field
+// reported but replaced, for eg. a missing `client_track_timestamp`, still
+// gives eventRead.
+type outcome uint8
+
+const (
+	eventRead    outcome = iota // taken, as the reference takes it
+	eventSkipped                // left out without a problem, as the reference does
+	eventFailed                 // left out over a problem, which is reported
+)
+
 // event mirrors the reference's per-event branches, in their order of checks.
 // A field is only checked where the reference stores or tests it.
-func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
+func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) outcome {
 	a := r.agg
 	// An application command the reference skips (id '-1', no guild) doesn't
 	// make the stream usable: its `continue` comes before the line is counted.
@@ -485,7 +510,7 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 	switch spec.kind {
 	case evJoinVoice, evLeaveVoice:
 		if !f.has(fChannelID) {
-			return
+			return eventSkipped
 		}
 		field := fClientTrackTimestamp
 		switch v := f.values[fClientTrackTimestamp]; {
@@ -504,38 +529,38 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 		}
 		ts, ok := r.timestamp(spec, f, field)
 		if !ok {
-			return
+			return eventFailed
 		}
 		channel, ok := r.text(spec, f, fChannelID)
 		if !ok {
-			return
+			return eventFailed
 		}
 		if channel == 0 {
 			r.issue(spec, fChannelID, ProblemNull)
-			return
+			return eventFailed
 		}
 		// A session takes its guild from the join.
 		var guild uint32
 		if spec.kind == evJoinVoice && f.has(fGuildID) {
 			if guild, ok = r.text(spec, f, fGuildID); !ok {
-				return
+				return eventFailed
 			}
 		}
 		a.voice = append(a.voice, voiceEvent{ts: ts, order: order, join: spec.kind == evJoinVoice, channel: channel, guild: guild})
 
 	case evSessionStart, evSessionEnd:
 		if !f.has(fOS) {
-			return
+			return eventSkipped
 		}
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
-			return
+			return eventFailed
 		}
 		// A session takes its os from the start.
 		var os uint32
 		if spec.kind == evSessionStart {
 			if os, ok = r.text(spec, f, fOS); !ok {
-				return
+				return eventFailed
 			}
 		}
 		a.sessions = append(a.sessions, sessionEvent{ts: ts, order: order, start: spec.kind == evSessionStart, os: os})
@@ -543,11 +568,11 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 	case evGuildJoined:
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
-			return
+			return eventFailed
 		}
 		guild, ok := r.text(spec, f, fGuildID)
 		if !ok {
-			return
+			return eventFailed
 		}
 		a.guildJoined[guildHourKey{guild: guild, hour: floorDiv(ts, secondsPerHour)}]++
 
@@ -555,36 +580,37 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 		if spec.gate == gateDevPortalDocs {
 			page, ok := r.plain(spec, f, fPageName)
 			if !ok {
-				return
+				return eventFailed
 			}
 			if !strings.HasPrefix(page, "/docs/") {
-				return
+				return eventSkipped
 			}
 		}
-		if _, ok := r.timestamp(spec, f, fTimestamp); ok {
-			a.gates[spec.gate] = true
+		if _, ok := r.timestamp(spec, f, fTimestamp); !ok {
+			return eventFailed
 		}
+		a.gates[spec.gate] = true
 
 	case evApplicationCommandUsed:
 		if !f.has(fApplicationID) {
 			r.issue(spec, fApplicationID, ProblemMissing)
-			return
+			return eventFailed
 		}
 		if s, ok := decodeString(f.values[fApplicationID]); ok && s == "-1" || !f.has(fGuildID) {
-			return
+			return eventSkipped
 		}
 		r.markUsable()
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
-			return
+			return eventFailed
 		}
 		app, ok := r.text(spec, f, fApplicationID)
 		if !ok {
-			return
+			return eventFailed
 		}
 		guild, ok := r.text(spec, f, fGuildID)
 		if !ok {
-			return
+			return eventFailed
 		}
 		// pandas' groupby drops rows with a null key.
 		if app != 0 && guild != 0 {
@@ -594,19 +620,19 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 	case evAddReaction:
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
-			return
+			return eventFailed
 		}
 		if !f.has(fUserID) {
 			r.issue(spec, fUserID, ProblemMissing)
-			return
+			return eventFailed
 		}
 		channel, ok := r.text(spec, f, fChannelID)
 		if !ok {
-			return
+			return eventFailed
 		}
 		emoji, ok := r.text(spec, f, fEmojiName)
 		if !ok {
-			return
+			return eventFailed
 		}
 		if channel != 0 && emoji != 0 {
 			a.reactions[reactionKey{channel: channel, emoji: emoji, day: floorDiv(ts, secondsPerDay)}]++
@@ -614,15 +640,15 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 
 	case evAppOpened:
 		if !f.has(fOS) {
-			return
+			return eventSkipped
 		}
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
-			return
+			return eventFailed
 		}
 		os, ok := r.text(spec, f, fOS)
 		if !ok {
-			return
+			return eventFailed
 		}
 		if os != 0 {
 			a.appOpened[osDayKey{os: os, day: floorDiv(ts, secondsPerDay)}]++
@@ -631,8 +657,9 @@ func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
 	case evDaily:
 		ts, ok := r.timestamp(spec, f, fTimestamp)
 		if !ok {
-			return
+			return eventFailed
 		}
 		a.daily[dayKey{daily: int32(spec.daily), day: floorDiv(ts, secondsPerDay)}]++
 	}
+	return eventRead
 }

@@ -149,10 +149,17 @@ func readActivity(ctx context.Context, p *pkg, f *zip.File, cfg activityConfig) 
 		total.issues[issueKey{s.path, "", "", ProblemTooLong}] += n
 		p.skipped.Store(true)
 	}
-	if s.setAside.Load() {
+	switch {
+	case s.setAside.Load():
 		total.setAside()
 		total.events = cfg.events
 		total.issues[issueKey{s.path, "", "", ProblemTooManyEvents}]++
+	case total.failed > 0 && total.read == 0:
+		// A format change that breaks every event the reference takes would
+		// otherwise give a package with no activity that claims to be
+		// complete, whatever events it skips without a problem.
+		total.usable = false
+		total.issues[issueKey{s.path, "", "", ProblemNoEventRead}] += int(total.failed)
 	}
 	return total, nil
 }

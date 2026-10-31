@@ -469,6 +469,62 @@ func TestActivityStreamChoice(t *testing.T) {
 	}
 }
 
+// TestNoEventRead marks the package partial when events of a type the parser
+// reads failed and none was read, as after a format change, whatever events
+// the reference skips without a problem; a reported fallback is a read.
+func TestNoEventRead(t *testing.T) {
+	base := without(fullPackage(english), "Activity/")
+	unused := event("unused_event", "timestamp", ts("2021-04-06T09:00:00.000Z"))
+	tests := []struct {
+		name    string
+		lines   string
+		partial bool
+		failed  int
+	}{
+		{"every timestamp broken", lines(unused,
+			event("session_start", "timestamp", `"2021-04-06T10:00:00Z"`, "os", `"Linux"`),
+			event("app_opened", "timestamp", `"2021-04-06T10:00:00Z"`, "os", `"Linux"`),
+			`{"event_type": "email_opened", "timestamp": `,
+		), true, 3},
+		{"beside the reference's skips", lines(unused,
+			event("session_start", "timestamp", `"2021-04-06T10:00:00Z"`, "os", `"Linux"`),
+			event("email_opened", "timestamp", `"2021-04-06T10:00:00Z"`),
+			event("app_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")),
+			event("application_command_used", "timestamp", ts("2021-04-06T09:00:00.000Z"), "application_id", `"-1"`, "guild_id", `"1"`),
+			event("application_command_used", "timestamp", ts("2021-04-06T09:00:00.000Z"), "application_id", `"`+app+`"`),
+			event("dev_portal_page_viewed", "timestamp", ts("2021-04-06T09:00:00.000Z"), "page_name", `"/blog"`),
+		), true, 2},
+		{"one event read", lines(unused,
+			event("session_start", "timestamp", `"2021-04-06T10:00:00Z"`, "os", `"Linux"`),
+			event("email_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")),
+		), false, 0},
+		{"only skips the reference makes", lines(unused,
+			event("app_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")),
+			event("application_command_used", "timestamp", ts("2021-04-06T09:00:00.000Z"), "application_id", `"-1"`, "guild_id", `"1"`),
+		), false, 0},
+		{"a reported fallback", lines(
+			event("join_voice_channel", "timestamp", ts("2021-04-06T20:00:00.000Z"), "channel_id", `"`+voiceChan+`"`),
+		), false, 0},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			res := process(t, append(slices.Clone(base), entry{"Activity/analytics/events-2021-00000-of-00001.json", tt.lines}))
+			if res.Model.Package.IsPartial != tt.partial {
+				t.Errorf("is_partial = %v, want %v", res.Model.Package.IsPartial, tt.partial)
+			}
+			got := 0
+			for _, i := range res.Report.Issues {
+				if i.Problem == ProblemNoEventRead {
+					got = i.Count
+				}
+			}
+			if got != tt.failed {
+				t.Errorf("no_event_read count = %d, want %d", got, tt.failed)
+			}
+		})
+	}
+}
+
 func TestTimestampEdges(t *testing.T) {
 	es := without(fullPackage(english), "Activity/", "Messages/")
 	es = append(es,
