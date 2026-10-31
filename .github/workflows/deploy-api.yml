@@ -1,16 +1,14 @@
 name: deploy-api
 
 on:
-  # Off until a manual run has deployed from this repo and `/health`
-  # answered, then uncomment.
-  # push:
-  #   branches: [main]
-  #   paths:
-  #     - "api/**"
-  #     - ".github/workflows/deploy-api.yml"
-  #     - "!api/docs/**"
-  #     - "!api/infra/**"
-  #     - "!api/**.md"
+  push:
+    branches: [main]
+    paths:
+      - "api/**"
+      - ".github/workflows/deploy-api.yml"
+      - "!api/docs/**"
+      - "!api/infra/**"
+      - "!api/**.md"
   workflow_dispatch:
     inputs:
       image_tag:
