@@ -97,7 +97,7 @@
     "@capacitor/cli": "^8.6.0",
     "@playwright/test": "1.64.1",
     "@tailwindcss/typography": "^0.5.20",
-    "@tauri-apps/cli": "^1.6.3",
+    "@tauri-apps/cli": "^2.12.4",
     "@trapezedev/project": "^7.1.11",
     "@types/sql.js": "^1.4.11",
     "cross-env": "^10.1.0",

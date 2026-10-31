@@ -9,6 +9,7 @@ ios/App/App/capacitor.config.json
 ios/App/Pods
 src/i18n/_locales.ts
 src-tauri/target
+src-tauri/gen
 pnpm-lock.yaml
 /api
 /processor

@@ -10,7 +10,7 @@ If you plan on developing more specific parts of the app, follow their respectiv
 
 - Android: https://capacitorjs.com/docs/android
 - iOS: https://capacitorjs.com/docs/ios
-- Tauri: https://tauri.app/v1/guides/getting-started/prerequisites
+- Tauri: https://v2.tauri.app/start/prerequisites/
 - API: [api/README.md](./api/README.md#self-hosting)
 
 Otherwise, just run the right commands and you'll be guided
