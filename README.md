@@ -1,7 +1,7 @@
 # [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
 > [!NOTE]
-> ⚡ Dumpus now processes packages in Go: **3.7× faster**, **5× less memory**, and a **33× smaller** image.
+> ⚡ Dumpus now processes packages in Go: **3.7× faster** and **5× less memory**.
 
 <details>
 <summary>Before and after</summary>
@@ -12,7 +12,6 @@
 | Large packages (90th percentile) | 48.4 s | 14.9 s |
 | Peak memory (median)             | 277 MB | 51 MB  |
 | Start-up                         | 0.27 s | 1.1 ms |
-| Image                            | 371 MB | 11 MB  |
 
 Tested on real packages, 2 CPUs, median of 3 runs per package.
 
