@@ -21,15 +21,17 @@ export default function useSendingTimesData() {
       return null;
     }
 
+    // A copy, so the cache keeps the rows as SQLite returned them.
+    const hours = data.slice();
     for (let i = 0; i < 24; i++) {
-      const stat: (typeof data)[0] | undefined = data[i];
+      const stat: (typeof hours)[0] | undefined = hours[i];
 
       if (!stat || stat?.hour !== i) {
-        data.splice(i, 0, { hour: i, message_count: 0 });
+        hours.splice(i, 0, { hour: i, message_count: 0 });
       }
     }
 
-    return data.map(({ hour, message_count }) => ({
+    return hours.map(({ hour, message_count }) => ({
       label: hour,
       value: message_count,
     }));

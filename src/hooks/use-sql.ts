@@ -1,14 +1,27 @@
 "use client";
 
+import type { Database } from "sql.js";
 import { resultAsList } from "~/utils/sql";
 import useSafeDB from "./use-safe-db";
 import { createLogger } from "~/utils/logger";
 import { concatTemplateStringArgs } from "~/utils";
-import CRC32 from "crc-32";
 
 const logger = createLogger({ tag: "SQL" });
 
-const queriesCache = new Map<number, any[]>();
+// Rows already read, one map per open database, keyed by the query text. A
+// package switch opens a new `Database`, so it starts with an empty map and
+// never gets the rows of the package before it; the old map goes with the old
+// database. A database never changes once opened, so nothing else expires.
+const queriesCaches = new WeakMap<Database, Map<string, unknown[]>>();
+
+function cacheOf(db: Database) {
+  let cache = queriesCaches.get(db);
+  if (!cache) {
+    cache = new Map();
+    queriesCaches.set(db, cache);
+  }
+  return cache;
+}
 
 export default function useSQL() {
   const db = useSafeDB();
@@ -30,24 +43,13 @@ export default function useSQL() {
     const query = concatTemplateStringArgs(strings, expr);
 
     try {
-      const startDate = new Date();
+      const cache = cacheOf(db);
+      let data = cache.get(query) as TRes[] | undefined;
 
-      const cacheKey = CRC32.str(query);
-      let data: TRes[];
-      const cachedData = queriesCache.get(cacheKey);
-
-      if (cachedData) {
-        data = cachedData;
-      } else {
+      if (!data) {
         data = resultAsList<TRes>(db.exec(query)[0]);
-        queriesCache.set(cacheKey, data);
+        cache.set(query, data);
       }
-
-      // logger.log(
-      //   `Query\n${query}\ntook ${+new Date() - +startDate}ms${
-      //     cachedData ? " (from cache)" : ""
-      //   }`
-      // );
 
       return {
         data,
