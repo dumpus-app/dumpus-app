@@ -8,6 +8,10 @@ test.zip
 test/*
 node_test
 *.test.py
+.pytest_cache/
+tests/client/node_modules/
+# dumpus-processor, built by `make test`
+.bin/
 
 # Env
 .env
