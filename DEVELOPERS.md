@@ -2,7 +2,7 @@
 
 ## Local setup
 
-- Node.js >= `v20.19.0`
+- Node.js >= `v22.13.0`
 - pnpm `12`, the version `packageManager` pins in `package.json`. Corepack runs it from `0.36.0` on (`npm i -g corepack@latest` updates an older one)
 - Visual Studio Code
 
