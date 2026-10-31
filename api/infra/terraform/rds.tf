@@ -28,6 +28,21 @@ resource "aws_db_subnet_group" "main" {
   subnet_ids = aws_subnet.private[*].id
 }
 
+# Custom parameter group so we can flip rds.force_ssl on. The default
+# parameter group is read-only.
+resource "aws_db_parameter_group" "main" {
+  name   = "${local.name}-postgres17"
+  family = "postgres17"
+
+  parameter {
+    name  = "rds.force_ssl"
+    value = "1"
+    # Static parameter — requires a reboot to take effect. RDS handles
+    # the reboot during the next maintenance window or you can force it.
+    apply_method = "pending-reboot"
+  }
+}
+
 resource "aws_db_instance" "main" {
   identifier     = "${local.name}-postgres"
   engine         = "postgres"
@@ -39,9 +54,10 @@ resource "aws_db_instance" "main" {
   storage_type          = "gp3"
   storage_encrypted     = true
 
-  db_name  = var.postgres_db_name
-  username = var.postgres_username
-  password = random_password.postgres.result
+  db_name              = var.postgres_db_name
+  username             = var.postgres_username
+  password             = random_password.postgres.result
+  parameter_group_name = aws_db_parameter_group.main.name
 
   db_subnet_group_name   = aws_db_subnet_group.main.name
   vpc_security_group_ids = [aws_security_group.rds.id]
