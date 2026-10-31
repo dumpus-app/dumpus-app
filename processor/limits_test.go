@@ -24,12 +24,21 @@ func hasIssue(r *Report, path, problem string, count int) bool {
 
 const streamPath = "Activity/analytics/events-2021-00000-of-00001.json"
 
-// TestInflateBudget skips the entries past the budget, in a fixed order: here
-// the activity stream, which declares more than the whole budget.
+// TestInflateBudget skips the entries past the budget, in a fixed order:
+// `user.json`, then the activity stream. The stream fits in the whole budget
+// but not in what `user.json` leaves of it, so a guard that checked each entry
+// on its own, the way many small entries add up to a zip bomb, would let it in.
 func TestInflateBudget(t *testing.T) {
 	stream := strings.Repeat(event("unused_event", "n", "1")+"\n", 2000)
 	es := append(without(fullPackage(english), "Activity/"), entry{streamPath, stream})
-	res := processWith(t, es, Options{limits: limits{inflateRatio: 1, minInflate: 20000}})
+	var user int
+	for _, e := range es {
+		if e.name == english.account+"/user.json" {
+			user = len(e.body)
+		}
+	}
+	budget := uint64(len(stream) + user/2)
+	res := processWith(t, es, Options{limits: limits{inflateRatio: 1, minInflate: budget}})
 	if !hasIssue(res.Report, "Activity/analytics/events-*-*-of-*.json", ProblemOverBudget, 1) {
 		t.Errorf("issues %+v", res.Report.Issues)
 	}

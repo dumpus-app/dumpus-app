@@ -67,7 +67,9 @@ func TestRun(t *testing.T) {
 	report := filepath.Join(dir, "report.json")
 	var stderr bytes.Buffer
 	code := run(context.Background(), []string{"--input", input, "--output", output, "--package-id", "pkg-test", "--report", report}, &stderr)
-	if code != exitOK {
+	// The worker (`api/src/tasks.py`) matches 0, 3 and 4 as numbers, so the
+	// tests do too: renumbering one breaks the worker, not these constants.
+	if code != 0 {
 		t.Fatalf("exit %d: %s", code, stderr.String())
 	}
 	if _, err := os.Stat(output); err != nil {
@@ -97,8 +99,8 @@ func TestRunMissingUserData(t *testing.T) {
 	report := filepath.Join(dir, "report.json")
 	var stderr bytes.Buffer
 	code := run(context.Background(), []string{"--input", input, "--output", output, "--package-id", "pkg-test", "--report", report}, &stderr)
-	if code != exitMissingUserData {
-		t.Fatalf("exit %d, want %d", code, exitMissingUserData)
+	if code != 3 {
+		t.Fatalf("exit %d, want 3", code)
 	}
 	if got := strings.TrimSpace(stderr.String()); got != `{"error":"MISSING_USER_DATA"}` {
 		t.Errorf("stderr = %q", got)
