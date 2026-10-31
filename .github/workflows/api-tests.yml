@@ -43,10 +43,10 @@ jobs:
       DUMPUS_REQUIRE_CLIENT: "1"
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@v7
         with:
           # Same as the API images.
           python-version: "3.14"
@@ -56,16 +56,16 @@ jobs:
             api/requirements-test.txt
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@v7
         with:
-          # Same as `processor.yml`; `golang:1.26` in `Dockerfile.worker`.
+          # `Dockerfile.worker` builds the production binary on `golang:1.26`.
           go-version: "1.26.x"
           cache-dependency-path: processor/go.sum
 
       - name: Set up Node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 26
           cache: npm
           cache-dependency-path: api/tests/client/package-lock.json
 
