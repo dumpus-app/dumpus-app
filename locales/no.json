@@ -21,7 +21,7 @@
       "previous": "Tilbake",
       "trust": "Hvorfor skal jeg stole på appen?",
       "trustContent": [
-        "Dumpus er 100% åpen kildekode. Du kan lese gjennom koden på [GitHub](https://github.com/dumpus-app/dumpus-app), og til og med kjøre din egen server.",
+        "Dumpus er 100% åpen kildekode. Du kan lese gjennom koden på [GitHub](https://github.com/Androz2091/dumpus-app), og til og med kjøre din egen server.",
         "Vi har også en helt [client-side webapp](https://ddpe.androz2091.fr), med færre egenskaper men uten noen eksterne API-er.",
         "Appen fungerer uten noe lesbar data lagret på det eksterne API-et. Hvis du uansett har noen spørsmål, ta gjerne kontakt med oss på contact@dumpus.app."
       ],

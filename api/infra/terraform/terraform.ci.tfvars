@@ -10,7 +10,9 @@ allowed_account_ids = ["436630934006"]
 domain_name   = "dumpus.app"
 api_subdomain = "api"
 
-github_repository = ["dumpus-app/dumpus-app"]
+# The repo's OIDC subject: GitHub makes it immutable with the owner's and the
+# repo's ids (`gh api repos/Androz2091/dumpus-app/actions/oidc/customization/sub`).
+github_repository = ["Androz2091@42497995/dumpus-app@640259652"]
 
 image_tag = "bootstrap"
 

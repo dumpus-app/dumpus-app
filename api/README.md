@@ -36,7 +36,7 @@ Anyone can host their own Dumpus instance. The official Dumpus client can then b
 
 The worker no longer runs as a separate Celery process — set `QUEUE_BACKEND=sync` and the API processes packages inline on the request thread (good enough at small volume), or set `QUEUE_BACKEND=sqs` to dispatch to AWS SQS (used by the Lambda deployment).
 
-* clone <https://github.com/dumpus-app/dumpus-app> and work from its `api/` folder
+* clone <https://github.com/Androz2091/dumpus-app> and work from its `api/` folder
 * easy way: `cp .env.example .env`, fill it in, then `make up`, which builds the API image with `dumpus-processor` in it
 * manual:
     - install requirements with pip
