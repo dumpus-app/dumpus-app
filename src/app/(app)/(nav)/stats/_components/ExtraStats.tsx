@@ -52,7 +52,7 @@ export default function Stats() {
   if (package_is_partial) return null;
 
   return (
-    <div className="grid grid-cols-2 gap-2 px-2 py-4 desktop-container sm:grid-cols-3 sm:py-8 md:grid-cols-4">
+    <div className="desktop-container grid grid-cols-2 gap-2 px-2 py-4 sm:grid-cols-3 sm:py-8 md:grid-cols-4">
       <StatCard
         value={formatNumber(notificationClicked(), { notation: "standard" })}
         label={t("stats.extra.clickedNotifications")}

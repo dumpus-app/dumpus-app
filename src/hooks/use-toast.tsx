@@ -53,24 +53,24 @@ export default function useToast() {
           <div className="pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg border border-gray-700 bg-gray-800 shadow-lg">
             <div className="p-4">
               <div className="flex items-start">
-                <div className="mt-0.5 flex-shrink-0">
+                <div className="mt-0.5 shrink-0">
                   <Icon
                     className={clsx("h-6 w-6", toastVariants({ variant }))}
                     aria-hidden="true"
                   />
                 </div>
                 <div className="ml-3 w-0 flex-1">
-                  <p className="break-all text-lg font-bold text-white">
+                  <p className="text-lg font-bold break-all text-white">
                     {title}
                   </p>
-                  <p className="break-all text-base text-gray-400">
+                  <p className="text-base break-all text-gray-400">
                     {description}
                   </p>
                 </div>
-                <div className="ml-4 flex flex-shrink-0">
+                <div className="ml-4 flex shrink-0">
                   <button
                     type="button"
-                    className="inline-flex rounded-md text-gray-400 hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-700 focus:ring-offset-2 focus:ring-offset-gray-800"
+                    className="inline-flex rounded-md text-gray-400 hover:text-gray-300 focus:ring-2 focus:ring-brand-700 focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
                     onClick={() => {
                       toast.dismiss(id);
                     }}

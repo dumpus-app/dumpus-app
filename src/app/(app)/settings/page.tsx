@@ -18,7 +18,7 @@ export default function Page() {
       <PackageDetails />
       <Actions />
       <PackageSwitch />
-      <div className="flex flex-col desktop-container sm:flex-row sm:space-x-2 sm:px-2">
+      <div className="desktop-container flex flex-col sm:flex-row sm:gap-2 sm:px-2">
         <Languages />
         <DangerZone />
       </div>

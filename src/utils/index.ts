@@ -1,4 +1,4 @@
-import _tailwindColors from "tailwindcss/colors";
+import { palette } from "./palette";
 
 const {
   red,
@@ -18,7 +18,7 @@ const {
   fuchsia,
   pink,
   rose,
-} = _tailwindColors;
+} = palette;
 
 export function concatTemplateStringArgs(
   strings: TemplateStringsArray,

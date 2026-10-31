@@ -29,7 +29,7 @@ export default function TopChannelsList() {
   const data = queryData?.pages.flat() || getData({})!;
 
   return (
-    <div className="px-2 py-4 desktop-container sm:py-8">
+    <div className="desktop-container px-2 py-4 sm:py-8">
       <div className="grid gap-2 sm:grid-cols-2">
         {data.map((channel) => {
           const id = `channel-${channel.channel_id}`;
@@ -52,7 +52,7 @@ export default function TopChannelsList() {
               )} ${t("stats.messagesSent")}`}
               leftSlot={
                 <div
-                  className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
+                  className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold text-gray-950 uppercase"
                   style={{
                     backgroundColor: iconColor(
                       channel.guild_id + channel.channel_id,

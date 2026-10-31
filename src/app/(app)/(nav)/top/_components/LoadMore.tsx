@@ -25,7 +25,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
           isMobile ? (premium ? "hidden" : "block") : "hidden",
         )}
       >
-        <div className="absolute inset-0 top-auto h-16 bg-gradient-to-t from-gray-950 to-gray-950/0"></div>
+        <div className="absolute inset-0 top-auto h-16 bg-linear-to-t from-gray-950 to-gray-950/0"></div>
       </div>
       <div className="mt-8 flex justify-center">
         <button

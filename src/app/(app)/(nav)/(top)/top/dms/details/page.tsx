@@ -74,7 +74,7 @@ export default function Page() {
           href={discordLink}
           target="_blank"
           icon={SimpleIconsDiscord}
-          className="absolute right-2 top-4 hidden sm:block"
+          className="absolute top-4 right-2 hidden sm:block"
         />
       </ProfileHeader>
       {hasData ? (

@@ -44,7 +44,7 @@ export default function InAppPurchasesDialog() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-950/80 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 bottom-safe-area-bottom-inset z-10 overflow-y-auto">
@@ -70,7 +70,7 @@ export default function InAppPurchasesDialog() {
                     <div className="mt-2 w-full space-y-2 text-left text-base text-gray-400">
                       {content.map((p, i) => (
                         <div key={i} className="flex items-center space-x-2">
-                          <CheckCircleIcon className="h-6 w-6 flex-shrink-0 text-brand-300" />
+                          <CheckCircleIcon className="h-6 w-6 shrink-0 text-brand-300" />
                           <div className="text-gray-400">{p}</div>
                         </div>
                       ))}
@@ -139,7 +139,7 @@ export default function InAppPurchasesDialog() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="-mb-2 mt-1 w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
+                  className="mt-1 -mb-2 w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
                 >
                   {t("premium.maybeLater")}
                 </button>

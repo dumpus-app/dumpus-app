@@ -46,7 +46,7 @@ export default function Page() {
           {data.map(({ os, display, icon: Icon }) => (
             <Tab
               key={os}
-              className="flex aspect-square h-20 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-900 p-2 text-gray-400 data-[selected]:text-brand-300"
+              className="flex aspect-square h-20 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-900 p-2 text-gray-400 data-selected:text-brand-300"
             >
               <Icon className="h-12 w-12" />
               <div>{display}</div>
@@ -55,7 +55,7 @@ export default function Page() {
         </Tab.List>
         <Tab.Panels className="mt-8 w-full">
           {data.map(({ os, steps }) => (
-            <Tab.Panel key={os} className="space-y-4 focus:outline-none">
+            <Tab.Panel key={os} className="space-y-4 focus:outline-hidden">
               {steps.map(({ name, image }, i) => (
                 <div
                   key={`${os}-${i}`}

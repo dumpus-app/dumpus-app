@@ -25,7 +25,7 @@ test("settings and credits", async ({ page, app }) => {
   const contributors = page.locator("section", { hasText: "Contributors" });
   await expect(contributors.locator("a")).toHaveCount(contributorsData.length);
   // Flags are lazy-loaded SVGs with a gray placeholder until then.
-  await expect(page.locator(".rounded > .bg-gray-700")).toHaveCount(0);
+  await expect(page.locator(".rounded-sm > .bg-gray-700")).toHaveCount(0);
   // Real people's names and avatars stay out of the baselines.
   await app.screenshot("credits", { mask: [contributors] });
 });

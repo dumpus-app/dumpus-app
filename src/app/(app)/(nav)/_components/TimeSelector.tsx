@@ -20,7 +20,7 @@ export default function TimeSelector() {
             type="button"
             onClick={() => setTimeRange(time)}
             className={clsx(
-              "w-full rounded-lg py-1 transition-colors sm:whitespace-nowrap sm:px-4",
+              "w-full rounded-lg py-1 transition-colors sm:px-4 sm:whitespace-nowrap",
               time === timeRange
                 ? "bg-gray-800 text-brand-300"
                 : "text-gray-400 hover:bg-gray-800",

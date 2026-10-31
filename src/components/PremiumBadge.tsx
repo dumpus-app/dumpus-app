@@ -18,7 +18,7 @@ export default function PremiumBadge({
         className,
       )}
     >
-      <Icon className="-ml-0.5 mr-1 h-3 w-3" />
+      <Icon className="mr-1 -ml-0.5 h-3 w-3" />
       <span>{text}</span>
     </div>
   );

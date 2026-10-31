@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useMeasure, useMount, useUnmount } from "react-use";
-import colors from "tailwindcss/colors";
+import { palette } from "~/utils/palette";
 import { useShallow } from "zustand/react/shallow";
 import { links as _links } from "~/constants";
 import { useTranslation } from "~/i18n/client";
@@ -28,7 +28,7 @@ export default function BottomNav() {
   }, [height, setHeight]);
 
   useMount(() => {
-    setSafeAreaBottomColor(colors.gray[900]);
+    setSafeAreaBottomColor(palette.gray[900]);
   });
 
   useUnmount(() => {
@@ -41,7 +41,7 @@ export default function BottomNav() {
       <div className="mt-auto" style={{ height: `${height}px` }} />
       <div
         ref={ref}
-        className="fixed bottom-safe-area-bottom-inset left-0 right-0 z-20"
+        className="fixed right-0 bottom-safe-area-bottom-inset left-0 z-20"
       >
         <TimeSelector />
         <div className="border-t border-gray-800 bg-gray-900">

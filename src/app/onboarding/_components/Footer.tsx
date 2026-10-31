@@ -42,7 +42,7 @@ function TrustDialog({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-950/80 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 bottom-safe-area-bottom-inset z-10 overflow-y-auto">
@@ -121,7 +121,7 @@ export default function Footer({ href, label }: Props) {
           <button
             type="button"
             onClick={(e) => setOpen(true)}
-            className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+            className="mt-2 w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
           >
             {t("onboarding.shared.trust")}
           </button>

@@ -59,10 +59,10 @@ export default function DetailCard({
           reverseTexts ? "flex-col-reverse" : "flex-col",
         )}
       >
-        <div className="line-clamp-1 overflow-hidden text-ellipsis break-all font-semibold text-white">
+        <div className="line-clamp-1 overflow-hidden font-semibold break-all text-ellipsis text-white">
           {title}
         </div>
-        <div className="line-clamp-1 overflow-hidden text-ellipsis break-all text-sm">
+        <div className="line-clamp-1 overflow-hidden text-sm break-all text-ellipsis">
           {description}
         </div>
       </div>

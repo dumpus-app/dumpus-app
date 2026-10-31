@@ -46,7 +46,7 @@ function BotCard({ bot }: { bot: Bot }) {
               className="rounded-full object-cover object-center"
             />
           </div>
-          <div className="line-clamp-1 overflow-hidden text-ellipsis font-semibold text-white sm:text-2xl">
+          <div className="line-clamp-1 overflow-hidden font-semibold text-ellipsis text-white sm:text-2xl">
             {displayName}
           </div>
         </div>

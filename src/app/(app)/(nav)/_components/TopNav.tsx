@@ -31,7 +31,7 @@ export default function TopNav() {
     <div className="hidden sm:contents">
       <div className="sticky top-safe-area-top-inset z-20">
         <div className="flex h-16 items-center border-b border-gray-800 bg-gray-900">
-          <div className="flex items-center justify-between px-2 desktop-container">
+          <div className="desktop-container flex items-center justify-between px-2">
             <Link
               href="/overview"
               className="flex items-center space-x-2 rounded-full"
@@ -45,7 +45,7 @@ export default function TopNav() {
                   className="rounded-full object-cover object-center"
                 />
               </div>
-              <span className="relative text-2xl font-bold uppercase text-white">
+              <span className="relative text-2xl font-bold text-white uppercase">
                 Dumpus
                 {premium && (
                   <PremiumBadge
@@ -53,7 +53,7 @@ export default function TopNav() {
                     className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border-2 border-gray-900 text-xs capitalize"
                   />
                 )}
-                <BuyPremium className="absolute -bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full border-2 border-gray-900 text-xs" />
+                <BuyPremium className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full border-2 border-gray-900 text-xs whitespace-nowrap" />
               </span>
             </Link>
             <div className="flex items-center space-x-2">
@@ -68,7 +68,7 @@ export default function TopNav() {
                       : "text-gray-400 hover:bg-gray-800",
                   )}
                 >
-                  <link.icon className="-ml-1 mr-1 h-6 w-6" />
+                  <link.icon className="mr-1 -ml-1 h-6 w-6" />
                   <span className="">
                     {t(
                       `nav.${
@@ -85,7 +85,7 @@ export default function TopNav() {
           <div className="flex h-12 items-center border-b border-gray-800 bg-gray-900">
             <div
               className={clsx(
-                "flex items-center px-2 desktop-container",
+                "desktop-container flex items-center px-2",
                 !showBack && !showTopLinks
                   ? "justify-center"
                   : "justify-between",

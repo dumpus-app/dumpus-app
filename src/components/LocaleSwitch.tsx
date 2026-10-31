@@ -42,7 +42,7 @@ function LocalesList({ close }: { close: () => void }) {
               clsx(
                 checked ? "border-transparent" : "border-gray-800",
                 active ? "border-brand-700 ring-2 ring-brand-700" : "",
-                "relative block cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 focus:outline-none",
+                "relative block cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 focus:outline-hidden",
               )
             }
           >
@@ -92,7 +92,7 @@ function LocaleSwitchDialog({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-950/80 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 bottom-safe-area-bottom-inset z-10 overflow-y-auto">
@@ -106,7 +106,7 @@ function LocaleSwitchDialog({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg border border-gray-800 bg-gray-900 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+              <Dialog.Panel className="relative transform overflow-hidden rounded-lg border border-gray-800 bg-gray-900 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div className="text-center">
                   <Dialog.Title
                     as="h3"

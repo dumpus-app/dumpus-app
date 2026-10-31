@@ -162,7 +162,7 @@ export default function LinkForm() {
           )}
         </Disclosure>
         <div className="max-w-xs text-center">
-          <p className="text-gray-400 transition [&>a]:text-brand-300 [&>a]:underline hover:[&>a]:text-brand-400">
+          <p className="text-gray-400 transition [&>a]:text-brand-300 [&>a]:underline [&>a]:hover:text-brand-400">
             <RenderMarkdown
               content={t("onboarding.access.methods.link.notice")}
             />
