@@ -1,0 +1,560 @@
+package processor
+
+import (
+	"bytes"
+	"encoding/json"
+	"strings"
+	"sync/atomic"
+)
+
+type eventKind uint8
+
+const (
+	evJoinVoice eventKind = iota + 1
+	evLeaveVoice
+	evSessionStart
+	evSessionEnd
+	evGuildJoined
+	evApplicationCommandUsed
+	evAddReaction
+	evAppOpened
+	evGate  // only decides whether a daily event is written, see gate
+	evDaily // counted per day, see dailyEvents
+)
+
+// gate is one of the lists the reference keeps only to decide whether an
+// unrelated daily event is written.
+type gate uint8
+
+const (
+	noGate gate = iota
+	gateBotTokenCompromised
+	gateDevPortalDocs // dev_portal_page_viewed on a /docs/ page
+	gateApplicationCreated
+	numGates
+)
+
+// dailyEvents are counted per day and written in this order. Three are gated on
+// an unrelated list being non-empty, a copy-paste slip in the reference kept on
+// purpose.
+var dailyEvents = []struct {
+	name  string   // the activity event name
+	types []string // the event types counted under it
+	gate  gate
+}{
+	{"email_opened", []string{"email_opened"}, noGate},
+	{"login_successful", []string{"login_successful"}, noGate},
+	{"app_crashed", []string{"app_crashed", "app_native_crash"}, noGate},
+	{"user_avatar_updated", []string{"user_avatar_updated"}, noGate},
+	{"oauth2_authorize_accepted", []string{"oauth2_authorize_accepted"}, gateBotTokenCompromised},
+	{"remote_auth_login", []string{"remote_auth_login"}, noGate},
+	{"notification_clicked", []string{"notification_clicked"}, gateDevPortalDocs},
+	{"captcha_served", []string{"captcha_served"}, noGate},
+	{"voice_message_recorded", []string{"voice_message_recorded"}, gateApplicationCreated},
+	{"message_reported", []string{"message_reported"}, noGate},
+	{"message_edited", []string{"message_edited"}, noGate},
+	{"premium_upsell_viewed", []string{"premium_upsell_viewed"}, noGate},
+}
+
+type eventSpec struct {
+	name  string // the event type
+	kind  eventKind
+	gate  gate // for evGate
+	daily int  // for evDaily, the index in dailyEvents
+}
+
+// Lines of other event types are skipped without being decoded.
+var eventTypes = func() map[string]eventSpec {
+	m := map[string]eventSpec{
+		"join_voice_channel":       {kind: evJoinVoice},
+		"leave_voice_channel":      {kind: evLeaveVoice},
+		"session_start":            {kind: evSessionStart},
+		"session_end":              {kind: evSessionEnd},
+		"guild_joined":             {kind: evGuildJoined},
+		"application_command_used": {kind: evApplicationCommandUsed},
+		"add_reaction":             {kind: evAddReaction},
+		"app_opened":               {kind: evAppOpened},
+		"bot_token_compromised":    {kind: evGate, gate: gateBotTokenCompromised},
+		"dev_portal_page_viewed":   {kind: evGate, gate: gateDevPortalDocs},
+		"application_created":      {kind: evGate, gate: gateApplicationCreated},
+	}
+	for i, d := range dailyEvents {
+		for _, t := range d.types {
+			m[t] = eventSpec{kind: evDaily, daily: i}
+		}
+	}
+	for name, spec := range m {
+		spec.name = name
+		m[name] = spec
+	}
+	return m
+}()
+
+const (
+	fEventType = iota
+	fTimestamp
+	fClientTrackTimestamp
+	fOS
+	fGuildID
+	fChannelID
+	fApplicationID
+	fUserID
+	fEmojiName
+	fPageName
+	numFields
+)
+
+var fieldNames = [numFields]string{
+	fEventType:            "event_type",
+	fTimestamp:            "timestamp",
+	fClientTrackTimestamp: "client_track_timestamp",
+	fOS:                   "os",
+	fGuildID:              "guild_id",
+	fChannelID:            "channel_id",
+	fApplicationID:        "application_id",
+	fUserID:               "user_id",
+	fEmojiName:            "emoji_name",
+	fPageName:             "page_name",
+}
+
+var fieldIndex = func() map[string]int {
+	m := make(map[string]int, numFields)
+	for i, name := range fieldNames {
+		m[name] = i
+	}
+	return m
+}()
+
+type eventFields struct {
+	present uint16
+	values  [numFields][]byte
+}
+
+func (f *eventFields) has(i int) bool { return f.present&(1<<i) != 0 }
+
+// Duplicate keys keep the last value, like Python's dict. The line must have
+// passed `json.Valid`.
+func scanEvent(line []byte, f *eventFields) error {
+	*f = eventFields{}
+	return eachMember(line, func(key, value []byte) bool {
+		if bytes.IndexByte(key, '\\') >= 0 {
+			key = []byte(keyString(key))
+		}
+		if i, ok := fieldIndex[string(key)]; ok {
+			f.present |= 1 << i
+			f.values[i] = value
+		}
+		return true
+	})
+}
+
+var eventTypeKey = []byte(`"event_type"`)
+
+type sniff uint8
+
+const (
+	sniffAbsent    sniff = iota // no event_type key anywhere on the line
+	sniffValue                  // a single event_type key with a plain string value
+	sniffAmbiguous              // anything else, decided by a full decode
+)
+
+// sniffEventType reads the event type of a line without decoding it. A plain
+// `"event_type"` that isn't followed by a colon is a string value, not a key.
+func sniffEventType(line []byte) ([]byte, sniff) {
+	i := bytes.Index(line, eventTypeKey)
+	if i < 0 {
+		return nil, sniffAbsent
+	}
+	rest := line[i+len(eventTypeKey):]
+	if bytes.Contains(rest, eventTypeKey) {
+		return nil, sniffAmbiguous
+	}
+	j := skipSpace(rest, 0)
+	if j >= len(rest) || rest[j] != ':' {
+		return nil, sniffAbsent
+	}
+	j = skipSpace(rest, j+1)
+	if j >= len(rest) || rest[j] != '"' {
+		return nil, sniffAmbiguous
+	}
+	end := bytes.IndexAny(rest[j+1:], `"\`)
+	if end < 0 || rest[j+1+end] == '\\' {
+		return nil, sniffAmbiguous
+	}
+	return rest[j+1 : j+1+end], sniffValue
+}
+
+// Keys count days and hours since the epoch, in UTC.
+type (
+	dayKey struct {
+		daily int // the index in dailyEvents
+		day   int64
+	}
+	guildHourKey struct {
+		guild string
+		null  bool
+		hour  int64
+	}
+	appCommandKey struct {
+		guild, app string
+		day        int64
+	}
+	reactionKey struct {
+		channel, emoji string
+		day            int64
+	}
+	osDayKey struct {
+		os  string
+		day int64
+	}
+	// sessionEvent and voiceEvent keep their position in the file, so that
+	// sorting by (timestamp, position) reproduces Python's stable sort.
+	sessionEvent struct {
+		ts    int64
+		order uint64
+		start bool
+		os    *string
+	}
+	voiceEvent struct {
+		ts      int64
+		order   uint64
+		join    bool
+		channel string
+		guild   *string
+	}
+)
+
+type activityAgg struct {
+	lines, events int64
+	usable        bool
+	daily         map[dayKey]int64
+	guildJoined   map[guildHourKey]int64
+	appCommands   map[appCommandKey]int64
+	reactions     map[reactionKey]int64
+	appOpened     map[osDayKey]int64
+	gates         [numGates]bool
+	sessions      []sessionEvent
+	voice         []voiceEvent
+	issues        map[issueKey]int
+}
+
+func newActivityAgg() *activityAgg {
+	return &activityAgg{
+		daily:       map[dayKey]int64{},
+		guildJoined: map[guildHourKey]int64{},
+		appCommands: map[appCommandKey]int64{},
+		reactions:   map[reactionKey]int64{},
+		appOpened:   map[osDayKey]int64{},
+		issues:      map[issueKey]int{},
+	}
+}
+
+func (a *activityAgg) merge(b *activityAgg) {
+	a.lines += b.lines
+	a.events += b.events
+	for i, set := range b.gates {
+		a.gates[i] = a.gates[i] || set
+	}
+	for k, n := range b.daily {
+		a.daily[k] += n
+	}
+	for k, n := range b.guildJoined {
+		a.guildJoined[k] += n
+	}
+	for k, n := range b.appCommands {
+		a.appCommands[k] += n
+	}
+	for k, n := range b.reactions {
+		a.reactions[k] += n
+	}
+	for k, n := range b.appOpened {
+		a.appOpened[k] += n
+	}
+	a.sessions = append(a.sessions, b.sessions...)
+	a.voice = append(a.voice, b.voice...)
+	for k, n := range b.issues {
+		a.issues[k] += n
+	}
+}
+
+type lineReader struct {
+	agg  *activityAgg
+	path string // the masked stream path, for the report
+	// usable is shared by the workers: once a line with a top-level
+	// `event_type` was seen, lines of unused types need no decoding at all.
+	usable *atomic.Bool
+	fields eventFields
+}
+
+func (r *lineReader) issue(spec eventSpec, field int, problem string) {
+	fname := ""
+	if field >= 0 {
+		fname = fieldNames[field]
+	}
+	r.agg.issues[issueKey{r.path, spec.name, fname, problem}]++
+}
+
+func (r *lineReader) markUsable() {
+	if !r.usable.Load() {
+		r.usable.Store(true)
+	}
+}
+
+// order is the line's position in the stream.
+func (r *lineReader) line(line []byte, order uint64) {
+	r.agg.lines++
+	et, s := sniffEventType(line)
+	var spec eventSpec
+	switch s {
+	case sniffAbsent:
+		return
+	case sniffValue:
+		var used bool
+		if spec, used = eventTypes[string(et)]; !used {
+			if !r.usable.Load() {
+				r.confirmUsable(line)
+			}
+			return
+		}
+	}
+	if !json.Valid(line) {
+		r.issue(spec, -1, ProblemMalformed)
+		return
+	}
+	f := &r.fields
+	if scanEvent(line, f) != nil || !f.has(fEventType) {
+		return
+	}
+	if s == sniffAmbiguous {
+		name, _ := decodeString(f.values[fEventType])
+		var used bool
+		if spec, used = eventTypes[name]; !used {
+			r.markUsable()
+			return
+		}
+	}
+	r.agg.events++
+	r.event(spec, f, order)
+}
+
+// confirmUsable decodes a line of an unused type to check that its
+// `event_type` is a top-level key, which is what makes the reference treat the
+// stream as having usable events.
+func (r *lineReader) confirmUsable(line []byte) {
+	if !json.Valid(line) {
+		return
+	}
+	f := &r.fields
+	if scanEvent(line, f) == nil && f.has(fEventType) {
+		r.markUsable()
+	}
+}
+
+// timestamp reads a field holding a timestamp such as `"\"2021-04-06T12:34:56.789Z\""`,
+// the leading quote being part of the value.
+func (r *lineReader) timestamp(spec eventSpec, f *eventFields, field int) (int64, bool) {
+	if !f.has(field) {
+		r.issue(spec, field, ProblemMissing)
+		return 0, false
+	}
+	v := f.values[field]
+	switch kindOf(v) {
+	case kindString:
+	case kindNull:
+		r.issue(spec, field, ProblemNull)
+		return 0, false
+	default:
+		r.issue(spec, field, ProblemWrongType)
+		return 0, false
+	}
+	s, _ := decodeString(v)
+	ts, ok := pyTimestamp(s, 1)
+	if !ok {
+		r.issue(spec, field, ProblemUnparseable)
+	}
+	return ts, ok
+}
+
+// text reads a field holding a string; null gives ok with a nil string.
+func (r *lineReader) text(spec eventSpec, f *eventFields, field int) (*string, bool) {
+	if !f.has(field) {
+		r.issue(spec, field, ProblemMissing)
+		return nil, false
+	}
+	v := f.values[field]
+	switch kindOf(v) {
+	case kindString:
+		s, _ := decodeString(v)
+		return &s, true
+	case kindNull:
+		return nil, true
+	}
+	r.issue(spec, field, ProblemWrongType)
+	return nil, false
+}
+
+// event mirrors the reference's per-event branches, in their order of checks.
+// A field is only checked where the reference stores or tests it.
+func (r *lineReader) event(spec eventSpec, f *eventFields, order uint64) {
+	a := r.agg
+	// An application command the reference skips (id '-1', no guild) doesn't
+	// make the stream usable: its `continue` comes before the line is counted.
+	if spec.kind != evApplicationCommandUsed {
+		r.markUsable()
+	}
+	switch spec.kind {
+	case evJoinVoice, evLeaveVoice:
+		if !f.has(fChannelID) {
+			return
+		}
+		field := fClientTrackTimestamp
+		switch v := f.values[fClientTrackTimestamp]; {
+		case !f.has(fClientTrackTimestamp):
+			r.issue(spec, fClientTrackTimestamp, ProblemMissing)
+			field = fTimestamp
+		case kindOf(v) == kindNull:
+			r.issue(spec, fClientTrackTimestamp, ProblemNull)
+			field = fTimestamp
+		default:
+			// The reference compares with the string 'null', which is what
+			// exports write when the client sent no timestamp.
+			if s, ok := decodeString(v); ok && s == "null" {
+				field = fTimestamp
+			}
+		}
+		ts, ok := r.timestamp(spec, f, field)
+		if !ok {
+			return
+		}
+		channel, ok := r.text(spec, f, fChannelID)
+		if !ok {
+			return
+		}
+		if channel == nil {
+			r.issue(spec, fChannelID, ProblemNull)
+			return
+		}
+		// A session takes its guild from the join.
+		var guild *string
+		if spec.kind == evJoinVoice && f.has(fGuildID) {
+			if guild, ok = r.text(spec, f, fGuildID); !ok {
+				return
+			}
+		}
+		a.voice = append(a.voice, voiceEvent{ts: ts, order: order, join: spec.kind == evJoinVoice, channel: *channel, guild: guild})
+
+	case evSessionStart, evSessionEnd:
+		if !f.has(fOS) {
+			return
+		}
+		ts, ok := r.timestamp(spec, f, fTimestamp)
+		if !ok {
+			return
+		}
+		// A session takes its os from the start.
+		var os *string
+		if spec.kind == evSessionStart {
+			if os, ok = r.text(spec, f, fOS); !ok {
+				return
+			}
+		}
+		a.sessions = append(a.sessions, sessionEvent{ts: ts, order: order, start: spec.kind == evSessionStart, os: os})
+
+	case evGuildJoined:
+		ts, ok := r.timestamp(spec, f, fTimestamp)
+		if !ok {
+			return
+		}
+		guild, ok := r.text(spec, f, fGuildID)
+		if !ok {
+			return
+		}
+		k := guildHourKey{null: guild == nil, hour: floorDiv(ts, secondsPerHour)}
+		if guild != nil {
+			k.guild = *guild
+		}
+		a.guildJoined[k]++
+
+	case evGate:
+		if spec.gate == gateDevPortalDocs {
+			page, ok := r.text(spec, f, fPageName)
+			if !ok {
+				return
+			}
+			if page == nil {
+				r.issue(spec, fPageName, ProblemNull)
+				return
+			}
+			if !strings.HasPrefix(*page, "/docs/") {
+				return
+			}
+		}
+		if _, ok := r.timestamp(spec, f, fTimestamp); ok {
+			a.gates[spec.gate] = true
+		}
+
+	case evApplicationCommandUsed:
+		if !f.has(fApplicationID) {
+			r.issue(spec, fApplicationID, ProblemMissing)
+			return
+		}
+		if s, ok := decodeString(f.values[fApplicationID]); ok && s == "-1" || !f.has(fGuildID) {
+			return
+		}
+		r.markUsable()
+		ts, ok := r.timestamp(spec, f, fTimestamp)
+		if !ok {
+			return
+		}
+		app, ok := r.text(spec, f, fApplicationID)
+		if !ok {
+			return
+		}
+		guild, ok := r.text(spec, f, fGuildID)
+		if !ok || app == nil || guild == nil {
+			// pandas' groupby drops rows with a null key.
+			return
+		}
+		a.appCommands[appCommandKey{guild: *guild, app: *app, day: floorDiv(ts, secondsPerDay)}]++
+
+	case evAddReaction:
+		ts, ok := r.timestamp(spec, f, fTimestamp)
+		if !ok {
+			return
+		}
+		if !f.has(fUserID) {
+			r.issue(spec, fUserID, ProblemMissing)
+			return
+		}
+		channel, ok := r.text(spec, f, fChannelID)
+		if !ok {
+			return
+		}
+		emoji, ok := r.text(spec, f, fEmojiName)
+		if !ok || channel == nil || emoji == nil {
+			return
+		}
+		a.reactions[reactionKey{channel: *channel, emoji: *emoji, day: floorDiv(ts, secondsPerDay)}]++
+
+	case evAppOpened:
+		if !f.has(fOS) {
+			return
+		}
+		ts, ok := r.timestamp(spec, f, fTimestamp)
+		if !ok {
+			return
+		}
+		os, ok := r.text(spec, f, fOS)
+		if !ok || os == nil {
+			return
+		}
+		a.appOpened[osDayKey{os: *os, day: floorDiv(ts, secondsPerDay)}]++
+
+	case evDaily:
+		ts, ok := r.timestamp(spec, f, fTimestamp)
+		if !ok {
+			return
+		}
+		a.daily[dayKey{daily: spec.daily, day: floorDiv(ts, secondsPerDay)}]++
+	}
+}
