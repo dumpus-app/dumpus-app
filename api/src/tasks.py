@@ -92,9 +92,13 @@ def find_servers_root(zip_namelist):
         segments = sample.split('/')
         return '/'.join(segments[:-2])
     
-    # Try to find the index.json file in any folder that might be for servers
-    server_index = next((name for name in zip_namelist if name.endswith('/index.json') 
-                       and not (name.startswith('Messages/') or name.startswith('messages/'))), None)
+    # Try to find the index.json file in any folder that might be for servers.
+    # The messages folder has one too, under a translated name in localized
+    # exports (for eg. `Mensajes/`), so it is found by its channel files.
+    messages_root = find_messages_root(zip_namelist)
+    server_index = next((name for name in zip_namelist if name.endswith('/index.json')
+                       and not (name.startswith('Messages/') or name.startswith('messages/'))
+                       and (messages_root is None or not name.startswith(f'{messages_root}/'))), None)
     if server_index:
         return '/'.join(server_index.split('/')[:-1])
     
