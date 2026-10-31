@@ -1,5 +1,23 @@
 # [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
+> [!NOTE]
+> ⚡ Dumpus is moving its package processing to Go: **N× faster**, **N× less memory**, a **33× smaller** image.
+
+<details>
+<summary>Before and after</summary>
+
+|                                  | Python | Go     |
+| -------------------------------- | ------ | ------ |
+| Typical package (median)         | … s    | … s    |
+| Large packages (90th percentile) | … s    | … s    |
+| Peak memory (median)             | … MB   | … MB   |
+| Start-up                         | 0.27 s | 1.1 ms |
+| Image                            | 371 MB | 11 MB  |
+
+Tested on real packages, 2 CPUs, median of 3 runs per package.
+
+</details>
+
 Dumpus is a cross-platform app that gives you advanced statistics on your Discord account. The application analyzes your "Discord Data Package", which you can request in the Discord application settings.
 
 You can join [our Discord server](https://androz2091.fr/discord) to keep up to date and give us your feedback.
