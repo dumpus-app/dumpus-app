@@ -97,7 +97,7 @@ export type WithRankProps = Props & {
 
 function WithRank({ rank, className, ...rest }: WithRankProps) {
   return (
-    <div className="flex items-center">
+    <div className="flex row-enter items-center">
       <div className="flex aspect-square h-full shrink-0 items-center justify-center text-2xl font-bold text-white">
         #{rank}
       </div>

@@ -14,6 +14,7 @@ import NotFoundState from "~/components/NotFoundState";
 import { formatHour, formatNumber } from "~/utils/format";
 import Deferred from "~/components/Deferred";
 import DetailsSkeleton from "~/components/DetailsSkeleton";
+import PageEnter from "~/components/PageEnter";
 
 export default function Page() {
   const id = useSearchParams()!.get("id")!;
@@ -32,7 +33,9 @@ export default function Page() {
         />
       }
     >
-      <GuildDetails />
+      <PageEnter className="flex grow flex-col">
+        <GuildDetails />
+      </PageEnter>
     </Deferred>
   );
 }

@@ -18,6 +18,7 @@ import SentimentScore from "./_components/SentimentScore";
 import DiscordImage from "~/components/DiscordImage";
 import Deferred from "~/components/Deferred";
 import DetailsSkeleton from "~/components/DetailsSkeleton";
+import PageEnter from "~/components/PageEnter";
 
 export default function Page() {
   const id = useSearchParams()!.get("id")!;
@@ -37,7 +38,9 @@ export default function Page() {
         />
       }
     >
-      <DMDetails />
+      <PageEnter className="flex grow flex-col">
+        <DMDetails />
+      </PageEnter>
     </Deferred>
   );
 }
