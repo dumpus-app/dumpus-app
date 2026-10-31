@@ -5,7 +5,7 @@ import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import PremiumBadge from "~/components/PremiumBadge";
 import Header from "~/components/layout/Header";
 import { links } from "~/constants";
@@ -19,8 +19,7 @@ export default function TopNav() {
   const { t } = useTranslation();
   const pathname = usePathname();
   const [premium, backLink] = useAppStore(
-    ({ config, ui }) => [config.premium, ui.redirectParam],
-    shallow,
+    useShallow(({ config, ui }) => [config.premium, ui.redirectParam]),
   );
 
   const showBack = pathname.includes("/details/");

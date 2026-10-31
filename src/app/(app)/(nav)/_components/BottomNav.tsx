@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useMeasure, useMount, useUnmount } from "react-use";
 import colors from "tailwindcss/colors";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { links as _links } from "~/constants";
 import { useTranslation } from "~/i18n/client";
 import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";
@@ -20,8 +20,7 @@ export default function BottomNav() {
 
   const [ref, { height }] = useMeasure<HTMLDivElement>();
   const [setHeight, setSafeAreaBottomColor] = useAppStore(
-    ({ ui }) => [ui.setBottomNavHeight, ui.setSafeAreaBottomColor],
-    shallow,
+    useShallow(({ ui }) => [ui.setBottomNavHeight, ui.setSafeAreaBottomColor]),
   );
 
   useEffect(() => {

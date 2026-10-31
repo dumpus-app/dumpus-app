@@ -6,7 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { Fragment } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Button from "~/components/Button";
 import { BASE_URL, OS } from "~/constants";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
@@ -126,8 +126,7 @@ function useShare({ canShare }: { canShare: boolean }) {
 export default function SharePopup() {
   const { t } = useTranslation();
   const [open, setOpen] = useAppStore(
-    ({ ui }) => [ui.showSharePopup, ui.setShowSharePopup],
-    shallow,
+    useShallow(({ ui }) => [ui.showSharePopup, ui.setShowSharePopup]),
   );
 
   const os = useOS() || OS;

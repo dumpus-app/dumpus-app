@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useWindowScroll } from "react-use";
 import { create } from "zustand";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 const useStore = create<{
   y: number;
@@ -15,7 +15,7 @@ const useStore = create<{
 }));
 
 export function useScrolled() {
-  const [y, setY] = useStore((state) => [state.y, state.setY], shallow);
+  const [y, setY] = useStore(useShallow((state) => [state.y, state.setY]));
   const scroll = useWindowScroll();
 
   useEffect(() => {

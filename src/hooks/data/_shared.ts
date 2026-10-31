@@ -3,7 +3,7 @@
 import { SQL_DEFAULT_LIMIT } from "~/constants";
 import useSQL from "../use-sql";
 import { useAppStore } from "~/stores";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 export function sqlOffset(offset: number) {
   return offset * SQL_DEFAULT_LIMIT;
@@ -12,12 +12,11 @@ export function sqlOffset(offset: number) {
 export function useDataSources() {
   const sql = useSQL();
   const [timeRange, db, getTimeRangeDates] = useAppStore(
-    ({ config, database }) => [
+    useShallow(({ config, database }) => [
       config.timeRange,
       database.db,
       database.getTimeRangeDates,
-    ],
-    shallow,
+    ]),
   );
 
   return { sql, ...getTimeRangeDates({ timeRange, db }) };

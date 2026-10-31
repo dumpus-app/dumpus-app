@@ -4,15 +4,17 @@ import clsx from "clsx";
 import Button from "~/components/Button";
 import { useAppStore } from "~/stores";
 import { useTranslation } from "~/i18n/client";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 
 export default function LoadMore({ loadMore }: { loadMore: () => void }) {
   const { t } = useTranslation();
   const [premium, setOpen] = useAppStore(
-    ({ config, ui }) => [config.premium, ui.setShowInAppPurchasesDialog],
-    shallow,
+    useShallow(({ config, ui }) => [
+      config.premium,
+      ui.setShowInAppPurchasesDialog,
+    ]),
   );
 
   return (

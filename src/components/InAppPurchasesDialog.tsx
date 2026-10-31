@@ -3,7 +3,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Fragment, useState } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Button from "~/components/Button";
 import useToast from "~/hooks/use-toast";
 import { useAppStore } from "~/stores";
@@ -14,12 +14,13 @@ export default function InAppPurchasesDialog() {
   const { t } = useTranslation();
   const content = t("premium.content", { returnObjects: true }) as string[];
   const [open, setOpen] = useAppStore(
-    ({ ui }) => [ui.showInAppPurchasesDialog, ui.setShowInAppPurchasesDialog],
-    shallow,
+    useShallow(({ ui }) => [
+      ui.showInAppPurchasesDialog,
+      ui.setShowInAppPurchasesDialog,
+    ]),
   );
   const [supported, products] = useAppStore(
-    ({ purchases }) => [purchases.supported, purchases.products],
-    shallow,
+    useShallow(({ purchases }) => [purchases.supported, purchases.products]),
   );
   const hasProducts = products.length > 0;
   const toast = useToast();

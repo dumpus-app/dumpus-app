@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import packageAPI from "~/hooks/use-package-api";
@@ -15,12 +15,11 @@ export default function DangerZone() {
   const { t } = useTranslation();
   const router = useRouter();
   const [reset, packages, setUsersCache] = useAppStore(
-    ({ config, setUsersCache }) => [
+    useShallow(({ config, setUsersCache }) => [
       config.reset,
       config.packages,
       setUsersCache,
-    ],
-    shallow,
+    ]),
   );
 
   const [loading, setLoading] = useState(false);
