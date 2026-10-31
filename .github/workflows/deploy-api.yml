@@ -17,6 +17,12 @@ on:
         description: "Override image tag (defaults to git sha)"
         required: false
 
+# Merges close together must not deploy in parallel, or an older commit can
+# finish last and win. Queued runs collapse to the newest.
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
 permissions:
   id-token: write # GitHub OIDC
   contents: read
