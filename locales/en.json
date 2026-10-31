@@ -208,16 +208,6 @@
       "spentInVoiceChannels": "spent in voice channels"
     }
   },
-  "shareImage": {
-    "title": "Stats for Discord",
-    "topDMS": "Top DMs",
-    "topGuilds": "Top guilds",
-    "getYours": "Get yours at",
-    "talkedWith": "number of users you talked with",
-    "messagesSent": "number of messages you sent",
-    "timeSpent": "time spent on Discord",
-    "appOpenings": "number of times you opened the app"
-  },
   "sendingTimeStats": {
     "messagesSentPerDay": "average messages sent per day",
     "appOpeningsPerDay": "Discord app openings per day"
@@ -327,6 +317,21 @@
       "description": "Generated on https://dumpus.app, try it yourself!"
     },
     "error": "An error occurred...",
+    "close": "Close",
+    "previous": "Previous card",
+    "next": "Next card",
+    "cardsLabel": "Your recap cards",
+    "cards": {
+      "cover": "Cover",
+      "messages": "Messages",
+      "topDMs": "Top DMs",
+      "topServers": "Top servers",
+      "peakHour": "Peak hour",
+      "time": "Time on Discord",
+      "habits": "Little habits",
+      "summary": "Summary",
+      "summarySquare": "Square summary"
+    },
     "range": {
       "4weeks": "Last 4 weeks",
       "6months": "Last 6 months",
