@@ -1,4 +1,4 @@
 -r requirements.txt
 
 pytest==9.2.0
-moto[s3,sqs,secretsmanager]==5.2.5
+moto[s3,sqs]==5.2.5

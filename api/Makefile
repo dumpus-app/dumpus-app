@@ -25,7 +25,7 @@ dev:
 	"
 
 # Brings up a throwaway Postgres for the run and removes it after. Extra pytest
-# arguments go in ARGS, for eg. `make test ARGS="-k golden"`. Each line stands
+# arguments go in ARGS, for eg. `make test ARGS="-k worker"`. Each line stands
 # alone: the GNU Make 3.81 macOS ships ignores `.ONESHELL`. The worker runs
 # dumpus-processor, built from `processor/` with the flags of `Dockerfile.worker`.
 test:

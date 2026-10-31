@@ -1,13 +1,11 @@
-"""Synthetic Discord data packages, laid out like real exports.
+"""A synthetic Discord data package, laid out like a real export.
 
-Every id, name and address is made up. Each entry of `CATALOG` builds the
-files of one package; `build(name)` zips them. Contents are deterministic, so
-the SQLite the worker makes from them can be compared across runs.
+Every id, name and address is made up. `build(name)` zips the files of a
+package of `CATALOG`.
 """
 import io
 import json
 import zipfile
-from datetime import datetime, timedelta, timezone
 
 OWNER = '100000000000000001'
 FRIEND_ALPHA = '200000000000000001'
@@ -80,18 +78,16 @@ def voice(kind, at, channel, guild=None, client_at='same'):
     return event(f'{kind}_voice_channel', at, **fields)
 
 
-def owner(*, discriminator='0', global_name='Synthetic Owner', relationship_discriminators=True):
-    def friend(user_id, username, avatar, user_discriminator, friend_global_name):
-        user = {'id': user_id, 'username': username, 'avatar': avatar, 'avatar_decoration_data': None, 'public_flags': 0}
-        if relationship_discriminators:
-            user['discriminator'] = user_discriminator
-        user['global_name'] = friend_global_name
+def owner():
+    def friend(user_id, username, avatar, discriminator, global_name):
+        user = {'id': user_id, 'username': username, 'avatar': avatar, 'avatar_decoration_data': None, 'public_flags': 0,
+                'discriminator': discriminator, 'global_name': global_name}
         return {'id': user_id, 'type': 1, 'nickname': None, 'user': user}
 
-    user = {
+    return {
         'id': OWNER,
         'username': 'synthetic_owner',
-        'global_name': global_name,
+        'global_name': 'Synthetic Owner',
         'avatar_hash': 'f00dfacef00dfacef00dfacef00dface',
         'email': 'owner@example.invalid',
         'verified': True,
@@ -104,10 +100,8 @@ def owner(*, discriminator='0', global_name='Synthetic Owner', relationship_disc
             friend(FRIEND_ALPHA, 'friend_alpha', 'a_0123456789abcdef', '0', 'Friend Alpha'),
             friend(FRIEND_GAMMA, 'friend_gamma', None, '4242', None),
         ],
+        'discriminator': '0',
     }
-    if discriminator is not None:
-        user['discriminator'] = discriminator
-    return user
 
 
 PAYMENTS = {'records': [
@@ -273,138 +267,45 @@ CHANNELS = [
 GUILDS = {GUILD_ONE: 'Synthetic Guild One', GUILD_TWO: 'Synthetic Guild Two', GUILD_EMPTY: 'Synthetic Guild Empty'}
 
 
-def messages_files(root, *, prefix='c', channels=CHANNELS):
+def messages_files(root):
     index = {}
     files = {}
-    for channel_id, name, channel, messages in channels:
+    for channel_id, name, channel, messages in CHANNELS:
         if name == 'null':
             index[channel_id] = None
         elif name is not None:
             index[channel_id] = name
     files[f'{root}/index.json'] = _json(index)
-    for channel_id, _, channel, messages in channels:
-        files[f'{root}/{prefix}{channel_id}/channel.json'] = _json(channel)
+    for channel_id, _, channel, messages in CHANNELS:
+        files[f'{root}/c{channel_id}/channel.json'] = _json(channel)
         if messages is not None:
-            files[f'{root}/{prefix}{channel_id}/messages.json'] = _json(messages)
+            files[f'{root}/c{channel_id}/messages.json'] = _json(messages)
     return files
 
 
-def servers_files(root, *, guild_json=True):
+def servers_files(root):
     files = {f'{root}/index.json': _json(GUILDS)}
-    if guild_json:
-        for guild_id, name in GUILDS.items():
-            files[f'{root}/{guild_id}/guild.json'] = _json({'id': guild_id, 'name': name})
+    for guild_id, name in GUILDS.items():
+        files[f'{root}/{guild_id}/guild.json'] = _json({'id': guild_id, 'name': name})
     return files
 
 
-def current_export(*, account='Account', activity='Activity', messages='Messages', servers='Servers',
-                   user=None, payments=True, streams=None, guild_json=True):
-    """The layout Discord ships today. Pass `None` for a folder to leave it out."""
-    files = {}
-    if account:
-        files[f'{account}/user.json'] = _json(user or owner())
-        if payments:
-            files[f'{account}/user_data_exports/discord_billing/payments.json'] = _json(PAYMENTS)
-    if activity:
-        if streams is None:
-            streams = {'analytics': ANALYTICS, 'reporting': REPORTING, 'tns': TNS}
-        for stream, events in streams.items():
-            files[f'{activity}/{stream}/events-2024-00000-of-00001.json'] = events if isinstance(events, bytes) else _ndjson(events)
-    if messages:
-        files.update(messages_files(messages))
-    if servers:
-        files.update(servers_files(servers, guild_json=guild_json))
+def current_export():
+    """The layout Discord ships today."""
+    files = {
+        'Account/user.json': _json(owner()),
+        'Account/user_data_exports/discord_billing/payments.json': _json(PAYMENTS),
+    }
+    for stream, events in {'analytics': ANALYTICS, 'reporting': REPORTING, 'tns': TNS}.items():
+        files[f'Activity/{stream}/events-2024-00000-of-00001.json'] = _ndjson(events)
+    files.update(messages_files('Messages'))
+    files.update(servers_files('Servers'))
     return files
-
-
-def legacy_export():
-    """Lower-case folders and channel folders without the `c` prefix, from before 2023."""
-    user = owner(discriminator='1234', global_name=None)
-    user['username'] = 'legacyowner'
-    # Older exports listed payments in `user.json`; the worker no longer reads them.
-    user['payments'] = [{'id': '600000000000000009', 'amount': 499, 'currency': 'usd', 'status': 1,
-                         'created_at': '2021-05-01T10:00:00+00:00', 'description': 'Nitro Classic'}]
-    channels = [
-        (DM_ALPHA, 'Direct Message with friend_alpha#4242', _dm(DM_ALPHA, FRIEND_ALPHA), _messages(
-            '2021-06-01 12:00:00.000000+00:00', '2021-06-01 12:30:00.000000+00:00', '2021-06-02 08:00:00.000000+00:00')),
-        (ONE_GENERAL, 'general in Synthetic Guild One', _guild_channel(ONE_GENERAL, 'general', GUILD_ONE, 'Synthetic Guild One'),
-         _messages('2021-06-03 09:00:00.000000+00:00')),
-    ]
-    files = {'account/user.json': _json(user)}
-    files['activity/analytics/events-2021-00000-of-00001.json'] = _ndjson([
-        session('start', '2021-06-01T08:00:00.000Z', 'windows'),
-        session('end', '2021-06-01T09:00:00.000Z', 'windows'),
-        event('app_opened', '2021-06-01T08:00:00.000Z', os='Windows'),
-        event('guild_joined', '2021-06-01T10:00:00.000Z', guild_id=GUILD_ONE),
-    ])
-    files.update(messages_files('messages', prefix='', channels=channels))
-    # A channel exported as CSV, the format before `messages.json`.
-    files[f'messages/{TWO_GENERAL}/channel.json'] = _json(_guild_channel(TWO_GENERAL, 'general', GUILD_TWO, 'Synthetic Guild Two'))
-    files[f'messages/{TWO_GENERAL}/messages.csv'] = b'ID,Timestamp,Contents,Attachments\n1,2021-06-04 10:00:00.000000+00:00,csv message,\n'
-    files.update(servers_files('servers'))
-    return files
-
-
-def _lcg(seed):
-    state = seed
-    while True:
-        state = (state * 6364136223846793005 + 1442695040888963407) % 2 ** 64
-        yield state >> 33
-
-
-def heavy_events():
-    """Thousands of overlapping sessions and voice calls, in shuffled order."""
-    numbers = _lcg(2024)
-    oses = ('windows', 'android', 'ios', 'linux', 'macos')
-    channels = (VOICE_ONE, VOICE_TWO, VOICE_LONG, VOICE_TWICE)
-    at = datetime(2023, 1, 1, tzinfo=timezone.utc)
-    stamp = lambda moment: moment.strftime('%Y-%m-%dT%H:%M:00.000Z')
-    events = []
-    for index in range(1500):
-        at += timedelta(minutes=5 + next(numbers) % 600)
-        minutes = next(numbers) % 300 if index % 97 else 25 * 60
-        device = oses[next(numbers) % len(oses)]
-        events.append(session('start', stamp(at), device))
-        if next(numbers) % 10:
-            events.append(session('end', stamp(at + timedelta(minutes=minutes)), device))
-        if index % 3 == 0:
-            channel = channels[next(numbers) % len(channels)]
-            joined = at + timedelta(minutes=next(numbers) % 120)
-            events.append(voice('join', stamp(joined), channel, GUILD_ONE))
-            events.append(voice('leave', stamp(joined + timedelta(minutes=next(numbers) % 240)), channel, GUILD_ONE))
-        if index % 5 == 0:
-            events.append(event('app_opened', stamp(at), os=device.capitalize()))
-    for index in range(len(events) - 1, 0, -1):
-        swap = next(numbers) % (index + 1)
-        events[index], events[swap] = events[swap], events[index]
-    return events
-
-
-def german(**kwargs):
-    return current_export(account='Konto', activity='Aktivität', messages='Nachrichten', servers='Server', **kwargs)
 
 
 CATALOG = {
     # Current layout, every section present, owner with `discriminator`.
-    'full': lambda: current_export(),
-    # Since 2026-08, `user.json` has no `discriminator`, for the owner or friends.
-    'no_discriminator': lambda: current_export(user=owner(discriminator=None, relationship_discriminators=False)),
-    # Activity holds `reporting` and `tns` but no `analytics`.
-    'reporting_only': lambda: current_export(streams={'reporting': REPORTING, 'tns': TNS}),
-    'legacy_lowercase': legacy_export,
-    'localized_german': lambda: german(),
-    # Servers listed without `guild.json` files, in a localized export.
-    'localized_german_servers_index_only': lambda: german(guild_json=False),
-    'missing_servers': lambda: current_export(servers=None),
-    'missing_messages': lambda: current_export(messages=None),
-    'missing_activity': lambda: current_export(activity=None),
-    'missing_payments': lambda: current_export(payments=False),
-    'empty_analytics': lambda: current_export(streams={'analytics': b''}),
-    'analytics_without_event_types': lambda: current_export(streams={'analytics': [
-        {'event_id': f'no-type-{index}', 'timestamp': _quoted('2024-03-01T10:00:00.000Z')} for index in range(3)]}),
-    'account_only': lambda: current_export(activity=None, messages=None, servers=None, payments=False),
-    'missing_user': lambda: current_export(account=None),
-    'heavy': lambda: current_export(messages=None, payments=False, streams={'analytics': heavy_events()}),
+    'full': current_export,
 }
 
 

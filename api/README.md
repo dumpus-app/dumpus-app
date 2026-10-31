@@ -235,14 +235,11 @@ Current error message codes:
 
 ## Tests
 
-`make test` runs the suite under `tests/`. It creates `.venv` if needed, installs `requirements-test.txt`, builds `dumpus-processor` from `../processor` into `.bin/`, and starts a throwaway Postgres container (the image of `docker-compose.yml`) that it removes at the end. It needs Docker, `uv` and Go, and Node for the client check.
+`make test` installs `requirements-test.txt` into `.venv`, builds `dumpus-processor` from `../processor`, which the worker runs, and runs `tests/` against a throwaway Postgres container, the image of `docker-compose.yml`. It needs Docker, `uv` and Go, and Node for the client check.
 
-* The worker runs the real `dumpus-processor`, the binary named by `DUMPUS_PROCESSOR`, which `make test` sets. `tests/test_worker.py` swaps in stand-ins that fail, hang or skip the report.
-* S3, SQS and Secrets Manager are mocked in process with moto, ECS with botocore's `Stubber`, and a local server stands in for Discord's download links, the webhook, diswho and the Discord API. The tests don't reach the network.
-* `tests/golden/` pins the SQLite the worker makes from each synthetic package of `tests/support/packages.py`. After an intended change, rewrite them with `UPDATE_GOLDEN=1 make test` and review the diff. `DUMPUS_GOLDEN_DUMP=<dir>` also writes the rows behind each golden, to diff two runs.
+* S3 and SQS are mocked in process with moto, ECS with botocore's `Stubber`, and a local server stands in for Discord's download links and the webhook. The tests don't reach the network.
 * `tests/client/` opens blobs in Node with the app's decryption, pako and sql.js.
 * `DUMPUS_TEST_POSTGRES_URL` points the suite at an existing server instead of Docker. Its database name must contain `test`: the suite wipes it.
-* `DUMPUS_API_SRC=<checkout>/api/src make test` runs the same tests against another checkout's code, with this checkout's `dumpus-processor`.
 
 ## Troubleshooting
 
