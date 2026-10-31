@@ -1,5 +1,6 @@
 "use client";
 
+import { carriesEvent } from "./_availability";
 import { useDataSources } from "./_shared";
 
 export default function useUsageStatsData(forceLifetime?: boolean) {
@@ -165,14 +166,18 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     return hasError ? null : data;
   }
 
+  /** Null when the export can't tell, see `carriesEvent`. */
   function countEvent(eventName: string) {
-    const { data, hasError } = sql<{ event_count: number }>`
+    if (!carriesEvent(sql, eventName)) return null;
+
+    const { data, hasError } = sql<{ event_count: number | null }>`
       SELECT SUM(occurence_count) as event_count
       FROM activity
       WHERE event_name = '${eventName}'
       AND day BETWEEN '${startDate}' AND '${endDate}';
     `;
-    return hasError ? null : data[0].event_count;
+    // The export carries this type, so no rows means it never happened.
+    return hasError ? null : (data[0].event_count ?? 0);
   }
 
   function getTimeSpentInVoiceChannels() {

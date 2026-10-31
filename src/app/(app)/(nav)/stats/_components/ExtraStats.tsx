@@ -44,6 +44,9 @@ export default function Stats() {
   } = useUsageStatsData();
   const { t } = useTranslation();
   const { package_is_partial } = useSelectedPackage();
+  // Null is a count the export can't tell, see `carriesEvent`.
+  const count = (n: number | null) =>
+    n === null ? t("noData") : formatNumber(n, { notation: "standard" });
 
   console.log(
     (usePerOs() || []).map((os, i) => ({ value: os.count, label: os.os })),
@@ -54,47 +57,44 @@ export default function Stats() {
   return (
     <div className="desktop-container grid grid-cols-2 gap-2 px-2 py-4 sm:grid-cols-3 sm:py-8 md:grid-cols-4">
       <StatCard
-        value={formatNumber(notificationClicked(), { notation: "standard" })}
+        value={count(notificationClicked())}
         label={t("stats.extra.clickedNotifications")}
       />
       <StatCard
-        value={formatNumber(captchaServed(), { notation: "standard" })}
+        value={count(captchaServed())}
         label={t("stats.extra.completedCaptcha")}
       />
       <StatCard
-        value={formatNumber(emailReceived(), { notation: "standard" })}
+        value={count(emailReceived())}
         label={t("stats.extra.receivedEmail")}
       />
       <StatCard
-        value={formatNumber(loginSuccessful(), { notation: "standard" })}
+        value={count(loginSuccessful())}
         label={t("stats.extra.successfulLogin")}
       />
       <StatCard
-        value={formatNumber(userAvatarUpdated(), { notation: "standard" })}
+        value={count(userAvatarUpdated())}
         label={t("stats.extra.avatarUpdates")}
       />
+      <StatCard value={count(appCrashed())} label={t("stats.extra.crashes")} />
       <StatCard
-        value={formatNumber(appCrashed(), { notation: "standard" })}
-        label={t("stats.extra.crashes")}
-      />
-      <StatCard
-        value={formatNumber(oauth2Authorized(), { notation: "standard" })}
+        value={count(oauth2Authorized())}
         label={t("stats.extra.authorizedOauth2")}
       />
       <StatCard
-        value={formatNumber(voiceMessageRecorded(), { notation: "standard" })}
+        value={count(voiceMessageRecorded())}
         label={t("stats.extra.voiceMessagesRecorded")}
       />
       <StatCard
-        value={formatNumber(messageReported(), { notation: "standard" })}
+        value={count(messageReported())}
         label={t("stats.extra.reportedMessages")}
       />
       <StatCard
-        value={formatNumber(messageEdited(), { notation: "standard" })}
+        value={count(messageEdited())}
         label={t("stats.extra.editedMessages")}
       />
       <StatCard
-        value={formatNumber(nitroAds(), { notation: "standard" })}
+        value={count(nitroAds())}
         label={t("stats.extra.seenNitroAds")}
       />
       <StatCard

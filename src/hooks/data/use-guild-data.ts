@@ -6,6 +6,7 @@ import type {
   Guild,
   GuildChannelsData,
 } from "~/types/sql";
+import { carriesEvent } from "./_availability";
 import { groupDays } from "./_chart";
 import { useDataSources } from "./_shared";
 import { SQL_DEFAULT_LIMIT } from "~/constants";
@@ -87,8 +88,11 @@ export default function useGuildData({ guildID }: { guildID: string }) {
     return hasError ? null : data[0].hour;
   }
 
+  /** Null when the export can't tell, see `carriesEvent`. */
   function getTopBots() {
-    const { data, hasError } = sql<
+    if (!carriesEvent(sql, "application_command_used")) return null;
+
+    const { data, hasError } = sql.rows<
       Pick<DmChannelsData, "user_name" | "display_name" | "user_avatar_url"> &
         Required<Pick<Activity, "associated_user_id">> & {
           total_occurences: number;
