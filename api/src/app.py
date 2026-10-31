@@ -293,6 +293,11 @@ def get_avatar(package_id, user_id):
         (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
         if not is_auth:
             return make_response('', 401)
+
+        # Discord's export puts "Deleted User" in a DM's recipients where a
+        # deleted account's id should be: there is no one to look up.
+        if not user_id.isdigit():
+            return make_response('', 404)
     
         session = Session()
         try:
