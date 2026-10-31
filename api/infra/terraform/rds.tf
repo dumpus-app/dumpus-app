@@ -57,11 +57,9 @@ resource "aws_db_instance" "main" {
   skip_final_snapshot        = false
   final_snapshot_identifier  = "${local.name}-postgres-final-${formatdate("YYYYMMDDhhmm", timestamp())}"
 
-  # A change of major version in postgres_version applies at once instead of
-  # in the next maintenance window. apply_immediately goes back to false once
-  # the upgrade is done.
+  # Lets a change of major version in postgres_version through; it applies in
+  # the next maintenance window.
   allow_major_version_upgrade = true
-  apply_immediately           = true
 
   performance_insights_enabled          = true
   performance_insights_retention_period = 7

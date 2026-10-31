@@ -114,9 +114,4 @@ resource "aws_lambda_event_source_mapping" "forwarder_sqs" {
   maximum_batching_window_in_seconds = 0
 
   function_response_types = ["ReportBatchItemFailures"]
-
-  # Paused while the database moves to PostgreSQL 18, so no worker starts
-  # against it mid-upgrade; packages wait in the queue. Back to true once the
-  # upgrade is done.
-  enabled = false
 }
