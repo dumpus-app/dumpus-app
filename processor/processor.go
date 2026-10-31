@@ -96,6 +96,7 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	for _, name := range l.duplicates {
 		p.skip(p.get(name), ProblemDuplicate)
 	}
+	p.share(l.user, l.activity, l.serversIndex, l.messagesIndex, l.payments)
 	if l.user == "" {
 		rep.MissingFiles = append(rep.MissingFiles, MissingFile{Role: "user", Path: "Account/user.json"})
 		return nil, ErrMissingUserData

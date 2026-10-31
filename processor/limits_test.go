@@ -1,12 +1,14 @@
 package processor
 
 import (
+	"archive/zip"
 	"bytes"
 	"context"
 	"encoding/binary"
 	"errors"
 	"fmt"
 	"io"
+	"math/rand/v2"
 	"reflect"
 	"slices"
 	"strings"
@@ -376,6 +378,71 @@ func TestOverlappingRecordsReadNothing(t *testing.T) {
 	}
 	if c.bytes.Load() > 2*size {
 		t.Errorf("%d bytes read from a %d-byte zip in %d reads", c.bytes.Load(), size, c.calls.Load())
+	}
+}
+
+// rangeCounter counts the bytes read within one range of the zip.
+type rangeCounter struct {
+	r          io.ReaderAt
+	start, end int64
+	n          atomic.Int64
+}
+
+func (c *rangeCounter) ReadAt(p []byte, off int64) (int, error) {
+	n, err := c.r.ReadAt(p, off)
+	if lo, hi := max(off, c.start), min(off+int64(n), c.end); hi > lo {
+		c.n.Add(hi - lo)
+	}
+	return n, err
+}
+
+// TestRolesShareAnEntry gives one entry to the activity stream and both
+// indexes, as a crafted package can: its data is read once for all three.
+func TestRolesShareAnEntry(t *testing.T) {
+	var members []string
+	for i := range 2000 {
+		members = append(members, fmt.Sprintf(`"%d": "g%d"`, 300000000000000000+i, i))
+	}
+	// The filler keeps the search for the end of the central directory away
+	// from the shared entry's data.
+	rng := rand.New(rand.NewPCG(20261030, 5))
+	filler := make([]byte, 4096)
+	for i := range filler {
+		filler[i] = byte(rng.IntN(256))
+	}
+	const shared = "X/analytics/index.json"
+	r, size := zipOf(t, []entry{
+		{"Account/user.json", userJSON},
+		{shared, "{" + strings.Join(members, ", ") + "}"},
+		{"X/analytics/" + guildOne + "/guild.json", `{"id": "` + guildOne + `"}`},
+		{"X/analytics/c" + general + "/channel.json", guildChannel(general, guildOne)},
+		{"X/filler", string(filler)},
+	})
+	zr, err := zip.NewReader(r, size)
+	if err != nil {
+		t.Fatal(err)
+	}
+	i := slices.IndexFunc(zr.File, func(f *zip.File) bool { return f.Name == shared })
+	f := zr.File[i]
+	off, err := f.DataOffset()
+	if err != nil {
+		t.Fatal(err)
+	}
+	c := &rangeCounter{r: r, start: off, end: off + int64(f.CompressedSize64)}
+	res, err := Process(context.Background(), c, size, Options{PackageID: "pkg-test", Workers: 4})
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, role := range []string{"activity", "servers_index", "messages_index"} {
+		if res.Report.Inputs[role] != shared {
+			t.Fatalf("inputs %v", res.Report.Inputs)
+		}
+	}
+	if c.n.Load() != int64(f.CompressedSize64) {
+		t.Errorf("%d bytes read of %d compressed", c.n.Load(), f.CompressedSize64)
+	}
+	if len(res.Model.Guilds) != len(members) {
+		t.Errorf("%d guilds, want %d", len(res.Model.Guilds), len(members))
 	}
 }
 

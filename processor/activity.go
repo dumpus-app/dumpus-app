@@ -50,11 +50,24 @@ type chunkResult struct {
 // it into chunks of whole lines, the workers decode and aggregate the lines,
 // and one more goroutine checksums the chunks in order, off the inflating core.
 func readActivity(ctx context.Context, p *pkg, f *zip.File, cfg activityConfig) (*activityAgg, error) {
-	r, err := p.open(f, false)
-	if err != nil {
-		return nil, err
+	var r io.Reader
+	if p.shared[f] != nil {
+		data, ok, err := p.readWhole(f)
+		if err != nil {
+			return nil, err
+		}
+		if ok {
+			r = bytes.NewReader(data)
+		}
 	}
-	defer r.Close()
+	if r == nil {
+		e, err := p.open(f, false)
+		if err != nil {
+			return nil, err
+		}
+		defer e.Close()
+		r = e
+	}
 
 	nbuf := cfg.workers + 2
 	free := make(chan *chunk, nbuf)

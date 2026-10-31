@@ -12,6 +12,7 @@ import (
 	"hash/crc32"
 	"io"
 	"slices"
+	"sync"
 	"sync/atomic"
 
 	"github.com/klauspost/compress/flate"
@@ -27,16 +28,43 @@ type pkg struct {
 	r       io.ReaderAt
 	lim     limits
 	iss     *issues
-	allowed map[*zip.File]bool  // the entries within the inflate budget
-	reads   []*zip.File         // the same, in the order the budget allowed them
-	offsets map[*zip.File]int64 // where the data of each allowed entry starts, see locate
-	skipped atomic.Bool         // an entry, folder or line was left out: the package is partial
+	allowed map[*zip.File]bool       // the entries within the inflate budget
+	reads   []*zip.File              // the same, in the order the budget allowed them
+	offsets map[*zip.File]int64      // where the data of each allowed entry starts, see locate
+	shared  map[*zip.File]*wholeRead // the entries several roles name, see share
+	skipped atomic.Bool              // an entry, folder or line was left out: the package is partial
 }
 
 type dataRange struct{ start, end int64 }
 
+// wholeRead is an entry read whole once for every role that names it.
+type wholeRead struct {
+	once sync.Once
+	data []byte
+	ok   bool
+	err  error
+}
+
 func newPkg(zr *zip.Reader, r io.ReaderAt, lim limits, iss *issues) *pkg {
-	return &pkg{entries: indexEntries(zr), r: r, lim: lim, iss: iss, allowed: map[*zip.File]bool{}}
+	return &pkg{entries: indexEntries(zr), r: r, lim: lim, iss: iss, allowed: map[*zip.File]bool{}, shared: map[*zip.File]*wholeRead{}}
+}
+
+// share marks the entries that more than one of the roles names, which only a
+// crafted package does, for eg. an `index.json` in an `analytics` folder taken
+// for the activity stream and both indexes: such an entry is read whole once,
+// for all of them, the stream included.
+func (p *pkg) share(roles ...string) {
+	seen := map[*zip.File]bool{}
+	for _, name := range roles {
+		f := p.get(name)
+		if name == "" || f == nil {
+			continue
+		}
+		if seen[f] {
+			p.shared[f] = &wholeRead{}
+		}
+		seen[f] = true
+	}
 }
 
 // budget allows each entry, in a fixed order, whose declared size still fits in
@@ -111,9 +139,18 @@ func (p *pkg) skip(f *zip.File, problem string) {
 	p.skipped.Store(true)
 }
 
-// readWhole reads and checks a whole entry. ok is false when a limit skipped
-// it, which is reported; errors name the entry by its masked path.
+// readWhole reads and checks a whole entry, once for all the roles that share
+// it. ok is false when a limit skipped it, which is reported; errors name the
+// entry by its masked path. The data must not be changed.
 func (p *pkg) readWhole(f *zip.File) (data []byte, ok bool, err error) {
+	if w := p.shared[f]; w != nil {
+		w.once.Do(func() { w.data, w.ok, w.err = p.inflateWhole(f) })
+		return w.data, w.ok, w.err
+	}
+	return p.inflateWhole(f)
+}
+
+func (p *pkg) inflateWhole(f *zip.File) (data []byte, ok bool, err error) {
 	switch {
 	case !p.allowed[f]:
 		return nil, false, nil
