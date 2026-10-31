@@ -110,13 +110,20 @@ func TestDuplicateChannels(t *testing.T) {
 			}
 		})
 	}
-	// A folder whose `messages.json` is the activity stream reads nothing.
-	es := append(without(fullPackage(english), "Activity/"),
-		entry{"Messages/analytics/c" + general + "/channel.json", guildChannel(general, guildOne)},
-		entry{"Messages/analytics/c" + general + "/messages.json", lines(event("email_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")))})
-	res := processWith(t, es, Options{})
-	if !hasIssue(res.Report, "Messages/analytics/c*/channel.json", ProblemDuplicate, 1) {
-		t.Errorf("issues %+v", res.Report.Issues)
+	// A folder whose `channel.json` or `messages.json` is the activity stream,
+	// the first entry in an `analytics` folder, reads nothing.
+	folder := []entry{
+		{"Messages/analytics/c" + general + "/channel.json", guildChannel(general, guildOne)},
+		{"Messages/analytics/c" + general + "/messages.json", lines(event("email_opened", "timestamp", ts("2021-04-06T09:00:00.000Z")))},
+	}
+	for _, order := range [][]entry{folder, {folder[1], folder[0]}} {
+		res := processWith(t, append(without(fullPackage(english), "Activity/"), order...), Options{})
+		if stream := maskPath(order[0].name); res.Report.Inputs["activity"] != stream {
+			t.Fatalf("the activity stream is %s, want %s", res.Report.Inputs["activity"], stream)
+		}
+		if !hasIssue(res.Report, "Messages/analytics/c*/channel.json", ProblemDuplicate, 1) {
+			t.Errorf("%s first: issues %+v", order[0].name, res.Report.Issues)
+		}
 	}
 }
 
