@@ -85,7 +85,7 @@ Things to keep in mind:
 
 - **API cold start** is a few seconds while pandas imports. Invisible on the async submit/poll flow; use provisioned concurrency if a sync endpoint must be sub-second.
 - **Worker `/tmp` cap** defaults to 30 GiB. Bump `worker_task_ephemeral_storage_gib` if users upload very large Discord exports (Fargate ceiling is 200 GiB).
-- **Worker has no time cap.** Heavy packages just take as long as they need; failures show up as ERRORED package rows + a Discord webhook from `process_package`, not in the DLQ.
+- **Worker has no time cap**, except 10 minutes for `dumpus-processor` (`PROCESSOR_TIMEOUT_SECONDS` in `src/tasks.py`). Heavy packages just take as long as they need to download; failures show up as ERRORED package rows + a Discord webhook from `process_package`, not in the DLQ.
 - **Forwarder DLQ.** If the forwarder Lambda itself fails to launch a Fargate task twice (capacity / IAM / network), the SQS message lands in the DLQ — alarmed via Discord through `monitoring.tf`.
 - **fck-nat is a single instance.** Switch to a managed NAT Gateway if you need the extra availability — at the cost of a much higher fixed monthly bill.
 

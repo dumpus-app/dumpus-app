@@ -26,6 +26,7 @@ import tempfile
 from sqlite import create_new_empty_database, create_indexes, export_sqlite_to_bin
 
 import os
+import subprocess
 from collections import defaultdict, deque
 import requests
 
@@ -162,6 +163,84 @@ def remove_file(package_id):
         print(f'Removed file {path}')
     else:
         print(f'File {path} does not exist')
+
+def save_package_data(package_status_id, package_id, link, zipped_buffer, start, session):
+    """Encrypt the gzipped database with the link's key, upload it, keep its
+    iv and mark the package processed."""
+    key = extract_key_from_discord_link(link)
+    (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
+
+    # Encrypted blob → S3 (clients fetch via presigned URL); only the iv
+    # stays in Postgres so the API can hand it to the client for decryption.
+    # Store iv as hex — the column is a String, so writing raw bytes lets
+    # PostgreSQL serialize it as the BYTEA literal "\x..." which leaks
+    # straight to the client.
+    import blob_storage
+    blob_storage.upload(package_id, data)
+    session.add(SavedPackageData(package_id=package_id, iv=iv.hex()))
+    session.commit()
+
+    print(f'SQLite serialization: {time.time() - start}')
+
+    update_step(package_status_id, package_id, 'PROCESSED', session)
+
+    package_status_updated = fetch_package_status(package_id, session)
+    time_diff = time.time() - package_status_updated.created_at.timestamp()
+    formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_diff))
+
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': f'Package processed successfully',
+                'description': f'Package ID: {package_id} (took {formatted_time})',
+                'color': 0x4b9e4b
+            }
+        ]
+    })
+
+# dumpus-processor is stopped past this, many times what the largest exports take.
+PROCESSOR_TIMEOUT_SECONDS = 600
+
+def process_with_go(package_status_id, package_id, link, session):
+    """Turn the downloaded package into the app's database with
+    dumpus-processor (`processor/` in this repo), then save it.
+
+    Exit code 3 raises MISSING_USER_DATA. Exit code 4, a database written
+    without its report, carries on. Any other exit code, a missing binary or
+    a timeout raises, so the package ends as UNKNOWN_ERROR.
+    """
+    update_step(package_status_id, package_id, 'ANALYZING', session)
+    start = time.time()
+
+    binary = os.getenv('DUMPUS_PROCESSOR', '/usr/local/bin/dumpus-processor')
+    with tempfile.TemporaryDirectory() as tmp:
+        output = os.path.join(tmp, 'package.sqlite')
+        report_path = os.path.join(tmp, 'report.json')
+        # stderr's message can quote the package, so neither stream reaches
+        # the logs: the exit code says which failure it was.
+        result = subprocess.run(
+            [binary, '--input', get_package_zip_path(package_id), '--output', output,
+             '--package-id', package_id, '--report', report_path],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=PROCESSOR_TIMEOUT_SECONDS)
+        if result.returncode == 3:
+            raise Exception('MISSING_USER_DATA')
+        if result.returncode not in (0, 4):
+            raise Exception(f'dumpus-processor exited {result.returncode}')
+
+        with open(output, 'rb') as f:
+            sqlite_buffer = f.read()
+        if result.returncode == 4:
+            summary = 'not written'
+        else:
+            # The report holds masked paths and counts; `problem` is a fixed
+            # vocabulary, so it is the only field logged.
+            with open(report_path, 'rb') as f:
+                issues = orjson.loads(f.read())['issues']
+            problems = sorted({issue['problem'] for issue in issues})
+            summary = f'{len(issues)} issues, problems {problems}'
+
+    print(f'dumpus-processor: {time.time() - start:.1f} s, report: {summary}')
+    save_package_data(package_status_id, package_id, link, gzip.compress(sqlite_buffer), start, session)
 
 def read_analytics_file(package_status_id, package_id, link, session):
     update_step(package_status_id, package_id, 'ANALYZING', session)
@@ -1007,36 +1086,7 @@ def read_analytics_file(package_status_id, package_id, link, session):
     conn.commit()
 
     zipped_buffer = export_sqlite_to_bin(cur, conn)
-    key = extract_key_from_discord_link(link)
-    (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
-
-    # Encrypted blob → S3 (clients fetch via presigned URL); only the iv
-    # stays in Postgres so the API can hand it to the client for decryption.
-    # Store iv as hex — the column is a String, so writing raw bytes lets
-    # PostgreSQL serialize it as the BYTEA literal "\x..." which leaks
-    # straight to the client.
-    import blob_storage
-    blob_storage.upload(package_id, data)
-    session.add(SavedPackageData(package_id=package_id, iv=iv.hex()))
-    session.commit()
-
-    print(f'SQLite serialization: {time.time() - start}')
-
-    update_step(package_status_id, package_id, 'PROCESSED', session)
-
-    package_status_updated = fetch_package_status(package_id, session)
-    time_diff = time.time() - package_status_updated.created_at.timestamp()
-    formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_diff))
-
-    send_internal_notification({
-        'embeds': [
-            {
-                'title': f'Package processed successfully',
-                'description': f'Package ID: {package_id} (took {formatted_time})',
-                'color': 0x4b9e4b
-            }
-        ]
-    })
+    save_package_data(package_status_id, package_id, link, zipped_buffer, start, session)
 
     return analytics_line_count
 
@@ -1067,7 +1117,7 @@ def process_package(package_status_id, package_id, link, worker_name='regular_pr
 
     try:
         download_file(package_status_id, package_id, link, session)
-        read_analytics_file(package_status_id, package_id, link, session)
+        process_with_go(package_status_id, package_id, link, session)
     except Exception as e:
         # Always log the full trace to CloudWatch — print(e) alone gives just
         # the exception message and no line numbers, which makes the failure
