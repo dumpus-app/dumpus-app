@@ -111,7 +111,7 @@ export default function LinkForm() {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="mx-auto text-gray-400 transition-colors hover:text-white">
+              <Disclosure.Button className="mx-auto pressable text-gray-400 [--press-scale:0.96] hover:text-white active:text-white">
                 <div className="flex items-center">
                   <span>{t("onboarding.access.methods.link.advanced")}</span>
                   <ChevronDownIcon

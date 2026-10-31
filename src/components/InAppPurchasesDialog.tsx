@@ -139,7 +139,7 @@ export default function InAppPurchasesDialog() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="mt-1 -mb-2 w-full py-2 text-gray-400 underline transition-colors hover:text-gray-300"
+                  className="mt-1 -mb-2 w-full pressable py-2 text-gray-400 underline [--press-scale:0.98] hover:text-gray-300 active:text-gray-200"
                 >
                   {t("premium.maybeLater")}
                 </button>

@@ -42,7 +42,7 @@ function LocalesList({ close }: { close: () => void }) {
               clsx(
                 checked ? "border-transparent" : "border-gray-800",
                 active ? "border-brand-700 ring-2 ring-brand-700" : "",
-                "relative block cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 focus:outline-hidden",
+                "relative block pressable cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 [--press-scale:0.98] focus:outline-hidden active:bg-gray-900",
               )
             }
           >

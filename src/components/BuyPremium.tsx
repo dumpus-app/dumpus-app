@@ -25,7 +25,10 @@ export default function BuyPremium({ className }: { className?: string }) {
       <PremiumBadge
         icon={MdiCrown}
         text={t("premium.buy")}
-        className={clsx("transition-colors hover:bg-yellow-400", className)}
+        className={clsx(
+          "pressable [--press-scale:0.94] hover:bg-yellow-400 active:bg-yellow-400",
+          className,
+        )}
       />
     </button>
   );

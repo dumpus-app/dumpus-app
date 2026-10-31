@@ -5,6 +5,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import { useCallback, useEffect } from "react";
 import { useMount, useUnmount } from "react-use";
+import LinkPending from "~/components/LinkPending";
 import { useScrolled } from "~/hooks/use-layout";
 import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";
 import { Icon } from "~/types";
@@ -105,12 +106,16 @@ function HeaderIcon({ icon: Icon, className, ...rest }: HeaderIconProps) {
   return (
     <Link
       className={clsx(
-        "block p-2 text-gray-400 transition-colors hover:text-gray-300",
+        "block pressable p-2 text-gray-400 [--press-scale:0.88] hover:text-gray-300 active:text-gray-200",
         className,
       )}
       {...rest}
     >
-      <Icon className="h-6 w-6" />
+      <LinkPending>
+        {(pending) => (
+          <Icon className={clsx("h-6 w-6", pending && "animate-pulse")} />
+        )}
+      </LinkPending>
     </Link>
   );
 }

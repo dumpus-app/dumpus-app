@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ComponentProps } from "react";
+import LinkPending from "~/components/LinkPending";
 import { useTranslation } from "~/i18n/client";
 import { formatNumber } from "~/utils/format";
 
@@ -27,8 +28,9 @@ export default function AvatarCard({
     <Link
       id={id}
       href={href}
-      className="ml-2 flex w-24 shrink-0 flex-col rounded-lg p-2 transition-colors hover:bg-gray-900 sm:w-36"
+      className="ml-2 flex w-24 shrink-0 pressable flex-col rounded-lg p-2 [--press-scale:0.95] hover:bg-gray-900 active:bg-gray-900 has-[[data-pending]]:bg-gray-900 sm:w-36"
     >
+      <LinkPending />
       {image}
       <div className="overflow-hidden text-ellipsis whitespace-nowrap sm:mt-2 sm:text-xl sm:leading-none">
         <span className="text-gray-400">{rank}. </span>

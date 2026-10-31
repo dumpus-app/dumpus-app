@@ -1,8 +1,8 @@
 import clsx from "clsx";
 
 export type Props = {
-  title: string;
-  description: string;
+  title: React.ReactNode;
+  description: React.ReactNode;
   imageSlot: React.ReactNode;
   className?: string;
   children?: React.ReactNode;

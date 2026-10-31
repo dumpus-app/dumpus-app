@@ -16,8 +16,33 @@ import NotFoundState from "~/components/NotFoundState";
 import { formatDate, formatHour, formatNumber } from "~/utils/format";
 import SentimentScore from "./_components/SentimentScore";
 import DiscordImage from "~/components/DiscordImage";
+import Deferred from "~/components/Deferred";
+import DetailsSkeleton from "~/components/DetailsSkeleton";
 
 export default function Page() {
+  const id = useSearchParams()!.get("id")!;
+
+  return (
+    <Deferred
+      fallback={
+        <DetailsSkeleton
+          header={
+            <PageHeader
+              title=""
+              discordLink={`https://discord.com/users/${id}`}
+            />
+          }
+          roundImage
+          stats={3}
+        />
+      }
+    >
+      <DMDetails />
+    </Deferred>
+  );
+}
+
+function DMDetails() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 

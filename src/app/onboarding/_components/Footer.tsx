@@ -112,7 +112,7 @@ export default function Footer({ href, label }: Props) {
         {showGetDataLink && (
           <Link
             href="/onboarding/intro/1"
-            className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+            className="w-full pressable py-3 text-gray-400 underline [--press-scale:0.98] hover:text-gray-300 active:text-gray-200"
           >
             {t("onboarding.shared.getData")}
           </Link>
@@ -121,7 +121,7 @@ export default function Footer({ href, label }: Props) {
           <button
             type="button"
             onClick={(e) => setOpen(true)}
-            className="mt-2 w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+            className="mt-2 w-full pressable py-3 text-gray-400 underline [--press-scale:0.98] hover:text-gray-300 active:text-gray-200"
           >
             {t("onboarding.shared.trust")}
           </button>
