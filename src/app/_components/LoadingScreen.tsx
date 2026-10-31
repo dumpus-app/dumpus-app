@@ -1,11 +1,17 @@
 "use client";
 
+import { XCircleIcon } from "@heroicons/react/24/solid";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
 import { useShallow } from "zustand/react/shallow";
+import Button from "~/components/Button";
+import EmptyState from "~/components/EmptyState";
 import { VERSION } from "~/constants";
-import useSQLInit from "~/hooks/use-sql-init";
+import useSQLInit, {
+  loadErrorCode,
+  type PackageLoadErrorCode,
+} from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { createLogger } from "~/utils/logger";
@@ -19,6 +25,7 @@ export default function LoadingScreen({
 }) {
   const [loading, setLoading] = useState(true);
   const [shouldHaveDB, setShouldHaveDB] = useState(false);
+  const [failure, setFailure] = useState<PackageLoadErrorCode | null>(null);
   const { t } = useTranslation();
   const pathname = usePathname() || "/";
   const router = useRouter();
@@ -81,11 +88,16 @@ export default function LoadingScreen({
     }
 
     (async () => {
-      const destination = await handlePathname(pathname, !!db);
-      logger.info("continue");
-      if (mounted) {
-        router.replace(destination);
-        setLoading(false);
+      try {
+        const destination = await handlePathname(pathname, !!db);
+        logger.info("continue");
+        if (mounted) {
+          router.replace(destination);
+          setLoading(false);
+        }
+      } catch (err) {
+        logger.error("couldn't open the package", err);
+        setFailure(loadErrorCode(err));
       }
     })();
 
@@ -93,6 +105,40 @@ export default function LoadingScreen({
       mounted = false;
     };
   });
+
+  if (failure)
+    return (
+      <div className="my-auto flex flex-col items-center px-2">
+        <EmptyState
+          icon={XCircleIcon}
+          title={t("error.error")}
+          description={
+            {
+              STORAGE_FULL: t("settings.actions.notEnoughStorage.description"),
+              UNKNOWN_PACKAGE_ID: t("onboarding.loading.unknownPackageId"),
+              UNAUTHORIZED: t("onboarding.loading.unauthorized"),
+              UNKNOWN_ERROR: t("onboarding.loading.unknownError"),
+            }[failure]
+          }
+        />
+        <div className="flex flex-col space-y-2">
+          <Button onClick={() => window.location.reload()}>
+            {t("error.retry")}
+          </Button>
+          <Button
+            variant="gray"
+            onClick={() => {
+              setFailure(null);
+              setShouldHaveDB(false);
+              setLoading(false);
+              router.replace("/onboarding/access/");
+            }}
+          >
+            {t("settings.actions.addPackage")}
+          </Button>
+        </div>
+      </div>
+    );
 
   if (loading || (!db && hasSelectedPackage && shouldHaveDB))
     return (

@@ -1,5 +1,7 @@
 "use client";
 
+import { carriesEvent } from "./_availability";
+import { messagesPerDayHour, topLocalHour } from "./_hours";
 import { useDataSources } from "./_shared";
 
 export default function useUsageStatsData(forceLifetime?: boolean) {
@@ -30,23 +32,9 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     return hasError ? null : data[0].join_count;
   }
 
+  /** On the device's clock, as the sending times chart. */
   function getTopHour() {
-    const { data, hasError } = sql<{
-      hour: number;
-      message_count: number;
-    }>`
-      SELECT hour,
-        SUM(occurence_count) AS message_count
-      FROM 
-          activity
-      WHERE event_name = 'message_sent' 
-          AND day BETWEEN '${startDate}' AND '${endDate}'
-      GROUP BY hour
-      ORDER BY message_count DESC
-      LIMIT 1
-    `;
-
-    return hasError ? null : data[0].hour;
+    return topLocalHour(messagesPerDayHour(sql, startDate, endDate));
   }
 
   function getSpentMoney() {
@@ -165,14 +153,18 @@ export default function useUsageStatsData(forceLifetime?: boolean) {
     return hasError ? null : data;
   }
 
+  /** Null when the export can't tell, see `carriesEvent`. */
   function countEvent(eventName: string) {
-    const { data, hasError } = sql<{ event_count: number }>`
+    if (!carriesEvent(sql, eventName)) return null;
+
+    const { data, hasError } = sql<{ event_count: number | null }>`
       SELECT SUM(occurence_count) as event_count
       FROM activity
       WHERE event_name = '${eventName}'
       AND day BETWEEN '${startDate}' AND '${endDate}';
     `;
-    return hasError ? null : data[0].event_count;
+    // The export carries this type, so no rows means it never happened.
+    return hasError ? null : (data[0].event_count ?? 0);
   }
 
   function getTimeSpentInVoiceChannels() {

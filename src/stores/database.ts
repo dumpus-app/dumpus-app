@@ -55,7 +55,14 @@ function readExtremities(db: Database): [string | null, string | null] {
 export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
   db: null,
   setDB: (v) => set((state) => ({ database: { ...state.database, db: v } })),
-  getNextID: (id) => (id ? `${parseInt(id) + 1}` : "0"),
+  // One past the largest id in use, so a new package never takes the id, and
+  // the stored database, of one still there.
+  getNextID: (id) => {
+    const ids = [id, ...get().config.packages.map((pkg) => pkg.id)]
+      .map((v) => (v === null ? NaN : parseInt(v)))
+      .filter((n) => !isNaN(n));
+    return `${ids.length ? Math.max(...ids) + 1 : 0}`;
+  },
   getTimeRangeDates: ({ timeRange, db }) => {
     // Original code accepted [string, string] | undefined and fell back to
     // (Discord epoch, now) when missing. Preserve that exact behaviour, just
@@ -71,15 +78,17 @@ export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
 
     const startDate = new Date(endDate);
 
+    // The days are UTC dates, read as UTC midnights: moving or formatting
+    // them in the device's time zone put every range a day early west of UTC.
     switch (timeRange) {
       case "4weeks":
-        startDate.setDate(startDate.getDate() - 4 * 7);
+        startDate.setUTCDate(startDate.getUTCDate() - 4 * 7);
         break;
       case "6months":
-        startDate.setMonth(startDate.getMonth() - 6);
+        startDate.setUTCMonth(startDate.getUTCMonth() - 6);
         break;
       case "year":
-        startDate.setFullYear(startDate.getFullYear() - 1);
+        startDate.setUTCFullYear(startDate.getUTCFullYear() - 1);
         break;
       case "lifetime":
         startDate.setTime(startDateLimit.getTime());
@@ -87,11 +96,7 @@ export const createDatabaseSlice: CreateSlice<DatabaseSlice> = (set, get) => ({
     }
 
     function formatDate(date: Date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return `${year}-${month}-${day}`;
+      return date.toISOString().slice(0, 10);
     }
 
     return {

@@ -59,4 +59,9 @@ export type PackageData = {
   package_owner_display_name: string;
   package_owner_avatar_url: string;
   package_is_partial: boolean;
+  /**
+   * The activity stream the export had, see `carriesEvent`: missing from the
+   * databases processed before the processor recorded it.
+   */
+  activity_stream?: "analytics" | "reporting" | null;
 };

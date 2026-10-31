@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
-import useSQLInit from "~/hooks/use-sql-init";
+import useSQLInit, { loadErrorCode } from "~/hooks/use-sql-init";
 import { useAppStore } from "~/stores";
 
 type API = ReturnType<typeof usePackageAPI>;
@@ -120,10 +120,10 @@ function useRedirect({
 
   const nextID = getNextID(selectedID);
 
-  useQuery({
+  const { error } = useQuery({
     queryKey: ["package-loading", "redirect", packageID],
-    queryFn: () => {
-      init({
+    queryFn: async () => {
+      await init({
         id: nextID,
         initData: {
           initialData: initialData!,
@@ -131,15 +131,18 @@ function useRedirect({
           UPNKey,
           backendURL: backendURL || DEFAULT_PACKAGE_API_URL,
         },
-      }).then(() => {
-        afterInit();
-        router.replace("/overview");
       });
+      afterInit();
+      router.replace("/overview");
       return null;
     },
     enabled: !!initialData,
     staleTime: Infinity,
+    // A package the device couldn't keep won't fit on a second try either.
+    retry: false,
   });
+
+  return error ? loadErrorCode(error) : null;
 }
 
 export default function useLogic() {
@@ -156,8 +159,10 @@ export default function useLogic() {
   const processValid = !!process.data?.isAccepted;
   const packageID = process.data?.packageId;
 
+  // Keyed by what was submitted, so a second link in the same session is
+  // saved too, and a reload comes back to its loading page.
   useQuery({
-    queryKey: ["package-api", "save-state"],
+    queryKey: ["package-api", "save-state", packageLink, backendURL],
     queryFn: () => {
       setLoadingData({ packageLink: packageLink!, backendURL });
       return null;
@@ -180,7 +185,7 @@ export default function useLogic() {
     enabled: status.data?.processingStep === "PROCESSED",
   });
 
-  useRedirect({
+  const importError = useRedirect({
     packageID: packageID || "",
     initialData: data.data?.data || undefined,
     packageLink: packageLink || "",
@@ -195,6 +200,9 @@ export default function useLogic() {
     process.data?.errorMessageCode ||
     status.data?.errorMessageCode ||
     data.data?.errorMessageCode ||
+    // The download or its decryption failed.
+    (data.status === "error" ? "UNKNOWN_ERROR" : null) ||
+    importError ||
     null;
 
   useEffect(() => {
