@@ -8,7 +8,7 @@ import (
 
 // buildModel fills the tables in the reference's order; rows within a table
 // can come in another order, which only changes their rowids.
-func buildModel(packageID string, own owner, rels []relationship, pf *packageFiles, act *activityAgg, activityFound, skipped bool) *Model {
+func buildModel(packageID string, own owner, rels []relationship, pf *packageFiles, act *activityAgg, stream *string, skipped bool) *Model {
 	m := &Model{}
 
 	friends := make(map[string]relationship, len(rels))
@@ -83,7 +83,7 @@ func buildModel(packageID string, own owner, rels []relationship, pf *packageFil
 	m.Sessions = buildSessions(act.sessions, act.names)
 	m.Activity = append(m.Activity, activityRows(act)...)
 
-	isPartial := !(activityFound && act.usable) || !pf.serversIndexRead || !pf.messagesIndexRead || skipped
+	isPartial := !(stream != nil && act.usable) || !pf.serversIndexRead || !pf.messagesIndexRead || skipped
 	m.Package = PackageData{
 		PackageID:        packageID,
 		PackageVersion:   PackageVersion,
@@ -92,6 +92,7 @@ func buildModel(packageID string, own owner, rels []relationship, pf *packageFil
 		OwnerDisplayName: own.displayName,
 		OwnerAvatarURL:   own.avatarURL,
 		IsPartial:        isPartial,
+		ActivityStream:   stream,
 	}
 	return m
 }

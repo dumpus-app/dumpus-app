@@ -231,8 +231,8 @@ func tables(m *Model) map[string][]string {
 		add("voice_sessions", fmt.Sprintf("%s|%s|%d|%.1f|%.1f", r.ChannelID, ptr(r.GuildID), r.DurationMins, r.StartedDate, r.EndedDate))
 	}
 	p := m.Package
-	add("package_data", fmt.Sprintf("%s|%s|%s|%s|%s|%s|%v", p.PackageID, p.PackageVersion, p.OwnerID, p.OwnerName,
-		ptr(p.OwnerDisplayName), ptr(p.OwnerAvatarURL), p.IsPartial))
+	add("package_data", fmt.Sprintf("%s|%s|%s|%s|%s|%s|%v|%s", p.PackageID, p.PackageVersion, p.OwnerID, p.OwnerName,
+		ptr(p.OwnerDisplayName), ptr(p.OwnerAvatarURL), p.IsPartial, ptr(p.ActivityStream)))
 	for _, rows := range out {
 		slices.Sort(rows)
 	}
@@ -285,7 +285,7 @@ func fullTables() map[string][]string {
 		"sessions":       {"90|1617703200.0|1617708600.0|Windows"},
 		"voice_sessions": {voiceChan + "|" + guildOne + "|44|1617739260.0|1617741900.0"},
 		"package_data": {"pkg-test|0.1.0|" + ownerID + "|owner_user|Owner Name|https://cdn.discordapp.com/avatars/" +
-			ownerID + "/a_ownerhash.gif|false"},
+			ownerID + "/a_ownerhash.gif|false|analytics"},
 	}
 }
 

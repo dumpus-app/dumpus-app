@@ -48,6 +48,7 @@ Each limit sits far above the maxima measured on real exports. Past one, the pro
 - Where the worker fails a package, the processor goes on: it skips and reports an event, message, payment or relationship with a missing, null, mistyped or unparseable field, and a line or channel that isn't valid JSON, and it reads a DM with yourself, a DM message without `Contents` and mixed timestamp formats.
 - An id, name or `os` field the worker stores must be a string or null, or the event is skipped. The worker stores a number or a boolean as text, `7` as `'7'` and `true` as `'1'`, but its pandas grouping turns an integer beside nulls into `'7.0'`, and in `application_command_used` and `add_reaction`, grouped by two fields, stores a field of only integers or only booleans as BLOBs of numpy's bytes. Fields it neither stores nor tests aren't checked.
 - A row SQLite refuses is skipped and counted in `dropped_rows`, and rows come in another order, so rowids differ.
+- `package_data` has one more column, `activity_stream`: the stream read, `analytics` or `reporting`, or NULL when none was. `reporting` never carries some event types, for eg. `message_edited`, so their counts are unknown, not 0.
 
 ## License
 

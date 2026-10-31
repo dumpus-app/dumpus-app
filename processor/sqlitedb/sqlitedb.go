@@ -1,6 +1,6 @@
 // Package sqlitedb writes a `processor.Model` to the SQLite file the Dumpus app
-// opens, with the Python worker's schema: the same DDL text, index names and
-// column storage classes.
+// opens, with the Python worker's schema (the same DDL text, index names and
+// column storage classes) plus `package_data.activity_stream`.
 package sqlitedb
 
 import (
@@ -18,7 +18,8 @@ import (
 	sqlite3 "modernc.org/sqlite/lib"
 )
 
-// The DDL is the worker's text as is, so `sqlite_master` reads the same.
+// The DDL is the worker's text as is, so `sqlite_master` reads the same,
+// except for `package_data.activity_stream`, added at the end.
 var tables = []string{`
         CREATE TABLE activity (
             event_name TEXT NOT NULL,
@@ -93,7 +94,8 @@ var tables = []string{`
             package_owner_name TEXT NOT NULL,
             package_owner_display_name TEXT,
             package_owner_avatar_url TEXT,
-            package_is_partial BOOLEAN NOT NULL DEFAULT 0
+            package_is_partial BOOLEAN NOT NULL DEFAULT 0,
+            activity_stream TEXT
         )
     `}
 
@@ -158,9 +160,9 @@ func inserts(m *processor.Model) []insert {
 		r := m.Sessions[i]
 		return []any{r.DurationMins, r.StartedDate, r.EndedDate, r.DeviceOS}
 	}}, {"package_data", `INSERT INTO package_data
-        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url, package_is_partial)
-        VALUES (?, ?, ?, ?, ?, ?, ?)`, 1, func(int) []any {
-		return []any{pk.PackageID, pk.PackageVersion, pk.OwnerID, pk.OwnerName, pk.OwnerDisplayName, pk.OwnerAvatarURL, partial}
+        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url, package_is_partial, activity_stream)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 1, func(int) []any {
+		return []any{pk.PackageID, pk.PackageVersion, pk.OwnerID, pk.OwnerName, pk.OwnerDisplayName, pk.OwnerAvatarURL, partial, pk.ActivityStream}
 	}}}
 }
 

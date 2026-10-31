@@ -93,6 +93,10 @@ type PackageData struct {
 	OwnerDisplayName *string
 	OwnerAvatarURL   *string
 	IsPartial        bool
+	// ActivityStream is the activity stream read, `analytics` or
+	// `reporting`, nil when none was. `reporting` never carries some event
+	// types, for eg. `message_edited`, so their counts are unknown, not 0.
+	ActivityStream *string
 }
 
 func strPtr(s string) *string { return &s }
