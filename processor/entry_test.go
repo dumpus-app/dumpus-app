@@ -4,6 +4,7 @@ import (
 	"archive/zip"
 	"bytes"
 	"compress/flate"
+	"context"
 	"errors"
 	"hash/crc32"
 	"io"
@@ -39,15 +40,22 @@ func TestEntryReadCalls(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	p := newPkg(zr, defaultLimits, &issues{})
+	p := newPkg(zr, cr, defaultLimits, &issues{})
 	p.budget(zr.File, defaultLimits.inflateBudget(size))
+	// One read for each local header, then one per MiB of compressed data.
+	before := cr.calls.Load()
+	if err := p.locate(context.Background(), 2); err != nil {
+		t.Fatal(err)
+	}
+	if got := cr.calls.Load() - before; got != int64(len(zr.File)) {
+		t.Errorf("%d reads to locate %d entries", got, len(zr.File))
+	}
 	for _, f := range zr.File {
 		before := cr.calls.Load()
 		if _, ok, err := p.readWhole(f); err != nil || !ok {
 			t.Fatal(ok, err)
 		}
-		// One read for the local header, then one per MiB of compressed data.
-		want := 1 + (int64(f.CompressedSize64)+maxReadBuf-1)/maxReadBuf
+		want := (int64(f.CompressedSize64) + maxReadBuf - 1) / maxReadBuf
 		if got := cr.calls.Load() - before; got > want {
 			t.Errorf("%s: %d reads for %d compressed bytes, want at most %d", f.Name, got, f.CompressedSize64, want)
 		}
@@ -78,11 +86,17 @@ func TestEntryLargerThanDeclared(t *testing.T) {
 	w.Write(deflated.Bytes())
 	zw.Close()
 
-	zr, err := zip.NewReader(bytes.NewReader(buf.Bytes()), int64(buf.Len()))
+	r := bytes.NewReader(buf.Bytes())
+	zr, err := zip.NewReader(r, int64(buf.Len()))
 	if err != nil {
 		t.Fatal(err)
 	}
-	e, err := newPkg(zr, defaultLimits, &issues{}).open(zr.File[0], true)
+	p := newPkg(zr, r, defaultLimits, &issues{})
+	p.budget(zr.File, defaultLimits.inflateBudget(int64(buf.Len())))
+	if err := p.locate(context.Background(), 1); err != nil {
+		t.Fatal(err)
+	}
+	e, err := p.open(zr.File[0], true)
 	if err != nil {
 		t.Fatal(err)
 	}

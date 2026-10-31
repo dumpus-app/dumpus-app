@@ -89,7 +89,7 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 	var iss issues
 	defer func() { rep.Issues = iss.list() }()
 	lim := opts.limits.orDefaults()
-	p := newPkg(zr, lim, &iss)
+	p := newPkg(zr, r, lim, &iss)
 	rep.Counts.InsecurePaths = insecurePaths(zr)
 
 	l := p.layout()
@@ -101,6 +101,9 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 		return nil, ErrMissingUserData
 	}
 	p.budget(p.readOrder(l), lim.inflateBudget(size))
+	if err := p.locate(ctx, workers); err != nil {
+		return nil, err
+	}
 	rep.Inputs["user"] = maskPath(l.user)
 	userData, ok, err := p.readWhole(p.get(l.user))
 	if err != nil {
@@ -152,9 +155,6 @@ func processPackage(ctx context.Context, r io.ReaderAt, size int64, opts Options
 		return err
 	})
 	if err := g.Wait(); err != nil {
-		return nil, err
-	}
-	if err := p.checkShared(); err != nil {
 		return nil, err
 	}
 	if activity != nil {

@@ -5,16 +5,17 @@ import (
 	"bufio"
 	"bytes"
 	"cmp"
+	"context"
 	"errors"
 	"fmt"
 	"hash"
 	"hash/crc32"
 	"io"
 	"slices"
-	"sync"
 	"sync/atomic"
 
 	"github.com/klauspost/compress/flate"
+	"golang.org/x/sync/errgroup"
 )
 
 const maxReadBuf = 1 << 20
@@ -23,20 +24,19 @@ var errSharedData = errors.New("zip: entries share compressed data")
 
 type pkg struct {
 	*entries
+	r       io.ReaderAt
 	lim     limits
 	iss     *issues
-	allowed map[*zip.File]bool // the entries within the inflate budget
-	skipped atomic.Bool        // an entry, folder or line was left out: the package is partial
-
-	mu      sync.Mutex
-	opened  []dataRange
-	claimed map[*zip.File]bool
+	allowed map[*zip.File]bool  // the entries within the inflate budget
+	reads   []*zip.File         // the same, in the order the budget allowed them
+	offsets map[*zip.File]int64 // where the data of each allowed entry starts, see locate
+	skipped atomic.Bool         // an entry, folder or line was left out: the package is partial
 }
 
 type dataRange struct{ start, end int64 }
 
-func newPkg(zr *zip.Reader, lim limits, iss *issues) *pkg {
-	return &pkg{entries: indexEntries(zr), lim: lim, iss: iss, allowed: map[*zip.File]bool{}, claimed: map[*zip.File]bool{}}
+func newPkg(zr *zip.Reader, r io.ReaderAt, lim limits, iss *issues) *pkg {
+	return &pkg{entries: indexEntries(zr), r: r, lim: lim, iss: iss, allowed: map[*zip.File]bool{}}
 }
 
 // budget allows each entry, in a fixed order, whose declared size still fits in
@@ -54,7 +54,54 @@ func (p *pkg) budget(order []*zip.File, total uint64) {
 		}
 		used += f.UncompressedSize64
 		p.allowed[f] = true
+		p.reads = append(p.reads, f)
 	}
+}
+
+// locate reads the local header of each allowed entry, on up to workers
+// goroutines, to find where its data lies, and fails a package two of whose
+// allowed entries share compressed data, as Python's `zipfile` refuses
+// overlapped entries. It runs before any data is read: entries pointing at one
+// stream would each read it again, as much as they declare.
+func (p *pkg) locate(ctx context.Context, workers int) error {
+	starts := make([]int64, len(p.reads))
+	g, ctx := errgroup.WithContext(ctx)
+	g.SetLimit(workers)
+	for i, f := range p.reads {
+		g.Go(func() error {
+			if err := ctx.Err(); err != nil {
+				return err
+			}
+			off, err := f.DataOffset()
+			if err != nil {
+				return fmt.Errorf("%s: %w", maskPath(f.Name), err)
+			}
+			starts[i] = off
+			return nil
+		})
+	}
+	if err := g.Wait(); err != nil {
+		return err
+	}
+	p.offsets = make(map[*zip.File]int64, len(p.reads))
+	ranges := make([]dataRange, 0, len(p.reads))
+	for i, f := range p.reads {
+		p.offsets[f] = starts[i]
+		if end := starts[i] + int64(f.CompressedSize64); end > starts[i] {
+			ranges = append(ranges, dataRange{start: starts[i], end: end})
+		}
+	}
+	return checkRanges(ranges)
+}
+
+func checkRanges(ranges []dataRange) error {
+	slices.SortFunc(ranges, func(a, b dataRange) int { return cmp.Compare(a.start, b.start) })
+	for i := 1; i < len(ranges); i++ {
+		if ranges[i].start < ranges[i-1].end {
+			return errSharedData
+		}
+	}
+	return nil
 }
 
 // skip reports an entry the processor leaves out, a duplicate or past a limit,
@@ -86,41 +133,13 @@ func (p *pkg) readWhole(f *zip.File) (data []byte, ok bool, err error) {
 	return buf.Bytes(), true, nil
 }
 
-// open inflates an entry and records where its compressed data lies, for
-// checkShared.
+// open inflates an allowed entry from where locate found its data.
 func (p *pkg) open(f *zip.File, checksum bool) (*entryReader, error) {
-	raw, err := f.OpenRaw()
-	if err != nil {
-		return nil, err
+	start, ok := p.offsets[f]
+	if !ok {
+		return nil, fmt.Errorf("%s: read before it was located", maskPath(f.Name))
 	}
-	var start int64
-	if sr, ok := raw.(*io.SectionReader); ok {
-		_, start, _ = sr.Outer()
-	} else if start, err = f.DataOffset(); err != nil {
-		return nil, err
-	}
-	if end := start + int64(f.CompressedSize64); end > start {
-		p.mu.Lock()
-		if !p.claimed[f] {
-			p.claimed[f] = true
-			p.opened = append(p.opened, dataRange{start: start, end: end})
-		}
-		p.mu.Unlock()
-	}
-	return newEntryReader(f, raw, checksum)
-}
-
-// checkShared fails a package two of whose entries read share compressed data,
-// as Python's `zipfile` refuses overlapped entries. The inflate budget already
-// bounds what such entries cost, so the check runs once, after the reads.
-func (p *pkg) checkShared() error {
-	slices.SortFunc(p.opened, func(a, b dataRange) int { return cmp.Compare(a.start, b.start) })
-	for i := 1; i < len(p.opened); i++ {
-		if p.opened[i].start < p.opened[i-1].end {
-			return errSharedData
-		}
-	}
-	return nil
+	return newEntryReader(f, io.NewSectionReader(p.r, start, int64(f.CompressedSize64)), checksum)
 }
 
 // entryReader inflates a zip entry, reading its compressed data through a

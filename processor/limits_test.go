@@ -6,9 +6,11 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
+	"io"
 	"reflect"
 	"slices"
 	"strings"
+	"sync/atomic"
 	"testing"
 )
 
@@ -147,7 +149,7 @@ func shareData(t *testing.T, data []byte, from, to string) []byte {
 // which would let a small zip inflate the same bytes many times.
 func TestSharedData(t *testing.T) {
 	// Two folders with the same messages, so that either entry reads well on
-	// its own and only the second one read trips the check.
+	// its own and only their ranges give them away.
 	const a, b = "400000000000000011", "400000000000000012"
 	same := messages("2021-04-06 12:00:00", "2021-04-06 13:00:00")
 	es := append(fullPackage(english), channelFolder(english, a, guildChannel(a, guildOne), same)...)
@@ -314,17 +316,66 @@ func TestSkippedMessagesArePartial(t *testing.T) {
 	}
 }
 
-func TestCheckShared(t *testing.T) {
-	p := &pkg{}
+func TestCheckRanges(t *testing.T) {
+	var ranges []dataRange
 	for i := 1000; i > 0; i-- {
-		p.opened = append(p.opened, dataRange{start: int64(i * 10), end: int64(i*10 + 10)})
+		ranges = append(ranges, dataRange{start: int64(i * 10), end: int64(i*10 + 10)})
 	}
-	if err := p.checkShared(); err != nil {
+	if err := checkRanges(ranges); err != nil {
 		t.Errorf("disjoint ranges: %v", err)
 	}
-	p.opened = append(p.opened, dataRange{start: 505, end: 506})
-	if err := p.checkShared(); !errors.Is(err, errSharedData) {
+	if err := checkRanges(append(ranges, dataRange{start: 505, end: 506})); !errors.Is(err, errSharedData) {
 		t.Errorf("overlapping ranges: %v", err)
+	}
+}
+
+type byteCounter struct {
+	r            io.ReaderAt
+	bytes, calls atomic.Int64
+}
+
+func (c *byteCounter) ReadAt(p []byte, off int64) (int, error) {
+	n, err := c.r.ReadAt(p, off)
+	c.bytes.Add(int64(n))
+	c.calls.Add(1)
+	return n, err
+}
+
+// TestOverlappingRecordsReadNothing points thousands of central directory
+// records at one local header, each declaring a MiB of compressed data: the
+// package fails before any of it is read, rather than after reading each
+// record's MiB.
+func TestOverlappingRecordsReadNothing(t *testing.T) {
+	es := []entry{{"Account/user.json", userJSON}}
+	for i := range 1000 {
+		es = append(es, entry{fmt.Sprintf("Messages/c%d/channel.json", 400000000000000000+i), guildChannel(general, guildOne)})
+	}
+	r, size := zipOf(t, es)
+	data := make([]byte, size)
+	if _, err := r.ReadAt(data, 0); err != nil {
+		t.Fatal(err)
+	}
+	eocd := bytes.LastIndex(data, []byte("PK\x05\x06"))
+	first := int64(-1)
+	for i := int(binary.LittleEndian.Uint32(data[eocd+16:])); bytes.HasPrefix(data[i:], []byte("PK\x01\x02")); {
+		nameLen := int(binary.LittleEndian.Uint16(data[i+28:]))
+		extraLen := int(binary.LittleEndian.Uint16(data[i+30:]))
+		commentLen := int(binary.LittleEndian.Uint16(data[i+32:]))
+		if strings.HasSuffix(string(data[i+46:i+46+nameLen]), "channel.json") {
+			if first < 0 {
+				first = int64(binary.LittleEndian.Uint32(data[i+42:]))
+			}
+			binary.LittleEndian.PutUint32(data[i+42:], uint32(first))
+			binary.LittleEndian.PutUint32(data[i+20:], 1<<20)
+		}
+		i += 46 + nameLen + extraLen + commentLen
+	}
+	c := &byteCounter{r: bytes.NewReader(data)}
+	if _, err := Process(context.Background(), c, size, Options{PackageID: "pkg-test", Workers: 2}); !errors.Is(err, errSharedData) {
+		t.Fatalf("err = %v, want errSharedData", err)
+	}
+	if c.bytes.Load() > 2*size {
+		t.Errorf("%d bytes read from a %d-byte zip in %d reads", c.bytes.Load(), size, c.calls.Load())
 	}
 }
 
