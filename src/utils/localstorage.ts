@@ -1,11 +1,11 @@
 "use client";
 
-import { Uint8ArrayToString, stringToUint8Array } from "./convert";
+import { stringToUint8Array } from "./convert";
 
-export function storeUint8Array(id: string, value: Uint8Array) {
-  localStorage.setItem(id, Uint8ArrayToString(value));
-}
-
+/**
+ * Reads a package's database the way the app stored it in `localStorage`
+ * before IndexedDB, for the move in `./db-storage.ts`.
+ */
 export function retrieveUint8Array(id: string) {
   const data = localStorage.getItem(id);
   return data ? stringToUint8Array(data) : null;
