@@ -1,21 +1,14 @@
-"""Local stand-ins for every HTTP service the API calls.
+"""Local stand-ins for the HTTP services the worker calls.
 
 One server answers for Discord's package links (`click.discord.com`, which
-redirects to a signed storage URL), the internal webhook, diswho, and the
-Discord API, and records everything it receives.
+redirects to a signed storage URL) and the internal webhook, and records what
+it receives.
 """
 import hashlib
-import json
 import socketserver
 import threading
-from dataclasses import dataclass
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlsplit
-
-EXPIRED_BODY = (
-    b"<?xml version='1.0' encoding='UTF-8'?><Error><Code>ExpiredToken</Code>"
-    b'<Message>The provided token has expired.</Message></Error>'
-)
 
 
 def make_upn(name):
@@ -26,18 +19,6 @@ def make_upn(name):
 
 def package_id(upn):
     return hashlib.md5(upn.encode()).hexdigest()
-
-
-@dataclass
-class Received:
-    method: str
-    path: str
-    query: dict
-    headers: dict
-    body: bytes
-
-    def json(self):
-        return json.loads(self.body)
 
 
 class Upstream:
@@ -61,33 +42,18 @@ class Upstream:
         self.files = {}
         self.click_targets = {}
         self.received = []
-        self.users = {}
-        self.guilds = {}
 
-    def discord_link(self, name, body, *, status=200, content_type='application/octet-stream'):
+    def discord_link(self, name, body):
         """Serve `body` behind a Discord-style link. Returns `(link, upn)`."""
         upn = make_upn(name)
         path = f'/storage/{name}.zip'
-        self.files[path] = (status, content_type, body)
+        self.files[path] = body
         self.click_targets[upn] = path
         return f'https://click.discord.com/ls/click?upn={upn}', upn
 
-    def whitelisted_link(self, name, body, *, status=200, content_type='application/octet-stream'):
-        path = f'/whitelisted/{name}.zip'
-        self.files[path] = (status, content_type, body)
-        return self.base + path
-
-    def expire(self, name):
-        """What storage answers once a link's signature has expired."""
-        self.files[f'/storage/{name}.zip'] = (400, 'application/xml; charset=UTF-8', EXPIRED_BODY)
-
-    @property
-    def webhooks(self):
-        return [r.json() for r in self.received if r.method == 'POST' and r.path == '/webhook']
-
-    def calls(self, prefix=''):
-        """`(method, path)` of what was received under `prefix`, webhooks left out."""
-        return [(r.method, r.path) for r in self.received if r.path.startswith(prefix) and r.path != '/webhook']
+    def calls(self):
+        """`(method, path)` of what was received, webhooks left out."""
+        return [(method, path) for method, path in self.received if path != '/webhook']
 
     def _record(self, received):
         with self._lock:
@@ -100,18 +66,9 @@ class Upstream:
                 return 404, {'Content-Type': 'text/html'}, b'<html>Not Found</html>'
             return 302, {'Location': f'{self.base}{target}?X-Goog-Signature=synthetic'}, b''
         if path in self.files:
-            status, content_type, body = self.files[path]
-            return status, {'Content-Type': content_type}, body
+            return 200, {'Content-Type': 'application/octet-stream'}, self.files[path]
         if path == '/webhook' and method == 'POST':
             return 204, {}, b''
-        for prefix, table in (
-            ('/diswho/user/', self.users),
-            ('/discord/api/v8/users//', self.users),
-            ('/discord/api/v10/guilds/', self.guilds),
-        ):
-            if path.startswith(prefix):
-                status, payload = table.get(path[len(prefix):], (404, {'message': 'Unknown', 'code': 10013}))
-                return status, {'Content-Type': 'application/json'}, json.dumps(payload).encode()
         return 404, {'Content-Type': 'text/html'}, b'<html>Not Found</html>'
 
 
@@ -140,12 +97,13 @@ class _Handler(BaseHTTPRequestHandler):
 
     def _serve(self, send_body=True):
         upstream = self.server.upstream
+        # Read the body even unused, or closing the connection could reset it.
         length = int(self.headers.get('Content-Length') or 0)
-        body = self.rfile.read(length) if length else b''
+        if length:
+            self.rfile.read(length)
         url = urlsplit(self.path)
-        query = parse_qs(url.query)
-        upstream._record(Received(self.command, url.path, query, dict(self.headers), body))
-        status, headers, payload = upstream.respond(self.command, url.path, query)
+        upstream._record((self.command, url.path))
+        status, headers, payload = upstream.respond(self.command, url.path, parse_qs(url.query))
         self.send_response(status)
         for name, value in headers.items():
             self.send_header(name, value)
@@ -157,17 +115,16 @@ class _Handler(BaseHTTPRequestHandler):
 
 
 class RoutedRequests:
-    """Stands in for `requests` inside `tasks` and `util`.
+    """Stands in for `requests` inside `tasks`.
 
-    Same calls, same library underneath, but the Discord hosts those modules
-    hard-code are answered by the local upstream.
+    Same calls, same library underneath, but links to `click.discord.com` are
+    answered by the local upstream.
     """
 
     def __init__(self, requests, base):
         self._requests = requests
         self._routes = (
             ('https://click.discord.com/', f'{base}/click/'),
-            ('https://discord.com/', f'{base}/discord/'),
         )
 
     def __getattr__(self, name):
@@ -184,6 +141,3 @@ class RoutedRequests:
 
     def head(self, url, *args, **kwargs):
         return self._requests.head(self._route(url), *args, **kwargs)
-
-    def post(self, url, *args, **kwargs):
-        return self._requests.post(self._route(url), *args, **kwargs)

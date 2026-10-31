@@ -113,23 +113,6 @@ class Postgres:
                 steps.append(row['step'])
         return steps
 
-    def insert_status(self, package_id, **columns):
-        values = {
-            'package_id': package_id,
-            'step': 'LOCKED',
-            'is_upgraded': False,
-            'is_errored': False,
-            'is_cancelled': False,
-            **columns,
-        }
-        names = ', '.join(values)
-        placeholders = ', '.join(['%s'] * len(values))
-        return self.rows(
-            f'INSERT INTO package_process_status ({names}, created_at, updated_at) '
-            f'VALUES ({placeholders}, clock_timestamp(), clock_timestamp()) RETURNING id',
-            list(values.values()),
-        )[0]['id']
-
 
 def start(api_dir):
     url = os.environ.get('DUMPUS_TEST_POSTGRES_URL')
