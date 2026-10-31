@@ -1,6 +1,10 @@
 name: Build web
 
-on: [pull_request]
+on:
+  pull_request:
+    paths-ignore:
+      - "api/**"
+      - "processor/**"
 
 jobs:
   build:

@@ -1,0 +1,1081 @@
+from dotenv import load_dotenv
+load_dotenv()
+
+import traceback
+
+import pandas as pd
+import re
+import time
+
+from datetime import datetime
+from itertools import groupby
+
+# Read JSON
+import orjson
+
+from crypto import encrypt_sqlite_data
+
+# Unzip
+from zipfile import ZipFile
+from io import TextIOWrapper
+
+# Export database
+import gzip
+import tempfile
+
+from sqlite import create_new_empty_database, create_indexes, export_sqlite_to_bin
+
+import os
+from collections import defaultdict
+import requests
+
+from db import update_progress, update_step, fetch_package_status, SavedPackageData, Session, PackageProcessStatus
+from util import (
+    # discord utilities
+    extract_key_from_discord_link,
+    generate_avatar_url_from_user_id_avatar_hash,
+    check_whitelisted_link,
+    # file path
+    get_package_zip_path,
+    # time utilities
+    count_dates_hours,
+    count_dates_day,
+    get_ts_regular_string_parser,
+    get_ts_string_parser
+)
+
+from wh import send_internal_notification
+
+# TODO: restore real sentiment scoring. Stubbed to a constant so we can
+# drop NLTK + the vader_lexicon download from the Lambda image while we
+# decide whether sentiment is worth the ~50MB of data and the cold-start
+# cost. Re-enable by reinstating SentimentIntensityAnalyzer here and the
+# nltk install step in Dockerfile.lambda.
+def count_sentiments(contents):
+    for _ in contents:
+        pass
+    return 0.5
+
+def find_user_root(zip_namelist):
+    """
+    Find the root path for user.json in the package.
+    This handles cases where the folder might be translated (e.g., 'Compte/user.json' in French).
+    """
+    # Look for any direct user.json file in the root of a folder
+    user_path = next((name for name in zip_namelist if re.match(r'^[^/]+/user\.json$', name)), None)
+    if user_path:
+        return user_path.split('/')[0]
+    return None
+
+def find_messages_root(zip_namelist):
+    """
+    Find the root path for Messages folder in the package.
+    This handles cases where the folder might be translated.
+    """
+    # Find any channel.json inside a numbered folder
+    sample = next((name for name in zip_namelist if re.search(r'/c?[0-9]{16,32}/channel\.json$', name)), None)
+    if sample:
+        # Remove the channel ID and file name to get the root
+        segments = sample.split('/')
+        return '/'.join(segments[:-2])
+    return None
+
+def find_servers_root(zip_namelist):
+    """
+    Find the root path for Servers folder in the package.
+    This handles cases where the folder might be translated.
+    """
+    # Find guild.json or index.json that contains server data
+    sample = next((name for name in zip_namelist if re.search(r'/[0-9]{16,32}/guild\.json$', name)), None)
+    if sample:
+        # Remove the guild ID and file name to get the root
+        segments = sample.split('/')
+        return '/'.join(segments[:-2])
+    
+    # Try to find the index.json file in any folder that might be for servers
+    server_index = next((name for name in zip_namelist if name.endswith('/index.json') 
+                       and not (name.startswith('Messages/') or name.startswith('messages/'))), None)
+    if server_index:
+        return '/'.join(server_index.split('/')[:-1])
+    
+    return None
+
+def find_analytics_file(zip_namelist):
+    """
+    Find the analytics file in the package.
+    This handles cases where the folder might be translated.
+    """
+    # Look for any JSON file in a folder that could be analytics
+    return next((name for name in zip_namelist if re.search(r'/analytics.*\.json$', name)), None)
+
+def download_file(package_status_id, package_id, link, session):
+    # check if file exists in tmp
+    path = get_package_zip_path(package_id)
+    try:
+        with open(path, 'rb') as f:
+            return path
+    except FileNotFoundError:
+        pass
+
+    if not check_whitelisted_link(link):
+        print('checking content type')
+        r = requests.head(link, allow_redirects=True)
+        print(r.status_code)
+        print(r.headers)
+        # Discord download URLs are signed and short-lived: click.discord.com
+        # 302s to a Google Cloud Storage signed URL, which returns 4xx (most
+        # commonly 400) once the signature TTL is up. Surface that as
+        # EXPIRED_LINK so the user sees a useful message instead of the
+        # generic UNKNOWN_ERROR fallback.
+        if 400 <= r.status_code < 500:
+            print(f'Link is expired (upstream returned {r.status_code}).')
+            raise Exception('EXPIRED_LINK')
+        if r.status_code != 200 or 'content-type' not in r.headers or 'application/octet-stream' not in r.headers['content-type']:
+            print('The link does not point to a valid file.')
+            raise Exception('INVALID_LINK')
+
+    print('downloading')
+    update_step(package_status_id, package_id, 'DOWNLOADING', session)
+    r = requests.get(link, allow_redirects=True, stream=True)
+    with open(path, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=10*1024):
+            f.write(chunk)
+
+    return path
+
+def remove_file(package_id):
+    path = get_package_zip_path(package_id)
+    if os.path.exists(path):
+        os.remove(path)
+        print(f'Removed file {path}')
+    else:
+        print(f'File {path} does not exist')
+
+def read_analytics_file(package_status_id, package_id, link, session):
+    update_step(package_status_id, package_id, 'ANALYZING', session)
+    update_progress(package_status_id, package_id, 0, session)
+
+    start = time.time()
+
+    is_partial = True
+
+    analytics_line_count = 0
+
+    session_logs = []
+
+    user_data = {}
+
+    guilds = []
+    users = []
+    channels = []
+
+    dms_channels_data = []
+    guild_channels_data = []
+    
+    # Voice Channels Logs, used to compute duration later
+    voice_channel_logs = []
+
+    payments = []
+
+    guild_joined = []
+    add_reaction = []
+    app_opened = []
+    email_opened = []
+    login_successful = []
+    app_crashed = []
+    user_avatar_updated = []
+    oauth2_authorize_accepted = []
+    remote_auth_login = []
+    notification_clicked = []
+    captcha_served = []
+    voice_message_recorded = []
+    message_reported = []
+    message_edited = []
+    premium_upsell_viewed = []
+
+    # dev
+    bot_token_compromised = []
+    dev_portal_page_viewed = [] # filter with docs/ only
+    application_created = []
+
+    application_command_used = []
+
+    path = get_package_zip_path(package_id)
+
+    with ZipFile(path) as zip:
+        
+        '''
+        Read base user data.
+        All this data will be useful to parse more complex things later.
+        '''
+
+        user_root = find_user_root(zip.namelist())
+        if user_root:
+            user_path = f'{user_root}/user.json'
+        elif 'Account/user.json' in zip.namelist():
+            user_path = 'Account/user.json'
+        elif 'account/user.json' in zip.namelist():
+            user_path = 'account/user.json'
+        else:
+            # Discord exports drop user.json (and the entire Account folder)
+            # entirely when the user un-ticks the "User data" option in the
+            # request form. Without it the package has no owner identity to
+            # anchor the analysis on, so there's nothing useful to compute.
+            # Surface this as a distinct code so the UI can prompt them to
+            # re-export with that option enabled instead of bouncing them
+            # with the generic UNKNOWN_ERROR.
+            raise Exception('MISSING_USER_DATA')
+        user_content = zip.open(user_path)
+        user_json = orjson.loads(user_content.read())
+        user_data = {
+            'id': user_json['id'],
+            'username': user_json['username'],
+            'discriminator': user_json['discriminator'],
+            'email': user_json['email'],
+            'avatar_url': generate_avatar_url_from_user_id_avatar_hash(user_json['id'], user_json['avatar_hash']),
+            'display_name': 'display_name' in user_json and user_json['display_name'] or None,
+        }
+        for relation_ship in user_json['relationships']:
+            users.append({
+                'id': relation_ship['id'],
+                'username': relation_ship['user']['username'], # here username is not User#0000, but the actual username. No need to check for new usernames type.
+                'discriminator': relation_ship['user']['discriminator'],
+                'avatar_url': generate_avatar_url_from_user_id_avatar_hash(relation_ship['id'], relation_ship['user']['avatar']),
+                'display_name': 'display_name' in relation_ship and relation_ship['display_name'] or None,
+            })
+        # Payments live at <user_root>/user_data_exports/discord_billing/payments.json
+        # in current Discord exports. Skip silently if the file isn't there
+        # (account never had any payment activity).
+        payment_records = []
+        user_root = user_path.rsplit('/', 1)[0]
+        payments_path = f'{user_root}/user_data_exports/discord_billing/payments.json'
+        if payments_path in zip.namelist():
+            with zip.open(payments_path) as f:
+                payment_records = orjson.loads(f.read()).get('records', [])
+
+        # Only count successful payments. Discord's Payment.status enum:
+        # 1 = SUCCESSFUL, 2 = FAILED, 3 = REFUNDED, 4 = REFUND_PENDING,
+        # 5 = PARTIALLY_REFUNDED, 6 = PENDING. Without this filter, failed
+        # and refunded charges inflate the "spent on Nitro" total.
+        #
+        # Also skip purchases settled in Discord Orbs (currency ==
+        # "discord_orb"). Orbs are a virtual currency Discord hands out via
+        # Quests / events — users do not pay real money to acquire them, and
+        # the `amount` is denominated in orbs, not cents. Summing them with
+        # fiat payments produced absurd totals (e.g. a user with €0 of real
+        # spend but ~30k orbs of cosmetic purchases got billed as "$297
+        # spent" because 29 720 orbs were treated as 29 720 cents).
+        for payment in payment_records:
+            if payment.get('status') != 1:
+                continue
+            if payment.get('currency') == 'discord_orb':
+                continue
+            payments.append({
+                'id': payment['id'],
+                'amount': payment['amount'],
+                'currency': payment['currency'],
+                'timestamp': get_ts_regular_string_parser(payment['created_at']).timestamp(),
+                'description': payment['description']
+            })
+
+        print(f'User data: {time.time() - start}')
+
+        '''
+        Read analytics file.
+        This file is the most important one, it contains all the events that happened on Discord.
+        We read it line by line (each line is a JSON object).
+        '''
+
+        analytics_file_name = find_analytics_file(zip.namelist())
+
+        if analytics_file_name:
+
+            compute_time_per_line = []
+            for line in TextIOWrapper(zip.open(analytics_file_name)):
+
+                compute_time_per_line_start = time.time()
+
+                analytics_line_json = orjson.loads(line)
+                # count
+                analytics_line_count += 1
+
+                if not 'event_type' in analytics_line_json:
+                    continue
+
+                try:
+
+                    event_type = analytics_line_json['event_type']
+
+                    # voice channel logs
+                    if event_type == 'join_voice_channel' or event_type == 'leave_voice_channel':
+                        if 'channel_id' in analytics_line_json:
+                            voice_channel_logs.append({
+                                'timestamp': get_ts_string_parser(
+                                    analytics_line_json['client_track_timestamp'] if analytics_line_json['client_track_timestamp'] != 'null' else analytics_line_json['timestamp']
+                                ).timestamp(),
+                                'event_type': event_type,
+                                'channel_id': analytics_line_json['channel_id'],
+                                'guild_id': analytics_line_json['guild_id'] if 'guild_id' in analytics_line_json else None
+                            })
+
+                    if event_type == 'session_start' or event_type == 'session_end':
+                        if 'os' in analytics_line_json:
+                            session_logs.append({
+                                'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                                'event_type': 'session_start' if event_type == 'session_start' else 'session_end',
+                                'os': analytics_line_json['os']
+                            })
+                    
+                    if event_type == 'guild_joined':
+                        guild_joined.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'guild_id': analytics_line_json['guild_id']
+                        })
+
+                    if event_type == 'bot_token_compromised':
+                        bot_token_compromised.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                    if event_type == 'dev_portal_page_viewed':
+                        if analytics_line_json['page_name'].startswith('/docs/'):
+                            dev_portal_page_viewed.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                    if event_type == 'application_created':
+                        application_created.append(get_ts_string_parser(analytics_line_json['timestamp']).timestamp())
+
+                    if event_type == 'email_opened':
+                        email_opened.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                        })
+
+                    if event_type == 'login_successful':
+                        login_successful.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'user_avatar_updated':
+                        user_avatar_updated.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+                    
+                    if event_type == 'app_crashed' or event_type == 'app_native_crash':
+                        app_crashed.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'oauth2_authorize_accepted':
+                        oauth2_authorize_accepted.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'remote_auth_login':
+                        remote_auth_login.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'notification_clicked':
+                        notification_clicked.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'captcha_served':
+                        captcha_served.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'voice_message_recorded':
+                        voice_message_recorded.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'message_reported':
+                        message_reported.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'message_edited':
+                        message_edited.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'premium_upsell_viewed':
+                        premium_upsell_viewed.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp()
+                        })
+
+                    if event_type == 'application_command_used':
+                        if analytics_line_json['application_id'] == '-1' or 'guild_id' not in analytics_line_json:
+                            continue
+                        application_command_used.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'application_id': analytics_line_json['application_id'],
+                            'guild_id': analytics_line_json['guild_id']
+                        })
+
+                    if event_type == 'add_reaction':
+                        add_reaction.append({
+                            'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                            'user_id': analytics_line_json['user_id'],
+                            'channel_id': analytics_line_json['channel_id'],
+                            'emoji_name': analytics_line_json['emoji_name'],
+                            'is_custom_emoji': 'emoji_id' in analytics_line_json
+                        })
+
+                    if event_type == 'app_opened':
+                        if 'os' in analytics_line_json:
+                            app_opened.append({
+                                'timestamp': get_ts_string_parser(analytics_line_json['timestamp']).timestamp(),
+                                'os': analytics_line_json['os']
+                            })
+
+                except:
+                    print('Error while parsing analytics line: ')
+                    print(analytics_line_json)
+                    raise
+
+                compute_time_per_line.append(time.time() - compute_time_per_line_start)
+
+            # When the user un-ticks "Activity history" in Discord's export
+            # request form, Discord still ships an analytics file path but
+            # the file is empty. Don't error — keep is_partial=True (the
+            # default) and let the rest of the worker produce what it can:
+            # owner profile, servers, DMs, payments, per-channel message
+            # totals from CSVs are all still useful. The frontend reads
+            # package_is_partial from the SQLite to know which screens to
+            # render as N/A. Asking the user to re-export would mean a
+            # ~30-day round-trip, so degrading gracefully is the kinder UX.
+            # Guard on compute_time_per_line, NOT analytics_line_count: the
+            # latter is bumped at the top of the loop, before the
+            # `if not 'event_type' in analytics_line_json: continue` skip.
+            # A file whose lines all lack event_type (Discord ships these
+            # for some kinds of partial exports) would have line count > 0
+            # but produce no usable events, which is the actual condition
+            # for "we have nothing to average and nothing to chart".
+            if compute_time_per_line:
+                is_partial = False
+                print(f'Average compute time per line: {sum(compute_time_per_line) / len(compute_time_per_line)}')
+            else:
+                print(f'Analytics file produced no usable events ({analytics_line_count} raw lines) — keeping is_partial=True; activity-driven stats will be N/A on the client.')
+
+        print(f'Analytics data: {time.time() - start}')
+        print(f'Session logs: {len(session_logs)}')
+
+        '''
+        Read Guild Data.
+        This will be used later to get the guild name from the guild_id.
+        '''
+
+        namelist = zip.namelist()
+        servers_root = find_servers_root(namelist)
+        # Resolve server_path defensively: only assign a path that actually
+        # exists in the zip. Don't fall through to the canonical literal
+        # 'Servers/index.json' and let zip.open KeyError — that's the
+        # UNKNOWN_ERROR users hit when they un-tick "Servers" in Discord's
+        # data-request form.
+        if servers_root:
+            server_path = f'{servers_root}/index.json'
+        elif 'Servers/index.json' in namelist:
+            server_path = 'Servers/index.json'
+        elif 'servers/index.json' in namelist:
+            server_path = 'servers/index.json'
+        else:
+            server_path = None
+
+        if server_path:
+            server_content = zip.open(server_path)
+            server_json = orjson.loads(server_content.read())
+            for guild_id in server_json:
+                guilds.append({
+                    'id': guild_id,
+                    'name': server_json[guild_id]
+                })
+        else:
+            # Server data missing — DMs, friends, payments, profile still
+            # process. Mark partial so the frontend can render server-scoped
+            # stats as N/A (issue dumpus-app/dumpus-app#232 covers the banner).
+            print('No Servers/index.json found — skipping server data; package is partial.')
+            is_partial = True
+
+        '''
+        Read Channels Data.
+        This will be used later to get the channel name from the channel_id (or to check whether it is a DM or a Guild Channel).
+        '''
+
+        messages_root = find_messages_root(namelist)
+        # Same defensive resolution as servers above.
+        if messages_root:
+            message_index_path = f'{messages_root}/index.json'
+        elif 'Messages/index.json' in namelist:
+            message_index_path = 'Messages/index.json'
+        elif 'messages/index.json' in namelist:
+            message_index_path = 'messages/index.json'
+        else:
+            message_index_path = None
+
+        if message_index_path:
+            message_index_content = zip.open(message_index_path)
+            message_index_json = orjson.loads(message_index_content.read())
+        else:
+            print('No Messages/index.json found — skipping channel data; package is partial.')
+            is_partial = True
+            message_index_json = {}
+
+        for channel_id in message_index_json:
+            full_name = message_index_json[channel_id]
+            if full_name is None:
+                continue
+            is_dm = full_name.startswith('Direct Message with')
+            name = full_name if not is_dm else full_name[20:]
+            is_new_username = '#0000' in name
+            if is_new_username:
+                name = name[:-5]
+            channels.append({
+                'id': channel_id,
+                'name': name,
+                'is_dm': is_dm
+            })
+
+        print(f'Guilds and Channels data: {time.time() - start}')
+
+        '''
+        Read messages.
+        '''
+
+        namelist = zip.namelist()
+
+        read_channel_times = []
+        read_csv_times = []
+        read_json_times = []
+        compute_times = []
+        compute_1_times = []
+        compute_2_times = []
+        
+        # If we have a messages root path, use it for more precise filtering
+        if messages_root:
+            channel_json_files = [file_name for file_name in namelist if file_name.startswith(f'{messages_root}/') and file_name.endswith('channel.json')]
+        else:
+            # Fallback to checking any potential messages folders
+            channel_json_files = [file_name for file_name in namelist if (file_name.startswith('Messages/') or file_name.startswith('messages/')) and file_name.endswith('channel.json')]
+        
+        print(f'Found {len(channel_json_files)} channel files')
+        for channel_json_file in channel_json_files:
+            read_time_start = time.time()
+            channel_content = zip.open(channel_json_file)
+            read_time_diff = time.time() - read_time_start
+            read_channel_times.append(read_time_diff)
+            read_time_start = time.time()
+            channel_json = orjson.loads(channel_content.read())
+            read_time_diff = time.time() - read_time_start
+            read_json_times.append(read_time_diff)
+            
+            # Extract channel ID with a more flexible regex pattern that handles any path structure
+            channel_id_match = re.search(r'/c?([0-9]{16,32})/', channel_json_file)
+            if not channel_id_match:
+                continue
+                
+            channel_id = channel_id_match.group(1)
+            
+            # Determine if 'c' prefix is used before channel IDs
+            channel_path_parts = channel_json_file.split('/')
+            channel_dir = channel_path_parts[-2]  # Get the directory containing channel.json
+            is_new_package = channel_dir.startswith('c')
+            
+            # Get the path up to the numbered directory
+            base_path = '/'.join(channel_path_parts[:-2])
+            
+            # Construct message file path based on the channel file path structure
+            ch_msgs_file_name = f'{base_path}/{"c" if is_new_package else ""}{channel_id}/messages.json'
+            if ch_msgs_file_name not in namelist:
+                continue
+                
+            read_time_start = time.time()
+            message_content = zip.open(ch_msgs_file_name)
+            read_time_diff = time.time() - read_time_start
+            read_channel_times.append(read_time_diff)
+            read_time_start = time.time()
+            messages = orjson.loads(message_content.read())
+            read_time_diff = time.time() - read_time_start
+            read_csv_times.append(read_time_diff)
+            #print(f'Channel {channel_id} has {len(messages)} messages')
+            compute_time_start = time.time()
+            compute_2_time_start = time.time()
+            if 'recipients' in channel_json and len(channel_json['recipients']) == 2:
+                dm_user_id = [user for user in channel_json['recipients'] if user != user_data['id']][0]
+                dms_channels_data.append({
+                    'channel_id': channel_id,
+                    'dm_user_id': dm_user_id,
+                    # TODO : get username from user_id
+                    'message_timestamps': count_dates_hours(map(lambda message: message['Timestamp'], messages)),
+                    'sentiment_score': count_sentiments(map(lambda message: message['Contents'], messages)),
+                    'total_message_count': len(messages),
+                    # make sure content exists
+                    'first_10_messages': list(filter(lambda message: 'Contents' in message, messages))[:10]
+                })
+
+            elif 'guild' in channel_json:
+                guild_channels_data.append({
+                    'guild_id': channel_json['guild']['id'],
+                    'guild_name': channel_json['guild']['name'],
+                    'channel_id': channel_id,
+                    'message_timestamps': count_dates_hours(map(lambda message: message['Timestamp'], messages)),
+                    'total_message_count': len(messages),
+                    'first_10_messages': list(filter(lambda message: 'Contents' in message, messages))[:10]
+                })
+            print(f'Channel messages data: {time.time() - start}')
+            compute_2_time_diff = time.time() - compute_2_time_start
+            compute_2_times.append(compute_2_time_diff)
+            compute_time_diff = time.time() - compute_time_start
+            compute_times.append(compute_time_diff)
+
+        print(f'Channel messages data: {time.time() - start}')
+        print(f'Average channel read time: {sum(read_channel_times) / (len(read_channel_times) or 1)}')
+        print(f'Average CSV read time: {sum(read_csv_times) / (len(read_csv_times) or 1)}')
+        print(f'Average JSON read time: {sum(read_json_times) / (len(read_json_times) or 1)}')
+        print(f'Average compute time: {sum(compute_times) / (len(compute_times) or 1)}')
+        print(f'Average compute 1 time: {sum(compute_1_times) / (len(compute_1_times) or 1)}')
+        print(f'Average compute 2 time: {sum(compute_2_times) / (len(compute_2_times) or 1)}')
+
+    '''
+    Process voice channel logs to get a list of "events"
+
+    The original implementation was O(n*m + n*k) per channel: a linear scan of
+    all leaves to find the next leave per join, plus a linear scan of every
+    accepted event so far to dedupe overlapping joins. For heavy users with
+    thousands of voice events this blew through the 15-min Lambda cap.
+
+    Now: bisect on sorted-leave timestamps for the next-leave lookup, and a
+    parallel sorted list of accepted events keyed by started_date for the
+    overlap check. O((n+m) log m + n log k).
+    '''
+    import bisect
+
+    logs_by_channel = {k: list(v) for k, v in groupby(sorted(voice_channel_logs, key=lambda x: x['channel_id']), key=lambda x: x['channel_id'])}
+    voice_channel_logs_duration = []
+
+    # Parallel structures for O(log k) overlap queries against the global
+    # event list. Voice events on Discord are non-overlapping per user, so
+    # only the rightmost candidate (largest started_date <= t) needs checking.
+    accepted_starts = []
+    accepted_events = []
+
+    def _is_in_existing_event(t):
+        i = bisect.bisect_right(accepted_starts, t)
+        if i == 0:
+            return False
+        e = accepted_events[i - 1]
+        return e['ended_date'] >= t
+
+    for channel_id, logs in logs_by_channel.items():
+        joins = [x for x in logs if x['event_type'] == 'join_voice_channel']
+        leaves = [x for x in logs if x['event_type'] == 'leave_voice_channel']
+
+        sorted_joins = sorted(joins, key=lambda x: x['timestamp'])
+        sorted_leaves = sorted(leaves, key=lambda x: x['timestamp'])
+        leave_timestamps = [l['timestamp'] for l in sorted_leaves]
+
+        for join in sorted_joins:
+            j_ts = join['timestamp']
+
+            idx = bisect.bisect_left(leave_timestamps, j_ts)
+            if idx >= len(sorted_leaves):
+                continue
+            next_leave = sorted_leaves[idx]
+            duration = next_leave['timestamp'] - j_ts
+
+            if duration > 24 * 60 * 60:
+                continue
+            if _is_in_existing_event(j_ts):
+                continue
+
+            event = {
+                'channel_id': channel_id,
+                'guild_id': join['guild_id'] if 'guild_id' in join else None,
+                'duration_mins': duration // 60,
+                'started_date': j_ts,
+                'ended_date': next_leave['timestamp'],
+            }
+            voice_channel_logs_duration.append(event)
+            ins = bisect.bisect_right(accepted_starts, j_ts)
+            accepted_starts.insert(ins, j_ts)
+            accepted_events.insert(ins, event)
+
+    session_logs_duration = []
+
+    session_logs = sorted(session_logs, key=lambda x: x['timestamp'])
+
+    ongoing_sessions = []
+    session_logs_duration = []
+
+    for event in session_logs:
+        if event['event_type'] == 'session_start':
+            ongoing_sessions.append(event)
+        else: # session_end
+            while ongoing_sessions:
+                start_event = ongoing_sessions.pop(0)
+                
+                duration = event['timestamp'] - start_event['timestamp']
+                if duration > 24 * 60 * 60:
+                    continue
+                if duration < 0:
+                    ongoing_sessions.insert(0, start_event) # Put back the event, it belongs to a future session_end
+                    break
+                
+                # At this point, we have a valid session duration
+                # We need to check if it is included in any existing session duration
+                start_is_included_in_duration = any(
+                    start_event['timestamp'] >= e['started_date'] # this join happened after the start of another event
+                    and start_event['timestamp'] <= e['ended_date'] # this same event ended after this join
+                    for e in session_logs_duration)
+                
+                if not start_is_included_in_duration:
+                    session_logs_duration.append({
+                        'duration_mins': duration // 60,
+                        'started_date': start_event['timestamp'],
+                        'ended_date': event['timestamp'],
+                        'os': start_event['os'],
+                    })
+
+    print(f'Finish processing: {time.time() - start}')
+
+    # todo remove this log
+    print(f'Found: {len(voice_channel_logs_duration)} voice channel logs, {len(session_logs_duration)} session logs')
+
+    # auto-generated SQLite documentation starts here
+
+    (conn, cur) = create_new_empty_database()
+
+    activity_data = []
+    guild_channel_data = []
+    guild_data = []
+    dm_user_data = []
+    payments_data = []
+    voice_session_data = []
+    session_data = []
+
+    for channel in [*dms_channels_data, *guild_channels_data]:
+
+        ch_data = next(filter(lambda x: x['id'] == channel['channel_id'], channels), None)
+        if not ch_data:
+            print(f'Channel not found: {channel["total_message_count"]}')
+            continue
+
+        if 'dm_user_id' in channel:
+            user = next(filter(lambda x: x['id'] == channel['dm_user_id'], users), None)
+            dm_user_data.append((channel['channel_id'], channel['dm_user_id'], ch_data['name'], user['display_name'] if user else None, user['avatar_url'] if user else None, channel['total_message_count'], 0, channel['sentiment_score']))
+        elif 'guild_id' in channel:
+            guild_channel_data.append((channel['channel_id'], channel['guild_id'], ch_data['name'], channel['total_message_count'], 0))
+    
+        for timestamp, count in channel['message_timestamps'].items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('message_sent', day, hour, count, channel['channel_id'], channel['guild_id'] if 'guild_id' in channel else None, None, None, None))
+
+    for guild in guilds:
+        total_message_count = sum(channel['total_message_count'] for channel in guild_channels_data if channel['guild_id'] == guild['id'])
+        guild_data.append((guild['id'], guild['name'], total_message_count))
+
+    for payment in payments:
+        payments_data.append((payment['id'], datetime.fromtimestamp(payment['timestamp']).strftime('%Y-%m-%d'), payment['amount'], payment['currency'], payment['description']))
+
+    for voice_session in voice_channel_logs_duration:
+        voice_session_data.append((voice_session['channel_id'], voice_session['guild_id'], voice_session['duration_mins'], voice_session['started_date'], voice_session['ended_date']))
+
+    for l_session in session_logs_duration:
+        session_data.append((l_session['duration_mins'], l_session['started_date'], l_session['ended_date'], l_session['os']))
+
+    # regroup guild joined per guild, then regroup each guild's entries per hour
+    guild_joined_per_guild_id = defaultdict(list)
+    for guild_joined in guild_joined:
+        guild_joined_per_guild_id[guild_joined['guild_id']].append(guild_joined)
+
+    for guild_id, guild_joined_entries in guild_joined_per_guild_id.items():
+        entries = count_dates_hours(map(lambda ev: ev['timestamp'], guild_joined_entries))
+        for timestamp, count in entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('guild_joined', day, hour, count, None, guild_id, None, None, None))
+
+    if (len(application_command_used) > 0):
+        application_command_used_pdf = pd.DataFrame(application_command_used)
+        application_command_used_pdf_grouped = application_command_used_pdf.groupby(['guild_id', 'application_id'])
+        for (guild_id, application_id), group in application_command_used_pdf_grouped:
+            # check if first element includes a guild_id key
+            entries = count_dates_day(group['timestamp'])
+            for timestamp, count in entries.items():
+                day = timestamp.strftime('%Y-%m-%d')
+                hour = int(timestamp.strftime('%H'))
+                activity_data.append(('application_command_used', day, hour, count, None, guild_id, application_id, None, None))
+
+    if (len(add_reaction) > 0):
+        add_reaction_pdf = pd.DataFrame(add_reaction)
+        add_reaction_pdf_grouped = add_reaction_pdf.groupby(['channel_id', 'emoji_name'])
+        for (channel_id, emoji_name), group in add_reaction_pdf_grouped:
+            # check with first item if is custom
+            is_custom = '1' if group.iloc[0]['is_custom_emoji'] is True else '0'
+            entries = count_dates_day(group['timestamp'])
+            for timestamp, count in entries.items():
+                day = timestamp.strftime('%Y-%m-%d')
+                hour = int(timestamp.strftime('%H'))
+                activity_data.append(('add_reaction', day, hour, count, channel_id, None, None, emoji_name, is_custom))
+
+    if (len(app_opened) > 0):
+        app_opened_pdf = pd.DataFrame(app_opened)
+        app_opened_pdf_grouped = app_opened_pdf.groupby(['os'])
+        for (os,), group in app_opened_pdf_grouped:
+            entries = count_dates_day(group['timestamp'])
+            for timestamp, count in entries.items():
+                day = timestamp.strftime('%Y-%m-%d')
+                hour = int(timestamp.strftime('%H'))
+                activity_data.append(('app_opened', day, hour, count, None, None, None, os, None))
+
+    if (len(email_opened) > 0):
+        email_opened_entries = count_dates_day(map(lambda ev: ev['timestamp'], email_opened))
+        for timestamp, count in email_opened_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('email_opened', day, hour, count, None, None, None, None, None))
+
+    if (len(login_successful) > 0):
+        login_successful_entries = count_dates_day(map(lambda ev: ev['timestamp'], login_successful))
+        for timestamp, count in login_successful_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('login_successful', day, hour, count, None, None, None, None, None))
+
+    if (len(app_crashed) > 0):
+        app_crashed_entries = count_dates_day(map(lambda ev: ev['timestamp'], app_crashed))
+        for timestamp, count in app_crashed_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('app_crashed', day, hour, count, None, None, None, None, None))
+
+    if (len(user_avatar_updated) > 0):
+        user_avatar_updated_entries = count_dates_day(map(lambda ev: ev['timestamp'], user_avatar_updated))
+        for timestamp, count in user_avatar_updated_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('user_avatar_updated', day, hour, count, None, None, None, None, None))
+
+    if (len(bot_token_compromised) > 0):
+        oauth2_authorize_accepted_entries = count_dates_day(map(lambda ev: ev['timestamp'], oauth2_authorize_accepted))
+        for timestamp, count in oauth2_authorize_accepted_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('oauth2_authorize_accepted', day, hour, count, None, None, None, None, None))
+
+    if (len(remote_auth_login) > 0):
+        remote_auth_login_entries = count_dates_day(map(lambda ev: ev['timestamp'], remote_auth_login))
+        for timestamp, count in remote_auth_login_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('remote_auth_login', day, hour, count, None, None, None, None, None))
+
+    if (len(dev_portal_page_viewed) > 0):
+        notification_clicked_entries = count_dates_day(map(lambda ev: ev['timestamp'], notification_clicked))
+        for timestamp, count in notification_clicked_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('notification_clicked', day, hour, count, None, None, None, None, None))
+
+    if (len(captcha_served) > 0):
+        captcha_served_entries = count_dates_day(map(lambda ev: ev['timestamp'], captcha_served))
+        for timestamp, count in captcha_served_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('captcha_served', day, hour, count, None, None, None, None, None))
+
+    if (len(application_created) > 0):
+        voice_message_recorded_entries = count_dates_day(map(lambda ev: ev['timestamp'], voice_message_recorded))
+        for timestamp, count in voice_message_recorded_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('voice_message_recorded', day, hour, count, None, None, None, None, None))
+
+    if (len(message_reported) > 0):
+        message_reported_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_reported))
+        for timestamp, count in message_reported_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('message_reported', day, hour, count, None, None, None, None, None))
+
+    if (len(message_edited) > 0):
+        message_edited_entries = count_dates_day(map(lambda ev: ev['timestamp'], message_edited))
+        for timestamp, count in message_edited_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('message_edited', day, hour, count, None, None, None, None, None))
+
+    if (len(premium_upsell_viewed) > 0):
+        premium_upsell_viewed_entries = count_dates_day(map(lambda ev: ev['timestamp'], premium_upsell_viewed))
+        for timestamp, count in premium_upsell_viewed_entries.items():
+            day = timestamp.strftime('%Y-%m-%d')
+            hour = int(timestamp.strftime('%H'))
+            activity_data.append(('premium_upsell_viewed', day, hour, count, None, None, None, None, None))
+
+    activity_query = '''
+        INSERT INTO activity
+        (event_name, day, hour, occurence_count, associated_channel_id, associated_guild_id, associated_user_id, extra_field_1, extra_field_2)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    '''
+
+    dm_user_query = '''
+        INSERT INTO dm_channels_data
+        (channel_id, dm_user_id, user_name, display_name, user_avatar_url, total_message_count, total_voice_channel_duration, sentiment_score)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+    '''
+
+    guild_channel_query = '''
+        INSERT INTO guild_channels_data
+        (channel_id, guild_id, channel_name, total_message_count, total_voice_channel_duration)
+        VALUES (?, ?, ?, ?, ?);
+    '''
+
+    guild_query = '''
+        INSERT INTO guilds
+        (guild_id, guild_name, total_message_count)
+        VALUES (?, ?, ?);
+    '''
+
+    payment_query = '''
+        INSERT INTO payments
+        (payment_id, payment_date, payment_amount, payment_currency, payment_description)
+        VALUES (?, ?, ?, ?, ?);
+    '''
+
+    voice_session_query = '''
+        INSERT INTO voice_sessions
+        (channel_id, guild_id, duration_mins, started_date, ended_date)
+        VALUES (?, ?, ?, ?, ?);
+    '''
+
+    session_query = '''
+        INSERT INTO sessions
+        (duration_mins, started_date, ended_date, device_os)
+        VALUES (?, ?, ?, ?);
+    '''
+
+    cur.executemany(dm_user_query, dm_user_data)
+    cur.executemany(guild_channel_query, guild_channel_data)
+    cur.executemany(activity_query, activity_data)
+    cur.executemany(guild_query, guild_data)
+    cur.executemany(payment_query, payments_data)
+    cur.executemany(voice_session_query, voice_session_data)
+    cur.executemany(session_query, session_data)
+
+    cur.execute('''
+        INSERT INTO package_data
+        (package_id, package_version, package_owner_id, package_owner_name, package_owner_display_name, package_owner_avatar_url, package_is_partial)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    ''', (package_id, '0.1.0',  user_data['id'], user_data['username'], user_data['display_name'], user_data['avatar_url'], 1 if is_partial else 0))
+
+    conn.commit()
+
+    # Build secondary indexes after bulk inserts but before VACUUM, so the
+    # vacuum repacks the index pages too.
+    create_indexes(cur)
+    conn.commit()
+
+    # make database smaller
+    cur.execute('VACUUM;')
+
+    conn.commit()
+
+    zipped_buffer = export_sqlite_to_bin(cur, conn)
+    key = extract_key_from_discord_link(link)
+    (data, iv) = encrypt_sqlite_data(zipped_buffer, key)
+
+    # Encrypted blob → S3 (clients fetch via presigned URL); only the iv
+    # stays in Postgres so the API can hand it to the client for decryption.
+    # Store iv as hex — the column is a String, so writing raw bytes lets
+    # PostgreSQL serialize it as the BYTEA literal "\x..." which leaks
+    # straight to the client.
+    import blob_storage
+    blob_storage.upload(package_id, data)
+    session.add(SavedPackageData(package_id=package_id, iv=iv.hex()))
+    session.commit()
+
+    print(f'SQLite serialization: {time.time() - start}')
+
+    update_step(package_status_id, package_id, 'PROCESSED', session)
+
+    package_status_updated = fetch_package_status(package_id, session)
+    time_diff = time.time() - package_status_updated.created_at.timestamp()
+    formatted_time = time.strftime('%H:%M:%S', time.gmtime(time_diff))
+
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': f'Package processed successfully',
+                'description': f'Package ID: {package_id} (took {formatted_time})',
+                'color': 0x4b9e4b
+            }
+        ]
+    })
+
+    return analytics_line_count
+
+def process_package(package_status_id, package_id, link, worker_name='regular_process'):
+    """Process a package end-to-end.
+
+    Invoked by enqueue_package(QUEUE_BACKEND=sync) for local dev and by the SQS
+    worker Lambda in production. worker_name lets premium-only work skip the
+    regular-process path; we only run regular_process today.
+    """
+    print(f'handling package {package_id} with link {link}')
+    session = Session()
+    package_status = session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).first()
+    if not package_status:
+        print('package not found')
+        return
+
+    if package_status.is_cancelled:
+        print('package is cancelled, skipping')
+        return
+
+    if package_status.is_upgraded and worker_name.startswith('regular_process'):
+        print('package is upgraded and worker is regular, skipping')
+        return
+
+    try:
+        download_file(package_status_id, package_id, link, session)
+        read_analytics_file(package_status_id, package_id, link, session)
+    except Exception as e:
+        # Always log the full trace to CloudWatch — print(e) alone gives just
+        # the exception message and no line numbers, which makes the failure
+        # impossible to debug from logs.
+        tb = ''.join(traceback.format_exception(type(e), e, e.__traceback__))
+        print(f'process_package failed for {package_id}:\n{tb}')
+
+        # Worker raises these as known error codes. Anything else gets
+        # relabeled UNKNOWN_ERROR with the full traceback preserved for
+        # CloudWatch debugging.
+        # NOTE: this used to be `expected = ('EXPIRED_LINK')` which is
+        # just the string 'EXPIRED_LINK' (Python tuples need a comma);
+        # the `in` check then accidentally did substring match on a
+        # single code, hiding INVALID_LINK behind UNKNOWN_ERROR.
+        EXPECTED_ERROR_CODES = ('EXPIRED_LINK', 'INVALID_LINK', 'MISSING_USER_DATA')
+        current = str(e)
+        e_traceback = None
+        if current not in EXPECTED_ERROR_CODES:
+            current = 'UNKNOWN_ERROR'
+            e_traceback = tb
+        session.query(PackageProcessStatus).filter(PackageProcessStatus.id == package_status_id).update({
+            'is_errored': True,
+            'error_message_code': current,
+            'error_message_traceback': e_traceback
+        })
+
+        send_internal_notification({
+            'embeds': [
+                {
+                    'title': f'Package errored',
+                    'description': f'Package ID: {package_id} (error {current if current else "UNKNOWN_ERROR"})',
+                    'color': 0x9e4b4b
+                }
+            ]
+        })
+        session.commit()
+    finally:
+        remove_file(package_id)
+        session.close()
+
+

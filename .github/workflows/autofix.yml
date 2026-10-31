@@ -2,8 +2,14 @@ name: autofix.ci
 
 on:
   pull_request:
+    paths-ignore:
+      - "api/**"
+      - "processor/**"
   push:
     branches: ["main"]
+    paths-ignore:
+      - "api/**"
+      - "processor/**"
 permissions:
   contents: read
 

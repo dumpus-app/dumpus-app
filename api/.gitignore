@@ -1,0 +1,25 @@
+# Env
+env
+__pycache__
+
+# Test
+test.zip
+*.zip
+test/*
+node_test
+*.test.py
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Data
+scripts/res.txt
+*.db
+
+# JetBrains IDE
+.idea
+
+# Claude Code
+.claude/

@@ -1,0 +1,366 @@
+import socket
+
+from flask import Flask, jsonify, request, make_response
+from flask_cors import CORS
+
+from flask_limiter import Limiter
+
+# Import tasks before db so dotenv loads before SQLAlchemy reads POSTGRES_URL.
+import tasks
+from enqueue import enqueue_package
+from db import PackageProcessStatus, SavedPackageData, Session, fetch_package_status, fetch_package_rank, get_cached_discord_user, cache_discord_user
+
+from sqlite import generate_demo_database
+
+from util import check_discord_link, check_whitelisted_link, extract_package_id_from_discord_link, extract_package_id_from_upn, fetch_diswho_user, fetch_discord_guild, discord_icon_url
+
+from wh import send_internal_notification
+
+app = Flask(__name__)
+CORS(app)
+
+def get_request_package_id():
+    return request.view_args.get('package_id')
+
+limiter = Limiter(
+    get_request_package_id,
+    app=app,
+    storage_uri="memory://",
+)
+
+def get_base_status_response():
+    return {
+        "isDataAvailable": False,
+
+        "isUpgraded": False,
+
+        "isErrored": False,
+        "errorMessageCode": None,
+
+        "isProcessing": False,
+        "processingStep": None,
+        "processingQueuePosition": {
+            "user": 0,
+            "total": 0,
+            "userWhenStarted": 0,
+            "totalWhenStarted": 0
+        }
+    }
+
+
+def get_base_process_response():
+    return {
+        "isAccepted": False,
+        "packageId": None,
+
+        "errorMessageCode": None
+    }
+
+
+def get_base_delete_response():
+    return {
+        "isDeleted": False,
+        "errorMessageCode": None
+    }
+
+
+def check_authorization_bearer(req, package_id):
+    auth_header = req.headers.get('Authorization')
+
+    if not auth_header:
+        return (False, None)
+
+    auth_token = auth_header.split(' ')[1]
+    expected_package_id = extract_package_id_from_upn(auth_token)
+
+    if not expected_package_id or package_id != expected_package_id:
+        return (False, None)
+
+    return (True, auth_token)
+
+@app.route('/health', methods=['GET'])
+def health():
+    
+    hostname = socket.gethostname()
+
+    return jsonify({
+        'status': 'alive',
+        'hostname': hostname
+    }), 200
+
+@app.route('/process', methods=['POST'])
+def process_link():
+
+    link = request.json['package_link']
+
+    if not link or (not check_discord_link(link) and not check_whitelisted_link(link)):
+        res = get_base_process_response()
+        res['errorMessageCode'] = 'INVALID_LINK'
+        return jsonify(res), 200
+
+    package_id = extract_package_id_from_discord_link(link)
+
+    res = get_base_process_response()
+    res['isAccepted'] = True
+    res['packageId'] = package_id
+
+    print(
+        f'Order taken, package added to the queue. (package_id: {package_id})')
+
+    session = Session()
+
+    existing_package_process_status = fetch_package_status(package_id, session)
+    if existing_package_process_status and not existing_package_process_status.is_errored and not existing_package_process_status.is_cancelled:
+        send_internal_notification({
+            'embeds': [
+                {
+                    'title': 'Loading existing package',
+                    'description': f'Package ID: {package_id}',
+                    'color': 0xbbfcbb
+                }
+            ]
+        })
+        return jsonify(res), 200
+    
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': 'New package added to the queue',
+                'description': f'Package ID: {package_id}',
+                'color': 0x1F8BFF
+            }
+        ]
+    })
+
+    package_process_status = PackageProcessStatus(
+        package_id=package_id, step='LOCKED')
+    session.add(package_process_status)
+    session.commit()
+
+    (total_upgraded_row_count, total_row_count, _cp, _cs) = fetch_package_rank(
+        package_id, package_process_status, session)
+
+    package_process_status.queue_standard_total_when_started = total_upgraded_row_count
+    package_process_status.queue_standard_total_when_started = total_row_count
+    session.commit()
+
+    id = package_process_status.id
+
+    session.close()
+
+    enqueue_package(id, package_id, link)
+
+    return jsonify(res), 200
+
+
+@app.route('/process/<package_id>/status', methods=['GET'])
+def get_package_status(package_id):
+
+    res = get_base_status_response()
+
+    (is_auth, _) = check_authorization_bearer(request, package_id)
+    if not is_auth:
+        res['errorMessageCode'] = 'UNAUTHORIZED'
+        return jsonify(res), 401
+
+    session = Session()
+    package_status = fetch_package_status(package_id, session)
+    package_rank = fetch_package_rank(package_id, package_status, session)
+    session.close()
+
+    if not package_status:
+        res['errorMessageCode'] = 'UNKNOWN_PACKAGE_ID'
+        return jsonify(res), 200
+
+    res['isUpgraded'] = package_status.is_upgraded
+    res['isErrored'] = package_status.is_errored
+
+    if package_status.is_errored:
+        res['errorMessageCode'] = package_status.error_message_code
+
+    if package_status.step == 'PROCESSED':
+        res['isDataAvailable'] = True
+        res['processingStep'] = package_status.step
+
+    else:
+        res['isProcessing'] = True
+        res['processingStep'] = package_status.step
+        res['processingQueuePosition']['premiumQueueTotal'] = package_rank[0]
+        res['processingQueuePosition']['standardQueueTotal'] = package_rank[1]
+        res['processingQueuePosition']['premiumQueueUser'] = package_rank[2]
+        res['processingQueuePosition']['standardQueueUser'] = package_rank[3]
+        res['processingQueuePosition']['standardWhenJoined'] = package_status.queue_standard_total_when_started
+        res['processingQueuePosition']['premiumWhenJoined'] = package_status.queue_premium_total_when_started
+
+    return jsonify(res), 200
+
+
+@app.route('/process/<package_id>/blob', methods=['GET'])
+def get_package_blob(package_id):
+    """Return a presigned S3 URL the client can fetch the package blob from.
+
+    Replaces /data. The client downloads bytes directly from S3 (fast, no
+    API Gateway middleman) and — for real packages — decrypts them locally
+    using its UPN.
+
+    Response: {"url": <presigned GET>, "iv": <hex|null>, "ttl": <seconds>}
+              iv is null for the demo (the demo blob is unencrypted).
+
+    Errors: 401 (bad bearer), 404 (no row / no S3 blob), 501 (S3 not wired).
+    """
+    import os
+    import blob_storage
+    from db import SavedPackageData
+
+    ttl = int(os.getenv('PACKAGE_DATA_PRESIGNED_URL_TTL_SECONDS', '300'))
+
+    # Demo: unauthenticated, lazy-seed S3 from generate_demo_database() on the
+    # very first call after deploy, then serve from S3 forever after.
+    if package_id == 'demo':
+        if not blob_storage.exists('demo'):
+            blob_storage.upload('demo', generate_demo_database())
+        return jsonify({
+            'url': blob_storage.presigned_url('demo', ttl_seconds=ttl),
+            'iv': None,
+            'ttl': ttl,
+        }), 200
+
+    (is_auth, _) = check_authorization_bearer(request, package_id)
+    if not is_auth:
+        return make_response('', 401)
+
+    session = Session()
+    row = session.query(SavedPackageData).filter_by(package_id=package_id).order_by(
+        SavedPackageData.created_at.desc()
+    ).first()
+    session.close()
+
+    if not row or not blob_storage.exists(package_id):
+        return make_response('', 404)
+
+    return jsonify({
+        'url': blob_storage.presigned_url(package_id, ttl_seconds=ttl),
+        'iv': row.iv,
+        'ttl': ttl,
+    }), 200
+
+
+@app.route('/process/<package_id>', methods=['DELETE'])
+def cancel_package(package_id):
+
+    (is_auth, _) = check_authorization_bearer(request, package_id)
+    if not is_auth:
+        return make_response('', 401)
+
+    res = get_base_delete_response()
+
+    session = Session()
+    package_status = fetch_package_status(package_id, session)
+
+    if not package_status:
+        res['errorMessageCode'] = 'UNKNOWN_PACKAGE_ID'
+        session.close()
+        return jsonify(res), 200
+    
+    session.query(PackageProcessStatus).filter(PackageProcessStatus.package_id == package_id).delete()
+    session.query(SavedPackageData).filter(SavedPackageData.package_id == package_id).delete()
+
+    res['isDeleted'] = True
+
+    session.commit()
+
+    session.close()
+
+    send_internal_notification({
+        'embeds': [
+            {
+                'title': 'Deleting existing package data',
+                'description': f'Package ID: {package_id}',
+                'color': 0xf79494
+            }
+        ]
+    })
+
+    return jsonify(res), 200
+
+@app.route('/process/<package_id>/user/<user_id>', methods=['GET'])
+def get_avatar(package_id, user_id):
+    
+        (is_auth, auth_upn) = check_authorization_bearer(request, package_id)
+        if not is_auth:
+            return make_response('', 401)
+    
+        session = Session()
+        try:
+            data = fetch_package_status(package_id, session)
+
+            if not data:
+                return make_response('', 401)
+
+            # Hit the upstream only on a cache miss / stale entry. Then
+            # only persist responses that look real — username present
+            # is the cheapest signal that we got past auth/404/5xx and
+            # have something worth handing back to a future caller.
+            user = get_cached_discord_user(user_id, session)
+            if not user:
+                user = fetch_diswho_user(user_id)
+                if user and user.get('username'):
+                    cache_discord_user(user_id, user, session)
+        finally:
+            session.close()
+
+        if not user:
+            return make_response('', 500)
+        
+        avatar_hash = user.get('avatar')
+        if avatar_hash:
+            avatar_extension = 'gif' if avatar_hash.startswith('a_') else 'webp'
+            avatar_url = f'https://cdn.discordapp.com/avatars/{user_id}/{avatar_hash}.{avatar_extension}'
+        else:
+            # Discord's built-in default avatars. Legacy users have a
+            # discriminator (e.g. "1234") and pick from 5 defaults; new
+            # users have discriminator "0" and the index is derived from
+            # the snowflake.
+            discriminator = user.get('discriminator')
+            if discriminator and discriminator != '0':
+                index = int(discriminator) % 5
+            else:
+                index = (int(user_id) >> 22) % 6
+            avatar_url = f'https://cdn.discordapp.com/embed/avatars/{index}.png'
+
+        return jsonify({
+            'user_id': user_id,
+            'display_name': user['global_name'] if 'global_name' in user and user['global_name'] else None,
+            'avatar_url': avatar_url,
+            'username': user['username'] if 'username' in user and user['username'] else None,
+        }), 200
+
+
+@app.route('/widget/<guild_id>', methods=['GET'])
+def get_widget(guild_id):
+    """Replacement for the legacy widget.dumpus.app proxy.
+
+    Returns name + icon_url + member_count for a guild the bot can see.
+    """
+    if not guild_id.isdigit():
+        return jsonify({'error': 'invalid guild id'}), 400
+
+    guild = fetch_discord_guild(guild_id)
+    if not guild:
+        return jsonify({'error': 'guild not found or bot lacks access'}), 404
+
+    return jsonify({
+        'name': guild['name'],
+        'icon_url': discord_icon_url(guild_id, guild.get('icon')),
+        'member_count': guild.get('approximate_member_count', 0),
+    }), 200
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({'error': 'Route not found.'}), 404
+
+
+@app.errorhandler(500)
+def internal_server_error(e):
+    return jsonify({'error': 'Internal server error.'}), 500

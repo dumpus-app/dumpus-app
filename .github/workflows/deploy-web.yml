@@ -8,6 +8,8 @@ on:
       - "ios/**"
       - "src-tauri/**"
       - "infra/**"
+      - "api/**"
+      - "processor/**"
       - "**.md"
   workflow_dispatch:
 

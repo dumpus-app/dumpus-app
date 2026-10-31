@@ -1,0 +1,25 @@
+.ONESHELL:
+.PHONY: up down install dev
+
+include .env
+
+up:
+	docker compose up --build -d
+	docker compose logs -f
+
+down:
+	docker compose down
+
+install:
+	uv venv --python 3.10
+	. .venv/bin/activate
+	uv pip install -r requirements.txt
+
+dev:
+	. .venv/bin/activate
+	bash -c " \
+		trap 'docker compose down' EXIT; \
+		docker compose up -d db && \
+		cd src && \
+		QUEUE_BACKEND=sync waitress-serve --port=${API_PORT} app:app \
+	"
