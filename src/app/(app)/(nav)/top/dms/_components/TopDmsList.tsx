@@ -61,9 +61,10 @@ export default function TopDMsList() {
   const { getData, count } = useTopDMsData();
 
   const timeRange = useAppStore(({ config }) => config.timeRange);
+  const selectedID = useAppStore(({ config }) => config.selectedID);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["top-dms", timeRange],
+    queryKey: ["top-dms", selectedID, timeRange],
     queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,

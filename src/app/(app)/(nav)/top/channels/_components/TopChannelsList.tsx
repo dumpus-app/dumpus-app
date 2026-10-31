@@ -16,9 +16,10 @@ export default function TopChannelsList() {
   const { t } = useTranslation();
   const { getData, count } = useTopChannelsData();
   const timeRange = useAppStore(({ config }) => config.timeRange);
+  const selectedID = useAppStore(({ config }) => config.selectedID);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["top-channels", timeRange],
+    queryKey: ["top-channels", selectedID, timeRange],
     queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,
