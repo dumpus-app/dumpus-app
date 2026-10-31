@@ -47,7 +47,7 @@
     "@capacitor/status-bar": "^6.0.3",
     "@headlessui/react": "^2.2.10",
     "@heroicons/react": "^2.2.0",
-    "@hookform/resolvers": "^3.10.0",
+    "@hookform/resolvers": "^6.0.2",
     "@hugotomazi/capacitor-navigation-bar": "^4.0.1",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-scroll-area": "^1.2.10",
@@ -79,7 +79,7 @@
     "postcss": "8.4.28",
     "react": "19.3.1",
     "react-dom": "19.3.1",
-    "react-hook-form": "^7.74.0",
+    "react-hook-form": "^7.91.0",
     "react-hot-toast": "^2.6.0",
     "react-i18next": "^17.1.9",
     "react-markdown": "^10.1.0",
@@ -90,7 +90,7 @@
     "sql.js": "^1.14.1",
     "tailwindcss": "3.3.3",
     "typescript": "6.0.3",
-    "zod": "^3.25.76",
+    "zod": "^4.6.7",
     "zustand": "^5.0.16"
   },
   "devDependencies": {

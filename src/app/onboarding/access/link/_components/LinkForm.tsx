@@ -19,7 +19,10 @@ function useSchema() {
     .object({
       discordLink: z
         .string({
-          required_error: t("onboarding.access.methods.link.errors.required"),
+          error: (issue) =>
+            issue.input === undefined
+              ? t("onboarding.access.methods.link.errors.required")
+              : undefined,
         })
         .url(t("onboarding.access.methods.link.errors.url")),
       backendURL: z
