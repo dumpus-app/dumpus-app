@@ -2,7 +2,7 @@
 
 ## Local setup
 
-- Node.js >= `v16.17.0`
+- Node.js >= `v20.19.0`
 - pnpm `12`, the version `packageManager` pins in `package.json`. Corepack runs it from `0.36.0` on (`npm i -g corepack@latest` updates an older one)
 - Visual Studio Code
 
@@ -20,7 +20,7 @@ Otherwise, just run the right commands and you'll be guided
 The app is made, at its core, from a web application using:
 
 - React
-- Next.js 13 (App directory)
+- Next.js 16 (App Router)
 - Tailwind CSS
 - React Query
 - Zustand

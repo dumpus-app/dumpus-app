@@ -9,6 +9,8 @@ import Providers from "./providers";
 import LoadingScreen from "./_components/LoadingScreen";
 import InAppPurchasesDialog from "~/components/InAppPurchasesDialog";
 
+export { viewport } from "~/utils/seo";
+
 export async function generateMetadata(): Promise<Metadata> {
   const i18nextInstance = await initI18next(fallbackLocale);
   const t = i18nextInstance.getFixedT(fallbackLocale);

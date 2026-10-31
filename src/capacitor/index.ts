@@ -2,7 +2,7 @@
 
 import { App } from "@capacitor/app";
 import type { SafeAreaInsets } from "capacitor-plugin-safe-area";
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import type { useRouter } from "next/navigation";
 import { OS } from "~/constants";
 import { isCapacitorSupported } from "./utils";
 
@@ -44,7 +44,11 @@ async function handleSafeArea() {
   }
 }
 
-export async function initCapacitor({ router }: { router: AppRouterInstance }) {
+export async function initCapacitor({
+  router,
+}: {
+  router: ReturnType<typeof useRouter>;
+}) {
   const supported = isCapacitorSupported();
   if (!supported) return;
 

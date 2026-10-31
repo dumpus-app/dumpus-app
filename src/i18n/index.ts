@@ -9,8 +9,10 @@ export async function initI18next(locale: string) {
     .use(initReactI18next)
     .use(
       resourcesToBackend(
+        // Turbopack doesn't apply the `#root/*` path of `tsconfig.json` to a
+        // template-literal import, which then fails with "Cannot find module ''".
         // @ts-ignore
-        (language, namespace) => import(`#root/locales/${language}.json`),
+        (language, namespace) => import(`../../locales/${language}.json`),
       ),
     )
     .init(getOptions(locale));

@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useTranslation } from "~/i18n/client";
-import type { PageProps, Rename } from "~/types";
+import type { Rename } from "~/types";
 import Footer, { type Props as FooterProps } from "./_components/Footer";
 import Header, { type Props as HeaderProps } from "./_components/Header";
 
@@ -87,9 +87,7 @@ function getRouteData(
   };
 }
 
-export default function Layout({
-  children,
-}: PageProps<{}, { children: React.ReactNode }>) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const { t } = useTranslation();
 

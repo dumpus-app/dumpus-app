@@ -82,7 +82,9 @@ test("quitting and resetting", async ({ page, api }) => {
   await page.getByRole("button", { name: "Quit and reset" }).click();
 
   await expect(page).toHaveURL(/\/onboarding\/$/);
-  await expect(page.getByText("Welcome to Dumpus")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Welcome to Dumpus" }),
+  ).toBeVisible();
   expect(api.calls).toContainEqual({
     method: "DELETE",
     path: `/process/${dataset.packageId}`,

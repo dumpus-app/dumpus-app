@@ -1,4 +1,4 @@
-import type { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
+import type { useRouter } from "next/navigation";
 import { getStorageKey } from "~/hooks/use-sql-init";
 import type { PackageData } from "~/types/sql";
 import { queryClient } from "~/utils/react-query";
@@ -40,7 +40,7 @@ type Actions = {
   addPackage: (pkg: Package) => void;
   deletePackage: (opts: {
     id: Package["id"];
-    router: AppRouterInstance;
+    router: ReturnType<typeof useRouter>;
   }) => void;
   getSelectedPackage: (
     packages: State["packages"],

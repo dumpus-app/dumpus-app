@@ -1,14 +1,13 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import { useTranslation } from "~/i18n/client";
-import { PageProps } from "~/types";
 import RenderMarkdown from "~/components/RenderMarkdown";
 import Image from "next/image";
 import { SLIDES } from "./_data/slides";
 
-export default function Page({
-  params: { slide },
-}: PageProps<{ slide: string }>) {
+export default function Page() {
+  const { slide } = useParams<{ slide: string }>();
   const { t } = useTranslation();
 
   const index = Number(slide) - 1;

@@ -11,7 +11,7 @@ export type Props = Omit<
   leftSlot?: React.ReactNode;
   rightSlot?: React.ReactNode;
   rightIcon?: Icon;
-  title: string | JSX.Element;
+  title: string | React.JSX.Element;
   description: string;
   reverseTexts?: boolean;
   href?: React.ComponentProps<typeof Link>["href"];
