@@ -181,16 +181,24 @@ function TopLists({ data, square }: { data: ShareData; square?: boolean }) {
                 {i + 1}
               </span>
               {row.image}
-              <span
-                className={clsx(
-                  "min-w-0 flex-1 font-bold",
-                  square
-                    ? "truncate text-[38px]"
-                    : "line-clamp-2 text-[40px] leading-[1.08] wrap-anywhere",
-                )}
-              >
-                {row.name}
-              </span>
+              {square ? (
+                <span className="min-w-0 flex-1 truncate text-[38px] font-bold">
+                  {row.name}
+                </span>
+              ) : /\s/.test(row.name.trim()) ? (
+                <span className="line-clamp-2 min-w-0 flex-1 text-[40px] leading-[1.08] font-bold wrap-anywhere">
+                  {row.name}
+                </span>
+              ) : (
+                // A one-word name would break mid-word: it shrinks instead,
+                // then ends in an ellipsis.
+                <Fit
+                  text={row.name}
+                  max={40}
+                  min={28}
+                  className="min-w-0 flex-1 truncate leading-[1.08] font-bold"
+                />
+              )}
             </div>
           ))}
         </div>

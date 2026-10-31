@@ -70,6 +70,7 @@ export default forwardRef<HTMLDivElement, { data: ShareData }>(
             <Trans
               i18nKey="share.time.days"
               count={days}
+              values={{ value: format.number(days) }}
               components={{ b: <b className="font-extrabold" /> }}
             />
           </div>
