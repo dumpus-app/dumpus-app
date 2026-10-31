@@ -33,7 +33,7 @@ variable "subdomain" {
 }
 
 variable "github_repository" {
-  description = "Owner/repo allowed to assume the deploy role (e.g. Androz2091/dumpus-app). Empty = skip."
+  description = "Repo allowed to assume the deploy role, as its OIDC subject names it: owner/repo, or owner@id/repo@id when GitHub makes the subject immutable (e.g. Androz2091@42497995/dumpus-app@640259652). Empty = skip."
   type        = string
   default     = ""
 }

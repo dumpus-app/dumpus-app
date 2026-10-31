@@ -18,7 +18,9 @@ wh_url            = ""
 diswho_base_url   = ""
 
 # Set to enable the GitHub Actions deploy role.
-github_repository = ["Androz2091/dumpus-app"]
+# The repo's OIDC subject: GitHub makes it immutable with the owner's and the
+# repo's ids (`gh api repos/Androz2091/dumpus-app/actions/oidc/customization/sub`).
+github_repository = ["Androz2091@42497995/dumpus-app@640259652"]
 
 # Initial image tag the Lambdas point at. After the first apply, CI's
 # update-function-code calls take over and Terraform ignores image_uri
