@@ -159,8 +159,10 @@ export default function useLogic() {
   const processValid = !!process.data?.isAccepted;
   const packageID = process.data?.packageId;
 
+  // Keyed by what was submitted, so a second link in the same session is
+  // saved too, and a reload comes back to its loading page.
   useQuery({
-    queryKey: ["package-api", "save-state"],
+    queryKey: ["package-api", "save-state", packageLink, backendURL],
     queryFn: () => {
       setLoadingData({ packageLink: packageLink!, backendURL });
       return null;
