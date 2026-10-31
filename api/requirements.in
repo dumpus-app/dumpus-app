@@ -1,0 +1,18 @@
+# `requirements.txt` is compiled from this file: edit here, then rerun the
+# command at the top of `requirements.txt`. It keeps the current pins unless
+# `--upgrade` is added.
+apig-wsgi
+boto3
+cryptography
+Flask
+Flask-Cors
+Flask-Limiter
+orjson
+# Never imported: SQLAlchemy loads it for the `postgresql+psycopg2` URL.
+psycopg2-binary
+PyJWT
+python-dotenv
+requests
+SQLAlchemy
+# Never imported: `Dockerfile.api` starts the API with `waitress-serve`.
+waitress

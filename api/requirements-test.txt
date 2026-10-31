@@ -1,5 +1,4 @@
 -r requirements.txt
 
-# pytest 9.2 needs packaging>=24, and `requirements.txt` pins 23.1.
-pytest==9.1.1
+pytest==9.2.0
 moto[s3,sqs,secretsmanager]==5.2.5
