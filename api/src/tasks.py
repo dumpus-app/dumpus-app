@@ -100,13 +100,21 @@ def find_servers_root(zip_namelist):
     
     return None
 
+# Activity comes as several event streams. Many exports omit `analytics`, the
+# most complete one; `reporting` carries the same session, app open, voice,
+# reaction and guild join events. `tns` and `modeling` carry fewer of them.
+ACTIVITY_STREAMS = ('analytics', 'reporting')
+
 def find_analytics_file(zip_namelist):
     """
     Find the analytics file in the package.
     This handles cases where the folder might be translated.
     """
-    # Look for any JSON file in a folder that could be analytics
-    return next((name for name in zip_namelist if re.search(r'/analytics.*\.json$', name)), None)
+    for stream in ACTIVITY_STREAMS:
+        name = next((name for name in zip_namelist if re.search(rf'/{stream}.*\.json$', name)), None)
+        if name:
+            return name
+    return None
 
 def download_file(package_status_id, package_id, link, session):
     # check if file exists in tmp
@@ -227,21 +235,23 @@ def read_analytics_file(package_status_id, package_id, link, session):
             raise Exception('MISSING_USER_DATA')
         user_content = zip.open(user_path)
         user_json = orjson.loads(user_content.read())
+        # Exports omit the owner's `discriminator` ("0" is what Discord reports
+        # for unique usernames) and name the display name `global_name`.
         user_data = {
             'id': user_json['id'],
             'username': user_json['username'],
-            'discriminator': user_json['discriminator'],
+            'discriminator': user_json.get('discriminator', '0'),
             'email': user_json['email'],
             'avatar_url': generate_avatar_url_from_user_id_avatar_hash(user_json['id'], user_json['avatar_hash']),
-            'display_name': 'display_name' in user_json and user_json['display_name'] or None,
+            'display_name': user_json.get('display_name') or user_json.get('global_name'),
         }
         for relation_ship in user_json['relationships']:
             users.append({
                 'id': relation_ship['id'],
                 'username': relation_ship['user']['username'], # here username is not User#0000, but the actual username. No need to check for new usernames type.
-                'discriminator': relation_ship['user']['discriminator'],
+                'discriminator': relation_ship['user'].get('discriminator', '0'),
                 'avatar_url': generate_avatar_url_from_user_id_avatar_hash(relation_ship['id'], relation_ship['user']['avatar']),
-                'display_name': 'display_name' in relation_ship and relation_ship['display_name'] or None,
+                'display_name': relation_ship.get('display_name') or relation_ship['user'].get('global_name'),
             })
         # Payments live at <user_root>/user_data_exports/discord_billing/payments.json
         # in current Discord exports. Skip silently if the file isn't there
