@@ -72,10 +72,7 @@ export type PackageAPIUserResponse = Prettify<
     }
   | {
       errorMessageCode:
-        | "UNAUTHORIZED"
-        | "UNKNOWN_USER_ID"
-        | "FETCH_ERROR"
-        | "RATE_LIMITED";
+        "UNAUTHORIZED" | "UNKNOWN_USER_ID" | "FETCH_ERROR" | "RATE_LIMITED";
       avatar_url: undefined;
       display_name: undefined;
       username: string;

@@ -3,8 +3,11 @@ locales
 build
 dist
 node_modules
-android/app/src/main/assets/public
+android/app/src/main/assets
 ios/App/App/public
+ios/App/App/capacitor.config.json
+ios/App/Pods
+src/i18n/_locales.ts
 src-tauri/target
 pnpm-lock.yaml
 /api

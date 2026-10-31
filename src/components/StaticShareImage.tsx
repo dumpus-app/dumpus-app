@@ -114,7 +114,7 @@ export default function StaticShareImage({
 }: Props) {
   return (
     <div className="flex h-full w-full flex-col bg-gray-950 text-gray-400">
-      <div className="h-4 flex-shrink-0 bg-brand-300" />
+      <div className="h-4 shrink-0 bg-brand-300" />
       <div className="flex flex-1 flex-col p-8">
         <div className="flex h-full flex-1 flex-col">
           <div className="mb-8 flex">

@@ -19,7 +19,7 @@ export default function ProfileHeader({
     <div className="bg-gray-900">
       <div
         className={clsx(
-          "relative flex items-center justify-between px-2 py-8 desktop-container sm:flex-row-reverse sm:justify-end sm:py-16",
+          "relative desktop-container flex items-center justify-between px-2 py-8 sm:flex-row-reverse sm:justify-end sm:py-16",
           className,
         )}
       >

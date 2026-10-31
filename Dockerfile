@@ -1,5 +1,5 @@
 # Base image: Node LTS
-FROM node:20.4.0-alpine
+FROM node:24-alpine
 
 # Install PNPM
 RUN corepack enable
@@ -7,8 +7,8 @@ RUN corepack enable
 # Create application directory and move there
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml from the host to the container
-COPY package.json pnpm-lock.yaml ./
+# Copy the package manifest, lockfile and pnpm settings from the host to the container
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # Copy scripts and locales
 COPY scripts ./scripts

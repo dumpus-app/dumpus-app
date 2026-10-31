@@ -10,7 +10,7 @@ export default function Flag({ code }: { code: string }) {
     },
   );
   return (
-    <div className="overflow-hidden rounded">
+    <div className="overflow-hidden rounded-sm">
       <Svg />
     </div>
   );

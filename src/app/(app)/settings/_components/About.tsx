@@ -54,7 +54,7 @@ export default function About() {
           rightIcon={ArrowTopRightOnSquareIcon}
         />
         <DetailCard
-          href="https://github.com/dumpus-app/dumpus-app"
+          href="https://github.com/Androz2091/dumpus-app"
           target="_blank"
           title="GitHub"
           description={t("settings.about.contribute")}

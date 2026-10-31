@@ -16,12 +16,12 @@ export default function RenderMarkdown({
         // rel guards against reverse tabnabbing — without it, the linked
         // page can navigate `window.opener` of the original tab. noreferrer
         // also strips the Referer header for privacy.
-        a: (props: any) => (
+        a: ({ node: _node, ...props }) => (
           <a {...props} target="_blank" rel="noopener noreferrer" />
         ),
         ...(noClosingTag
           ? {
-              p: Fragment,
+              p: ({ children }) => <Fragment>{children}</Fragment>,
             }
           : {}),
       }}

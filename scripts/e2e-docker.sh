@@ -13,7 +13,7 @@ version=$(node -p "require('@playwright/test/package.json').version")
 exec docker run --rm --init --ipc=host \
   --volume "$PWD":/work --workdir /work \
   --volume dumpus-app-e2e-node-modules:/work/node_modules \
-  --env npm_config_store_dir=/work/node_modules/.pnpm-store \
+  --env pnpm_config_store_dir=/work/node_modules/.pnpm-store \
   --env NODE_COMPILE_CACHE=/tmp/node-compile-cache \
   "mcr.microsoft.com/playwright:v$version-noble" \
   sh -c 'corepack enable && pnpm install --frozen-lockfile && pnpm test:e2e "$@"' \

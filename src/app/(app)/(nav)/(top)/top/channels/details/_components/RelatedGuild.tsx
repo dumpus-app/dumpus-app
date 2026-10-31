@@ -37,7 +37,7 @@ export default function RelatedGuild({
           )}`}
           leftSlot={
             <div
-              className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
+              className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold text-gray-950 uppercase"
               style={{
                 backgroundColor: iconColor(guild.guild_id),
               }}

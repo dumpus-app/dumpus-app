@@ -6,7 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { Fragment } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Button from "~/components/Button";
 import { BASE_URL, OS } from "~/constants";
 import useTopDMsData from "~/hooks/data/use-top-dms-data";
@@ -126,8 +126,7 @@ function useShare({ canShare }: { canShare: boolean }) {
 export default function SharePopup() {
   const { t } = useTranslation();
   const [open, setOpen] = useAppStore(
-    ({ ui }) => [ui.showSharePopup, ui.setShowSharePopup],
-    shallow,
+    useShallow(({ ui }) => [ui.showSharePopup, ui.setShowSharePopup]),
   );
 
   const os = useOS() || OS;
@@ -157,7 +156,7 @@ export default function SharePopup() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-950/80 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 bottom-safe-area-bottom-inset z-10 overflow-y-auto">
@@ -214,7 +213,7 @@ export default function SharePopup() {
                         ? t("share.title")
                         : t("share.download"),
                       error: t("share.error"),
-                      loading: t("share.generating"),
+                      pending: t("share.generating"),
                     }[status]
                   }
                 </Button>

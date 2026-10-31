@@ -118,7 +118,7 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
           {bugs > 0 && (
             <div className="relative">
               <BugAntIcon className="-mr-1 h-8 w-8 text-[#FB7185]" />
-              <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#FCE7F3] text-sm font-semibold text-gray-950">
+              <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#FCE7F3] text-sm font-semibold text-gray-950">
                 {bugs > 9 ? "9+" : bugs}
               </div>
             </div>
@@ -127,7 +127,7 @@ function ContributorCard({ contributor }: { contributor: Contributor }) {
           {developer > 0 && (
             <div className="relative">
               <CommandLineIcon className="h-8 w-8 text-[#818CF8]" />
-              <div className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EDE9FE] text-sm font-semibold text-gray-950">
+              <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#EDE9FE] text-sm font-semibold text-gray-950">
                 {developer > 9 ? "9+" : developer}
               </div>
             </div>

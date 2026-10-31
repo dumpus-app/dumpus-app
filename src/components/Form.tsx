@@ -68,7 +68,7 @@ const Input = React.forwardRef<
     <input
       type={type}
       className={clsx(
-        "w-full border-0 bg-transparent p-0 font-medium leading-3 text-white placeholder-gray-500 focus:outline-none focus:ring-0",
+        "w-full border-0 bg-transparent p-0 leading-3 font-medium text-white placeholder-gray-500 focus:ring-0 focus:outline-hidden",
         className,
       )}
       ref={ref}
@@ -88,7 +88,7 @@ const InputContainer = React.forwardRef<
     <div
       // ref={ref}
       className={clsx(
-        "flex flex-col rounded-lg bg-gray-900 p-2.5 pb-2 transition-all focus-within:border-transparent focus-within:ring focus-within:ring-brand-800",
+        "flex flex-col rounded-lg bg-gray-900 p-2.5 pb-2 transition-all focus-within:border-transparent focus-within:ring-3 focus-within:ring-brand-800",
         className,
       )}
       {...props}

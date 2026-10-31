@@ -9,7 +9,7 @@
  * SQLite bytes; caller still needs to inflate.
  */
 
-function hexToBytes(hex: string): Uint8Array {
+function hexToBytes(hex: string): Uint8Array<ArrayBuffer> {
   if (hex.length % 2 !== 0) {
     throw new Error(`invalid iv hex length: ${hex.length}`);
   }

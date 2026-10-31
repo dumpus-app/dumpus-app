@@ -1,12 +1,11 @@
 "use client";
 
 import { useAppStore } from "~/stores";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 export default function SafeArea({ children }: { children: React.ReactNode }) {
   const [topColor, bottomColor] = useAppStore(
-    ({ ui }) => [ui.safeAreaTopColor, ui.safeAreaBottomColor],
-    shallow,
+    useShallow(({ ui }) => [ui.safeAreaTopColor, ui.safeAreaBottomColor]),
   );
 
   return (

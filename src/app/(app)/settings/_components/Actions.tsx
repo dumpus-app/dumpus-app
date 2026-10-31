@@ -4,7 +4,7 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
@@ -21,11 +21,10 @@ export default function Actions() {
   const { t } = useTranslation();
   const router = useRouter();
   const [deletePackage, restorePurchases] = useAppStore(
-    ({ config, purchases }) => [
+    useShallow(({ config, purchases }) => [
       config.deletePackage,
       purchases.restorePurchases,
-    ],
-    shallow,
+    ]),
   );
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage?.backendURL });

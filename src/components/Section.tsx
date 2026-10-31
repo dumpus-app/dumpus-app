@@ -11,7 +11,7 @@ export type Props = {
 export default function Section({ title, href, children, id }: Props) {
   const { t } = useTranslation();
   return (
-    <section id={id} className="py-4 desktop-container sm:py-8">
+    <section id={id} className="desktop-container py-4 sm:py-8">
       <div className="mb-2 flex items-center justify-between px-2">
         <div className="text-lg font-bold text-white sm:text-2xl">{title}</div>
         {href ? (

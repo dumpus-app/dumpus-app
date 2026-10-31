@@ -1,14 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { useTranslation } from "~/i18n/client";
 import { timeRanges, useAppStore } from "~/stores";
 
 export default function TimeSelector() {
   const [timeRange, setTimeRange] = useAppStore(
-    ({ config }) => [config.timeRange, config.setTimeRange],
-    shallow,
+    useShallow(({ config }) => [config.timeRange, config.setTimeRange]),
   );
   const { t } = useTranslation();
 
@@ -21,7 +20,7 @@ export default function TimeSelector() {
             type="button"
             onClick={() => setTimeRange(time)}
             className={clsx(
-              "w-full rounded-lg py-1 transition-colors sm:whitespace-nowrap sm:px-4",
+              "w-full rounded-lg py-1 transition-colors sm:px-4 sm:whitespace-nowrap",
               time === timeRange
                 ? "bg-gray-800 text-brand-300"
                 : "text-gray-400 hover:bg-gray-800",

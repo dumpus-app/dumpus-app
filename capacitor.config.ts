@@ -45,4 +45,12 @@ export default {
     : {
         webDir: "dist",
       }),
+  plugins: {
+    // On Android, Capacitor 8 pads the WebView by the system bars when the
+    // WebView is older than 140, while the app already lays itself out
+    // behind them with the insets `capacitor-plugin-safe-area` reports.
+    SystemBars: {
+      insetsHandling: "disable",
+    },
+  },
 } satisfies CapacitorConfig;

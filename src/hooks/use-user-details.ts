@@ -5,12 +5,11 @@ import { useEffect, useRef } from "react";
 import { PackageAPIUserResponse } from "~/types/package-api";
 import usePackageAPI from "./use-package-api";
 import { useAppStore, useSelectedPackage } from "~/stores";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 export default function useUserDetails({ userID }: { userID: string }) {
   const [usersCache, setUsersCache] = useAppStore(
-    ({ usersCache, setUsersCache }) => [usersCache, setUsersCache],
-    shallow,
+    useShallow(({ usersCache, setUsersCache }) => [usersCache, setUsersCache]),
   );
   const selectedPackage = useSelectedPackage();
   const api = usePackageAPI({ baseURL: selectedPackage.backendURL });
@@ -25,8 +24,8 @@ export default function useUserDetails({ userID }: { userID: string }) {
         userID,
       }),
     staleTime: Infinity,
-    refetchInterval: (data) => {
-      if (data?.errorMessageCode === "RATE_LIMITED") {
+    refetchInterval: (query) => {
+      if (query.state.data?.errorMessageCode === "RATE_LIMITED") {
         return 500;
       }
 

@@ -58,7 +58,7 @@ function GuildCard({
           </div>
         ) : (
           <div
-            className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold uppercase text-gray-950"
+            className="relative flex aspect-square w-10 items-center justify-center rounded-lg text-2xl font-bold text-gray-950 uppercase"
             style={{
               backgroundColor: iconColor(guild.guild_id),
             }}
@@ -78,7 +78,8 @@ export default function TopGuildsList() {
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-guilds", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
+    queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 
@@ -87,7 +88,7 @@ export default function TopGuildsList() {
   const data = queryData?.pages.flat() || getData({})!;
 
   return (
-    <div className="px-2 py-4 desktop-container sm:py-8">
+    <div className="desktop-container px-2 py-4 sm:py-8">
       <div className="grid gap-2 sm:grid-cols-2">
         {data.map((guild) => (
           <GuildCard key={guild.rank} guild={guild} />

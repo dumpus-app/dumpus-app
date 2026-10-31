@@ -9,7 +9,7 @@ import { createDatabaseSlice, type DatabaseSlice } from "./database";
 import { createUISlice, type UISlice } from "./ui";
 import { createUsersCacheSlice, type UsersCacheSlice } from "./users-cache";
 import { migrateConfig, migrateUsersCache } from "./migrations";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { createPurchasesSlice, type PurchasesSlice } from "./purchases";
 
 export { timeRanges } from "./config";
@@ -41,8 +41,7 @@ export const useAppStore = create<BoundStore>()(
 
 export function useSelectedPackage() {
   const [packages, selectedID] = useAppStore(
-    ({ config }) => [config.packages, config.selectedID],
-    shallow,
+    useShallow(({ config }) => [config.packages, config.selectedID]),
   );
   const getSelectedPackage = useAppStore(
     ({ config }) => config.getSelectedPackage,

@@ -3,7 +3,7 @@
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import Section from "~/components/Section";
 import DetailCard from "~/components/data/DetailCard";
 import useSQLInit from "~/hooks/use-sql-init";
@@ -17,8 +17,11 @@ export default function PackageSwitch() {
   const router = useRouter();
   const { init } = useSQLInit();
   const [setSelectedID, selectedID, packages] = useAppStore(
-    ({ config }) => [config.setSelectedID, config.selectedID, config.packages],
-    shallow,
+    useShallow(({ config }) => [
+      config.setSelectedID,
+      config.selectedID,
+      config.packages,
+    ]),
   );
   const getUnselectedPackages = useAppStore(
     ({ config }) => config.getUnselectedPackages,

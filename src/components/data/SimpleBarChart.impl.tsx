@@ -81,7 +81,7 @@ export default function SimpleBarChart({
                     // stroke-gray-950
                     // stroke="#020617"
                     strokeWidth={2}
-                    className="focus:outline-none"
+                    className="focus:outline-hidden"
                   />
                 );
               })}

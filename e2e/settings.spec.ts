@@ -25,7 +25,7 @@ test("settings and credits", async ({ page, app }) => {
   const contributors = page.locator("section", { hasText: "Contributors" });
   await expect(contributors.locator("a")).toHaveCount(contributorsData.length);
   // Flags are lazy-loaded SVGs with a gray placeholder until then.
-  await expect(page.locator(".rounded > .bg-gray-700")).toHaveCount(0);
+  await expect(page.locator(".rounded-sm > .bg-gray-700")).toHaveCount(0);
   // Real people's names and avatars stay out of the baselines.
   await app.screenshot("credits", { mask: [contributors] });
 });
@@ -82,7 +82,9 @@ test("quitting and resetting", async ({ page, api }) => {
   await page.getByRole("button", { name: "Quit and reset" }).click();
 
   await expect(page).toHaveURL(/\/onboarding\/$/);
-  await expect(page.getByText("Welcome to Dumpus")).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Welcome to Dumpus" }),
+  ).toBeVisible();
   expect(api.calls).toContainEqual({
     method: "DELETE",
     path: `/process/${dataset.packageId}`,
