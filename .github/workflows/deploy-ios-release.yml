@@ -4,7 +4,15 @@ name: iOS Deployment
 on:
   release:
     types: [created]
+  # A manual run builds and signs without uploading, to check the toolchain
+  # and the certificates before a release; `prod` uploads, as a release does.
   workflow_dispatch:
+    inputs:
+      lane:
+        description: fastlane lane
+        type: choice
+        options: [buildtest, prod]
+        default: buildtest
 
 jobs:
   deploy_ios:
@@ -34,8 +42,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2
-          bundler-cache: true
+          ruby-version: "3.4"
 
       - name: Select Xcode Version
         uses: maxim-lobanov/setup-xcode@v1
@@ -69,18 +76,18 @@ jobs:
 
       - name: Download bundle dependencies
         run: |
-          gem install bundler:2.0.2
           bundle config path vendor/bundle
           bundle install
         working-directory: ios/App/fastlane
 
-      - name: Upload to App Store
+      - name: fastlane
         working-directory: ios/App
         run: |
           export LC_ALL=fr_FR.UTF-8
           export LANG=fr_FR.UTF-8
-          bundle exec fastlane prod --verbose
+          bundle exec fastlane "$LANE" --verbose
         env:
+          LANE: ${{ inputs.lane || 'prod' }}
           FASTLANE_VERBOSE: "1"
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           APP_STORE_API_KEY: ${{ secrets.APP_STORE_API_KEY }}
