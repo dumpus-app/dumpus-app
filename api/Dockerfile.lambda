@@ -1,6 +1,6 @@
 # Single image used by both Lambda functions (api + worker). The active
 # handler is selected per-function via the Lambda ImageConfig.Command.
-FROM public.ecr.aws/lambda/python:3.10
+FROM public.ecr.aws/lambda/python:3.14
 
 WORKDIR ${LAMBDA_TASK_ROOT}
 

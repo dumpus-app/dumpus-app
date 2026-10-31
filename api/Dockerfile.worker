@@ -14,7 +14,7 @@ RUN go mod download
 COPY --from=processor . .
 RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -buildvcs=false -ldflags="-s -w" ./cmd/dumpus-processor
 
-FROM python:3.10-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 

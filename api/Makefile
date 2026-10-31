@@ -11,7 +11,7 @@ down:
 	docker compose down
 
 install:
-	uv venv --python 3.10
+	uv venv --python 3.14
 	. .venv/bin/activate
 	uv pip install -r requirements.txt
 
@@ -30,7 +30,7 @@ dev:
 # dumpus-processor, built from `processor/` with the flags of `Dockerfile.worker`.
 test:
 	set -e
-	[ -d .venv ] || uv venv --python 3.10
+	[ -d .venv ] || uv venv --python 3.14
 	uv pip install --quiet --python .venv/bin/python -r requirements-test.txt
 	if command -v npm > /dev/null && [ ! -d tests/client/node_modules ]; then npm ci --prefix tests/client; fi
 	CGO_ENABLED=0 go -C ../processor build -trimpath -buildvcs=false -o "$(CURDIR)/.bin/dumpus-processor" ./cmd/dumpus-processor
