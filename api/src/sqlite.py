@@ -1,3 +1,4 @@
+import contextlib
 import sqlite3
 import tempfile
 import gzip
@@ -13,7 +14,8 @@ def export_sqlite_to_bin(cur, conn):
 
     # creating a temporary file is the only way to get a file-like object from sqlite3 (the format the client expects)
     with tempfile.NamedTemporaryFile() as tempf:
-        with sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True) as disk_db:
+        # A connection's `with` commits but leaves it open; Python 3.13+ warns on that.
+        with contextlib.closing(sqlite3.connect('file:' + tempf.name + '?mode=rwc', uri=True)) as disk_db:
             conn.backup(disk_db)
 
         tempf.seek(0)
