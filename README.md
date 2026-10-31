@@ -1,5 +1,22 @@
 # [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
+> [!NOTE]
+> ⚡ Dumpus now processes packages in Go: **3.7× faster** and **5× less memory**.
+
+<details>
+<summary>Before and after</summary>
+
+|                                  | Python | Go     |
+| -------------------------------- | ------ | ------ |
+| Typical package (median)         | 16.8 s | 4.4 s  |
+| Large packages (90th percentile) | 48.4 s | 14.9 s |
+| Peak memory (median)             | 277 MB | 51 MB  |
+| Start-up                         | 0.27 s | 1.1 ms |
+
+Tested on real packages, 2 CPUs, median of 3 runs per package.
+
+</details>
+
 Dumpus is a cross-platform app that gives you advanced statistics on your Discord account. The application analyzes your "Discord Data Package", which you can request in the Discord application settings.
 
 You can join [our Discord server](https://androz2091.fr/discord) to keep up to date and give us your feedback.
@@ -24,7 +41,8 @@ or use the [web version](https://web.dumpus.app), or [Windows, macOS, Linux buil
 ## Made with
 
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/react/react.png"></code> **React** (front-end)  
-<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code> **Python** (back-end)  
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/python/python.png"></code> **Python** (API)  
+<code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/go/go.png"></code> **Go** (package processing)  
 <code><img height="20" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/postgresql/postgresql.png"></code> **PostgreSQL** (database)  
 <code><img height="20" src="https://3776657.fs1.hubspotusercontent-na1.net/hub/3776657/hubfs/capacitor-icon.png"></code> **Capacitor** (cross-platform support)
 
