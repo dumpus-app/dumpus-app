@@ -10,7 +10,8 @@ export default function PageHeader({
   discordLink,
 }: {
   title: string;
-  discordLink: string;
+  /** Left out while the channel's server isn't known yet. */
+  discordLink?: string;
 }) {
   const href = useRedirectParam("/top/channels");
 
@@ -21,11 +22,13 @@ export default function PageHeader({
       revealBorderOnScroll
       leftSlot={<Header.Icon href={href} icon={ChevronLeftIcon} />}
       rightSlot={
-        <Header.Icon
-          href={discordLink}
-          target="_blank"
-          icon={SimpleIconsDiscord}
-        />
+        discordLink && (
+          <Header.Icon
+            href={discordLink}
+            target="_blank"
+            icon={SimpleIconsDiscord}
+          />
+        )
       }
     />
   );

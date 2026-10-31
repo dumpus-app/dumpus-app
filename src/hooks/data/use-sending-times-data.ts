@@ -1,37 +1,22 @@
 "use client";
 
+import { localHours, messagesPerDayHour } from "./_hours";
 import { useDataSources } from "./_shared";
 
 export default function useSendingTimesData() {
   const { sql, start, end } = useDataSources();
 
+  /** Messages per hour of the day, on the device's clock. */
   function getChartData() {
-    const { data, hasError } = sql<{ hour: number; message_count: number }>`
-      SELECT
-        a.hour,
-        SUM(a.occurence_count) as message_count
-      FROM activity a
-      WHERE a.event_name = 'message_sent' 
-      AND a.day BETWEEN '${start}' AND '${end}'
-      GROUP BY hour
-      ORDER BY hour ASC;
-  `;
+    const rows = messagesPerDayHour(sql, start, end);
 
-    if (hasError) {
+    if (!rows) {
       return null;
     }
 
-    for (let i = 0; i < 24; i++) {
-      const stat: (typeof data)[0] | undefined = data[i];
-
-      if (!stat || stat?.hour !== i) {
-        data.splice(i, 0, { hour: i, message_count: 0 });
-      }
-    }
-
-    return data.map(({ hour, message_count }) => ({
+    return localHours(rows).map((value, hour) => ({
       label: hour,
-      value: message_count,
+      value,
     }));
   }
 

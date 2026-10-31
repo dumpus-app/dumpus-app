@@ -35,6 +35,7 @@ export default function Page() {
             UNKNOWN_ERROR: t("onboarding.loading.unknownError"),
             EXPIRED_LINK: t("onboarding.loading.expiredLink"),
             MISSING_USER_DATA: t("onboarding.loading.missingUserData"),
+            STORAGE_FULL: t("settings.actions.notEnoughStorage.description"),
           }[error]
         }
         url="/onboarding/access/link/"

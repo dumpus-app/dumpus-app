@@ -19,7 +19,7 @@ export default function Header({ progress, href }: Props) {
       {href ? (
         <Link
           href={href}
-          className="inline-flex h-full items-center text-brand-300 hover:underline"
+          className="inline-flex h-full pressable items-center text-brand-300 [--press-scale:0.94] hover:underline active:text-brand-400"
         >
           {t("onboarding.shared.previous")}
         </Link>

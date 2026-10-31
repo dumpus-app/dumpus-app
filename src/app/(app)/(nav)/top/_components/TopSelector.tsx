@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useUnmount } from "react-use";
+import LinkPending, { usePendingHref } from "~/components/LinkPending";
 import { useScrolled } from "~/hooks/use-layout";
 import { useTranslation } from "~/i18n/client";
 import { DEFAULT_SAFE_AREA_INSET_COLOR, useAppStore } from "~/stores";
@@ -36,6 +37,10 @@ export default function TopSelector({
     },
   ] as Omit<LinkType, "icon">[];
   const pathname = usePathname();
+  const pendingHref = usePendingHref();
+  const litLink =
+    links.find((link) => link.href === pendingHref) ??
+    links.find((link) => link.active(pathname));
   const scrolled = useScrolled();
   const setSafeAreaTopColor = useAppStore(({ ui }) => ui.setSafeAreaTopColor);
 
@@ -66,13 +71,14 @@ export default function TopSelector({
             key={link.href}
             href={link.href}
             className={clsx(
-              "w-full rounded-lg py-1 text-center transition-colors sm:px-4",
-              link.active(pathname)
+              "w-full pressable rounded-lg py-1 text-center [--press-scale:0.94] sm:px-4",
+              link === litLink
                 ? "bg-gray-800 text-brand-300"
-                : "text-gray-400 hover:bg-gray-800",
+                : "text-gray-400 hover:bg-gray-800 active:bg-gray-800",
             )}
           >
             {link.name}
+            <LinkPending href={link.href} />
           </Link>
         ))}
       </div>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { useTranslation } from "~/i18n/client";
+import LinkPending from "./LinkPending";
+import Spinner from "./Spinner";
 
 export type Props = {
   title: string;
@@ -17,9 +19,16 @@ export default function Section({ title, href, children, id }: Props) {
         {href ? (
           <Link
             href={href}
-            className="-mr-2 px-2 text-brand-300 hover:underline sm:text-lg"
+            className="relative -mr-2 pressable px-2 text-brand-300 [--press-scale:0.94] hover:underline active:text-brand-400 sm:text-lg"
           >
             {t("more")}
+            <LinkPending>
+              {(pending) =>
+                pending && (
+                  <Spinner className="absolute top-1/2 right-full size-3.5 -translate-y-1/2" />
+                )
+              }
+            </LinkPending>
           </Link>
         ) : (
           <div />

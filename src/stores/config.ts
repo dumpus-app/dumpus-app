@@ -1,8 +1,15 @@
 import type { useRouter } from "next/navigation";
-import { getStorageKey } from "~/hooks/use-sql-init";
 import type { PackageData } from "~/types/sql";
+import {
+  clearPackageBytes,
+  deletePackageBytes,
+  legacyKey,
+} from "~/utils/db-storage";
+import { createLogger } from "~/utils/logger";
 import { queryClient } from "~/utils/react-query";
 import { type CreateSlice } from ".";
+
+const logger = createLogger({ tag: "config" });
 
 export const timeRanges = ["4weeks", "6months", "year", "lifetime"] as const;
 
@@ -71,8 +78,10 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
   getUnselectedPackages(packages, selectedID) {
     return packages.filter(({ id }) => id !== selectedID);
   },
-  reset: () =>
-    set((state) => ({ config: { ...state.config, ...initialState } })),
+  reset: () => {
+    clearPackageBytes().catch((err) => logger.error(err));
+    set((state) => ({ config: { ...state.config, ...initialState } }));
+  },
   setPremium: (v) =>
     set((state) => ({ config: { ...state.config, premium: v } })),
   setTimeRange: (v) =>
@@ -100,7 +109,9 @@ export const createConfigSlice: CreateSlice<ConfigSlice> = (set, get) => ({
       config: { ...state.config, packages: [...state.config.packages, pkg] },
     })),
   deletePackage: ({ id, router }) => {
-    localStorage.removeItem(getStorageKey(id));
+    deletePackageBytes(id).catch((err) => logger.error(err));
+    // Still there when its move to IndexedDB failed.
+    localStorage.removeItem(legacyKey(id));
 
     const { packages } = get().config;
 

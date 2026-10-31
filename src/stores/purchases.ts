@@ -94,9 +94,12 @@ export const createPurchasesSlice: CreateSlice<PurchasesSlice> = (
         emitter.emit("purchases:transaction:approved", {
           key: productID,
         });
+        // Read before closing the dialog: a purchase made in it gets a
+        // thank-you, one approved in the background at start-up doesn't.
+        const boughtInDialog = get().ui.showInAppPurchasesDialog;
         get().config.setPremium(true);
         get().ui.setShowInAppPurchasesDialog(false);
-        if (get().ui.showInAppPurchasesDialog || get().purchases.restoring) {
+        if (boughtInDialog || get().purchases.restoring) {
           notify(productID);
         }
         await transaction.finish();

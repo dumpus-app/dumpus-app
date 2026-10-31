@@ -1,5 +1,6 @@
 "use client";
 
+import PageEnter from "~/components/PageEnter";
 import TopNav from "../(nav)/_components/TopNav";
 import About from "./_components/About";
 import Actions from "./_components/Actions";
@@ -13,15 +14,17 @@ export default function Page() {
   return (
     <>
       <TopNav />
-      <PageHeader />
-      <About />
-      <PackageDetails />
-      <Actions />
-      <PackageSwitch />
-      <div className="desktop-container flex flex-col sm:flex-row sm:gap-2 sm:px-2">
-        <Languages />
-        <DangerZone />
-      </div>
+      <PageEnter className="flex grow flex-col">
+        <PageHeader />
+        <About />
+        <PackageDetails />
+        <Actions />
+        <PackageSwitch />
+        <div className="desktop-container flex flex-col sm:flex-row sm:gap-2 sm:px-2">
+          <Languages />
+          <DangerZone />
+        </div>
+      </PageEnter>
     </>
   );
 }

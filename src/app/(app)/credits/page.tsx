@@ -1,3 +1,4 @@
+import PageEnter from "~/components/PageEnter";
 import TopNav from "../(nav)/_components/TopNav";
 import Back from "./_components/Back";
 import Contributors from "./_components/Contributors";
@@ -8,10 +9,12 @@ export default function Page() {
   return (
     <>
       <TopNav />
-      <PageHeader />
-      <Back />
-      <Roles />
-      <Contributors />
+      <PageEnter className="flex grow flex-col">
+        <PageHeader />
+        <Back />
+        <Roles />
+        <Contributors />
+      </PageEnter>
     </>
   );
 }
