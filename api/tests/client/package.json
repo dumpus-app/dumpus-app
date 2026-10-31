@@ -1,0 +1,10 @@
+{
+  "name": "dumpus-api-client-check",
+  "private": true,
+  "description": "Opens API blobs with the app's decryption, pako and sql.js, for the API test suite.",
+  "type": "module",
+  "dependencies": {
+    "pako": "2.1.0",
+    "sql.js": "1.14.1"
+  }
+}

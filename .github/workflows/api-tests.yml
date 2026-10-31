@@ -1,0 +1,84 @@
+name: api-tests
+
+on:
+  pull_request:
+    paths:
+      - "api/**"
+      # The worker runs dumpus-processor, built from processor/.
+      - "processor/**"
+      - ".github/workflows/api-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: api
+
+    services:
+      postgres:
+        # Same image as `api/docker-compose.yml`.
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: dumpus
+          POSTGRES_PASSWORD: dumpus
+          POSTGRES_DB: dumpus_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dumpus -d dumpus_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      DUMPUS_TEST_POSTGRES_URL: postgresql+psycopg2://dumpus:dumpus@127.0.0.1:5432/dumpus_test
+      DUMPUS_PROCESSOR: ${{ github.workspace }}/api/.bin/dumpus-processor
+      # Fail instead of skipping when the Node client check can't run.
+      DUMPUS_REQUIRE_CLIENT: "1"
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          # Same as the API images.
+          python-version: "3.10"
+          cache: pip
+          cache-dependency-path: |
+            api/requirements.txt
+            api/requirements-test.txt
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          # Same as `processor.yml`; `golang:1.26` in `Dockerfile.worker`.
+          go-version: "1.26.x"
+          cache-dependency-path: processor/go.sum
+
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: api/tests/client/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements-test.txt
+          npm ci --prefix tests/client
+
+      # The flags of `Dockerfile.worker`, as in `make test`.
+      - name: Build dumpus-processor
+        env:
+          CGO_ENABLED: "0"
+        run: go -C ../processor build -trimpath -buildvcs=false -o "$DUMPUS_PROCESSOR" ./cmd/dumpus-processor
+
+      - name: Test
+        run: pytest

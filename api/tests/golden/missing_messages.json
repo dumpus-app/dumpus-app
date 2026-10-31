@@ -1,0 +1,56 @@
+{
+  "indexes": [
+    "idx_activity_event_channel_day",
+    "idx_activity_event_guild_day",
+    "idx_dm_channels_dm_user_id",
+    "idx_guild_channels_guild_id",
+    "idx_sessions_started_date",
+    "idx_voice_sessions_started_date"
+  ],
+  "outcome": "PROCESSED",
+  "package_data": [
+    {
+      "package_id": "44c5597b9dc9600232d31c6aa1f5a97c",
+      "package_is_partial": 1,
+      "package_owner_avatar_url": "https://cdn.discordapp.com/avatars/100000000000000001/f00dfacef00dfacef00dfacef00dface.jpg",
+      "package_owner_display_name": "Synthetic Owner",
+      "package_owner_id": "100000000000000001",
+      "package_owner_name": "synthetic_owner",
+      "package_version": "0.1.0"
+    }
+  ],
+  "tables": {
+    "activity": {
+      "rows": 22,
+      "sha256": "2ccfa275bd9c596a6a008a81d06697391d7d2e71794a471a897bdd440c63775e"
+    },
+    "dm_channels_data": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "guild_channels_data": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "guilds": {
+      "rows": 3,
+      "sha256": "fc450192aa67a881dadad58903a557f027e6a2a97abe585c112c4f1a4ffe82f8"
+    },
+    "package_data": {
+      "rows": 1,
+      "sha256": "5925bf2e276a40ef2b4b4e9165f827e14fb703d3d7b6f444f1a5ffbb566e9f40"
+    },
+    "payments": {
+      "rows": 2,
+      "sha256": "ae04ad33dc8b50c5323d13dbde8cd8e95c61c51fc8bbea58e2610aca13ae3667"
+    },
+    "sessions": {
+      "rows": 5,
+      "sha256": "6fd73b1da6dcb4b3734c98a6a9ce3ccd5710b7c7f93f255e194b81904cbbbc1b"
+    },
+    "voice_sessions": {
+      "rows": 4,
+      "sha256": "0bab52e3258a281de6fdf9d0eeddb3710bab5dd65eb0b156e84cf3addf108aa7"
+    }
+  }
+}
