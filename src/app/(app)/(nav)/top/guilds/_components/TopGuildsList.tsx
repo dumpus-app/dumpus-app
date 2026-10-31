@@ -75,9 +75,10 @@ function GuildCard({
 export default function TopGuildsList() {
   const { getData, count } = useTopGuildsData();
   const timeRange = useAppStore(({ config }) => config.timeRange);
+  const selectedID = useAppStore(({ config }) => config.selectedID);
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
-    queryKey: ["top-guilds", timeRange],
+    queryKey: ["top-guilds", selectedID, timeRange],
     queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
     initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,

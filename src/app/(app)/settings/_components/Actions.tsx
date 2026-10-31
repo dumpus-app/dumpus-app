@@ -1,6 +1,5 @@
 "use client";
 
-import { XCircleIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,13 +7,8 @@ import { useShallow } from "zustand/react/shallow";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import usePackageAPI from "~/hooks/use-package-api";
-import useToast from "~/hooks/use-toast";
 import { useTranslation } from "~/i18n/client";
 import { useAppStore, useSelectedPackage } from "~/stores";
-import {
-  LOCALSTORAGE_MAX_CAPACITY,
-  getLocalStorageSize,
-} from "~/utils/browser";
 import { queryClient } from "~/utils/react-query";
 
 export default function Actions() {
@@ -50,30 +44,13 @@ export default function Actions() {
     setLoading(false);
   }
 
-  const toast = useToast();
-
   // During reset
   if (!selectedPackage) return null;
 
   return (
     <Section title={t("settings.actions.title")}>
       <div className="grid grid-cols-1 gap-2 px-2 sm:grid-cols-2">
-        <Button
-          asChild
-          variant="brand"
-          onClick={(e) => {
-            const size = getLocalStorageSize();
-            if (size >= LOCALSTORAGE_MAX_CAPACITY) {
-              e.preventDefault();
-              toast({
-                variant: "danger",
-                title: t("settings.actions.notEnoughStorage.title"),
-                description: t("settings.actions.notEnoughStorage.description"),
-                icon: XCircleIcon,
-              });
-            }
-          }}
-        >
+        <Button asChild variant="brand">
           <Link onClick={() => queryClient.clear()} href="/onboarding/access">
             {t("settings.actions.addPackage")}
           </Link>

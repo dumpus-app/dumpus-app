@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronRightIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -8,6 +8,7 @@ import Section from "~/components/Section";
 import { afterNextPaint } from "~/components/after-paint";
 import DetailCard from "~/components/data/DetailCard";
 import useSQLInit from "~/hooks/use-sql-init";
+import useToast from "~/hooks/use-toast";
 import { useTranslation } from "~/i18n/client";
 import { useAppStore } from "~/stores";
 import { formatDate } from "~/utils/format";
@@ -22,6 +23,7 @@ export default function PackageSwitch() {
   } | null>(null);
   const router = useRouter();
   const { init } = useSQLInit();
+  const toast = useToast();
   const [setSelectedID, selectedID, packages] = useAppStore(
     useShallow(({ config }) => [
       config.setSelectedID,
@@ -60,14 +62,27 @@ export default function PackageSwitch() {
               reverseTexts
               onClick={() => {
                 if (switching) return;
-                setSwitching({ id, from: selectedID });
+                const from = selectedID;
+                setSwitching({ id, from });
                 // Reading the package holds the main thread: the pending row
                 // is painted first.
                 afterNextPaint(() => {
                   setSelectedID(id);
-                  init({ id }).then(() => {
-                    router.push("/overview/");
-                  });
+                  init({ id })
+                    .then(() => {
+                      router.push("/overview/");
+                    })
+                    .catch(() => {
+                      // The open database is still the previous package's.
+                      setSelectedID(from);
+                      setSwitching(null);
+                      toast({
+                        variant: "danger",
+                        title: t("error.error"),
+                        description: t("onboarding.loading.unknownError"),
+                        icon: XCircleIcon,
+                      });
+                    });
                 });
               }}
               rightIcon={ChevronRightIcon}

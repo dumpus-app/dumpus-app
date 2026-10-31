@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
@@ -27,6 +28,7 @@ export default function Page() {
   const nextID = getNextID(selectedID);
   const { init } = useSQLInit();
   const api = usePackageAPI({});
+  const [initFailed, setInitFailed] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["demo", "data"],
@@ -45,16 +47,19 @@ export default function Page() {
           UPNKey,
           backendURL: DEFAULT_PACKAGE_API_URL,
         },
-      }).then(() => {
-        router.replace("/overview/");
-      });
+      })
+        .then(() => {
+          router.replace("/overview/");
+        })
+        .catch(() => setInitFailed(true));
       return null;
     },
     staleTime: Infinity,
     enabled: !!data?.data,
   });
 
-  const error = data?.errorMessageCode || undefined;
+  const error =
+    data?.errorMessageCode || (initFailed ? "UNKNOWN_ERROR" : undefined);
 
   if (error) {
     return (
@@ -63,6 +68,7 @@ export default function Page() {
           {
             UNKNOWN_PACKAGE_ID: t("onboarding.loading.unknownPackageId"),
             UNAUTHORIZED: t("onboarding.loading.unauthorized"),
+            UNKNOWN_ERROR: t("onboarding.loading.unknownError"),
           }[error]
         }
         url="/onboarding/access/"
