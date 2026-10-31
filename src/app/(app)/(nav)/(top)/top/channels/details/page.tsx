@@ -14,8 +14,23 @@ import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
 import { formatHour, formatNumber } from "~/utils/format";
 import { firstCharFromUnicode } from "~/utils";
+import Deferred from "~/components/Deferred";
+import DetailsSkeleton from "~/components/DetailsSkeleton";
+import PageEnter from "~/components/PageEnter";
 
 export default function Page() {
+  return (
+    <Deferred
+      fallback={<DetailsSkeleton header={<PageHeader title="" />} stats={4} />}
+    >
+      <PageEnter className="flex grow flex-col">
+        <ChannelDetails />
+      </PageEnter>
+    </Deferred>
+  );
+}
+
+function ChannelDetails() {
   const params = useSearchParams()!;
   const channelID = params.get("id")!;
 

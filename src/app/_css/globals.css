@@ -61,11 +61,124 @@
 html {
   color-scheme: dark;
   -webkit-tap-highlight-color: transparent;
-  @apply scroll-smooth;
+  @apply motion-safe:scroll-smooth;
   @apply select-none selection:bg-brand-950 selection:text-brand-400 sm:select-auto;
   @apply overflow-y-scroll;
 }
 
 [id] {
   @apply scroll-mt-28;
+}
+
+/*
+  Tailwind 4 applies `hover:` only on devices that can hover, so on a phone
+  this is all a tap shows until the app answers. The scale is a transform,
+  which the compositor keeps drawing while a query holds the main thread.
+  Colours change without a transition: one runs on the main thread, so a tab
+  lit just before its page's queries would stay half lit until they finish.
+*/
+@utility pressable {
+  transition-property: transform, filter;
+  transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition-duration: 200ms;
+  touch-action: manipulation;
+
+  &:active:not(:disabled) {
+    transform: scale(var(--press-scale, 0.97));
+    transition-duration: 50ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &:active:not(:disabled) {
+      transform: none;
+      filter: brightness(1.25);
+    }
+  }
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pending-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+@keyframes spinner-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes soft-pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/*
+  Opacity and transform only, which run on the compositor, and no fill mode,
+  so no transform stays behind to trap `position: fixed` descendants.
+*/
+@utility page-enter {
+  animation: page-enter 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade-in 180ms ease-out;
+  }
+}
+
+/* Rows added to a list once its page is there, for eg. by "Load more". */
+@utility row-enter {
+  animation: page-enter 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: fade-in 160ms ease-out;
+  }
+
+  .page-enter & {
+    animation: none;
+  }
+}
+
+/* The moving part of `PendingBar`. */
+@utility pending-slide {
+  animation: pending-slide 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: soft-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+/* `Spinner`: it shows up after 100 ms, so a shorter wait doesn't flash it. */
+@utility spinner {
+  animation:
+    fade-in 150ms ease-out 100ms backwards,
+    spinner-turn 0.8s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation:
+      fade-in 150ms ease-out 100ms backwards,
+      soft-pulse 1.6s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-spin-slow {
+    animation: soft-pulse 1.6s ease-in-out infinite;
+  }
 }

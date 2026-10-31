@@ -111,24 +111,24 @@ export default function LinkForm() {
         <Disclosure>
           {({ open }) => (
             <>
-              <Disclosure.Button className="mx-auto text-gray-400 transition-colors hover:text-white">
+              <Disclosure.Button className="mx-auto pressable text-gray-400 [--press-scale:0.96] hover:text-white active:text-white">
                 <div className="flex items-center">
                   <span>{t("onboarding.access.methods.link.advanced")}</span>
                   <ChevronDownIcon
                     className={clsx(
-                      "ml-1 h-5 w-5 transition-transform duration-300 ease-in-out",
+                      "ml-1 h-5 w-5 duration-200 ease-out motion-safe:transition-transform",
                       open ? "rotate-180 transform" : "",
                     )}
                   />
                 </div>
               </Disclosure.Button>
               <Transition
-                enter="transition duration-100 ease-out"
-                enterFrom="transform scale-95 opacity-0"
-                enterTo="transform scale-100 opacity-100"
-                leave="transition duration-75 ease-out"
-                leaveFrom="transform scale-100 opacity-100"
-                leaveTo="transform scale-95 opacity-0"
+                enter="transition duration-150 ease-out"
+                enterFrom="motion-safe:scale-95 opacity-0"
+                enterTo="scale-100 opacity-100"
+                leave="transition duration-100 ease-out"
+                leaveFrom="scale-100 opacity-100"
+                leaveTo="motion-safe:scale-95 opacity-0"
               >
                 <Disclosure.Panel>
                   <Form.Field

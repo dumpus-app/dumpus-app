@@ -2,6 +2,8 @@
 
 import clsx from "clsx";
 import Link from "next/link";
+import LinkPending from "~/components/LinkPending";
+import Spinner from "~/components/Spinner";
 import { Icon } from "~/types";
 
 export type Props = Omit<
@@ -16,6 +18,8 @@ export type Props = Omit<
   reverseTexts?: boolean;
   href?: React.ComponentProps<typeof Link>["href"];
   disabled?: boolean;
+  /** What a tap started is running: a spinner takes the right icon's place. */
+  pending?: boolean;
 };
 
 export default function DetailCard({
@@ -28,6 +32,7 @@ export default function DetailCard({
   reverseTexts = false,
   href = "#",
   disabled,
+  pending = false,
   onClick,
   ...rest
 }: Props) {
@@ -42,11 +47,13 @@ export default function DetailCard({
         }
         onClick?.(e);
       }}
+      aria-busy={pending || undefined}
       {...rest}
       className={clsx(
-        "flex items-center space-x-2 rounded-lg bg-gray-900 p-2 text-gray-400 transition-colors",
+        "flex items-center space-x-2 rounded-lg p-2 text-gray-400",
+        pending ? "bg-gray-800" : "bg-gray-900",
         interactive && !disabled
-          ? "cursor-pointer hover:bg-gray-800 hover:text-gray-300"
+          ? "pressable cursor-pointer [--press-scale:0.98] hover:bg-gray-800 hover:text-gray-300 active:bg-gray-800 active:text-gray-300 has-[[data-pending]]:bg-gray-800"
           : "cursor-default",
         disabled && "pointer-events-none opacity-50",
         className,
@@ -66,7 +73,20 @@ export default function DetailCard({
           {description}
         </div>
       </div>
-      {rightSlot || (RightIcon && <RightIcon className="h-7 w-7 shrink-0" />)}
+      {rightSlot ||
+        (RightIcon && (
+          <LinkPending>
+            {(navigating) =>
+              pending || navigating ? (
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center text-gray-300">
+                  <Spinner />
+                </span>
+              ) : (
+                <RightIcon className="h-7 w-7 shrink-0" />
+              )
+            }
+          </LinkPending>
+        ))}
     </Link>
   );
 }
@@ -77,7 +97,7 @@ export type WithRankProps = Props & {
 
 function WithRank({ rank, className, ...rest }: WithRankProps) {
   return (
-    <div className="flex items-center">
+    <div className="flex row-enter items-center">
       <div className="flex aspect-square h-full shrink-0 items-center justify-center text-2xl font-bold text-white">
         #{rank}
       </div>

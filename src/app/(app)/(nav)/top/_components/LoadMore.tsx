@@ -1,15 +1,25 @@
 "use client";
 
 import clsx from "clsx";
+import { useState } from "react";
 import Button from "~/components/Button";
+import { afterNextPaint } from "~/components/after-paint";
+import Spinner from "~/components/Spinner";
 import { useAppStore } from "~/stores";
 import { useTranslation } from "~/i18n/client";
 import { useShallow } from "zustand/react/shallow";
 
 const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 
-export default function LoadMore({ loadMore }: { loadMore: () => void }) {
+export default function LoadMore({
+  loadMore,
+}: {
+  loadMore: () => Promise<unknown>;
+}) {
   const { t } = useTranslation();
+  // The next page's query runs inside `loadMore` and holds the main thread,
+  // so the button shows it's working first.
+  const [loading, setLoading] = useState(false);
   const [premium, setOpen] = useAppStore(
     useShallow(({ config, ui }) => [
       config.premium,
@@ -30,13 +40,23 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
       <div className="mt-8 flex justify-center">
         <button
           type="button"
-          onClick={() => loadMore()}
+          aria-busy={loading || undefined}
+          onClick={() => {
+            if (loading) return;
+            setLoading(true);
+            afterNextPaint(() => {
+              loadMore().finally(() => setLoading(false));
+            });
+          }}
           className={clsx(
-            "text-brand-300 hover:underline",
+            "relative pressable text-brand-300 [--press-scale:0.94] hover:underline active:text-brand-400",
             isMobile ? (premium ? "block" : "hidden") : "block",
           )}
         >
           {t("stats.top.loadMore")}
+          {loading && (
+            <Spinner className="absolute top-1/2 left-full ml-2 -translate-y-1/2" />
+          )}
         </button>
         <Button
           variant="premium"

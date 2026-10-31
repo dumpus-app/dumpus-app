@@ -12,8 +12,35 @@ import TopUsedBots from "./_components/TopUsedBots";
 import NoDataAvailable from "~/components/NoDataAvailable";
 import NotFoundState from "~/components/NotFoundState";
 import { formatHour, formatNumber } from "~/utils/format";
+import Deferred from "~/components/Deferred";
+import DetailsSkeleton from "~/components/DetailsSkeleton";
+import PageEnter from "~/components/PageEnter";
 
 export default function Page() {
+  const id = useSearchParams()!.get("id")!;
+
+  return (
+    <Deferred
+      fallback={
+        <DetailsSkeleton
+          header={
+            <PageHeader
+              title=""
+              discordLink={`https://discord.com/guilds/${id}`}
+            />
+          }
+          stats={3}
+        />
+      }
+    >
+      <PageEnter className="flex grow flex-col">
+        <GuildDetails />
+      </PageEnter>
+    </Deferred>
+  );
+}
+
+function GuildDetails() {
   const params = useSearchParams()!;
   const id = params.get("id")!;
 

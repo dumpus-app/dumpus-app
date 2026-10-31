@@ -46,7 +46,7 @@ export default function Page() {
           {data.map(({ os, display, icon: Icon }) => (
             <Tab
               key={os}
-              className="flex aspect-square h-20 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-900 p-2 text-gray-400 data-selected:text-brand-300"
+              className="flex aspect-square h-20 shrink-0 pressable flex-col items-center justify-center rounded-lg bg-gray-900 p-2 text-gray-400 [--press-scale:0.95] active:bg-gray-800 data-selected:text-brand-300"
             >
               <Icon className="h-12 w-12" />
               <div>{display}</div>

@@ -30,7 +30,7 @@ export default function ExitDemoBanner() {
       onClick={(e) => handler()}
       disabled={loading}
       size="sm"
-      className="rounded-none"
+      className="rounded-none [--press-scale:0.99]"
     >
       {loading ? t("exitingDemo") : t("exitDemo")}
     </Button>

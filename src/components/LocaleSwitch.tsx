@@ -42,7 +42,7 @@ function LocalesList({ close }: { close: () => void }) {
               clsx(
                 checked ? "border-transparent" : "border-gray-800",
                 active ? "border-brand-700 ring-2 ring-brand-700" : "",
-                "relative block cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 focus:outline-hidden",
+                "relative block pressable cursor-pointer rounded-lg border bg-gray-950 px-6 py-4 [--press-scale:0.98] focus:outline-hidden active:bg-gray-900",
               )
             }
           >
@@ -85,10 +85,10 @@ function LocaleSwitchDialog({
       <Dialog as="div" className="relative z-50" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-200"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-in duration-150"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -99,12 +99,12 @@ function LocaleSwitchDialog({
           <div className="flex min-h-full w-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enter="ease-out duration-200"
+              enterFrom="opacity-0 motion-safe:translate-y-4 motion-safe:sm:translate-y-0 motion-safe:sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-150"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              leaveTo="opacity-0 motion-safe:translate-y-4 motion-safe:sm:translate-y-0 motion-safe:sm:scale-95"
             >
               <Dialog.Panel className="relative transform overflow-hidden rounded-lg border border-gray-800 bg-gray-900 px-4 pt-5 pb-4 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                 <div className="text-center">

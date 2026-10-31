@@ -35,10 +35,10 @@ function TrustDialog({
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-out duration-200"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-in duration-150"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
@@ -49,12 +49,12 @@ function TrustDialog({
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              enter="ease-out duration-200"
+              enterFrom="opacity-0 motion-safe:translate-y-4 motion-safe:sm:translate-y-0 motion-safe:sm:scale-95"
               enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
+              leave="ease-in duration-150"
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              leaveTo="opacity-0 motion-safe:translate-y-4 motion-safe:sm:translate-y-0 motion-safe:sm:scale-95"
             >
               <Dialog.Panel className="relative transform rounded-lg border border-gray-800 bg-gray-900 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md">
                 <div>
@@ -112,7 +112,7 @@ export default function Footer({ href, label }: Props) {
         {showGetDataLink && (
           <Link
             href="/onboarding/intro/1"
-            className="w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+            className="w-full pressable py-3 text-gray-400 underline [--press-scale:0.98] hover:text-gray-300 active:text-gray-200"
           >
             {t("onboarding.shared.getData")}
           </Link>
@@ -121,7 +121,7 @@ export default function Footer({ href, label }: Props) {
           <button
             type="button"
             onClick={(e) => setOpen(true)}
-            className="mt-2 w-full py-3 text-gray-400 underline transition-colors hover:text-gray-300"
+            className="mt-2 w-full pressable py-3 text-gray-400 underline [--press-scale:0.98] hover:text-gray-300 active:text-gray-200"
           >
             {t("onboarding.shared.trust")}
           </button>

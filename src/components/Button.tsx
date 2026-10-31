@@ -7,15 +7,18 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 const buttonVariants = cva(
   [
-    "flex items-center justify-center rounded-lg font-medium transition-colors disabled:opacity-75",
+    "pressable flex items-center justify-center rounded-lg font-medium disabled:opacity-75",
   ],
   {
     variants: {
       variant: {
-        brand: "bg-brand-300 hover:bg-brand-400 text-gray-950",
-        danger: "bg-danger-300 hover:bg-danger-400 text-gray-950",
-        gray: "bg-gray-700 hover:bg-gray-600 text-gray-200",
-        premium: "bg-yellow-300 hover:bg-yellow-400 text-gold-800",
+        brand:
+          "bg-brand-300 hover:bg-brand-400 active:bg-brand-400 text-gray-950",
+        danger:
+          "bg-danger-300 hover:bg-danger-400 active:bg-danger-400 text-gray-950",
+        gray: "bg-gray-700 hover:bg-gray-600 active:bg-gray-600 text-gray-200",
+        premium:
+          "bg-yellow-300 hover:bg-yellow-400 active:bg-yellow-400 text-gold-800",
       },
       size: {
         sm: "px-4 py-2 text-base",
