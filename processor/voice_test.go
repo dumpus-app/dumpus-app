@@ -3,6 +3,7 @@ package processor
 import (
 	"cmp"
 	"fmt"
+	"math/bits"
 	"math/rand/v2"
 	"reflect"
 	"slices"
@@ -121,6 +122,38 @@ func TestVoiceSessionsAtScale(t *testing.T) {
 		got := buildVoiceSessions(slices.Clone(events), testNames)
 		if !reflect.DeepEqual(got, want) {
 			t.Fatalf("sequence %d: %d sessions, want %d", i, len(got), len(want))
+		}
+	}
+}
+
+// TestVoicePairingWork counts the steps of the pairing's searches, where a
+// timing would flake on a slow machine: on joins each accepted before all the
+// others, which made sorted slices shift every accepted session, and on one
+// channel with many leaves, a quadratic search fails it.
+func TestVoicePairingWork(t *testing.T) {
+	n := newNames()
+	for _, pairs := range []int{1 << 8, 1 << 12, 1 << 15} {
+		var spread, oneChannel []voiceEvent
+		one := n.id([]byte("c00000000"))
+		for i := range pairs {
+			ch := n.id(fmt.Appendf(nil, "c%08d", i))
+			ts := int64(2_000_000_000) - int64(i)*120
+			spread = append(spread, voiceEvent{ts: ts, order: uint64(2 * i), channel: ch, join: true},
+				voiceEvent{ts: ts, order: uint64(2*i + 1), channel: ch})
+			ts = int64(2_000_000_000) + int64(i)*120
+			oneChannel = append(oneChannel, voiceEvent{ts: ts, order: uint64(2 * i), channel: one, join: true},
+				voiceEvent{ts: ts + 60, order: uint64(2*i + 1), channel: one})
+		}
+		for name, events := range map[string][]voiceEvent{"spread": spread, "one channel": oneChannel} {
+			out, steps := pairVoice(events, n)
+			if len(out) != pairs {
+				t.Fatalf("%s, %d pairs: %d sessions", name, pairs, len(out))
+			}
+			// A search for the leave, a lookup and an insertion per join, each
+			// at most twice the depth of its tree.
+			if limit := 6 * pairs * bits.Len(uint(len(events))); steps > limit {
+				t.Errorf("%s, %d pairs: %d steps, want at most %d", name, pairs, steps, limit)
+			}
 		}
 	}
 }
