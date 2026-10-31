@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "github_deploy" {
   count = local.github_oidc_enabled ? 1 : 0
 
   statement {
-    sid     = "S3Sync"
+    sid = "S3Sync"
     actions = [
       "s3:PutObject",
       "s3:DeleteObject",
@@ -56,8 +56,8 @@ data "aws_iam_policy_document" "github_deploy" {
   }
 
   statement {
-    sid     = "CloudFrontInvalidate"
-    actions = ["cloudfront:CreateInvalidation"]
+    sid       = "CloudFrontInvalidate"
+    actions   = ["cloudfront:CreateInvalidation"]
     resources = [aws_cloudfront_distribution.site.arn]
   }
 }

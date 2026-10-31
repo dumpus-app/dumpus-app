@@ -9,13 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Compress Images
         id: calibre
-        uses: calibreapp/image-actions@main
+        uses: calibreapp/image-actions@1.5.0
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: true
           # `pngQuality` quantizes colors, which would break the e2e screenshot
           # comparisons.
@@ -23,7 +22,7 @@ jobs:
 
       - name: Create New Pull Request If Needed
         if: steps.calibre.outputs.markdown != ''
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v8
         with:
           title: Compressed Images Nightly
           branch-suffix: timestamp

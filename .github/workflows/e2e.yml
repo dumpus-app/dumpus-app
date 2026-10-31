@@ -32,7 +32,7 @@ jobs:
       options: --ipc=host
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # The image's Node and the `packageManager` pnpm, like
       # `scripts/e2e-docker.sh`.
@@ -45,7 +45,7 @@ jobs:
 
       - name: Upload the Playwright report
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: |
