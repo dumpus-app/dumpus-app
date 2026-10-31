@@ -136,6 +136,13 @@ resource "aws_instance" "fck_nat" {
   # Ensure the EIP is attached to the ENI before the instance starts using it
   # — otherwise EIP association races with the instance's ENI attachment.
   depends_on = [aws_eip.fck_nat]
+
+  # `most_recent` finds a newer fck-nat AMI whenever one is published, and
+  # replacing the instance cuts the private subnets' egress. Move to a new AMI
+  # on purpose, with `-replace`, in a window that allows it.
+  lifecycle {
+    ignore_changes = [ami]
+  }
 }
 
 resource "aws_route_table" "private" {
