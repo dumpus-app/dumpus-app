@@ -96,6 +96,7 @@ Here's the requested documentation in markdown format, providing a description f
 | package_owner_display_name | The display name of the package owner.                                                    |
 | package_owner_avatar_url | The URL of the package owner's avatar image.                                                |
 | package_is_partial      | Indicates if the package is partial (1 for true, 0 for false).                               |
+| activity_stream         | The activity stream read: 'analytics', 'reporting' (a reduced stream, which lacks a dozen event types), or NULL when the package has none. Absent from databases processed before it existed. |
 
 ---
 
