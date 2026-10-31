@@ -1,3 +1,15 @@
+# dumpus-processor, which the API runs on each package with
+# `QUEUE_BACKEND=sync`, built as in `Dockerfile.worker`: processor/ comes in as
+# the named build context `processor`, so from the repo root:
+# `docker buildx build --build-context processor=processor -f api/Dockerfile.api api`
+FROM --platform=$BUILDPLATFORM golang:1.26 AS processor-build
+ARG TARGETOS TARGETARCH
+WORKDIR /src
+COPY --from=processor go.mod go.sum ./
+RUN go mod download
+COPY --from=processor . .
+RUN CGO_ENABLED=0 GOOS=$TARGETOS GOARCH=$TARGETARCH go build -trimpath -buildvcs=false -ldflags="-s -w" ./cmd/dumpus-processor
+
 FROM python:3.14-slim-trixie
 
 # Create application directory and move there
@@ -8,6 +20,8 @@ COPY requirements.txt ./
 
 # Install these requirements
 RUN pip install --no-cache-dir --prefer-binary -r requirements.txt
+
+COPY --from=processor-build /src/dumpus-processor /usr/local/bin/dumpus-processor
 
 # Copy the rest of the application files
 COPY . .

@@ -1,0 +1,12 @@
+# `Dockerfile.api` copies the whole folder: keep secrets, local
+# environments and caches out of the image.
+.env
+.env.*
+!.env.example
+.venv*
+.bin
+.pytest_cache
+.vscode
+tmp
+**/__pycache__
+infra/**/.terraform
