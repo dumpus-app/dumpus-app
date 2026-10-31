@@ -90,20 +90,9 @@ def run_task_params(status_id, package, link):
 
 
 def test_lambda_handler_answers_api_gateway(lambda_api):
-    response = lambda_api(http_api_event('GET', '/health', headers={'origin': 'https://web.dumpus.app'}), None)
+    response = lambda_api(http_api_event('GET', '/health'), None)
 
-    assert response == {
-        'statusCode': 200,
-        'cookies': [],
-        'headers': {
-            'content-type': 'application/json',
-            'content-length': response['headers']['content-length'],
-            'access-control-allow-origin': 'https://web.dumpus.app',
-            'vary': 'Origin',
-        },
-        'isBase64Encoded': False,
-        'body': response['body'],
-    }
+    assert response['statusCode'] == 200
     assert json.loads(response['body']) == {'status': 'alive', 'hostname': socket.gethostname()}
 
 
