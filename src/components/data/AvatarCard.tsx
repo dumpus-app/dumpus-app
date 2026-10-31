@@ -34,7 +34,7 @@ export default function AvatarCard({
         <span className="text-gray-400">{rank}. </span>
         <span className="font-bold text-white">{name}</span>
       </div>
-      <div className="overflow-hidden text-ellipsis whitespace-nowrap text-sm text-gray-400 sm:text-lg">
+      <div className="overflow-hidden text-sm text-ellipsis whitespace-nowrap text-gray-400 sm:text-lg">
         {t("stats.messages", {
           value: formatNumber(messages),
         })}

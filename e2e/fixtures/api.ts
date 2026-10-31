@@ -16,10 +16,7 @@ export type Package = { dataset: Dataset; blob: Buffer; iv: string | null };
 type ProcessingStep = "LOCKED" | "DOWNLOADING" | "ANALYZING" | "PROCESSED";
 
 export type StatusError =
-  | "UNKNOWN_ERROR"
-  | "EXPIRED_LINK"
-  | "INVALID_LINK"
-  | "MISSING_USER_DATA";
+  "UNKNOWN_ERROR" | "EXPIRED_LINK" | "INVALID_LINK" | "MISSING_USER_DATA";
 
 type Held = "process" | "status" | "blob";
 

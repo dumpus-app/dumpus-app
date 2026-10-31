@@ -64,7 +64,8 @@ export default function TopDMsList() {
 
   const { data: queryData, fetchNextPage } = useInfiniteQuery({
     queryKey: ["top-dms", timeRange],
-    queryFn: ({ pageParam = 0 }) => getData({ offset: pageParam })!,
+    queryFn: ({ pageParam }) => getData({ offset: pageParam })!,
+    initialPageParam: 0,
     getNextPageParam: (lastPage, pages) => pages.length,
   });
 
@@ -73,7 +74,7 @@ export default function TopDMsList() {
   const data = queryData?.pages.flat() || getData({})!;
 
   return (
-    <div className="px-2 py-4 desktop-container sm:py-8">
+    <div className="desktop-container px-2 py-4 sm:py-8">
       <div className="grid gap-2 sm:grid-cols-2">
         {data.map((dm) => (
           <DMCard key={dm.rank} dm={dm} />

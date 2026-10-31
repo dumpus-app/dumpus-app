@@ -4,15 +4,17 @@ import clsx from "clsx";
 import Button from "~/components/Button";
 import { useAppStore } from "~/stores";
 import { useTranslation } from "~/i18n/client";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 
 export default function LoadMore({ loadMore }: { loadMore: () => void }) {
   const { t } = useTranslation();
   const [premium, setOpen] = useAppStore(
-    ({ config, ui }) => [config.premium, ui.setShowInAppPurchasesDialog],
-    shallow,
+    useShallow(({ config, ui }) => [
+      config.premium,
+      ui.setShowInAppPurchasesDialog,
+    ]),
   );
 
   return (
@@ -23,7 +25,7 @@ export default function LoadMore({ loadMore }: { loadMore: () => void }) {
           isMobile ? (premium ? "hidden" : "block") : "hidden",
         )}
       >
-        <div className="absolute inset-0 top-auto h-16 bg-gradient-to-t from-gray-950 to-gray-950/0"></div>
+        <div className="absolute inset-0 top-auto h-16 bg-linear-to-t from-gray-950 to-gray-950/0"></div>
       </div>
       <div className="mt-8 flex justify-center">
         <button

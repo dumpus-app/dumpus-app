@@ -19,7 +19,10 @@ function useSchema() {
     .object({
       discordLink: z
         .string({
-          required_error: t("onboarding.access.methods.link.errors.required"),
+          error: (issue) =>
+            issue.input === undefined
+              ? t("onboarding.access.methods.link.errors.required")
+              : undefined,
         })
         .url(t("onboarding.access.methods.link.errors.url")),
       backendURL: z
@@ -159,7 +162,7 @@ export default function LinkForm() {
           )}
         </Disclosure>
         <div className="max-w-xs text-center">
-          <p className="text-gray-400 transition [&>a]:text-brand-300 [&>a]:underline hover:[&>a]:text-brand-400">
+          <p className="text-gray-400 transition [&>a]:text-brand-300 [&>a]:underline [&>a]:hover:text-brand-400">
             <RenderMarkdown
               content={t("onboarding.access.methods.link.notice")}
             />

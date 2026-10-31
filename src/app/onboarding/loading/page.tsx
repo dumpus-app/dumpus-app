@@ -14,9 +14,7 @@ function Wrapper({ children }: { children: React.ReactNode }) {
     <div className="flex flex-col items-center space-y-4">
       <span className="inline-flex h-16 w-16 animate-spin-slow rounded-full border-8 border-dotted border-brand-300"></span>
       {children}
-      <p className="mt-4 text-gray-400">
-        {t("onboarding.loading.comeBackLater")}
-      </p>
+      <p className="text-gray-400">{t("onboarding.loading.comeBackLater")}</p>
     </div>
   );
 }

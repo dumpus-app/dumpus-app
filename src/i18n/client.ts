@@ -14,8 +14,9 @@ i18next
   .use(LanguageDetector)
   .use(
     resourcesToBackend(
+      // A relative path, for the reason given in `index.ts`.
       // @ts-ignore
-      (language, namespace) => import(`#root/locales/${language}.json`),
+      (language, namespace) => import(`../../locales/${language}.json`),
     ),
   )
   .init({

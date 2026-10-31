@@ -1,18 +1,17 @@
 import { type Config } from "tailwindcss";
-import { type ThemeConfig } from "tailwindcss/types/config";
-import twColors from "tailwindcss/colors";
+import { palette } from "./src/utils/palette";
 import plugin from "tailwindcss/plugin";
 
 export const colors = {
-  brand: twColors.sky,
-  gray: twColors.slate,
-  danger: twColors.rose,
-  success: twColors.emerald,
+  brand: palette.sky,
+  gray: palette.slate,
+  danger: palette.rose,
+  success: palette.emerald,
   white: "#fff",
   transparent: "transparent",
   inherit: "inherit",
   currentColor: "currentColor",
-  yellow: twColors.yellow,
+  yellow: palette.yellow,
   gold: {
     50: "#fcf2e5",
     100: "#e5dbca",
@@ -26,7 +25,7 @@ export const colors = {
     900: "#241a0d",
     950: "#150c00",
   },
-} satisfies ThemeConfig["colors"];
+} satisfies NonNullable<Config["theme"]>["colors"];
 
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],

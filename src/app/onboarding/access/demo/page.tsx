@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
@@ -19,8 +19,10 @@ export default function Page() {
   const router = useRouter();
 
   const [selectedID, getNextID] = useAppStore(
-    ({ config, database }) => [config.selectedID, database.getNextID],
-    shallow,
+    useShallow(({ config, database }) => [
+      config.selectedID,
+      database.getNextID,
+    ]),
   );
   const nextID = getNextID(selectedID);
   const { init } = useSQLInit();

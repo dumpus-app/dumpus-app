@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 export default function useHorizontalScroller<E extends HTMLElement>(
-  ref: React.RefObject<E>,
+  ref: React.RefObject<E | null>,
   {
     enabled = true,
     scrollSpeed = 1,

@@ -1,6 +1,14 @@
 import { colors } from "#root/tailwind.config";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { BASE_URL, SITE_NAME } from "~/constants";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  userScalable: false,
+  colorScheme: "dark",
+};
 
 export function generateSEO({
   title,
@@ -12,13 +20,10 @@ export function generateSEO({
   const ogImage = `${BASE_URL}/assets/og.png`;
 
   return {
-    viewport:
-      "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
     metadataBase: new URL(BASE_URL),
     title,
     description,
     applicationName: SITE_NAME,
-    colorScheme: "dark",
     openGraph: {
       type: "website",
       url: BASE_URL,

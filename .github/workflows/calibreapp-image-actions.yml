@@ -17,8 +17,9 @@ jobs:
         with:
           compressOnly: true
           # `pngQuality` quantizes colors, which would break the e2e screenshot
-          # comparisons.
-          ignorePaths: "node_modules/**,e2e/__screenshots__/**"
+          # comparisons, and turns PNGs into palette images, which Tauri 2
+          # refuses as icons.
+          ignorePaths: "node_modules/**,e2e/__screenshots__/**,src-tauri/icons/**"
 
       - name: Create New Pull Request If Needed
         if: steps.calibre.outputs.markdown != ''

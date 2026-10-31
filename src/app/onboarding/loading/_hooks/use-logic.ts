@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { DEFAULT_PACKAGE_API_URL } from "~/constants";
 import usePackageAPI from "~/hooks/use-package-api";
 import useSQLInit from "~/hooks/use-sql-init";
@@ -112,8 +112,10 @@ function useRedirect({
   const router = useRouter();
   const { init } = useSQLInit();
   const [selectedID, getNextID] = useAppStore(
-    ({ config, database }) => [config.selectedID, database.getNextID],
-    shallow,
+    useShallow(({ config, database }) => [
+      config.selectedID,
+      database.getNextID,
+    ]),
   );
 
   const nextID = getNextID(selectedID);

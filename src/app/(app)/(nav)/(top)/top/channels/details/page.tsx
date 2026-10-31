@@ -38,7 +38,7 @@ export default function Page() {
         title={"#" + channel.channel_name}
         imageSlot={
           <div
-            className="relative flex aspect-square w-16 shrink-0 items-center justify-center rounded-lg text-4xl font-bold uppercase text-gray-950 sm:h-32 sm:w-32 sm:text-6xl"
+            className="relative flex aspect-square w-16 shrink-0 items-center justify-center rounded-lg text-4xl font-bold text-gray-950 uppercase sm:h-32 sm:w-32 sm:text-6xl"
             style={{
               backgroundColor: iconColor(guild.guild_id + channel.channel_id),
             }}
@@ -51,7 +51,7 @@ export default function Page() {
           href={discordLink}
           target="_blank"
           icon={SimpleIconsDiscord}
-          className="absolute right-2 top-4 hidden sm:block"
+          className="absolute top-4 right-2 hidden sm:block"
         />
       </ProfileHeader>
       <RelatedGuild guild={guild} channelID={channel.channel_id} />

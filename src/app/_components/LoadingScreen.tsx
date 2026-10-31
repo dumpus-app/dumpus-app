@@ -3,7 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useEffectOnce } from "react-use";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import { VERSION } from "~/constants";
 import useSQLInit from "~/hooks/use-sql-init";
 import { useTranslation } from "~/i18n/client";
@@ -24,13 +24,12 @@ export default function LoadingScreen({
   const router = useRouter();
 
   const [selectedID, goToOnboardingAccess, loadingData, db] = useAppStore(
-    ({ config, database }) => [
+    useShallow(({ config, database }) => [
       config.selectedID,
       config.goToOnboardingAccess,
       config.loadingData,
       database.db,
-    ],
-    shallow,
+    ]),
   );
   const hasSelectedPackage = !!selectedID;
 

@@ -30,7 +30,7 @@ function QueueExplanationDialog({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-950 bg-opacity-80 transition-opacity" />
+          <div className="fixed inset-0 bg-gray-950/80 transition-opacity" />
         </Transition.Child>
 
         <div className="fixed inset-0 bottom-safe-area-bottom-inset z-10 overflow-y-auto">

@@ -1,66 +1,63 @@
 {
-  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "build": {
     "beforeBuildCommand": "pnpm build:desktop && pnpm script:flatten-dist",
     "beforeDevCommand": "pnpm dev:desktop",
-    "devPath": "http://localhost:3000",
-    "distDir": "../dist"
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:3000"
   },
-  "package": {
-    "productName": "dumpus-app",
-    "version": "../package.json"
-  },
-  "tauri": {
-    "allowlist": {
-      "all": false
+  "bundle": {
+    "active": true,
+    "category": "DeveloperTool",
+    "copyright": "",
+    "targets": "all",
+    "externalBin": [],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": ""
     },
-    "bundle": {
-      "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+    "longDescription": "",
+    "macOS": {
+      "entitlements": null,
+      "exceptionDomain": "",
+      "frameworks": [],
+      "providerShortName": null,
+      "signingIdentity": null
+    },
+    "resources": [],
+    "shortDescription": "",
+    "linux": {
       "deb": {
         "depends": []
-      },
-      "externalBin": [],
-      "icon": [
-        "icons/32x32.png",
-        "icons/128x128.png",
-        "icons/128x128@2x.png",
-        "icons/icon.icns",
-        "icons/icon.ico"
-      ],
-      "identifier": "app.dumpus.app",
-      "longDescription": "",
-      "macOS": {
-        "entitlements": null,
-        "exceptionDomain": "",
-        "frameworks": [],
-        "providerShortName": null,
-        "signingIdentity": null
-      },
-      "resources": [],
-      "shortDescription": "",
-      "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
       }
-    },
-    "security": {
-      "csp": null
-    },
-    "updater": {
-      "active": false
-    },
+    }
+  },
+  "productName": "dumpus-app",
+  "mainBinaryName": "dumpus-app",
+  "version": "../package.json",
+  "identifier": "app.dumpus.app",
+  "plugins": {},
+  "app": {
     "windows": [
       {
         "fullscreen": false,
         "height": 600,
         "resizable": true,
         "title": "Dumpus",
-        "width": 800
+        "width": 800,
+        "useHttpsScheme": true
       }
-    ]
+    ],
+    "security": {
+      "csp": null
+    }
   }
 }

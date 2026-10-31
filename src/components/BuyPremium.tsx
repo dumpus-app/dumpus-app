@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { shallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 import PremiumBadge from "~/components/PremiumBadge";
 import { MdiCrown } from "~/components/icons";
 import { useTranslation } from "~/i18n/client";
@@ -12,8 +12,10 @@ const isMobile = process.env.NEXT_PUBLIC_DEPLOY_ENV === "mobile";
 export default function BuyPremium({ className }: { className?: string }) {
   const { t } = useTranslation();
   const [premium, setOpen] = useAppStore(
-    ({ config, ui }) => [config.premium, ui.setShowInAppPurchasesDialog],
-    shallow,
+    useShallow(({ config, ui }) => [
+      config.premium,
+      ui.setShowInAppPurchasesDialog,
+    ]),
   );
 
   if (!isMobile || premium) return null;

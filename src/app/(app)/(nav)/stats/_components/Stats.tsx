@@ -120,7 +120,7 @@ export default function Stats() {
   ].filter((stat) => stat !== null) as any;
 
   return (
-    <div className="grid grid-cols-1 gap-2 px-2 py-4 desktop-container sm:grid-cols-2 sm:py-8 md:grid-cols-3">
+    <div className="desktop-container grid grid-cols-1 gap-2 px-2 py-4 sm:grid-cols-2 sm:py-8 md:grid-cols-3">
       {data.map(({ value, title, description, icon: Icon }, i) => (
         <DetailCard
           key={i}

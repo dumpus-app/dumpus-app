@@ -30,7 +30,7 @@ export default function Header({ progress, href }: Props) {
       {/* TODO: delete? */}
       {/* <div className="flex items-center">
         <div
-          className="bg-gradient-to-t [clip-path:url(#header-check-1)]"
+          className="bg-linear-to-t [clip-path:url(#header-check-1)]"
           style={
             {
               "--tw-gradient-stops":
@@ -62,7 +62,7 @@ export default function Header({ progress, href }: Props) {
           </svg>
         </div>
         <div
-          className="bg-gradient-to-t [clip-path:url(#header-check-2)]"
+          className="bg-linear-to-t [clip-path:url(#header-check-2)]"
           style={
             {
               "--tw-gradient-stops":
@@ -94,7 +94,7 @@ export default function Header({ progress, href }: Props) {
           </svg>
         </div>
         <div
-          className="bg-gradient-to-t [clip-path:url(#header-check-3)]"
+          className="bg-linear-to-t [clip-path:url(#header-check-3)]"
           style={
             {
               "--tw-gradient-stops":
