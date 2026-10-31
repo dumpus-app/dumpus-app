@@ -1,7 +1,7 @@
 # [👨‍💻 Dumpus (Stats for Discord)](https://play.google.com/store/apps/details?id=app.dumpus.app)
 
 > [!NOTE]
-> ⚡ Package processing, rewritten in Go: **3.7× faster**, **5× less memory**, and a **33× smaller** image.
+> ⚡ Dumpus now processes packages in Go: **3.7× faster**, **5× less memory**, and a **33× smaller** image.
 
 <details>
 <summary>Before and after</summary>
